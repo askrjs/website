@@ -1,7 +1,7 @@
-import { jsx } from '../runtime/jsx';
+import { jsx } from "../runtime/jsx";
 
-import { SiteShell } from './site-shell';
-import type { Props } from '../types/props';
+import { SiteShell } from "./site-shell";
+import type { Props } from "../types/props";
 
 export interface DocLayoutProps extends Props {
   title: string;

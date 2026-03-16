@@ -7,17 +7,24 @@
   "scripts": {
     "build": "tsx ./scripts/build-site.ts",
     "build:incremental": "tsx ./scripts/build-site.ts --incremental",
+    "lint": "eslint src scripts ssg.config.ts --ext .ts,.tsx",
+    "fmt": "prettier --write .",
     "typecheck": "tsc --noEmit",
     "check": "npm run typecheck && npm run build",
-    "serve": "npx serve dist -l 4173"
+    "serve": "npx serve dist -l 4173",
+    "start": "npm run build && npx serve dist -l 4173"
   },
   "dependencies": {
     "@askrjs/askr-themes": "github:askrjs/askr-themes#main",
     "@askrjs/askr-ui": "github:askrjs/askr-ui#main"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/node": "^25.5.0",
+    "eslint": "^10.0.3",
+    "prettier": "^3.8.1",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.57.1"
   }
 }

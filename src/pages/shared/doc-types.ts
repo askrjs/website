@@ -1,4 +1,4 @@
-import type { Props } from '../types/props';
+import type { Props } from "../types/props";
 
 export interface DocMeta {
   slug: string;

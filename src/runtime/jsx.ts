@@ -1,4 +1,4 @@
-export const Fragment = Symbol.for('askr.fragment');
+export const Fragment = Symbol.for("askr.fragment");
 
 function flattenChildren(children: unknown[]): unknown[] {
   const flat: unknown[] = [];
@@ -19,7 +19,11 @@ function flattenChildren(children: unknown[]): unknown[] {
   return flat;
 }
 
-export function jsx(type: unknown, props: Record<string, unknown>, ...children: unknown[]) {
+export function jsx(
+  type: unknown,
+  props: Record<string, unknown>,
+  ...children: unknown[]
+) {
   if (children.length > 0) {
     const flatChildren = flattenChildren(children);
     props = {

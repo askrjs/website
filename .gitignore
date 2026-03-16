@@ -1,4 +1,26 @@
+# Dependencies
 node_modules/
+
+# Build outputs
 dist/
 .askr/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# TypeScript build cache
+*.tsbuildinfo
+
+# OS/editor noise
 .DS_Store
+Thumbs.db
+.vscode/
+.idea/

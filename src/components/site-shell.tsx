@@ -1,12 +1,12 @@
-import { Fragment, jsx } from '../runtime/jsx';
-import type { Props } from '../types/props';
+﻿import { Fragment, jsx } from "../runtime/jsx";
+import type { Props } from "../types/props";
 
-import { primaryNav, type SiteLink } from '../site/content';
+import { primaryNav, type SiteLink } from "../pages/shared/content";
 
 // Runs before body paint to prevent flash of wrong theme.
 const initThemeScript = `(function(){var s=localStorage.getItem('theme'),d=document.documentElement;if(s==='dark'||(s===null&&window.matchMedia('(prefers-color-scheme:dark)').matches)){d.setAttribute('data-theme','dark');}else{d.setAttribute('data-theme','light');}})();`;
 
-// Toggle handler — wired after DOM is ready.
+// Toggle handler â€” wired after DOM is ready.
 const toggleScript = `document.getElementById('theme-toggle').addEventListener('click',function(){var d=document.documentElement,n=d.getAttribute('data-theme')==='dark'?'light':'dark';d.setAttribute('data-theme',n);localStorage.setItem('theme',n);});`;
 
 function navItem(link: SiteLink) {
@@ -44,7 +44,11 @@ export function SiteShell(props: SiteShellProps) {
             <nav>
               <ul>{primaryNav.map(navItem)}</ul>
             </nav>
-            <button id="theme-toggle" class="theme-btn" aria-label="Toggle light/dark mode" />
+            <button
+              id="theme-toggle"
+              class="theme-btn"
+              aria-label="Toggle light/dark mode"
+            />
           </div>
         </header>
 

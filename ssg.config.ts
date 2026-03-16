@@ -1,5 +1,5 @@
-import type { RouteConfig } from './src/site/types';
-import { routes as configuredRoutes } from './src/site/routes';
+import type { RouteConfig } from "./src/pages/route-types";
+import { routes as configuredRoutes } from "./src/pages/routes";
 
 export const routes: RouteConfig[] = configuredRoutes;
 
