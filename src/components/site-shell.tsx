@@ -1,5 +1,4 @@
-﻿import { Fragment, jsx } from "../runtime/jsx";
-import type { Props } from "../types/props";
+﻿import type { Props } from "../types/props";
 
 import { primaryNav, type SiteLink } from "../pages/shared/content";
 

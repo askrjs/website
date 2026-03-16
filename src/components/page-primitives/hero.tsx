@@ -1,6 +1,4 @@
-import { jsx } from "../../runtime/jsx";
-
-export interface HeroChipLink {
+﻿export interface HeroChipLink {
   href: string;
   label: string;
 }

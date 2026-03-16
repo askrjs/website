@@ -1,6 +1,4 @@
-import { Fragment, jsx } from "../../runtime/jsx";
-
-import { CatalogSection, HeroStatGrid } from "../../components/page-primitives";
+﻿import { CatalogSection, HeroStatGrid } from "../../components/page-primitives";
 import {
   CatalogTemplate,
   ShowcaseTemplate,

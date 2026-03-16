@@ -1,6 +1,4 @@
-import { jsx } from "../../runtime/jsx";
-
-import {
+﻿import {
   CatalogSection,
   HeroActionGrid,
   HeroStatGrid,

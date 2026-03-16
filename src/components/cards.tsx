@@ -1,6 +1,4 @@
-﻿import { Fragment, jsx } from "../runtime/jsx";
-
-import type { SiteLink } from "../pages/shared/content";
+﻿import type { SiteLink } from "../pages/shared/content";
 
 export function LinkCard(props: SiteLink) {
   return (

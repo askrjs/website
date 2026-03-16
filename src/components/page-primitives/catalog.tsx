@@ -1,6 +1,4 @@
-﻿import { jsx } from "../../runtime/jsx";
-
-import { LinkCardGrid } from "../cards";
+﻿import { LinkCardGrid } from "../cards";
 import { PageSection } from "./section";
 import type { SiteLink } from "../../pages/shared/content";
 

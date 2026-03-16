@@ -1,6 +1,4 @@
-import { jsx } from "../../runtime/jsx";
-
-import { SiteShell } from "../site-shell";
+﻿import { SiteShell } from "../site-shell";
 
 export interface ShowcaseMetric {
   label: string;

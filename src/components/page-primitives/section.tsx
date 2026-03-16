@@ -1,6 +1,4 @@
-import { jsx } from "../../runtime/jsx";
-
-export interface SectionHeadProps {
+﻿export interface SectionHeadProps {
   kicker: string;
   title: string;
   description: string;

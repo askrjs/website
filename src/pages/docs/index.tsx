@@ -1,6 +1,4 @@
-import { jsx } from "../../runtime/jsx";
-
-import { CatalogSection } from "../../components/page-primitives";
+﻿import { CatalogSection } from "../../components/page-primitives";
 import { CatalogTemplate } from "../../components/page-templates";
 import { createDocsIndexModel } from "../shared/page-models";
 

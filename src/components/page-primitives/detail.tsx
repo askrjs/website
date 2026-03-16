@@ -1,6 +1,4 @@
-import { jsx } from "../../runtime/jsx";
-
-export interface InputRequirement {
+﻿export interface InputRequirement {
   label: string;
   value: string;
 }

@@ -1,6 +1,4 @@
-import { jsx } from "../../runtime/jsx";
-
-import { HeroChipRow } from "../page-primitives";
+﻿import { HeroChipRow } from "../page-primitives";
 import { SiteShell } from "../site-shell";
 
 export interface DetailTemplateSection {

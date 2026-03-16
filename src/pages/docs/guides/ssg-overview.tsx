@@ -1,6 +1,4 @@
-﻿import { jsx } from "../../../runtime/jsx";
-
-import { DocLayout } from "../../../components/doc-layout";
+﻿import { DocLayout } from "../../../components/doc-layout";
 import type { DocMeta } from "../../../pages/shared/doc-types";
 
 export const meta: DocMeta = {

@@ -2,9 +2,8 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",
-    "jsx": "react",
-    "jsxFactory": "jsx",
-    "jsxFragmentFactory": "Fragment",
+    "jsx": "react-jsx",
+    "jsxImportSource": "@askrjs/askr",
     "moduleResolution": "Bundler",
     "strict": true,
     "skipLibCheck": true,
