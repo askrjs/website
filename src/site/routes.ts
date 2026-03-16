@@ -1,6 +1,5 @@
 import type { RouteConfig } from './types';
 
-import { DocPageView } from '../pages/doc-page';
 import { DocsIndexPage } from '../pages/docs-index-page';
 import { HomePage } from '../pages/home-page';
 import {
@@ -8,7 +7,7 @@ import {
   ThemesShowcasePage,
   UiShowcasePage,
 } from '../pages/showcase-page';
-import { docsPages } from './content';
+import { docRegistry } from './doc-registry';
 
 const staticRoutes: RouteConfig[] = [
   {
@@ -33,10 +32,9 @@ const staticRoutes: RouteConfig[] = [
   },
 ];
 
-const docsRoutes: RouteConfig[] = docsPages.map((doc) => ({
-  path: `/docs/${doc.slug}`,
-  component: DocPageView,
-  props: { doc },
+const docsRoutes: RouteConfig[] = docRegistry.map((entry) => ({
+  path: `/docs/${entry.meta.slug}`,
+  component: entry.component,
 }));
 
 export const routes: RouteConfig[] = [...staticRoutes, ...docsRoutes];

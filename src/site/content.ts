@@ -1,4 +1,5 @@
-import { loadDocsPages } from './docs-loader';
+import type { DocMeta } from './doc-types';
+import { docRegistry } from './doc-registry';
 
 export interface SiteLink {
   href: string;
@@ -13,16 +14,6 @@ export interface LinkSection {
   title: string;
   description: string;
   links: SiteLink[];
-}
-
-export interface DocPage {
-  slug: string;
-  title: string;
-  summary: string;
-  sections: Array<{
-    heading: string;
-    body: string[];
-  }>;
 }
 
 export const primaryNav: SiteLink[] = [
@@ -69,7 +60,7 @@ export const homeCards: SiteLink[] = [
   },
 ];
 
-export const docsPages: DocPage[] = loadDocsPages();
+export const docsPages: DocMeta[] = docRegistry.map((entry) => entry.meta);
 
 function sectionTitleFromSlug(slug: string) {
   const segment = slug.split('/')[0] ?? 'guides';
@@ -92,7 +83,6 @@ function groupDocsPages() {
       href: `/docs/${doc.slug}`,
       label: doc.title,
       description: doc.summary,
-      meta: `${doc.sections.length} sections`,
       cta: 'Read guide',
     });
     groups.set(title, links);
@@ -156,7 +146,6 @@ export const docsFeatured: SiteLink[] = docsPages.slice(0, 3).map((doc) => ({
   label: doc.title,
   description: doc.summary,
   badge: sectionTitleFromSlug(doc.slug),
-  meta: `${doc.sections.length} sections`,
   cta: 'Read article',
 }));
 
@@ -167,6 +156,5 @@ export const docsNav: SiteLink[] = docsPages.map((doc) => ({
   label: doc.title,
   description: doc.summary,
   badge: sectionTitleFromSlug(doc.slug),
-  meta: `${doc.sections.length} sections`,
   cta: 'Read article',
 }));
