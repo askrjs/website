@@ -16,140 +16,217 @@ export interface LinkSection {
   links: SiteLink[];
 }
 
-export const primaryNav: SiteLink[] = [
-  { href: "/", label: "Home" },
-  { href: "/showcase/askr", label: "Askr" },
-  { href: "/showcase/ui", label: "Askr UI" },
-  { href: "/showcase/themes", label: "Askr Themes" },
-  { href: "/docs", label: "Docs" },
-];
+export interface DocsNavItem extends SiteLink {
+  slug: string;
+  section: string;
+  order: number;
+}
 
-export const homeCards: SiteLink[] = [
-  {
-    href: "/showcase/askr",
-    label: "Framework Showcase",
-    badge: "Core Runtime",
-    meta: "SSR • SSG • deterministic updates",
-    cta: "View runtime patterns",
-    description:
-      "Runtime guarantees, deterministic rendering, SSR and SSG patterns.",
-  },
-  {
-    href: "/showcase/ui",
-    label: "UI Showcase",
-    badge: "Headless Components",
-    meta: "45 component pages",
-    cta: "Browse components",
-    description:
-      "Full component catalog with placeholder detail pages and snippets.",
-  },
-  {
-    href: "/showcase/themes",
-    label: "Themes Showcase",
-    badge: "Default Theme",
-    meta: "Tokens • light/dark • overrides",
-    cta: "Inspect tokens",
-    description: "Tokens, palettes, and theme extension strategies.",
-  },
-  {
-    href: "/docs",
-    label: "Documentation",
-    badge: "Learning Path",
-    meta: "Install • build • deploy",
-    cta: "Open docs hub",
-    description: "Website-owned docs for learning and implementing askr.",
-  },
+export interface DocsNavSection {
+  id: string;
+  title: string;
+  description: string;
+  items: DocsNavItem[];
+}
+
+export const primaryNav: SiteLink[] = [
+  { href: "/docs", label: "Docs" },
+  { href: "/docs/getting-started/installation", label: "Get Started" },
+  { href: "/docs/guides/ssg-overview", label: "Guides" },
+  { href: "/showcase/ui", label: "Reference" },
 ];
 
 export const docsPages: DocMeta[] = docRegistry.map((entry) => entry.meta);
 
-function sectionTitleFromSlug(slug: string) {
-  const segment = slug.split("/")[0] ?? "guides";
-  const labels: Record<string, string> = {
-    "getting-started": "Getting Started",
-    guides: "Guides",
-    reference: "Reference",
-    advanced: "Advanced",
-  };
-  return (
-    labels[segment] ??
-    segment.replace(/-/g, " ").replace(/\b\w/g, (m) => m.toUpperCase())
-  );
+function toSectionId(value: string) {
+  return value.toLowerCase().replace(/\s+/g, "-");
 }
 
 function groupDocsPages() {
-  const groups = new Map<string, SiteLink[]>();
+  const groups = new Map<string, DocsNavItem[]>();
 
   for (const doc of docsPages) {
-    const title = sectionTitleFromSlug(doc.slug);
-    const links = groups.get(title) ?? [];
+    const links = groups.get(doc.section) ?? [];
     links.push({
+      slug: doc.slug,
+      section: doc.section,
+      order: doc.order ?? 0,
       href: `/docs/${doc.slug}`,
       label: doc.title,
       description: doc.summary,
       cta: "Read guide",
     });
-    groups.set(title, links);
+    groups.set(doc.section, links);
   }
 
-  return Array.from(groups, ([title, links]) => ({
+  return Array.from(groups, ([title, items]) => ({
+    id: toSectionId(title),
     title,
     description: `Focused ${title.toLowerCase()} material for the askr ecosystem.`,
-    links,
+    items: items.sort(
+      (a, b) => a.order - b.order || a.label.localeCompare(b.label),
+    ),
   }));
+}
+
+export const docsNavSections: DocsNavSection[] = groupDocsPages();
+
+export function findDocsNavItemBySlug(slug: string) {
+  for (const section of docsNavSections) {
+    const item = section.items.find((entry) => entry.slug === slug);
+    if (item) return item;
+  }
+
+  return null;
 }
 
 export const homeHeroLinks: SiteLink[] = [
   {
     href: "/docs/getting-started/installation",
-    label: "Install",
-    cta: "Get started",
+    label: "Install Askr",
+    cta: "Start here",
   },
-  { href: "/showcase/ui", label: "Component Catalog", cta: "Browse UI" },
-  { href: "/showcase/themes", label: "Theme Tokens", cta: "Explore tokens" },
-];
-
-export const homeTracks: SiteLink[] = [
   {
     href: "/docs/getting-started/quick-start",
-    label: "Start a new app",
-    description: "Bootstrap the repo shape, build flow, and first route.",
-    badge: "Getting Started",
-    meta: "Fastest path",
+    label: "Build your first page",
     cta: "Open quick start",
   },
   {
     href: "/docs/guides/ssg-overview",
-    label: "Ship static output",
-    description:
-      "Understand route generation, static HTML output, and deployment shape.",
-    badge: "Deployment",
-    meta: "SSG workflow",
-    cta: "Read SSG guide",
-  },
-  {
-    href: "/docs/guides/styling-with-themes",
-    label: "Adopt the default theme",
-    description:
-      "Use askr-themes tokens and extend them without fragmenting the design system.",
-    badge: "Design System",
-    meta: "Light + dark",
-    cta: "Read styling guide",
+    label: "Choose a rendering mode",
+    cta: "Read guide",
   },
 ];
 
-export const ecosystemBands: LinkSection[] = [
-  {
-    title: "Build Paths",
-    description:
-      "Pick the surface you are working on and move directly into the relevant material.",
-    links: homeCards,
-  },
+export const onboardingTracks: LinkSection[] = [
   {
     title: "Start Here",
     description:
-      "These are the shortest paths to getting something real on screen.",
-    links: homeTracks,
+      "Read these first to install the stack, boot the app shell, and validate the first route.",
+    links: [
+      {
+        href: "/docs/getting-started/installation",
+        label: "Install the stack",
+        description: "Add askr, askr-ui, and askr-themes to your workspace.",
+        badge: "Step 1",
+        meta: "Setup",
+        cta: "Read installation",
+      },
+      {
+        href: "/docs/getting-started/quick-start",
+        label: "Build your first page",
+        description:
+          "Create an initial component, wire state, and render the first usable view.",
+        badge: "Step 2",
+        meta: "Quick start",
+        cta: "Open quick start",
+      },
+      {
+        href: "/docs/guides/building-pages",
+        label: "Organize routes and pages",
+        description:
+          "Move from a first page to a coherent route and page structure.",
+        badge: "Step 3",
+        meta: "Architecture",
+        cta: "Read building pages",
+      },
+    ],
+  },
+  {
+    title: "Core Guides",
+    description:
+      "Use these guides when you are deciding how to render, style, and ship the site.",
+    links: [
+      {
+        href: "/docs/guides/ssg-overview",
+        label: "Choose a rendering mode",
+        description:
+          "Understand SPA, SSR, and SSG tradeoffs and how the site is deployed.",
+        badge: "Guide",
+        meta: "Rendering",
+        cta: "Read SSG overview",
+      },
+      {
+        href: "/docs/guides/styling-with-themes",
+        label: "Apply the default theme",
+        description:
+          "Use theme tokens to keep the visual system consistent as the site grows.",
+        badge: "Guide",
+        meta: "Styling",
+        cta: "Read theme guide",
+      },
+    ],
+  },
+];
+
+export const referenceBands: LinkSection[] = [
+  {
+    title: "Reference Surfaces",
+    description:
+      "Use these supporting sections when you need concrete runtime, UI, or theme examples.",
+    links: [
+      {
+        href: "/showcase/askr",
+        label: "Runtime Reference",
+        badge: "Reference",
+        meta: "State · routing · rendering",
+        cta: "Open runtime reference",
+        description:
+          "Reference notes for rendering patterns, runtime behavior, and architecture choices.",
+      },
+      {
+        href: "/showcase/ui",
+        label: "UI Components",
+        badge: "Reference",
+        meta: "Component catalog",
+        cta: "Browse UI reference",
+        description:
+          "Component pages and usage notes for the available headless UI primitives.",
+      },
+      {
+        href: "/showcase/themes",
+        label: "Theme Reference",
+        badge: "Reference",
+        meta: "Tokens · light/dark",
+        cta: "Inspect theme reference",
+        description:
+          "Theme tokens, mode defaults, and styling guidance for consistent interfaces.",
+      },
+    ],
+  },
+  {
+    title: "Common Next Steps",
+    description:
+      "After the first page is running, these are the usual places developers go next.",
+    links: [
+      {
+        href: "/docs",
+        label: "Browse the docs index",
+        description:
+          "Scan the available guides and move directly into the next relevant section.",
+        badge: "Docs",
+        meta: "Overview",
+        cta: "Open docs index",
+      },
+      {
+        href: "/showcase/ui",
+        label: "Find a component pattern",
+        description:
+          "Open the UI reference when you need a concrete primitive or interaction pattern.",
+        badge: "Reference",
+        meta: "UI",
+        cta: "Open UI reference",
+      },
+      {
+        href: "/docs/guides/styling-with-themes",
+        label: "Standardize styling",
+        description:
+          "Move the site onto theme tokens before design drift starts to spread.",
+        badge: "Guide",
+        meta: "Themes",
+        cta: "Read styling guide",
+      },
+    ],
   },
 ];
 
@@ -157,16 +234,28 @@ export const docsFeatured: SiteLink[] = docsPages.slice(0, 3).map((doc) => ({
   href: `/docs/${doc.slug}`,
   label: doc.title,
   description: doc.summary,
-  badge: sectionTitleFromSlug(doc.slug),
+  badge: doc.section,
   cta: "Read article",
 }));
 
-export const docsSections: LinkSection[] = groupDocsPages();
-
-export const docsNav: SiteLink[] = docsPages.map((doc) => ({
-  href: `/docs/${doc.slug}`,
-  label: doc.title,
-  description: doc.summary,
-  badge: sectionTitleFromSlug(doc.slug),
-  cta: "Read article",
+export const docsSections: LinkSection[] = docsNavSections.map((section) => ({
+  title: section.title,
+  description: section.description,
+  links: section.items.map((item) => ({
+    href: item.href,
+    label: item.label,
+    description: item.description,
+    badge: item.section,
+    cta: item.cta,
+  })),
 }));
+
+export const docsNav: SiteLink[] = docsNavSections.flatMap((section) =>
+  section.items.map((item) => ({
+    href: item.href,
+    label: item.label,
+    description: item.description,
+    badge: item.section,
+    cta: item.cta,
+  })),
+);

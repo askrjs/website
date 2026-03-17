@@ -3,16 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>askr website source</title>
+    <title>askr | dev</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+    <script>
+      (function () {
+        var s = localStorage.getItem("theme"),
+          d = document.documentElement;
+        if (
+          s === "dark" ||
+          (s === null &&
+            window.matchMedia("(prefers-color-scheme:dark)").matches)
+        ) {
+          d.setAttribute("data-theme", "dark");
+        } else {
+          d.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
   </head>
   <body>
-    <main>
-      <h1>askr website</h1>
-      <p>This repository builds a static site using askr SSG.</p>
-      <p>
-        Run <code>npm run build</code> and publish the generated
-        <code>dist/</code> output.
-      </p>
-    </main>
+    <div id="app"></div>
+    <script type="module" src="/src/client.tsx"></script>
   </body>
 </html>

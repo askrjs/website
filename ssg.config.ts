@@ -1,7 +1,7 @@
-import type { RouteConfig } from "./src/pages/route-types";
-import { routes as configuredRoutes } from "./src/pages/routes";
+import type { StaticRouteConfig } from "./src/pages/route-types";
+import { getStaticRoutes } from "./src/pages/routes";
 
-export const routes: RouteConfig[] = configuredRoutes;
+export const routes: StaticRouteConfig[] = getStaticRoutes();
 
 export const seed = 20260315;
 export const concurrency = 4;

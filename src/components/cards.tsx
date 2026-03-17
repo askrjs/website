@@ -1,15 +1,17 @@
-﻿import type { SiteLink } from "../pages/shared/content";
+import type { SiteLink } from "../pages/shared/content";
+import { Badge } from "@askrjs/askr-ui/badge";
+import { SiteAnchor } from "./site-link";
 
 export function LinkCard(props: SiteLink) {
   return (
     <article class="card">
-      {props.badge ? <span class="badge">{props.badge}</span> : null}
+      {props.badge ? <Badge class="badge">{props.badge}</Badge> : null}
       <h2>{props.label}</h2>
       <p>{props.description ?? ""}</p>
       {props.meta ? <div class="card-meta">{props.meta}</div> : null}
-      <a class="card-cta" href={props.href}>
+      <SiteAnchor className="card-cta" href={props.href}>
         {props.cta ?? "Explore"}
-      </a>
+      </SiteAnchor>
     </article>
   );
 }

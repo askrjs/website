@@ -1,15 +1,17 @@
-﻿import { DocLayout } from "../../../components/doc-layout";
+import { DocLayout } from "../../../components/doc-layout";
 import type { DocMeta } from "../../../pages/shared/doc-types";
 
 export const meta: DocMeta = {
   slug: "getting-started/installation",
   title: "Installation",
   summary: "Install askr, askr-ui, and askr-themes into your app.",
+  section: "Getting Started",
+  order: 1,
 };
 
 export function InstallationDocPage() {
   return (
-    <DocLayout title={meta.title} intro={meta.summary}>
+    <DocLayout title={meta.title} intro={meta.summary} meta={meta}>
       <section>
         <h2>Project Setup</h2>
         <p>

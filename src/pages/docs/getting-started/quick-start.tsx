@@ -1,15 +1,17 @@
-﻿import { DocLayout } from "../../../components/doc-layout";
+import { DocLayout } from "../../../components/doc-layout";
 import type { DocMeta } from "../../../pages/shared/doc-types";
 
 export const meta: DocMeta = {
   slug: "getting-started/quick-start",
   title: "Quick Start",
   summary: "Build your first page with state, routing, and themed UI.",
+  section: "Getting Started",
+  order: 2,
 };
 
 export function QuickStartDocPage() {
   return (
-    <DocLayout title={meta.title} intro={meta.summary}>
+    <DocLayout title={meta.title} intro={meta.summary} meta={meta}>
       <section>
         <h2>First Island</h2>
         <p>

@@ -1,5 +1,5 @@
-﻿import { HeroChipRow } from "../page-primitives";
-import { SiteShell } from "../site-shell";
+import { HeroChipRow } from "../page-primitives";
+import { AppShell } from "../site-shell";
 
 export interface DetailTemplateSection {
   id: string;
@@ -15,7 +15,7 @@ export interface DetailTemplateProps {
 
 export function DetailTemplate(props: DetailTemplateProps) {
   return (
-    <SiteShell
+    <AppShell
       title={props.title}
       intro={props.intro}
       heroChildren={
@@ -28,6 +28,6 @@ export function DetailTemplate(props: DetailTemplateProps) {
       }
     >
       {props.sections.map((section) => section.render())}
-    </SiteShell>
+    </AppShell>
   );
 }

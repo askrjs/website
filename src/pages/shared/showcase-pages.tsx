@@ -1,4 +1,4 @@
-﻿import { CatalogSection, HeroStatGrid } from "../../components/page-primitives";
+import { CatalogSection } from "../../components/page-primitives";
 import {
   CatalogTemplate,
   ShowcaseTemplate,
@@ -33,18 +33,18 @@ export function ShowcasePage(props: ShowcasePageProps) {
 export function AskrShowcasePage() {
   return (
     <ShowcasePage
-      badge="Framework"
-      title="Askr Framework Showcase"
-      summary="Use deterministic state, explicit reactivity, and strict runtime guarantees for predictable apps."
+      badge="Reference"
+      title="Runtime Reference"
+      summary="Reference notes for deterministic rendering, routing, and state patterns you will likely need while implementing the docs and onboarding flow."
       bullets={[
-        "Rendering model and component lifecycle walkthrough",
-        "State and resource orchestration examples",
-        "Routing and static generation patterns for production deployments",
+        "Review rendering and lifecycle behavior when choosing execution modes",
+        "Check state and resource orchestration patterns during implementation",
+        "Use routing notes when connecting docs, onboarding, and reference surfaces",
       ]}
       metrics={[
-        { label: "Primary tracks", value: "3" },
-        { label: "Architecture pages", value: "6+" },
-        { label: "Starter demos", value: "5" },
+        { label: "Reference tracks", value: "3" },
+        { label: "Primary concepts", value: "6+" },
+        { label: "Starter paths", value: "5" },
       ]}
     />
   );
@@ -58,23 +58,18 @@ export function UiShowcasePage() {
       title={model.title}
       intro={model.intro}
       jumpLinks={model.jumpLinks}
-      sections={[
-        {
-          render: () => <HeroStatGrid stats={model.heroStats} />,
-        },
-        ...model.groups.map((group) => ({
-          render: () => (
-            <CatalogSection
-              id={group.id}
-              kicker={group.kicker}
-              title={group.title}
-              description={group.description}
-              links={group.links}
-              gridClassName="grid-docs"
-            />
-          ),
-        })),
-      ]}
+      sections={model.groups.map((group) => ({
+        render: () => (
+          <CatalogSection
+            id={group.id}
+            kicker={group.kicker}
+            title={group.title}
+            description={group.description}
+            links={group.links}
+            gridClassName="grid-docs"
+          />
+        ),
+      }))}
     />
   );
 }
@@ -82,13 +77,13 @@ export function UiShowcasePage() {
 export function ThemesShowcasePage() {
   return (
     <ShowcasePage
-      badge="Design System"
-      title="Askr Themes Showcase"
-      summary="Explore token-driven styling and compare light/dark mode implementations across components."
+      badge="Reference"
+      title="Theme Reference"
+      summary="Theme tokens, light and dark defaults, and styling guidance you can apply while turning an initial app into a coherent documentation experience."
       bullets={[
-        "Token explorer and semantic color map",
-        "Theme extension strategy and override examples",
-        "Component-level style application guidance",
+        "Inspect token groups before introducing bespoke styling rules",
+        "Review light and dark behavior when validating theme initialization",
+        "Use the examples here when aligning reference and docs surfaces visually",
       ]}
       metrics={[
         { label: "Token groups", value: "10+" },

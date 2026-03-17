@@ -1,34 +1,37 @@
-﻿import { DocLayout } from "../../../components/doc-layout";
+import { DocLayout } from "../../../components/doc-layout";
 import type { DocMeta } from "../../../pages/shared/doc-types";
 
 export const meta: DocMeta = {
   slug: "guides/ssg-overview",
   title: "SSG Overview",
-  summary: "Generate static pages deterministically with askr-ssg.",
+  summary: "Understand the static generation flow, output structure, and deployment model.",
+  section: "Guides",
+  order: 1,
 };
 
 export function SsgOverviewDocPage() {
   return (
-    <DocLayout title={meta.title} intro={meta.summary}>
+    <DocLayout title={meta.title} intro={meta.summary} meta={meta}>
       <section>
-        <h2>Route Model</h2>
+        <h2>Static Build Flow</h2>
         <p>
-          Register each static path in ssg.config.ts using RouteConfig entries.
+          Askr can render your route table into deterministic HTML at build
+          time and emit output that works on static hosting platforms.
         </p>
         <p>
-          Use props on routes to pass page-level data into reusable view
-          components.
+          The generated metadata makes it easier to verify route coverage and
+          inspect render cost per page.
         </p>
       </section>
       <section>
-        <h2>Build Modes</h2>
+        <h2>Deployment Shape</h2>
         <p>
-          Use full builds for release branches and incremental builds during
-          rapid iteration.
+          Each route becomes an index.html file inside a folder structure that
+          mirrors the URL path.
         </p>
         <p>
-          Keep route keys stable so incremental invalidation remains
-          predictable.
+          Keep CSS and theme assets shared at the root of the output directory
+          so every page resolves them consistently.
         </p>
       </section>
     </DocLayout>

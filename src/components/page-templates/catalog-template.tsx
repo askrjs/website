@@ -1,5 +1,5 @@
-﻿import { HeroChipRow } from "../page-primitives";
-import { SiteShell } from "../site-shell";
+import { HeroChipRow } from "../page-primitives";
+import { AppShell } from "../site-shell";
 
 export interface CatalogTemplateSection {
   id?: string;
@@ -15,7 +15,7 @@ export interface CatalogTemplateProps {
 
 export function CatalogTemplate(props: CatalogTemplateProps) {
   return (
-    <SiteShell
+    <AppShell
       title={props.title}
       intro={props.intro}
       heroChildren={
@@ -25,6 +25,6 @@ export function CatalogTemplate(props: CatalogTemplateProps) {
       }
     >
       {props.sections.map((section) => section.render())}
-    </SiteShell>
+    </AppShell>
   );
 }

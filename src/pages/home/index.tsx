@@ -1,45 +1,35 @@
-﻿import {
+import {
   CatalogSection,
   HeroActionGrid,
-  HeroStatGrid,
   PageSection,
-  SpotlightSignals,
 } from "../../components/page-primitives";
-import { SiteShell } from "../../components/site-shell";
+import { AppShell } from "../../components/site-shell";
 import { createHomeModel } from "../shared/page-models";
 
 export function HomePage() {
   const model = createHomeModel();
 
   return (
-    <SiteShell
+    <AppShell
       title={model.title}
       intro={model.intro}
-      heroChildren={
-        <div>
-          <HeroActionGrid actions={model.heroActions} />
-          <HeroStatGrid stats={model.heroStats} />
-        </div>
-      }
+      heroChildren={<HeroActionGrid actions={model.heroActions} />}
     >
       <PageSection
-        panel
-        splitBand
-        kicker={model.spotlight.kicker}
-        title={model.spotlight.title}
-        description={model.spotlight.description}
-      >
-        <SpotlightSignals signals={model.spotlight.signals} />
-      </PageSection>
+        kicker={model.featureSection.kicker}
+        title={model.featureSection.title}
+        description={model.featureSection.description}
+      />
 
-      {model.discoverSections.map((section) => (
+      {model.sections.map((section) => (
         <CatalogSection
           kicker={section.kicker}
           title={section.title}
           description={section.description}
           links={section.links}
+          gridClassName="grid-docs"
         />
       ))}
-    </SiteShell>
+    </AppShell>
   );
 }

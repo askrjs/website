@@ -1,69 +1,118 @@
-﻿import type { Props } from "../types/props";
-
+import type { Props } from "../types/props";
+import { Button } from "@askrjs/askr-ui/button";
 import { primaryNav, type SiteLink } from "../pages/shared/content";
+import { SiteAnchor } from "./site-link";
 
-// Runs before body paint to prevent flash of wrong theme.
-const initThemeScript = `(function(){var s=localStorage.getItem('theme'),d=document.documentElement;if(s==='dark'||(s===null&&window.matchMedia('(prefers-color-scheme:dark)').matches)){d.setAttribute('data-theme','dark');}else{d.setAttribute('data-theme','light');}})();`;
-
-// Toggle handler â€” wired after DOM is ready.
-const toggleScript = `document.getElementById('theme-toggle').addEventListener('click',function(){var d=document.documentElement,n=d.getAttribute('data-theme')==='dark'?'light':'dark';d.setAttribute('data-theme',n);localStorage.setItem('theme',n);});`;
-
-function navItem(link: SiteLink) {
-  return (
-    <li>
-      <a href={link.href}>{link.label}</a>
-    </li>
-  );
-}
-
-export interface SiteShellProps extends Props {
+export interface AppShellProps extends Props {
   title: string;
   intro: string;
   heroChildren?: unknown;
   children?: unknown;
 }
 
-export function SiteShell(props: SiteShellProps) {
+export interface SiteFrameProps extends Props {
+  children?: unknown;
+}
+
+export interface DocumentMeta {
+  title: string;
+  description?: string;
+}
+
+export interface DocumentShellProps extends Props {
+  meta: DocumentMeta;
+  appHtml: unknown;
+  includeClientScript?: boolean;
+}
+
+export const themeInitScript = `(function(){var s=localStorage.getItem('theme'),d=document.documentElement;if(s==='dark'||(s===null&&window.matchMedia('(prefers-color-scheme:dark)').matches)){d.setAttribute('data-theme','dark');}else{d.setAttribute('data-theme','light');}})();`;
+
+function toggleTheme() {
+  if (typeof document === "undefined") return;
+  const element = document.documentElement;
+  const nextTheme =
+    element.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  element.setAttribute("data-theme", nextTheme);
+  if (typeof localStorage !== "undefined") {
+    localStorage.setItem("theme", nextTheme);
+  }
+}
+
+function navItem(link: SiteLink) {
+  return (
+    <li>
+      <SiteAnchor href={link.href}>{link.label}</SiteAnchor>
+    </li>
+  );
+}
+
+export function SiteFrame(props: SiteFrameProps) {
+  return (
+    <>
+      <header>
+        <div class="container topbar">
+          <div class="site-title-group">
+            <SiteAnchor href="/" className="brand" aria-label="Askr documentation home">
+              askr
+            </SiteAnchor>
+            <span class="site-tagline">Onboarding and documentation</span>
+          </div>
+          <nav>
+            <ul>{primaryNav.map(navItem)}</ul>
+          </nav>
+          <Button
+            id="theme-toggle"
+            class="theme-btn"
+            aria-label="Toggle light/dark mode"
+            onPress={toggleTheme}
+          />
+        </div>
+      </header>
+      {props.children}
+
+      <footer>
+        <div class="container site-footer">
+          Documentation-first guidance for installing, learning, and building with askr.
+        </div>
+      </footer>
+    </>
+  );
+}
+
+export function AppShell(props: AppShellProps) {
+  return (
+    <SiteFrame>
+      <main class="container app-main">
+        <section class="hero">
+          <h1>{props.title}</h1>
+          <p>{props.intro}</p>
+          {props.heroChildren}
+        </section>
+        {props.children}
+      </main>
+    </SiteFrame>
+  );
+}
+
+export function DocumentShell(props: DocumentShellProps) {
+  const description = props.meta.description;
+
   return (
     <html lang="en">
       <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>{props.title} | askr</title>
+        <title>{props.meta.title} | askr</title>
+        {description ? <meta name="description" content={description} /> : null}
         <link rel="stylesheet" href="/theme-tokens.css" />
         <link rel="stylesheet" href="/styles.css" />
-        <script dangerouslySetInnerHTML={{ __html: initThemeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body>
-        <header>
-          <div class="container topbar">
-            <a href="/" class="brand">
-              askr<span>ecosystem site</span>
-            </a>
-            <nav>
-              <ul>{primaryNav.map(navItem)}</ul>
-            </nav>
-            <button
-              id="theme-toggle"
-              class="theme-btn"
-              aria-label="Toggle light/dark mode"
-            />
-          </div>
-        </header>
-
-        <main class="container">
-          <section class="hero">
-            <h1>{props.title}</h1>
-            <p>{props.intro}</p>
-            {props.heroChildren}
-          </section>
-          {props.children}
-        </main>
-
-        <footer>
-          <div class="container">Built with askr SSG for GitHub Pages.</div>
-        </footer>
-        <script dangerouslySetInnerHTML={{ __html: toggleScript }} />
+        <div id="app">{props.appHtml}</div>
+        {props.includeClientScript === false ? null : (
+          <script type="module" src="/app.js" />
+        )}
       </body>
     </html>
   );

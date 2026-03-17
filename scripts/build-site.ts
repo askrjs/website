@@ -2,24 +2,9 @@ import { copyFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
+import { createStaticGen } from "@askrjs/askr/ssg";
+
 const root = process.cwd();
-
-function resolveAskrSourcePath() {
-  const candidates = [
-    resolve(root, "../askr/src/ssg/create-static-gen.ts"),
-    resolve(root, "askr/src/ssg/create-static-gen.ts"),
-  ];
-
-  const match = candidates.find((candidate) => existsSync(candidate));
-
-  if (!match) {
-    throw new Error(
-      "Unable to locate askr source. Expected ../askr or ./askr checkout with src/ssg/create-static-gen.ts.",
-    );
-  }
-
-  return match;
-}
 
 function resolveThemeTokensPath() {
   const candidates = [
@@ -38,13 +23,7 @@ async function run() {
   const args = process.argv.slice(2);
   const mode = args.includes("--incremental") ? "incremental" : "full";
 
-  const askrModulePath = resolveAskrSourcePath();
-  const askrModuleUrl = pathToFileURL(askrModulePath).href;
-
-  const [{ createStaticGen }, config] = await Promise.all([
-    import(askrModuleUrl),
-    import(pathToFileURL(resolve(root, "ssg.config.ts")).href),
-  ]);
+  const config = await import(pathToFileURL(resolve(root, "ssg.config.ts")).href);
 
   const generator = createStaticGen({
     routes: config.routes,

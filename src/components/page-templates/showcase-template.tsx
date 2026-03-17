@@ -1,4 +1,4 @@
-﻿import { SiteShell } from "../site-shell";
+import { AppShell } from "../site-shell";
 
 export interface ShowcaseMetric {
   label: string;
@@ -15,7 +15,7 @@ export interface ShowcaseTemplateProps {
 
 export function ShowcaseTemplate(props: ShowcaseTemplateProps) {
   return (
-    <SiteShell title={props.title} intro={props.summary}>
+    <AppShell title={props.title} intro={props.summary}>
       <div class="panel">
         <span class="badge">{props.badge}</span>
         <ul class="toc">
@@ -32,6 +32,6 @@ export function ShowcaseTemplate(props: ShowcaseTemplateProps) {
           ))}
         </div>
       </div>
-    </SiteShell>
+    </AppShell>
   );
 }

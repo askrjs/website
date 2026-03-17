@@ -1,4 +1,6 @@
-﻿export interface HeroChipLink {
+import { SiteAnchor } from "../site-link";
+
+export interface HeroChipLink {
   href: string;
   label: string;
 }
@@ -7,9 +9,9 @@ export function HeroChipRow(props: { links: HeroChipLink[] }) {
   return (
     <div class="hero-chip-row">
       {props.links.map((link) => (
-        <a class="hero-chip" href={link.href}>
+        <SiteAnchor className="hero-chip" href={link.href}>
           {link.label}
-        </a>
+        </SiteAnchor>
       ))}
     </div>
   );
@@ -25,10 +27,10 @@ export function HeroActionGrid(props: { actions: HeroAction[] }) {
   return (
     <div class="hero-actions">
       {props.actions.map((action) => (
-        <a class="hero-action" href={action.href}>
+        <SiteAnchor className="hero-action" href={action.href}>
           <strong>{action.label}</strong>
           <span>{action.cta ?? "Open"}</span>
-        </a>
+        </SiteAnchor>
       ))}
     </div>
   );

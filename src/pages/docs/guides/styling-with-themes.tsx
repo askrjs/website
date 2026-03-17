@@ -1,30 +1,38 @@
-﻿import { DocLayout } from "../../../components/doc-layout";
+import { DocLayout } from "../../../components/doc-layout";
 import type { DocMeta } from "../../../pages/shared/doc-types";
 
 export const meta: DocMeta = {
   slug: "guides/styling-with-themes",
   title: "Styling with Themes",
-  summary: "Use askr-themes tokens and component styles to skin your app.",
+  summary: "Use askr-themes tokens to create a cohesive, maintainable visual system.",
+  section: "Guides",
+  order: 3,
 };
 
 export function StylingWithThemesDocPage() {
   return (
-    <DocLayout title={meta.title} intro={meta.summary}>
+    <DocLayout title={meta.title} intro={meta.summary} meta={meta}>
       <section>
-        <h2>Token Layers</h2>
+        <h2>Token Foundations</h2>
         <p>
-          Define semantic tokens once and consume them in app-level and
-          component-level styles.
+          Start from semantic tokens for color, spacing, typography, and radius
+          so components inherit a coherent language.
         </p>
         <p>
-          Prefer semantic names over hardcoded color literals so themes can
-          evolve safely.
+          Keep local overrides sparse and prefer system-level token changes over
+          component-specific forks.
         </p>
       </section>
       <section>
-        <h2>Dark and Light Modes</h2>
-        <p>Switch mode by toggling a top-level class or data attribute.</p>
-        <p>Audit contrast and focus visibility in both modes before release.</p>
+        <h2>Mode Strategy</h2>
+        <p>
+          Define light and dark values at the token layer and let components
+          consume them without branching.
+        </p>
+        <p>
+          A small theme bootstrap script can prevent color-mode flash before the
+          page paints.
+        </p>
       </section>
     </DocLayout>
   );
