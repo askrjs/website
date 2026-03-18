@@ -540,8 +540,40 @@ footer {
   font-size: var(--ak-font-size-sm);
 }
 
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-col strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--ak-color-fg);
+  font-size: var(--ak-font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.footer-col ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer-col li {
+  margin-bottom: 0.35rem;
+}
+
+.footer-bottom {
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--ak-color-border);
+}
+
 .site-footer a {
   color: var(--ak-color-muted);
+  text-decoration: none;
 }
 
 .site-footer a:hover {

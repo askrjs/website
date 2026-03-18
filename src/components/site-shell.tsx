@@ -55,7 +55,7 @@ export function SiteFrame(props: SiteFrameProps) {
             <SiteAnchor href="/" className="brand" aria-label="Askr documentation home">
               askr
             </SiteAnchor>
-            <span class="site-tagline">Onboarding and documentation</span>
+            <span class="site-tagline">Actor-backed reactive UI</span>
           </div>
           <nav>
             <ul>{primaryNav.map(navItem)}</ul>
@@ -72,7 +72,34 @@ export function SiteFrame(props: SiteFrameProps) {
 
       <footer>
         <div class="container site-footer">
-          Documentation-first guidance for installing, learning, and building with askr.
+          <div class="footer-grid">
+            <div class="footer-col">
+              <strong>Ecosystem</strong>
+              <ul>
+                <li><SiteAnchor href="/showcase/askr">askr</SiteAnchor></li>
+                <li><SiteAnchor href="/showcase/ui">askr-ui</SiteAnchor></li>
+                <li><SiteAnchor href="/showcase/themes">askr-themes</SiteAnchor></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <strong>Resources</strong>
+              <ul>
+                <li><SiteAnchor href="/docs">Documentation</SiteAnchor></li>
+                <li><SiteAnchor href="/docs/getting-started/installation">Get Started</SiteAnchor></li>
+                <li><SiteAnchor href="/docs/guides/ssg-overview">Guides</SiteAnchor></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <strong>Community</strong>
+              <ul>
+                <li><a href="https://github.com/nickrepa/askr" target="_blank" rel="noopener">GitHub</a></li>
+                <li><a href="https://www.npmjs.com/package/@askrjs/askr" target="_blank" rel="noopener">npm</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            Apache-2.0 License &middot; Built with askr, askr-ui, and askr-themes.
+          </div>
         </div>
       </footer>
     </>
