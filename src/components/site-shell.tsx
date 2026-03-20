@@ -51,21 +51,29 @@ export function SiteFrame(props: SiteFrameProps) {
     <>
       <header>
         <div class="container topbar">
-          <div class="site-title-group">
-            <SiteAnchor href="/" className="brand" aria-label="Askr documentation home">
-              askr
-            </SiteAnchor>
-            <span class="site-tagline">Actor-backed reactive UI</span>
-          </div>
+          <SiteAnchor href="/" className="brand" aria-label="Askr home">
+            askr
+          </SiteAnchor>
           <nav>
             <ul>{primaryNav.map(navItem)}</ul>
           </nav>
-          <Button
-            id="theme-toggle"
-            class="theme-btn"
-            aria-label="Toggle light/dark mode"
-            onPress={toggleTheme}
-          />
+          <div class="header-actions">
+            <a
+              href="https://github.com/nickrepa/askr"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="header-github"
+              aria-label="View on GitHub"
+            >
+              GitHub
+            </a>
+            <Button
+              id="theme-toggle"
+              class="theme-btn"
+              aria-label="Toggle light/dark mode"
+              onPress={toggleTheme}
+            />
+          </div>
         </div>
       </header>
       {props.children}
@@ -76,13 +84,21 @@ export function SiteFrame(props: SiteFrameProps) {
             <div class="footer-col">
               <strong>Ecosystem</strong>
               <ul>
-                <li><SiteAnchor href="/showcase/askr">askr</SiteAnchor></li>
-                <li><SiteAnchor href="/showcase/ui">askr-ui</SiteAnchor></li>
-                <li><SiteAnchor href="/showcase/themes">askr-themes</SiteAnchor></li>
+                <li><SiteAnchor href="/framework">Framework</SiteAnchor></li>
+                <li><SiteAnchor href="/ui">UI</SiteAnchor></li>
+                <li><SiteAnchor href="/themes">Themes</SiteAnchor></li>
               </ul>
             </div>
             <div class="footer-col">
-              <strong>Resources</strong>
+              <strong>Reference</strong>
+              <ul>
+                <li><SiteAnchor href="/showcase/askr">Runtime</SiteAnchor></li>
+                <li><SiteAnchor href="/showcase/ui">Components</SiteAnchor></li>
+                <li><SiteAnchor href="/showcase/themes">Theme tokens</SiteAnchor></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <strong>Docs</strong>
               <ul>
                 <li><SiteAnchor href="/docs">Documentation</SiteAnchor></li>
                 <li><SiteAnchor href="/docs/getting-started/installation">Get Started</SiteAnchor></li>

@@ -9,9 +9,12 @@ import type {
 import { DocumentShell } from "../components/site-shell";
 import { AskrPage } from "./askr";
 import { DocsIndexPage } from "./docs";
+import { FrameworkPage } from "./framework";
 import { HomePage } from "./home";
 import { ThemesPage } from "./themes";
+import { ThemesLandingPage } from "./themes-landing";
 import { UiPage } from "./ui";
+import { UiLandingPage } from "./ui-landing";
 import { uiComponentRoutes } from "./ui/components/routes";
 import { docRegistry } from "./shared/doc-registry";
 
@@ -83,6 +86,30 @@ const staticRoutes: WebsiteRoute[] = [
     getDocumentMeta: () => ({
       title: "Theme Reference",
       description: "Reference material for tokens, color modes, and theme application.",
+    }),
+  },
+  {
+    path: "/framework",
+    render: FrameworkPage,
+    getDocumentMeta: () => ({
+      title: "Framework",
+      description: "Fine-grained reactive framework with zero virtual DOM. Powered by actors.",
+    }),
+  },
+  {
+    path: "/ui",
+    render: UiLandingPage,
+    getDocumentMeta: () => ({
+      title: "UI Components",
+      description: "36+ headless, accessible UI components for askr. Styled by you.",
+    }),
+  },
+  {
+    path: "/themes",
+    render: ThemesLandingPage,
+    getDocumentMeta: () => ({
+      title: "Themes",
+      description: "Token-driven CSS theming with light, dark, and custom theme support.",
     }),
   },
   {

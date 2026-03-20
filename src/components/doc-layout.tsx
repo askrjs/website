@@ -2,7 +2,7 @@ import { route } from "@askrjs/askr/router";
 import { Separator } from "@askrjs/askr-ui/separator";
 
 import type { Props } from "../types/props";
-import type { DocMeta } from "../pages/shared/doc-types";
+import type { DocMeta, TocEntry } from "../pages/shared/doc-types";
 import {
   docsNavSections,
   findDocsNavItemBySlug,
@@ -44,6 +44,25 @@ function renderSidebarSection(section: DocsNavSection, currentPath: string) {
   );
 }
 
+function TocSidebar(props: { toc: TocEntry[] }) {
+  return (
+    <aside class="docs-toc">
+      <div class="docs-toc-inner">
+        <p class="docs-toc-heading">On this page</p>
+        <ul class="docs-toc-list">
+          {props.toc.map((entry) => (
+            <li>
+              <a href={`#${entry.id}`} class="docs-toc-link">
+                {entry.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </aside>
+  );
+}
+
 export function DocLayout(props: DocLayoutProps) {
   const currentRoute = route();
   const currentPath = currentRoute.path;
@@ -51,10 +70,13 @@ export function DocLayout(props: DocLayoutProps) {
     ? findDocsNavItemBySlug(props.meta.slug)
     : null;
 
+  const toc = props.meta?.toc;
+  const hasToc = toc && toc.length > 0;
+
   return (
     <SiteFrame>
       <div class="container docs-page">
-        <div class="docs-shell">
+        <div class={hasToc ? "docs-shell has-toc" : "docs-shell"}>
           <aside class="docs-sidebar">
             <div class="docs-sidebar-inner">
               <SiteAnchor href="/docs" className="docs-sidebar-home">
@@ -79,7 +101,7 @@ export function DocLayout(props: DocLayoutProps) {
                   </span>
                   {currentItem ? (
                     <SiteAnchor href="/docs" className="docs-header-back">
-                      Docs index
+                      ← Docs
                     </SiteAnchor>
                   ) : null}
                 </div>
@@ -91,6 +113,8 @@ export function DocLayout(props: DocLayoutProps) {
               <article class="docs-article">{props.children}</article>
             </div>
           </main>
+
+          {hasToc ? <TocSidebar toc={toc} /> : null}
         </div>
       </div>
     </SiteFrame>

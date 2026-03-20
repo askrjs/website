@@ -20,10 +20,10 @@
   },
   "dependencies": {
     "@askrjs/askr": "file:../askr",
-    "@askrjs/askr-themes": "file:../askr-themes",
-    "@askrjs/askr-ui": "file:../askr-ui",
+    "@askrjs/askr-themes": "github:askrjs/askr-themes",
+    "@askrjs/askr-ui": "github:askrjs/askr-ui",
     "esbuild": "^0.27.4",
-    "vite": "^8.0.0"
+    "vite": "^8.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

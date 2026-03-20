@@ -7,13 +7,17 @@ export const meta: DocMeta = {
   summary: "Build your first page with state, routing, and themed UI.",
   section: "Getting Started",
   order: 2,
+  toc: [
+    { id: "first-island", label: "First Island" },
+    { id: "add-ui-and-theme", label: "Add UI and Theme" },
+  ],
 };
 
 export function QuickStartDocPage() {
   return (
     <DocLayout title={meta.title} intro={meta.summary} meta={meta}>
       <section>
-        <h2>First Island</h2>
+        <h2 id="first-island">First Island</h2>
         <p>
           Define a component with state() and render it using createIsland().
         </p>
@@ -23,7 +27,7 @@ export function QuickStartDocPage() {
         </p>
       </section>
       <section>
-        <h2>Add UI and Theme</h2>
+        <h2 id="add-ui-and-theme">Add UI and Theme</h2>
         <p>
           Import a small set of askr-ui components and apply askr-themes CSS at
           the app shell level.

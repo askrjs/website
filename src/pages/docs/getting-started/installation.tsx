@@ -7,13 +7,17 @@ export const meta: DocMeta = {
   summary: "Install askr, askr-ui, and askr-themes into your app.",
   section: "Getting Started",
   order: 1,
+  toc: [
+    { id: "project-setup", label: "Project Setup" },
+    { id: "recommended-baseline", label: "Recommended Baseline" },
+  ],
 };
 
 export function InstallationDocPage() {
   return (
     <DocLayout title={meta.title} intro={meta.summary} meta={meta}>
       <section>
-        <h2>Project Setup</h2>
+        <h2 id="project-setup">Project Setup</h2>
         <p>
           Create a new app with your preferred toolchain and enable ESM output.
         </p>
@@ -27,7 +31,7 @@ export function InstallationDocPage() {
         </p>
       </section>
       <section>
-        <h2>Recommended Baseline</h2>
+        <h2 id="recommended-baseline">Recommended Baseline</h2>
         <p>
           Start with a tiny route graph and one interactive island so rendering
           and hydration are easy to validate.

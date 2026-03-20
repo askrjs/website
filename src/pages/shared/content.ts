@@ -31,9 +31,9 @@ export interface DocsNavSection {
 
 export const primaryNav: SiteLink[] = [
   { href: "/docs", label: "Docs" },
-  { href: "/docs/getting-started/installation", label: "Get Started" },
-  { href: "/docs/guides/ssg-overview", label: "Guides" },
-  { href: "/showcase/ui", label: "Reference" },
+  { href: "/framework", label: "Framework" },
+  { href: "/ui", label: "UI" },
+  { href: "/themes", label: "Themes" },
 ];
 
 export const docsPages: DocMeta[] = docRegistry.map((entry) => entry.meta);

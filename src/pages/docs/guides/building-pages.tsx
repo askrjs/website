@@ -7,13 +7,17 @@ export const meta: DocMeta = {
   summary: "Author pages, reuse templates, and organize your website routes.",
   section: "Guides",
   order: 2,
+  toc: [
+    { id: "page-composition", label: "Page Composition" },
+    { id: "route-registration", label: "Route Registration" },
+  ],
 };
 
 export function BuildingPagesDocPage() {
   return (
     <DocLayout title={meta.title} intro={meta.summary} meta={meta}>
       <section>
-        <h2>Page Composition</h2>
+        <h2 id="page-composition">Page Composition</h2>
         <p>
           Build each page from small view primitives and keep content modeling
           separate from shell composition.
@@ -24,7 +28,7 @@ export function BuildingPagesDocPage() {
         </p>
       </section>
       <section>
-        <h2>Route Registration</h2>
+        <h2 id="route-registration">Route Registration</h2>
         <p>
           Register each static path in ssg.config.ts using RouteConfig entries.
         </p>

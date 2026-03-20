@@ -7,13 +7,17 @@ export const meta: DocMeta = {
   summary: "Understand the static generation flow, output structure, and deployment model.",
   section: "Guides",
   order: 1,
+  toc: [
+    { id: "static-build-flow", label: "Static Build Flow" },
+    { id: "deployment-shape", label: "Deployment Shape" },
+  ],
 };
 
 export function SsgOverviewDocPage() {
   return (
     <DocLayout title={meta.title} intro={meta.summary} meta={meta}>
       <section>
-        <h2>Static Build Flow</h2>
+        <h2 id="static-build-flow">Static Build Flow</h2>
         <p>
           Askr can render your route table into deterministic HTML at build
           time and emit output that works on static hosting platforms.
@@ -24,7 +28,7 @@ export function SsgOverviewDocPage() {
         </p>
       </section>
       <section>
-        <h2>Deployment Shape</h2>
+        <h2 id="deployment-shape">Deployment Shape</h2>
         <p>
           Each route becomes an index.html file inside a folder structure that
           mirrors the URL path.
