@@ -6,8 +6,8 @@ import {
   DialogTitle,
   DialogDescription,
   DialogClose,
-} from "@askrjs/askr-ui/dialog";
-import { Button } from "@askrjs/askr-ui/button";
+} from "@askrjs/askr-ui/composites/dialog";
+import { Button } from "@askrjs/askr-ui/primitives/button";
 
 export function DialogDemo() {
   return (

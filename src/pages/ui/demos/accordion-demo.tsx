@@ -4,7 +4,7 @@ import {
   AccordionHeader,
   AccordionTrigger,
   AccordionContent,
-} from "@askrjs/askr-ui/accordion";
+} from "@askrjs/askr-ui/composites/accordion";
 
 export function AccordionDemo() {
   return (

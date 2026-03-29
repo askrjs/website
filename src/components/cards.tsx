@@ -1,5 +1,5 @@
 import type { SiteLink } from "../pages/shared/content";
-import { Badge } from "@askrjs/askr-ui/badge";
+import { Badge } from "@askrjs/askr-ui/primitives/badge";
 import { SiteAnchor } from "./site-link";
 
 export function LinkCard(props: SiteLink) {

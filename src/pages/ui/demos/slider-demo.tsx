@@ -1,5 +1,5 @@
 import { state } from "@askrjs/askr";
-import { Slider, SliderTrack, SliderRange, SliderThumb } from "@askrjs/askr-ui/slider";
+import { Slider, SliderTrack, SliderRange, SliderThumb } from "@askrjs/askr-ui/primitives/slider";
 
 export function SliderDemo() {
   const value = state(50);

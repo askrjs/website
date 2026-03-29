@@ -1,5 +1,5 @@
 import { state } from "@askrjs/askr";
-import { Button } from "@askrjs/askr-ui/button";
+import { Button } from "@askrjs/askr-ui/primitives/button";
 
 export function ButtonDemo() {
   const clicks = state(0);
