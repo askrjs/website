@@ -1,5 +1,5 @@
 import { DocLayout } from "../../components/doc-layout";
-import { Badge } from "@askrjs/askr-ui/badge";
+import { Badge } from "@askrjs/askr-ui/primitives/badge";
 import {
   docsFeatured,
   docsNavSections,

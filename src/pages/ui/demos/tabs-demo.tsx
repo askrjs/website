@@ -1,4 +1,4 @@
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@askrjs/askr-ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@askrjs/askr-ui/composites/tabs";
 
 export function TabsDemo() {
   return (

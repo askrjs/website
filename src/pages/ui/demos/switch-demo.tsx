@@ -1,5 +1,5 @@
 import { state, derive } from "@askrjs/askr";
-import { Switch } from "@askrjs/askr-ui/switch";
+import { Switch } from "@askrjs/askr-ui/primitives/switch";
 
 export function SwitchDemo() {
   const on = state(false);

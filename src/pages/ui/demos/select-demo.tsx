@@ -6,7 +6,7 @@ import {
   SelectContent,
   SelectItem,
   SelectItemText,
-} from "@askrjs/askr-ui/select";
+} from "@askrjs/askr-ui/primitives/select";
 
 export function SelectDemo() {
   const value = state("");

@@ -1,5 +1,5 @@
 import type { Props } from "../types/props";
-import { Button } from "@askrjs/askr-ui/button";
+import { Button } from "@askrjs/askr-ui/primitives/button";
 import { primaryNav, type SiteLink } from "../pages/shared/content";
 import { SiteAnchor } from "./site-link";
 

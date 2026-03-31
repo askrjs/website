@@ -1,5 +1,5 @@
 import { route } from "@askrjs/askr/router";
-import { Separator } from "@askrjs/askr-ui/separator";
+import { Separator } from "@askrjs/askr-ui/primitives/separator";
 
 import type { Props } from "../types/props";
 import type { DocMeta, TocEntry } from "../pages/shared/doc-types";

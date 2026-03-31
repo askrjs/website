@@ -1,5 +1,5 @@
 import { state } from "@askrjs/askr";
-import { RadioGroup, RadioGroupItem } from "@askrjs/askr-ui/radio-group";
+import { RadioGroup, RadioGroupItem } from "@askrjs/askr-ui/primitives/radio-group";
 
 export function RadioGroupDemo() {
   const selected = state("spa");

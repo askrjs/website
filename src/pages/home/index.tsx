@@ -1,6 +1,6 @@
 import { state } from "@askrjs/askr";
-import { Button } from "@askrjs/askr-ui/button";
-import { Badge } from "@askrjs/askr-ui/badge";
+import { Button } from "@askrjs/askr-ui/primitives/button";
+import { Badge } from "@askrjs/askr-ui/primitives/badge";
 import {
   CatalogSection,
   HeroActionGrid,
