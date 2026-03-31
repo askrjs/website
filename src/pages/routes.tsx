@@ -19,12 +19,10 @@ import { uiComponentRoutes } from "./ui/components/routes";
 import { docRegistry } from "./shared/doc-registry";
 
 function createDocumentRoute(route: WebsiteRoute) {
-  const RouteView = route.render as (props: Record<string, unknown>) => any;
-
   return (props: Record<string, unknown>) => (
     <DocumentShell
       meta={resolveDocumentMeta(route, props)}
-      appHtml={<RouteView {...props} />}
+      appHtml={route.render(props)}
     />
   );
 }
