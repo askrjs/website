@@ -19,9 +19,9 @@
     "start": "npm run build && npx serve dist -l 4173"
   },
   "dependencies": {
-    "@askrjs/askr": "github:askrjs/askr",
-    "@askrjs/askr-themes": "github:askrjs/askr-themes",
-    "@askrjs/askr-ui": "github:askrjs/askr-ui",
+    "@askrjs/askr": "file:../askr",
+    "@askrjs/askr-themes": "file:../askr-themes",
+    "@askrjs/askr-ui": "file:../askr-ui",
     "esbuild": "^0.27.4",
     "vite": "^8.0.1"
   },
