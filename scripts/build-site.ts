@@ -9,10 +9,7 @@ const root = process.cwd();
 function resolveThemeTokensPath() {
   const candidates = [
     resolve(root, "../askr-themes/src/themes/default/tokens.css"),
-    resolve(
-      root,
-      "node_modules/@askrjs/askr-themes/src/themes/default/tokens.css",
-    ),
+    resolve(root, "node_modules/@askrjs/askr-themes/src/themes/default/tokens.css"),
   ];
   const match = candidates.find((candidate) => existsSync(candidate));
   if (!match) throw new Error("Unable to locate askr-themes tokens.css.");
@@ -34,14 +31,8 @@ async function run() {
 
   await generator.generate({ mode });
 
-  copyFileSync(
-    resolve(root, "src/styles.css"),
-    resolve(root, "dist/styles.css"),
-  );
-  copyFileSync(
-    resolveThemeTokensPath(),
-    resolve(root, "dist/theme-tokens.css"),
-  );
+  copyFileSync(resolve(root, "src/styles.css"), resolve(root, "dist/styles.css"));
+  copyFileSync(resolveThemeTokensPath(), resolve(root, "dist/theme-tokens.css"));
 }
 
 run().catch((error: unknown) => {

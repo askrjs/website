@@ -89,11 +89,5 @@ export function UiComponentDetailPage(props: { meta: UiComponentMeta }) {
     },
   );
 
-  return (
-    <DetailTemplate
-      title={model.title}
-      intro={model.intro}
-      sections={sections}
-    />
-  );
+  return <DetailTemplate title={model.title} intro={model.intro} sections={sections} />;
 }

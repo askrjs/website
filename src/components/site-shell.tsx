@@ -30,8 +30,7 @@ export const themeInitScript = `(function(){var s=localStorage.getItem('theme'),
 function toggleTheme() {
   if (typeof document === "undefined") return;
   const element = document.documentElement;
-  const nextTheme =
-    element.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  const nextTheme = element.getAttribute("data-theme") === "dark" ? "light" : "dark";
   element.setAttribute("data-theme", nextTheme);
   if (typeof localStorage !== "undefined") {
     localStorage.setItem("theme", nextTheme);
@@ -84,32 +83,62 @@ export function SiteFrame(props: SiteFrameProps) {
             <div class="footer-col">
               <strong>Ecosystem</strong>
               <ul>
-                <li><SiteAnchor href="/framework">Framework</SiteAnchor></li>
-                <li><SiteAnchor href="/ui">UI</SiteAnchor></li>
-                <li><SiteAnchor href="/themes">Themes</SiteAnchor></li>
+                <li>
+                  <SiteAnchor href="/framework">Framework</SiteAnchor>
+                </li>
+                <li>
+                  <SiteAnchor href="/ui">UI</SiteAnchor>
+                </li>
+                <li>
+                  <SiteAnchor href="/themes">Themes</SiteAnchor>
+                </li>
               </ul>
             </div>
             <div class="footer-col">
               <strong>Reference</strong>
               <ul>
-                <li><SiteAnchor href="/showcase/askr">Runtime</SiteAnchor></li>
-                <li><SiteAnchor href="/showcase/ui">Components</SiteAnchor></li>
-                <li><SiteAnchor href="/showcase/themes">Theme tokens</SiteAnchor></li>
+                <li>
+                  <SiteAnchor href="/showcase/askr">Runtime</SiteAnchor>
+                </li>
+                <li>
+                  <SiteAnchor href="/showcase/ui">Components</SiteAnchor>
+                </li>
+                <li>
+                  <SiteAnchor href="/showcase/themes">Theme tokens</SiteAnchor>
+                </li>
               </ul>
             </div>
             <div class="footer-col">
               <strong>Docs</strong>
               <ul>
-                <li><SiteAnchor href="/docs">Documentation</SiteAnchor></li>
-                <li><SiteAnchor href="/docs/getting-started/installation">Get Started</SiteAnchor></li>
-                <li><SiteAnchor href="/docs/guides/ssg-overview">Guides</SiteAnchor></li>
+                <li>
+                  <SiteAnchor href="/docs">Documentation</SiteAnchor>
+                </li>
+                <li>
+                  <SiteAnchor href="/docs/getting-started/installation">Get Started</SiteAnchor>
+                </li>
+                <li>
+                  <SiteAnchor href="/docs/guides/ssg-overview">Guides</SiteAnchor>
+                </li>
               </ul>
             </div>
             <div class="footer-col">
               <strong>Community</strong>
               <ul>
-                <li><a href="https://github.com/nickrepa/askr" target="_blank" rel="noopener">GitHub</a></li>
-                <li><a href="https://www.npmjs.com/package/@askrjs/askr" target="_blank" rel="noopener">npm</a></li>
+                <li>
+                  <a href="https://github.com/nickrepa/askr" target="_blank" rel="noopener">
+                    GitHub
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.npmjs.com/package/@askrjs/askr"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    npm
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
@@ -153,9 +182,7 @@ export function DocumentShell(props: DocumentShellProps) {
       </head>
       <body>
         <div id="app">{props.appHtml}</div>
-        {props.includeClientScript === false ? null : (
-          <script type="module" src="/app.js" />
-        )}
+        {props.includeClientScript === false ? null : <script type="module" src="/app.js" />}
       </body>
     </html>
   );

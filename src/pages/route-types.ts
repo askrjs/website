@@ -9,9 +9,7 @@ export interface WebsiteDocumentMeta {
 export interface WebsiteRoute {
   path: string;
   render: (props: Record<string, unknown>) => unknown;
-  getDocumentMeta?: (
-    props: Record<string, unknown>,
-  ) => WebsiteDocumentMeta | undefined;
+  getDocumentMeta?: (props: Record<string, unknown>) => WebsiteDocumentMeta | undefined;
   params?: Record<string, string>;
   namespace?: string;
   invalidationKeys?: string[];

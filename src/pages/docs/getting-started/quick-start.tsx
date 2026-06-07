@@ -18,24 +18,17 @@ export function QuickStartDocPage() {
     <DocLayout title={meta.title} intro={meta.summary} meta={meta}>
       <section>
         <h2 id="first-island">First Island</h2>
+        <p>Define a component with state() and render it using createIsland().</p>
         <p>
-          Define a component with state() and render it using createIsland().
-        </p>
-        <p>
-          Keep event handlers pure and push async work into resource() so
-          cancellation is automatic.
+          Keep event handlers pure and push async work into resource() so cancellation is automatic.
         </p>
       </section>
       <section>
         <h2 id="add-ui-and-theme">Add UI and Theme</h2>
         <p>
-          Import a small set of askr-ui components and apply askr-themes CSS at
-          the app shell level.
+          Import a small set of askr-ui components and apply askr-themes CSS at the app shell level.
         </p>
-        <p>
-          Use token variables to tune spacing and color without forking
-          component logic.
-        </p>
+        <p>Use token variables to tune spacing and color without forking component logic.</p>
       </section>
     </DocLayout>
   );

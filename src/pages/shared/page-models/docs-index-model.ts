@@ -27,8 +27,7 @@ export function createDocsIndexModel() {
 
   return {
     title: "Documentation",
-    intro:
-      "Website-owned docs for learning, implementation, and deployment workflows.",
+    intro: "Website-owned docs for learning, implementation, and deployment workflows.",
     jumpLinks,
     featuredSection,
     groupedSections,

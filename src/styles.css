@@ -184,7 +184,9 @@ nav li a[aria-current="page"] {
   color: inherit;
   text-decoration: none;
   border-radius: var(--ak-radius-md);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
   min-width: 180px;
 }
 
@@ -410,7 +412,9 @@ nav li a[aria-current="page"] {
   font-size: 0.82rem;
   color: var(--ak-color-fg);
   text-decoration: none;
-  transition: border-color 0.15s, background 0.15s;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
 }
 
 .component-badge:hover {
@@ -510,7 +514,10 @@ nav li a[aria-current="page"] {
   border: 1px solid var(--ak-color-border);
   background: var(--ak-color-surface);
   border-radius: var(--ak-radius-lg);
-  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.15s;
   text-decoration: none;
   color: inherit;
 }
@@ -820,7 +827,9 @@ footer {
   cursor: pointer;
   border-radius: var(--ak-radius-sm);
   font-size: 0.85rem;
-  transition: border-color 0.15s, color 0.15s;
+  transition:
+    border-color 0.15s,
+    color 0.15s;
 }
 
 .theme-btn:hover {
@@ -919,7 +928,9 @@ footer {
   color: var(--ak-color-muted);
   text-decoration: none;
   font-size: 0.875rem;
-  transition: color 0.15s, border-color 0.15s;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
 }
 
 .docs-nav-link:hover {

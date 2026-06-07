@@ -63,9 +63,7 @@ function groupDocsPages() {
     id: toSectionId(title),
     title,
     description: `Focused ${title.toLowerCase()} material for the askr ecosystem.`,
-    items: items.sort(
-      (a, b) => a.order - b.order || a.label.localeCompare(b.label),
-    ),
+    items: items.sort((a, b) => a.order - b.order || a.label.localeCompare(b.label)),
   }));
 }
 
@@ -115,8 +113,7 @@ export const onboardingTracks: LinkSection[] = [
       {
         href: "/docs/getting-started/quick-start",
         label: "Build your first page",
-        description:
-          "Create an initial component, wire state, and render the first usable view.",
+        description: "Create an initial component, wire state, and render the first usable view.",
         badge: "Step 2",
         meta: "Quick start",
         cta: "Open quick start",
@@ -124,8 +121,7 @@ export const onboardingTracks: LinkSection[] = [
       {
         href: "/docs/guides/building-pages",
         label: "Organize routes and pages",
-        description:
-          "Move from a first page to a coherent route and page structure.",
+        description: "Move from a first page to a coherent route and page structure.",
         badge: "Step 3",
         meta: "Architecture",
         cta: "Read building pages",
@@ -134,14 +130,12 @@ export const onboardingTracks: LinkSection[] = [
   },
   {
     title: "Core Guides",
-    description:
-      "Use these guides when you are deciding how to render, style, and ship the site.",
+    description: "Use these guides when you are deciding how to render, style, and ship the site.",
     links: [
       {
         href: "/docs/guides/ssg-overview",
         label: "Choose a rendering mode",
-        description:
-          "Understand SPA, SSR, and SSG tradeoffs and how the site is deployed.",
+        description: "Understand SPA, SSR, and SSG tradeoffs and how the site is deployed.",
         badge: "Guide",
         meta: "Rendering",
         cta: "Read SSG overview",
@@ -149,8 +143,7 @@ export const onboardingTracks: LinkSection[] = [
       {
         href: "/docs/guides/styling-with-themes",
         label: "Apply the default theme",
-        description:
-          "Use theme tokens to keep the visual system consistent as the site grows.",
+        description: "Use theme tokens to keep the visual system consistent as the site grows.",
         badge: "Guide",
         meta: "Styling",
         cta: "Read theme guide",
@@ -180,8 +173,7 @@ export const referenceBands: LinkSection[] = [
         badge: "Reference",
         meta: "Component catalog",
         cta: "Browse UI reference",
-        description:
-          "Component pages and usage notes for the available headless UI primitives.",
+        description: "Component pages and usage notes for the available headless UI primitives.",
       },
       {
         href: "/showcase/themes",
@@ -189,21 +181,18 @@ export const referenceBands: LinkSection[] = [
         badge: "Reference",
         meta: "Tokens · light/dark",
         cta: "Inspect theme reference",
-        description:
-          "Theme tokens, mode defaults, and styling guidance for consistent interfaces.",
+        description: "Theme tokens, mode defaults, and styling guidance for consistent interfaces.",
       },
     ],
   },
   {
     title: "Common Next Steps",
-    description:
-      "After the first page is running, these are the usual places developers go next.",
+    description: "After the first page is running, these are the usual places developers go next.",
     links: [
       {
         href: "/docs",
         label: "Browse the docs index",
-        description:
-          "Scan the available guides and move directly into the next relevant section.",
+        description: "Scan the available guides and move directly into the next relevant section.",
         badge: "Docs",
         meta: "Overview",
         cta: "Open docs index",
@@ -220,8 +209,7 @@ export const referenceBands: LinkSection[] = [
       {
         href: "/docs/guides/styling-with-themes",
         label: "Standardize styling",
-        description:
-          "Move the site onto theme tokens before design drift starts to spread.",
+        description: "Move the site onto theme tokens before design drift starts to spread.",
         badge: "Guide",
         meta: "Themes",
         cta: "Read styling guide",

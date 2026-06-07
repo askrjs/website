@@ -43,10 +43,14 @@ export function UiLandingPage() {
         <div class="container">
           <div class="landing-hero">
             <span class="landing-hero-badge">askr-ui</span>
-            <h1>36+ headless UI components.<br />Fully accessible.</h1>
+            <h1>
+              36+ headless UI components.
+              <br />
+              Fully accessible.
+            </h1>
             <p>
-              askr-ui gives you keyboard-navigable, ARIA-compliant primitives
-              — styled by you, powered by askr's fine-grained reactivity.
+              askr-ui gives you keyboard-navigable, ARIA-compliant primitives — styled by you,
+              powered by askr's fine-grained reactivity.
             </p>
             <div class="landing-hero-ctas">
               <SiteAnchor href="/showcase/ui" className="cta-primary">
@@ -81,10 +85,7 @@ export function UiLandingPage() {
           >
             <div class="component-badge-grid">
               {uiComponents.map((c) => (
-                <SiteAnchor
-                  href={`/showcase/ui/${c.slug}`}
-                  className="component-badge"
-                >
+                <SiteAnchor href={`/showcase/ui/${c.slug}`} className="component-badge">
                   {c.title}
                 </SiteAnchor>
               ))}

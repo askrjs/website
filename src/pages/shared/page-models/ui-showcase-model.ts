@@ -6,8 +6,7 @@ export function createUiShowcaseModel() {
 
   return {
     title: "Askr UI Showcase",
-    intro:
-      "Component catalog with placeholder detail pages for the full public askr-ui surface.",
+    intro: "Component catalog with placeholder detail pages for the full public askr-ui surface.",
     jumpLinks: groups.map((group) => ({
       href: `#${toAnchorId(group.title)}`,
       label: group.title,

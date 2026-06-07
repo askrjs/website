@@ -57,11 +57,14 @@ export function ThemesLandingPage() {
         <div class="container">
           <div class="landing-hero">
             <span class="landing-hero-badge">askr-themes</span>
-            <h1>Token-driven theming.<br />Light, dark, and beyond.</h1>
+            <h1>
+              Token-driven theming.
+              <br />
+              Light, dark, and beyond.
+            </h1>
             <p>
-              askr-themes uses CSS custom properties and data-slot selectors.
-              Apply a complete visual system with one HTML attribute — zero
-              JavaScript required.
+              askr-themes uses CSS custom properties and data-slot selectors. Apply a complete
+              visual system with one HTML attribute — zero JavaScript required.
             </p>
             <div class="landing-hero-ctas">
               <SiteAnchor href="/showcase/themes" className="cta-primary">
@@ -97,10 +100,7 @@ export function ThemesLandingPage() {
             <div class="token-preview-grid">
               {swatches.map((s) => (
                 <div class="token-swatch">
-                  <div
-                    class="token-swatch-color"
-                    style={`background: ${s.cssVar};`}
-                  />
+                  <div class="token-swatch-color" style={`background: ${s.cssVar};`} />
                   <span>{s.name}</span>
                   <code>{s.label}</code>
                 </div>

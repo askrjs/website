@@ -18,13 +18,11 @@ function HomeDemo() {
     <div class="home-demo">
       <h2>Reactivity in action</h2>
       <p>
-        Fine-grained updates with <code>state()</code> — no virtual DOM, no
-        re-renders. Click to see it work.
+        Fine-grained updates with <code>state()</code> — no virtual DOM, no re-renders. Click to see
+        it work.
       </p>
       <div class="home-demo-counter">
-        <Button onPress={() => count.set((v) => Math.max(0, v - 1))}>
-          -
-        </Button>
+        <Button onPress={() => count.set((v) => Math.max(0, v - 1))}>-</Button>
         <span class="home-demo-value">{count}</span>
         <Button onPress={() => count.set((v) => v + 1)}>+</Button>
       </div>

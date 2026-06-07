@@ -2,8 +2,8 @@
   "name": "@askrjs/website",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "description": "Askr framework website and docs",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "npm run build:client && npm run build:ssg && npm run build:ssr",

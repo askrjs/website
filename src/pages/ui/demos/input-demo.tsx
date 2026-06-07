@@ -11,13 +11,9 @@ export function InputDemo() {
         <Input
           placeholder="Type something…"
           value={value()}
-          onInput={(e: Event) =>
-            value.set((e.target as HTMLInputElement).value)
-          }
+          onInput={(e: Event) => value.set((e.target as HTMLInputElement).value)}
         />
-        <div class="demo-output">
-          Value: {value}
-        </div>
+        <div class="demo-output">Value: {value}</div>
       </div>
     </div>
   );

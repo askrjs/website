@@ -3,10 +3,7 @@ import { createSPA, hydrateSPA } from "@askrjs/askr";
 import { getSpaRoutes } from "./pages/routes";
 
 if (import.meta.env.DEV) {
-  await Promise.all([
-    import("./styles.css"),
-    import("@askrjs/askr-themes/default/tokens.css"),
-  ]);
+  await Promise.all([import("./styles.css"), import("@askrjs/askr-themes/default/tokens.css")]);
 }
 
 async function boot() {

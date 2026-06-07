@@ -18,27 +18,20 @@ export function InstallationDocPage() {
     <DocLayout title={meta.title} intro={meta.summary} meta={meta}>
       <section>
         <h2 id="project-setup">Project Setup</h2>
+        <p>Create a new app with your preferred toolchain and enable ESM output.</p>
         <p>
-          Create a new app with your preferred toolchain and enable ESM output.
+          Install @askrjs/askr for runtime primitives, @askrjs/askr-ui for headless components, and
+          @askrjs/askr-themes for CSS theme tokens.
         </p>
-        <p>
-          Install @askrjs/askr for runtime primitives, @askrjs/askr-ui for
-          headless components, and @askrjs/askr-themes for CSS theme tokens.
-        </p>
-        <p>
-          Use one package manager across your workspace to keep lockfiles
-          consistent.
-        </p>
+        <p>Use one package manager across your workspace to keep lockfiles consistent.</p>
       </section>
       <section>
         <h2 id="recommended-baseline">Recommended Baseline</h2>
         <p>
-          Start with a tiny route graph and one interactive island so rendering
-          and hydration are easy to validate.
+          Start with a tiny route graph and one interactive island so rendering and hydration are
+          easy to validate.
         </p>
-        <p>
-          Add a CI check that runs typecheck and static generation before merge.
-        </p>
+        <p>Add a CI check that runs typecheck and static generation before merge.</p>
       </section>
     </DocLayout>
   );

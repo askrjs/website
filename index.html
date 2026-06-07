@@ -11,8 +11,7 @@
           d = document.documentElement;
         if (
           s === "dark" ||
-          (s === null &&
-            window.matchMedia("(prefers-color-scheme:dark)").matches)
+          (s === null && window.matchMedia("(prefers-color-scheme:dark)").matches)
         ) {
           d.setAttribute("data-theme", "dark");
         } else {

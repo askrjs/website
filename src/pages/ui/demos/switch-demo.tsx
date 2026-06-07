@@ -9,10 +9,7 @@ export function SwitchDemo() {
     <div class="demo-area">
       <h4>Live Demo</h4>
       <div class="demo-row">
-        <Switch
-          checked={on()}
-          onCheckedChange={(v: boolean) => on.set(v)}
-        />
+        <Switch checked={on()} onCheckedChange={(v: boolean) => on.set(v)} />
         <span>{label}</span>
       </div>
     </div>

@@ -20,9 +20,4 @@ export {
 
 export { CodeSnippetBlock } from "./snippet";
 
-export {
-  PageSection,
-  SectionHead,
-  type PageSectionProps,
-  type SectionHeadProps,
-} from "./section";
+export { PageSection, SectionHead, type PageSectionProps, type SectionHeadProps } from "./section";

@@ -12,10 +12,7 @@ import {
   type UiComponentSeed,
 } from "./ui-components/types";
 
-function withCategory(
-  category: string,
-  seeds: UiComponentSeed[],
-): UiComponentMeta[] {
+function withCategory(category: string, seeds: UiComponentSeed[]): UiComponentMeta[] {
   return seeds.map((seed) => ({
     ...seed,
     category,

@@ -19,23 +19,22 @@ export function SsgOverviewDocPage() {
       <section>
         <h2 id="static-build-flow">Static Build Flow</h2>
         <p>
-          Askr can render your route table into deterministic HTML at build
-          time and emit output that works on static hosting platforms.
+          Askr can render your route table into deterministic HTML at build time and emit output
+          that works on static hosting platforms.
         </p>
         <p>
-          The generated metadata makes it easier to verify route coverage and
-          inspect render cost per page.
+          The generated metadata makes it easier to verify route coverage and inspect render cost
+          per page.
         </p>
       </section>
       <section>
         <h2 id="deployment-shape">Deployment Shape</h2>
         <p>
-          Each route becomes an index.html file inside a folder structure that
-          mirrors the URL path.
+          Each route becomes an index.html file inside a folder structure that mirrors the URL path.
         </p>
         <p>
-          Keep CSS and theme assets shared at the root of the output directory
-          so every page resolves them consistently.
+          Keep CSS and theme assets shared at the root of the output directory so every page
+          resolves them consistently.
         </p>
       </section>
     </DocLayout>

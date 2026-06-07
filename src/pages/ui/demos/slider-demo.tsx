@@ -20,9 +20,7 @@ export function SliderDemo() {
           </SliderTrack>
           <SliderThumb />
         </Slider>
-        <div class="demo-output">
-          Value: {value}
-        </div>
+        <div class="demo-output">Value: {value}</div>
       </div>
     </div>
   );

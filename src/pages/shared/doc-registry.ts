@@ -2,18 +2,9 @@ import {
   InstallationDocPage,
   meta as installationMeta,
 } from "../docs/getting-started/installation";
-import {
-  QuickStartDocPage,
-  meta as quickStartMeta,
-} from "../docs/getting-started/quick-start";
-import {
-  SsgOverviewDocPage,
-  meta as ssgOverviewMeta,
-} from "../docs/guides/ssg-overview";
-import {
-  BuildingPagesDocPage,
-  meta as buildingPagesMeta,
-} from "../docs/guides/building-pages";
+import { QuickStartDocPage, meta as quickStartMeta } from "../docs/getting-started/quick-start";
+import { SsgOverviewDocPage, meta as ssgOverviewMeta } from "../docs/guides/ssg-overview";
+import { BuildingPagesDocPage, meta as buildingPagesMeta } from "../docs/guides/building-pages";
 import {
   StylingWithThemesDocPage,
   meta as stylingWithThemesMeta,

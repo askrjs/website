@@ -8,10 +8,7 @@ export function RadioGroupDemo() {
     <div class="demo-area">
       <h4>Live Demo</h4>
       <div class="demo-stack">
-        <RadioGroup
-          value={selected()}
-          onValueChange={(v: string) => selected.set(v)}
-        >
+        <RadioGroup value={selected()} onValueChange={(v: string) => selected.set(v)}>
           <label class="demo-row">
             <RadioGroupItem value="spa" /> SPA
           </label>

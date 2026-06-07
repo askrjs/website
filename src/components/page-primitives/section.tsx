@@ -31,11 +31,7 @@ export function PageSection(props: PageSectionProps) {
 
   return (
     <section id={props.id} class={classNames.join(" ")}>
-      <SectionHead
-        kicker={props.kicker}
-        title={props.title}
-        description={props.description}
-      />
+      <SectionHead kicker={props.kicker} title={props.title} description={props.description} />
       {props.children}
     </section>
   );

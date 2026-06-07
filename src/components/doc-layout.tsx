@@ -66,9 +66,7 @@ function TocSidebar(props: { toc: TocEntry[] }) {
 export function DocLayout(props: DocLayoutProps) {
   const currentRoute = route();
   const currentPath = currentRoute.path;
-  const currentItem = props.meta
-    ? findDocsNavItemBySlug(props.meta.slug)
-    : null;
+  const currentItem = props.meta ? findDocsNavItemBySlug(props.meta.slug) : null;
 
   const toc = props.meta?.toc;
   const hasToc = toc && toc.length > 0;
@@ -85,9 +83,7 @@ export function DocLayout(props: DocLayoutProps) {
               </SiteAnchor>
               <Separator class="docs-rule" decorative />
               <nav class="docs-sidebar-nav">
-                {docsNavSections.map((section) =>
-                  renderSidebarSection(section, currentPath),
-                )}
+                {docsNavSections.map((section) => renderSidebarSection(section, currentPath))}
               </nav>
             </div>
           </aside>
@@ -96,9 +92,7 @@ export function DocLayout(props: DocLayoutProps) {
             <div class="docs-main-inner">
               <header class="docs-header">
                 <div class="docs-header-meta">
-                  <span class="docs-kicker">
-                    {currentItem?.section ?? "Documentation"}
-                  </span>
+                  <span class="docs-kicker">{currentItem?.section ?? "Documentation"}</span>
                   {currentItem ? (
                     <SiteAnchor href="/docs" className="docs-header-back">
                       ← Docs

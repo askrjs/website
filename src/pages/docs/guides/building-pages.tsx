@@ -19,23 +19,18 @@ export function BuildingPagesDocPage() {
       <section>
         <h2 id="page-composition">Page Composition</h2>
         <p>
-          Build each page from small view primitives and keep content modeling
-          separate from shell composition.
+          Build each page from small view primitives and keep content modeling separate from shell
+          composition.
         </p>
         <p>
-          Shared templates help keep route output consistent across landing
-          pages, docs, and showcase content.
+          Shared templates help keep route output consistent across landing pages, docs, and
+          showcase content.
         </p>
       </section>
       <section>
         <h2 id="route-registration">Route Registration</h2>
-        <p>
-          Register each static path in ssg.config.ts using RouteConfig entries.
-        </p>
-        <p>
-          Prefer explicit route tables so SPA, SSR, and SSG can share the same
-          page inventory.
-        </p>
+        <p>Register each static path in ssg.config.ts using RouteConfig entries.</p>
+        <p>Prefer explicit route tables so SPA, SSR, and SSG can share the same page inventory.</p>
       </section>
     </DocLayout>
   );

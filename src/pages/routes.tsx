@@ -20,10 +20,7 @@ import { docRegistry } from "./shared/doc-registry";
 
 function createDocumentRoute(route: WebsiteRoute) {
   return (props: Record<string, unknown>) => (
-    <DocumentShell
-      meta={resolveDocumentMeta(route, props)}
-      appHtml={route.render(props)}
-    />
+    <DocumentShell meta={resolveDocumentMeta(route, props)} appHtml={route.render(props)} />
   );
 }
 
@@ -44,11 +41,7 @@ function titleFromPath(path: string) {
   return path
     .split("/")
     .filter(Boolean)
-    .map((segment) =>
-      segment
-        .replace(/-/g, " ")
-        .replace(/\b\w/g, (match) => match.toUpperCase()),
-    )
+    .map((segment) => segment.replace(/-/g, " ").replace(/\b\w/g, (match) => match.toUpperCase()))
     .join(" ");
 }
 
@@ -66,8 +59,7 @@ const staticRoutes: WebsiteRoute[] = [
     render: AskrPage,
     getDocumentMeta: () => ({
       title: "Runtime Reference",
-      description:
-        "Reference material for Askr runtime behavior, routing, and rendering patterns.",
+      description: "Reference material for Askr runtime behavior, routing, and rendering patterns.",
     }),
   },
   {
@@ -129,11 +121,7 @@ const docsRoutes: WebsiteRoute[] = docRegistry.map((entry) => ({
   }),
 }));
 
-export const websiteRoutes: WebsiteRoute[] = [
-  ...staticRoutes,
-  ...docsRoutes,
-  ...uiComponentRoutes,
-];
+export const websiteRoutes: WebsiteRoute[] = [...staticRoutes, ...docsRoutes, ...uiComponentRoutes];
 
 export function getSpaRoutes(): SpaRouteConfig[] {
   return websiteRoutes.map((route) => ({

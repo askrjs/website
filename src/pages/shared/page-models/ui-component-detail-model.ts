@@ -37,16 +37,14 @@ export function createUiComponentDetailModel(meta: UiComponentMeta) {
         label: "Themed Example",
         kicker: "Themed Example",
         title: `${meta.title} in the active theme`,
-        description:
-          "Visual placeholder demonstrating token-driven surface and component context.",
+        description: "Visual placeholder demonstrating token-driven surface and component context.",
       },
       {
         id: "code",
         label: "Copy/Paste",
         kicker: "Copy/Paste",
         title: "Starter integration snippet",
-        description:
-          "Controlled-state skeleton with TODO markers for production usage.",
+        description: "Controlled-state skeleton with TODO markers for production usage.",
       },
     ],
     inputRequirements: [
@@ -60,8 +58,7 @@ export function createUiComponentDetailModel(meta: UiComponentMeta) {
       },
       {
         label: "Accessibility",
-        value:
-          "ARIA roles and keyboard support inherited from the primitive contract.",
+        value: "ARIA roles and keyboard support inherited from the primitive contract.",
       },
       {
         label: "Composition",

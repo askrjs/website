@@ -8,14 +8,7 @@ export interface SiteAnchorProps extends Props {
   children?: unknown;
   target?: string;
   rel?: string;
-  "aria-current"?:
-    | "page"
-    | "step"
-    | "location"
-    | "date"
-    | "time"
-    | "true"
-    | "false";
+  "aria-current"?: "page" | "step" | "location" | "date" | "time" | "true" | "false";
   "aria-label"?: string;
 }
 

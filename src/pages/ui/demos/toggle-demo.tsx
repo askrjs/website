@@ -9,13 +9,12 @@ export function ToggleDemo() {
     <div class="demo-area">
       <h4>Live Demo</h4>
       <div class="demo-row">
-        <Toggle
-          pressed={pressed()}
-          onPressedChange={(v: boolean) => pressed.set(v)}
-        >
+        <Toggle pressed={pressed()} onPressedChange={(v: boolean) => pressed.set(v)}>
           Toggle
         </Toggle>
-        <span class="demo-output" style="margin-top:0">{label}</span>
+        <span class="demo-output" style="margin-top:0">
+          {label}
+        </span>
       </div>
     </div>
   );

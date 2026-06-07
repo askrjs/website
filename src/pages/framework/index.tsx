@@ -71,11 +71,14 @@ export function FrameworkPage() {
         <div class="container">
           <div class="landing-hero">
             <span class="landing-hero-badge">askr</span>
-            <h1>Fine-grained reactivity.<br />Zero virtual DOM.</h1>
+            <h1>
+              Fine-grained reactivity.
+              <br />
+              Zero virtual DOM.
+            </h1>
             <p>
-              Askr is a lightweight reactive framework powered by actors.
-              State updates flow directly to the DOM — no diffing, no full
-              component re-renders, no overhead.
+              Askr is a lightweight reactive framework powered by actors. State updates flow
+              directly to the DOM — no diffing, no full component re-renders, no overhead.
             </p>
             <div class="landing-hero-ctas">
               <SiteAnchor href="/docs/getting-started/installation" className="cta-primary">

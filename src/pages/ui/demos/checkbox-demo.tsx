@@ -9,10 +9,7 @@ export function CheckboxDemo() {
     <div class="demo-area">
       <h4>Live Demo</h4>
       <div class="demo-row">
-        <Checkbox
-          checked={checked()}
-          onCheckedChange={(v: boolean) => checked.set(v)}
-        />
+        <Checkbox checked={checked()} onCheckedChange={(v: boolean) => checked.set(v)} />
         <span>{label}</span>
       </div>
     </div>

@@ -1,9 +1,6 @@
 import { DocLayout } from "../../components/doc-layout";
 import { Badge } from "@askrjs/askr-ui/primitives/badge";
-import {
-  docsFeatured,
-  docsNavSections,
-} from "../shared/content";
+import { docsFeatured, docsNavSections } from "../shared/content";
 
 function renderFeaturedLink(link: (typeof docsFeatured)[number]) {
   return (
@@ -28,8 +25,8 @@ export function DocsIndexPage() {
           <span class="docs-kicker">Start here</span>
           <h2>Read the pages that establish the stack and workflow</h2>
           <p>
-            Begin with installation and quick start, then move into build and
-            theming guidance as your app structure firms up.
+            Begin with installation and quick start, then move into build and theming guidance as
+            your app structure firms up.
           </p>
         </div>
         <div class="docs-featured-list">{docsFeatured.map(renderFeaturedLink)}</div>

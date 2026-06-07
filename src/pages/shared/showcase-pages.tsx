@@ -1,8 +1,5 @@
 import { CatalogSection } from "../../components/page-primitives";
-import {
-  CatalogTemplate,
-  ShowcaseTemplate,
-} from "../../components/page-templates";
+import { CatalogTemplate, ShowcaseTemplate } from "../../components/page-templates";
 import { createUiShowcaseModel } from "./page-models";
 
 interface ShowcaseMetric {
