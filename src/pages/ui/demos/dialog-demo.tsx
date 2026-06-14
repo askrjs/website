@@ -6,8 +6,8 @@ import {
   DialogTitle,
   DialogDescription,
   DialogClose,
-} from "@askrjs/askr-ui/composites/dialog";
-import { Button } from "@askrjs/askr-ui/primitives/button";
+} from '../../../ui/composites/dialog';
+import { Button } from '../../../ui/primitives/button';
 
 export function DialogDemo() {
   return (
@@ -21,7 +21,8 @@ export function DialogDemo() {
         <DialogContent>
           <DialogTitle>Example Dialog</DialogTitle>
           <DialogDescription>
-            This is a headless dialog component with full keyboard and focus-trap support.
+            This is a headless dialog component with full keyboard and
+            focus-trap support.
           </DialogDescription>
           <DialogClose asChild>
             <Button>Close</Button>

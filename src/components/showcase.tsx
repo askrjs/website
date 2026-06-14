@@ -18,4 +18,4 @@ export {
   type SectionHeadProps,
   type SpotlightSignal,
   type ThemeExampleProps,
-} from "./page-primitives";
+} from './page-primitives';

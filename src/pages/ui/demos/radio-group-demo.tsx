@@ -1,14 +1,17 @@
-import { state } from "@askrjs/askr";
-import { RadioGroup, RadioGroupItem } from "@askrjs/askr-ui/primitives/radio-group";
+import { state } from '@askrjs/askr';
+import { RadioGroup, RadioGroupItem } from '../../../ui/primitives/radio-group';
 
 export function RadioGroupDemo() {
-  const selected = state("spa");
+  const [selected, setSelected] = state('spa');
 
   return (
     <div class="demo-area">
       <h4>Live Demo</h4>
       <div class="demo-stack">
-        <RadioGroup value={selected()} onValueChange={(v: string) => selected.set(v)}>
+        <RadioGroup
+          value={selected()}
+          onValueChange={(v: string) => setSelected(v)}
+        >
           <label class="demo-row">
             <RadioGroupItem value="spa" /> SPA
           </label>
@@ -19,7 +22,7 @@ export function RadioGroupDemo() {
             <RadioGroupItem value="ssg" /> SSG
           </label>
         </RadioGroup>
-        <div class="demo-output">Selected: {selected}</div>
+        <div class="demo-output">Selected: {selected()}</div>
       </div>
     </div>
   );

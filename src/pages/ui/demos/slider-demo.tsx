@@ -1,8 +1,13 @@
-import { state } from "@askrjs/askr";
-import { Slider, SliderTrack, SliderRange, SliderThumb } from "@askrjs/askr-ui/primitives/slider";
+import { state } from '@askrjs/askr';
+import {
+  Slider,
+  SliderTrack,
+  SliderRange,
+  SliderThumb,
+} from '../../../ui/primitives/slider';
 
 export function SliderDemo() {
-  const value = state(50);
+  const [value, setValue] = state(50);
 
   return (
     <div class="demo-area">
@@ -10,7 +15,7 @@ export function SliderDemo() {
       <div class="demo-stack">
         <Slider
           value={value()}
-          onValueChange={(v: number) => value.set(v)}
+          onValueChange={(v: number) => setValue(v)}
           min={0}
           max={100}
           step={1}
@@ -20,7 +25,7 @@ export function SliderDemo() {
           </SliderTrack>
           <SliderThumb />
         </Slider>
-        <div class="demo-output">Value: {value}</div>
+        <div class="demo-output">Value: {value()}</div>
       </div>
     </div>
   );

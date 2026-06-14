@@ -1,6 +1,6 @@
-import { renderToString } from "@askrjs/askr/ssr";
+import { renderToString } from '@askrjs/askr/ssr';
 
-import { getSsrRoutes } from "../pages/routes";
+import { getSsrRoutes } from '../pages/routes';
 
 export function renderPage(url: string) {
   return renderToString({

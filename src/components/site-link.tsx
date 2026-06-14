@@ -1,19 +1,26 @@
-import { Link } from "@askrjs/askr";
+import { Link, type LinkProps } from '@askrjs/askr/router';
 
-import type { Props } from "../types/props";
+import type { Props } from '../types/props';
 
-export interface SiteAnchorProps extends Props {
+export interface SiteAnchorProps extends Omit<Props, 'children'> {
   href: string;
   className?: string;
-  children?: unknown;
+  children?: LinkProps['children'];
   target?: string;
   rel?: string;
-  "aria-current"?: "page" | "step" | "location" | "date" | "time" | "true" | "false";
-  "aria-label"?: string;
+  'aria-current'?:
+    | 'page'
+    | 'step'
+    | 'location'
+    | 'date'
+    | 'time'
+    | 'true'
+    | 'false';
+  'aria-label'?: string;
 }
 
 function isRouterLink(href: string): boolean {
-  return href.startsWith("/") && !href.startsWith("//");
+  return href.startsWith('/') && !href.startsWith('//');
 }
 
 export function SiteAnchor(props: SiteAnchorProps) {
@@ -26,8 +33,8 @@ export function SiteAnchor(props: SiteAnchorProps) {
         class={className}
         target={props.target}
         rel={props.rel}
-        aria-current={props["aria-current"]}
-        aria-label={props["aria-label"]}
+        aria-current={props['aria-current']}
+        aria-label={props['aria-label']}
       >
         {props.children}
       </a>
@@ -40,8 +47,8 @@ export function SiteAnchor(props: SiteAnchorProps) {
       class={className}
       target={props.target}
       rel={props.rel}
-      aria-current={props["aria-current"]}
-      aria-label={props["aria-label"]}
+      aria-current={props['aria-current']}
+      aria-label={props['aria-label']}
     >
       {props.children}
     </Link>

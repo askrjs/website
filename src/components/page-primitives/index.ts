@@ -5,9 +5,9 @@ export {
   type HeroAction,
   type HeroChipLink,
   type HeroStat,
-} from "./hero";
+} from './hero';
 
-export { CatalogSection, type CatalogGroup } from "./catalog";
+export { CatalogSection, type CatalogGroup } from './catalog';
 
 export {
   InputRequirementsList,
@@ -16,8 +16,13 @@ export {
   type InputRequirement,
   type SpotlightSignal,
   type ThemeExampleProps,
-} from "./detail";
+} from './detail';
 
-export { CodeSnippetBlock } from "./snippet";
+export { CodeSnippetBlock } from './snippet';
 
-export { PageSection, SectionHead, type PageSectionProps, type SectionHeadProps } from "./section";
+export {
+  PageSection,
+  SectionHead,
+  type PageSectionProps,
+  type SectionHeadProps,
+} from './section';

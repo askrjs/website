@@ -1,0 +1,226 @@
+@font-face {
+  font-family: 'Mona Sans';
+  src: url('../assets/fonts/mona-sans-latin-wght-normal.woff2')
+    format('woff2-variations');
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mona Sans';
+  src: url('../assets/fonts/mona-sans-latin-wght-italic.woff2')
+    format('woff2-variations');
+  font-weight: 200 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('../assets/fonts/jetbrains-mono-latin-400-normal.woff2')
+    format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('../assets/fonts/jetbrains-mono-latin-700-normal.woff2')
+    format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('../assets/fonts/jetbrains-mono-latin-400-italic.woff2')
+    format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Source Serif 4';
+  src: url('../assets/fonts/source-serif-4-latin-standard-normal.woff2')
+    format('woff2-variations');
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Source Serif 4';
+  src: url('../assets/fonts/source-serif-4-latin-standard-italic.woff2')
+    format('woff2-variations');
+  font-weight: 200 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --content-width: 1180px;
+  --reading-width: 760px;
+  --sidebar-width: 260px;
+  --toc-width: 220px;
+  --site-font-sans:
+    'Mona Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', sans-serif;
+  --site-font-mono:
+    'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --site-font-serif: 'Source Serif 4', Georgia, serif;
+  --site-ink: #111827;
+  --site-canvas: #f7f4ee;
+  --site-paper: #fffaf0;
+  --site-signal: #0f9f6e;
+  --site-cyan: #0284a8;
+  --site-oxide: #b5522b;
+  --site-red: #b42318;
+  --site-shadow: color-mix(in srgb, var(--ak-color-fg) 10%, transparent);
+  --ak-font-family: var(--site-font-sans);
+  --ak-radius-sm: 6px;
+  --ak-radius-md: 8px;
+  --ak-radius-lg: 8px;
+}
+
+[data-theme='dark'] {
+  --site-ink: #f7f2e8;
+  --site-canvas: #101214;
+  --site-paper: #171a1d;
+  --site-signal: #34d399;
+  --site-cyan: #22d3ee;
+  --site-oxide: #fb923c;
+  --site-red: #f87171;
+  --site-shadow: color-mix(in srgb, black 32%, transparent);
+}
+
+* {
+  box-sizing: border-box;
+  letter-spacing: 0;
+}
+
+html {
+  min-width: 320px;
+  background:
+    linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--ak-color-border) 28%, transparent) 1px,
+        transparent 1px
+      )
+      0 0 / 48px 48px,
+    linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--ak-color-border) 24%, transparent) 1px,
+        transparent 1px
+      )
+      0 0 / 48px 48px,
+    var(--ak-color-bg);
+  color: var(--ak-color-fg);
+  font-family: var(--site-font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  color: var(--ak-color-fg);
+  background: transparent;
+  font-family: var(--site-font-sans);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+body::selection {
+  color: var(--ak-color-bg);
+  background: var(--site-signal);
+}
+
+a {
+  color: var(--ak-color-fg);
+  text-decoration-color: color-mix(in srgb, var(--site-cyan) 65%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  color: var(--site-cyan);
+}
+
+a:focus,
+button:focus,
+[tabindex]:focus,
+:focus-visible {
+  outline: 2px solid var(--site-cyan);
+  outline-offset: 3px;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin-top: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--ak-color-fg);
+  font-weight: 820;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: 4.35rem;
+}
+
+.signal-hero-copy h1,
+.product-hero h1,
+.hero h1,
+.landing-hero h1,
+.docs-header h1 {
+  font-family: var(--site-font-serif);
+  font-weight: 760;
+  font-optical-sizing: auto;
+  line-height: 0.98;
+}
+
+h2 {
+  font-size: 2.1rem;
+}
+
+h3 {
+  font-size: 1.08rem;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--site-font-mono);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.container {
+  width: min(var(--content-width), calc(100% - 3rem));
+  margin: 0 auto;
+}
+
+.site-main {
+  padding-bottom: 6rem;
+}

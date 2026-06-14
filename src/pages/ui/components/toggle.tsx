@@ -1,7 +1,7 @@
-﻿import { UiComponentDetailPage } from "../component-detail";
-import { requireUiComponent } from "../../../pages/shared/ui-component-registry";
+﻿import { UiComponentDetailPage } from '../component-detail';
+import { requireUiComponent } from '../../../pages/shared/ui-component-registry';
 
-const meta = requireUiComponent("toggle");
+const meta = requireUiComponent('toggle');
 
 export function ToggleShowcasePage() {
   return <UiComponentDetailPage meta={meta} />;

@@ -1,4 +1,4 @@
-import { SiteAnchor } from "../site-link";
+import { SiteAnchor } from '../site-link';
 
 export interface HeroChipLink {
   href: string;
@@ -29,7 +29,7 @@ export function HeroActionGrid(props: { actions: HeroAction[] }) {
       {props.actions.map((action) => (
         <SiteAnchor className="hero-action" href={action.href}>
           <strong>{action.label}</strong>
-          <span>{action.cta ?? "Open"}</span>
+          <span>{action.cta ?? 'Open'}</span>
         </SiteAnchor>
       ))}
     </div>

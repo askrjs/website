@@ -1,161 +1,199 @@
-import { SiteFrame } from "../../components/site-shell";
-import { SiteAnchor } from "../../components/site-link";
-import { PageSection } from "../../components/page-primitives";
+import {
+  GaugeIcon,
+  MoonIcon,
+  PaintbrushIcon,
+  PaletteIcon,
+  SunIcon,
+} from '@askrjs/lucide';
 
-interface FeatureCell {
-  icon: string;
-  title: string;
-  description: string;
-}
+import { SiteFrame } from '../../components/site-shell';
+import { SiteAnchor } from '../../components/site-link';
+import {
+  CodeWindow,
+  IconFeatureList,
+  ProofStrip,
+  SectionBand,
+} from '../../components/site-primitives';
+import type { IconFeature } from '../../components/site-primitives';
 
-const features: FeatureCell[] = [
+const features: IconFeature[] = [
   {
-    icon: "🎨",
-    title: "CSS custom properties",
+    icon: PaletteIcon,
+    title: 'Semantic tokens',
     description:
-      "All tokens are --ak-* CSS variables. Override any token in your own stylesheet — no build step, no config.",
+      'Background, foreground, surface, border, and primary values are named by role instead of page section.',
   },
   {
-    icon: "🌓",
-    title: "Light & dark mode",
+    icon: MoonIcon,
+    title: 'Mode-aware by default',
     description:
-      "Semantic color tokens automatically adapt to light and dark. One attribute switch, instant update.",
+      'The site can switch light and dark mode through one attribute without changing component code.',
   },
   {
-    icon: "🎁",
-    title: "Multiple themes",
+    icon: PaintbrushIcon,
+    title: 'Override friendly',
     description:
-      "Four built-in themes to choose from. Swap by changing data-theme on the root element.",
+      'The branded layer changes tokens and low-specificity selectors before reaching for bespoke CSS.',
   },
   {
-    icon: "⚡",
-    title: "Zero JavaScript",
+    icon: GaugeIcon,
+    title: 'Static-first styling',
     description:
-      "Theming is pure CSS. A tiny inline script prevents color-mode flash on initial load — that's all the JS you need.",
+      'No runtime theme engine is needed for the visual system to render in SSG output.',
   },
 ];
 
-interface TokenSwatch {
-  name: string;
-  label: string;
-  cssVar: string;
+const swatches = [
+  { name: 'Ink', label: '--ak-color-fg', cssVar: 'var(--ak-color-fg)' },
+  { name: 'Canvas', label: '--ak-color-bg', cssVar: 'var(--ak-color-bg)' },
+  {
+    name: 'Surface',
+    label: '--ak-color-surface',
+    cssVar: 'var(--ak-color-surface)',
+  },
+  {
+    name: 'Signal',
+    label: '--ak-color-primary',
+    cssVar: 'var(--ak-color-primary)',
+  },
+  {
+    name: 'Border',
+    label: '--ak-color-border',
+    cssVar: 'var(--ak-color-border)',
+  },
+  { name: 'Muted', label: '--ak-color-muted', cssVar: 'var(--ak-color-muted)' },
+];
+
+const themeCode = `:root {
+  --site-signal: #10b981;
+  --site-cyan: #0891b2;
+  --site-oxide: #b45309;
 }
 
-const swatches: TokenSwatch[] = [
-  { name: "Background", label: "--ak-color-bg", cssVar: "var(--ak-color-bg)" },
-  { name: "Surface", label: "--ak-color-surface", cssVar: "var(--ak-color-surface)" },
-  { name: "Primary", label: "--ak-color-primary", cssVar: "var(--ak-color-primary)" },
-  { name: "Muted", label: "--ak-color-muted", cssVar: "var(--ak-color-muted)" },
-  { name: "Border", label: "--ak-color-border", cssVar: "var(--ak-color-border)" },
-  { name: "Foreground", label: "--ak-color-fg", cssVar: "var(--ak-color-fg)" },
-];
+.product-proof {
+  background: var(--ak-color-surface);
+  color: var(--ak-color-fg);
+  border: 1px solid var(--ak-color-border);
+}`;
 
 export function ThemesLandingPage() {
   return (
     <SiteFrame>
-      <main>
-        <div class="container">
-          <div class="landing-hero">
-            <span class="landing-hero-badge">askr-themes</span>
-            <h1>
-              Token-driven theming.
-              <br />
-              Light, dark, and beyond.
-            </h1>
-            <p>
-              askr-themes uses CSS custom properties and data-slot selectors. Apply a complete
-              visual system with one HTML attribute — zero JavaScript required.
-            </p>
-            <div class="landing-hero-ctas">
-              <SiteAnchor href="/showcase/themes" className="cta-primary">
-                Explore themes
-              </SiteAnchor>
-              <SiteAnchor href="/docs/guides/styling-with-themes" className="cta-secondary">
-                Styling guide →
-              </SiteAnchor>
+      <main class="site-main">
+        <section class="product-hero themes-hero">
+          <div class="container product-hero-grid">
+            <div>
+              <span class="section-kicker">askr-themes</span>
+              <h1>Theme tokens as the product interface.</h1>
+              <p>
+                askr-themes gives the site a stable semantic base. The Askr
+                brand layer then adds precision, contrast, and motion without
+                breaking the token contract.
+              </p>
+              <div class="landing-hero-ctas">
+                <SiteAnchor href="/showcase/themes" className="cta-primary">
+                  Explore theme reference
+                </SiteAnchor>
+                <SiteAnchor
+                  href="/docs/guides/styling-with-themes"
+                  className="cta-secondary"
+                >
+                  Styling guide
+                </SiteAnchor>
+              </div>
+            </div>
+            <div class="theme-lab" aria-label="Theme token lab">
+              <div class="theme-lab-modes">
+                <span>
+                  <SunIcon size={16} />
+                  light
+                </span>
+                <span>
+                  <MoonIcon size={16} />
+                  dark
+                </span>
+              </div>
+              <div class="theme-lab-card">
+                <strong>token layer</strong>
+                <span>--ak-color-surface</span>
+                <span>--ak-color-primary</span>
+                <span>--ak-radius-md</span>
+              </div>
             </div>
           </div>
+        </section>
 
-          <PageSection
-            kicker="How it works"
-            title="CSS all the way down"
-            description="Every design decision in askr-themes is expressed as a --ak-* CSS variable. Override what you need, keep the rest."
+        <div class="container">
+          <ProofStrip
+            items={[
+              {
+                value: 'CSS',
+                label: 'Runtime',
+                detail: 'tokens render statically',
+              },
+              {
+                value: '1',
+                label: 'Attribute',
+                detail: 'data-theme controls mode',
+              },
+              {
+                value: '--ak-*',
+                label: 'Contract',
+                detail: 'shared design variables',
+              },
+            ]}
+          />
+
+          <SectionBand
+            kicker="Theme contract"
+            title="Lean on the shared tokens, then add a branded layer"
+            description="The site should prove that askr-themes is useful by using it directly: token first, overrides second, bespoke selectors last."
           >
-            <div class="feature-grid">
-              {features.map((f) => (
-                <div class="feature-cell">
-                  <div class="feature-cell-icon">{f.icon}</div>
-                  <h3>{f.title}</h3>
-                  <p>{f.description}</p>
-                </div>
+            <IconFeatureList features={features} />
+          </SectionBand>
+
+          <section class="proof-split">
+            <div>
+              <span class="section-kicker">Token lab</span>
+              <h2>Every visual decision has a variable behind it</h2>
+              <p>
+                The landing pages, docs shell, code blocks, and buttons all read
+                from the same semantic layer before applying site-specific
+                accents.
+              </p>
+            </div>
+            <div class="token-lab-grid">
+              {swatches.map((swatch) => (
+                <article>
+                  <span style={`background: ${swatch.cssVar};`} />
+                  <strong>{swatch.name}</strong>
+                  <code>{swatch.label}</code>
+                </article>
               ))}
             </div>
-          </PageSection>
+          </section>
 
-          <PageSection
-            kicker="Tokens"
-            title="Semantic color tokens"
-            description="Colors are defined semantically — background, surface, primary, muted — so components adapt automatically to any theme."
+          <SectionBand
+            kicker="CSS"
+            title="Override the site without owning a theme engine"
+            description="The brand layer is ordinary CSS. That keeps SSG output predictable and makes inspection straightforward."
           >
-            <div class="token-preview-grid">
-              {swatches.map((s) => (
-                <div class="token-swatch">
-                  <div class="token-swatch-color" style={`background: ${s.cssVar};`} />
-                  <span>{s.name}</span>
-                  <code>{s.label}</code>
-                </div>
-              ))}
-            </div>
-          </PageSection>
+            <CodeWindow label="precision-lab.css" code={themeCode} />
+          </SectionBand>
 
-          <PageSection
-            kicker="Usage"
-            title="One attribute to rule them all"
-            description="Set a theme by adding a data-theme attribute to your root element. Switch themes at runtime — no page reload needed."
+          <SectionBand
+            kicker="Next"
+            title="Use the theme guide before styling components by hand"
+            description="The fastest way to keep the interface consistent is to change tokens first."
           >
-            <div class="landing-code">
-              <pre>{`<!-- Apply the default theme -->
-<html data-theme="light">
-
-<!-- Switch to dark mode -->
-<html data-theme="dark">
-
-<!-- Apply a named theme variant -->
-<html data-theme="ocean">
-
-<!-- In your CSS, just use the tokens -->
-.my-component {
-  background: var(--ak-color-surface);
-  color: var(--ak-color-fg);
-  border: 1px solid var(--ak-color-border);
-  border-radius: var(--ak-radius-md);
-}`}</pre>
+            <div class="next-step-row">
+              <SiteAnchor href="/docs/guides/styling-with-themes">
+                Styling with themes
+              </SiteAnchor>
+              <SiteAnchor href="/showcase/themes">Token reference</SiteAnchor>
+              <SiteAnchor href="/ui">Style askr-ui</SiteAnchor>
             </div>
-          </PageSection>
-
-          <PageSection
-            kicker="Next steps"
-            title="Apply your first theme"
-            description="Follow the styling guide or browse the theme reference for a complete token inventory."
-          >
-            <div class="grid" style="margin-top: 1rem;">
-              <SiteAnchor href="/docs/guides/styling-with-themes" className="card">
-                <h2>Styling with Themes</h2>
-                <p>Learn how to apply tokens and manage light/dark mode in your app.</p>
-                <span class="card-cta">Read guide →</span>
-              </SiteAnchor>
-              <SiteAnchor href="/showcase/themes" className="card">
-                <h2>Theme Reference</h2>
-                <p>Complete token inventory with light and dark defaults for every token group.</p>
-                <span class="card-cta">Browse reference →</span>
-              </SiteAnchor>
-              <SiteAnchor href="/docs/getting-started/installation" className="card">
-                <h2>Installation</h2>
-                <p>Add askr-themes to your project alongside askr and askr-ui.</p>
-                <span class="card-cta">Get started →</span>
-              </SiteAnchor>
-            </div>
-          </PageSection>
+          </SectionBand>
         </div>
       </main>
     </SiteFrame>

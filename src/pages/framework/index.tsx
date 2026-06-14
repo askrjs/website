@@ -1,172 +1,244 @@
-import { SiteFrame } from "../../components/site-shell";
-import { SiteAnchor } from "../../components/site-link";
-import { PageSection } from "../../components/page-primitives";
+import { derive, state } from '@askrjs/askr';
+import { Button } from '@askrjs/themes/controls';
+import {
+  BracesIcon,
+  GaugeIcon,
+  GitBranchIcon,
+  NetworkIcon,
+  PackageCheckIcon,
+  RouteIcon,
+  WorkflowIcon,
+  ZapIcon,
+} from '@askrjs/lucide';
 
-interface FeatureCell {
-  icon: string;
-  title: string;
-  description: string;
-}
+import { SiteFrame } from '../../components/site-shell';
+import { SiteAnchor } from '../../components/site-link';
+import {
+  CodeWindow,
+  IconFeatureList,
+  ProofStrip,
+  SectionBand,
+} from '../../components/site-primitives';
+import type { IconFeature } from '../../components/site-primitives';
 
-const features: FeatureCell[] = [
+const features: IconFeature[] = [
   {
-    icon: "⚡",
-    title: "Fine-grained reactivity",
+    icon: ZapIcon,
+    title: 'Fine-grained reactivity',
     description:
-      "state() and derive() propagate changes directly to the nodes that need them — no virtual DOM, no component re-renders.",
+      'state() and derive() propagate changes directly to the nodes that read them.',
   },
   {
-    icon: "🎭",
-    title: "Actor model",
+    icon: NetworkIcon,
+    title: 'Actor-backed updates',
     description:
-      "Each reactive unit is backed by an actor. Updates are synchronous by default, predictable, and easy to trace.",
+      'Each reactive unit has a traceable update boundary, so data flow stays explainable.',
   },
   {
-    icon: "📦",
-    title: "Three render modes",
+    icon: RouteIcon,
+    title: 'One route contract',
     description:
-      "Build SPAs, server-rendered apps, or fully static sites from the same route table — just switch the entry point.",
+      'The same route table can drive SPA, SSR, and static generation output.',
   },
   {
-    icon: "🔁",
-    title: "Async with resource()",
+    icon: WorkflowIcon,
+    title: 'Async with resource()',
     description:
-      "resource() wraps async data with automatic cancellation, loading state, and error handling built in.",
-  },
-  {
-    icon: "🛣️",
-    title: "First-class routing",
-    description:
-      "Declarative route tables shared between SPA, SSR, and SSG modes. No adapter gymnastics.",
-  },
-  {
-    icon: "🪶",
-    title: "Under 4kb",
-    description:
-      "The core runtime has zero dependencies and ships in under 4kb gzipped. Pay only for what you use.",
+      'Cancellation, loading state, and error handling are explicit at the data boundary.',
   },
 ];
 
 const codeExample = `import { state, derive } from "@askrjs/askr";
 
-// Reactive state — updates propagate directly to the DOM
-const count = state(0);
-const doubled = derive(() => count.get() * 2);
+export function Counter() {
+  const [count, setCount] = state(0);
+  const doubled = derive(() => count() * 2);
 
-// No virtual DOM, no reconciliation
-function Counter() {
   return (
-    <div>
-      <button onPress={() => count.set(v => v + 1)}>+</button>
-      <span>{count}</span>
-      <p>Doubled: {doubled}</p>
-    </div>
+    <button onPress={() => setCount((value) => value + 1)}>
+      Count {count()} / doubled {doubled()}
+    </button>
   );
 }`;
+
+function RuntimeBench() {
+  const [count, setCount] = state(3);
+  const doubled = derive(() => count() * 2);
+  const routeCount = derive(() => count() + 4);
+
+  return (
+    <div class="runtime-bench" aria-label="Live runtime proof">
+      <div class="runtime-bench-readout">
+        <span>state</span>
+        <strong>{count()}</strong>
+      </div>
+      <div class="runtime-bench-readout">
+        <span>derive</span>
+        <strong>{doubled()}</strong>
+      </div>
+      <div class="runtime-bench-readout">
+        <span>routes</span>
+        <strong>{routeCount()}</strong>
+      </div>
+      <div class="runtime-bench-controls">
+        <Button onPress={() => setCount((value) => Math.max(0, value - 1))}>
+          Decrease
+        </Button>
+        <Button onPress={() => setCount((value) => value + 1)}>Increase</Button>
+      </div>
+    </div>
+  );
+}
 
 export function FrameworkPage() {
   return (
     <SiteFrame>
-      <main>
-        <div class="container">
-          <div class="landing-hero">
-            <span class="landing-hero-badge">askr</span>
-            <h1>
-              Fine-grained reactivity.
-              <br />
-              Zero virtual DOM.
-            </h1>
-            <p>
-              Askr is a lightweight reactive framework powered by actors. State updates flow
-              directly to the DOM — no diffing, no full component re-renders, no overhead.
-            </p>
-            <div class="landing-hero-ctas">
-              <SiteAnchor href="/docs/getting-started/installation" className="cta-primary">
-                Get started
-              </SiteAnchor>
-              <SiteAnchor href="/docs/getting-started/quick-start" className="cta-secondary">
-                Quick start →
-              </SiteAnchor>
-              <SiteAnchor href="/showcase/askr" className="cta-secondary">
-                Runtime reference
-              </SiteAnchor>
+      <main class="site-main">
+        <section class="product-hero framework-hero">
+          <div class="container product-hero-grid">
+            <div>
+              <span class="section-kicker">askr runtime</span>
+              <h1>Fine-grained state, shared routes, static output.</h1>
+              <p>
+                Askr keeps the runtime small and the mental model direct: state
+                changes flow to the DOM nodes that read them, and the route
+                table remains the source of truth across render modes.
+              </p>
+              <div class="landing-hero-ctas">
+                <SiteAnchor
+                  href="/docs/getting-started/installation"
+                  className="cta-primary"
+                >
+                  Get started
+                </SiteAnchor>
+                <SiteAnchor href="/showcase/askr" className="cta-secondary">
+                  Runtime reference
+                </SiteAnchor>
+              </div>
+            </div>
+            <div class="product-proof-panel">
+              <div class="pipeline-row">
+                <BracesIcon size={18} />
+                <span>state()</span>
+              </div>
+              <div class="pipeline-row">
+                <GitBranchIcon size={18} />
+                <span>derive()</span>
+              </div>
+              <div class="pipeline-row">
+                <PackageCheckIcon size={18} />
+                <span>SSG route output</span>
+              </div>
             </div>
           </div>
+        </section>
 
-          <PageSection
-            kicker="How it works"
-            title="Reactivity without the overhead"
-            description="Askr uses actors to track fine-grained dependencies. Only the exact DOM nodes that depend on changed state are updated."
-          >
-            <div class="feature-grid">
-              {features.map((f) => (
-                <div class="feature-cell">
-                  <div class="feature-cell-icon">{f.icon}</div>
-                  <h3>{f.title}</h3>
-                  <p>{f.description}</p>
-                </div>
-              ))}
-            </div>
-          </PageSection>
+        <div class="container">
+          <ProofStrip
+            items={[
+              {
+                value: 'small',
+                label: 'Core runtime',
+                detail: 'small enough to inspect',
+              },
+              {
+                value: '0',
+                label: 'Dependencies',
+                detail: 'no runtime dependency chain',
+              },
+              {
+                value: '3',
+                label: 'Render modes',
+                detail: 'SPA, SSR, and SSG',
+              },
+            ]}
+          />
 
-          <PageSection
-            kicker="Example"
-            title="Reactive state, no boilerplate"
-            description="state() and derive() give you reactive primitives that compose naturally into components."
+          <SectionBand
+            kicker="Runtime contract"
+            title="The framework work is visible in the model"
+            description="Askr avoids hiding architecture behind a broad render cycle. State, derived values, routes, and generated pages are separate pieces you can reason about."
           >
-            <div class="landing-code">
-              <pre>{codeExample}</pre>
-            </div>
-          </PageSection>
+            <IconFeatureList features={features} />
+          </SectionBand>
 
-          <PageSection
-            kicker="Stats"
-            title="Built to stay small"
-            description="The runtime ships with zero dependencies and no build-time magic."
-          >
-            <div class="hero-stats" style="justify-content: flex-start; margin-top: 1rem;">
-              <article>
-                <strong>&lt;4kb</strong>
-                <span>Core runtime</span>
-              </article>
-              <article>
-                <strong>0</strong>
-                <span>Dependencies</span>
-              </article>
-              <article>
-                <strong>3</strong>
-                <span>Render modes</span>
-              </article>
-              <article>
-                <strong>100%</strong>
-                <span>TypeScript</span>
-              </article>
-            </div>
-          </PageSection>
-
-          <PageSection
-            kicker="Next steps"
-            title="Start building"
-            description="Follow the installation guide to add askr to your project in minutes."
-          >
-            <div class="grid" style="margin-top: 1rem;">
-              <SiteAnchor href="/docs/getting-started/installation" className="card">
-                <h2>Installation</h2>
-                <p>Add askr, askr-ui, and askr-themes to your workspace.</p>
-                <span class="card-cta">Read guide →</span>
-              </SiteAnchor>
-              <SiteAnchor href="/docs/getting-started/quick-start" className="card">
-                <h2>Quick Start</h2>
-                <p>Build your first page with state, routing, and themed UI.</p>
-                <span class="card-cta">Open quick start →</span>
-              </SiteAnchor>
-              <SiteAnchor href="/docs/guides/ssg-overview" className="card">
-                <h2>SSG Overview</h2>
-                <p>Understand static generation, output structure, and deployment.</p>
-                <span class="card-cta">Read guide →</span>
+          <section class="proof-split">
+            <div>
+              <span class="section-kicker">Example</span>
+              <h2>Reactive state without component churn</h2>
+              <p>
+                This is the core promise in code: change the signal, update the
+                reads, keep everything else alone.
+              </p>
+              <SiteAnchor
+                href="/docs/foundations/actor-model"
+                className="text-link"
+              >
+                Read the actor model
               </SiteAnchor>
             </div>
-          </PageSection>
+            <RuntimeBench />
+          </section>
+
+          <section class="proof-split">
+            <CodeWindow
+              label="counter.tsx"
+              meta="state + derive"
+              code={codeExample}
+            />
+            <div>
+              <span class="section-kicker">Render modes</span>
+              <h2>One route inventory, three delivery choices</h2>
+              <p>
+                Use the same route registry for app navigation, request-time
+                rendering, and static HTML generation. Choose the delivery mode
+                by content freshness, not by rewriting pages.
+              </p>
+              <table class="docs-table runtime-mode-table">
+                <thead>
+                  <tr>
+                    <th>Mode</th>
+                    <th>Best fit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>SPA</td>
+                    <td>App-like surfaces with client-owned transitions.</td>
+                  </tr>
+                  <tr>
+                    <td>SSR</td>
+                    <td>Fresh HTML at request time.</td>
+                  </tr>
+                  <tr>
+                    <td>SSG</td>
+                    <td>Docs and marketing routes that can ship as files.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <SectionBand
+            kicker="Next"
+            title="Build the first route, then inspect the output"
+            description="Start with installation, render the first page, then use the SSG guide to understand what ships."
+          >
+            <div class="next-step-row">
+              <SiteAnchor href="/docs/getting-started/quick-start">
+                Quick start
+                <GaugeIcon size={16} />
+              </SiteAnchor>
+              <SiteAnchor href="/docs/guides/ssg-overview">
+                Routing and SSG
+                <RouteIcon size={16} />
+              </SiteAnchor>
+              <SiteAnchor href="/docs/guides/deployment-and-hosting">
+                Deploy output
+                <PackageCheckIcon size={16} />
+              </SiteAnchor>
+            </div>
+          </SectionBand>
         </div>
       </main>
     </SiteFrame>

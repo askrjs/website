@@ -1,7 +1,7 @@
-﻿import { UiComponentDetailPage } from "../component-detail";
-import { requireUiComponent } from "../../../pages/shared/ui-component-registry";
+﻿import { UiComponentDetailPage } from '../component-detail';
+import { requireUiComponent } from '../../../pages/shared/ui-component-registry';
 
-const meta = requireUiComponent("center");
+const meta = requireUiComponent('center');
 
 export function CenterShowcasePage() {
   return <UiComponentDetailPage meta={meta} />;

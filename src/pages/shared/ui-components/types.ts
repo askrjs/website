@@ -15,5 +15,5 @@ export interface UiComponentGroup {
 }
 
 export function fillDescription(seed: UiComponentSeed) {
-  return `${seed.title} placeholder showcase page with inputs, themed example, and copy-paste snippet.`;
+  return `${seed.title} reference with expected inputs, interaction notes, theme behavior, and a starter integration snippet.`;
 }

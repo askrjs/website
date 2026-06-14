@@ -1,4 +1,9 @@
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@askrjs/askr-ui/composites/tabs";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from '../../../ui/composites/tabs';
 
 export function TabsDemo() {
   return (
@@ -11,18 +16,21 @@ export function TabsDemo() {
           <TabsTrigger value="api">API</TabsTrigger>
         </TabsList>
         <TabsContent value="overview">
-          <p>Askr uses actor-backed reactivity for fine-grained updates without a virtual DOM.</p>
+          <p>
+            Askr uses actor-backed reactivity for fine-grained updates without a
+            virtual DOM.
+          </p>
         </TabsContent>
         <TabsContent value="usage">
           <p>
-            Import components from <code>@askrjs/askr-ui</code> and use them with{" "}
+            Import components from <code>/ui</code> and use them with{' '}
             <code>state()</code> for interactivity.
           </p>
         </TabsContent>
         <TabsContent value="api">
           <p>
-            Each component exports types, a11y contracts, and supports <code>asChild</code> for
-            polymorphism.
+            Each component exports types, a11y contracts, and supports{' '}
+            <code>asChild</code> for polymorphism.
           </p>
         </TabsContent>
       </Tabs>

@@ -1,5 +1,5 @@
-import { HeroChipRow } from "../page-primitives";
-import { AppShell } from "../site-shell";
+import { HeroChipRow } from '../page-primitives';
+import { AppShell } from '../site-shell';
 
 export interface CatalogTemplateSection {
   id?: string;

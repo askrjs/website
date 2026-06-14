@@ -1,4 +1,4 @@
-import type { Props } from "../../types/props";
+import type { RouteHandler } from '@askrjs/askr/router';
 
 export interface TocEntry {
   id: string;
@@ -12,9 +12,14 @@ export interface DocMeta {
   section: string;
   order?: number;
   toc?: TocEntry[];
+  goal?: string;
+  outcome?: string;
+  prerequisites?: string[];
+  next?: string;
+  nextLabel?: string;
 }
 
 export interface DocEntry {
   meta: DocMeta;
-  component: (props: Props) => unknown;
+  component: RouteHandler;
 }

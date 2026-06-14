@@ -1,4 +1,4 @@
-﻿import { ThemesShowcasePage } from "../shared/showcase-pages";
+﻿import { ThemesShowcasePage } from '../shared/showcase-pages';
 
 export function ThemesPage() {
   return <ThemesShowcasePage />;

@@ -1,4 +1,4 @@
-﻿import { UiShowcasePage } from "../shared/showcase-pages";
+﻿import { UiShowcasePage } from '../shared/showcase-pages';
 
 export function UiPage() {
   return <UiShowcasePage />;

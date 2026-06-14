@@ -1,6 +1,9 @@
-import { CatalogSection } from "../../components/page-primitives";
-import { CatalogTemplate, ShowcaseTemplate } from "../../components/page-templates";
-import { createUiShowcaseModel } from "./page-models";
+import { CatalogSection } from '../../components/page-primitives';
+import {
+  CatalogTemplate,
+  ShowcaseTemplate,
+} from '../../components/page-templates';
+import { createUiShowcaseModel } from './page-models';
 
 interface ShowcaseMetric {
   label: string;
@@ -34,14 +37,14 @@ export function AskrShowcasePage() {
       title="Runtime Reference"
       summary="Reference notes for deterministic rendering, routing, and state patterns you will likely need while implementing the docs and onboarding flow."
       bullets={[
-        "Review rendering and lifecycle behavior when choosing execution modes",
-        "Check state and resource orchestration patterns during implementation",
-        "Use routing notes when connecting docs, onboarding, and reference surfaces",
+        'Review rendering and lifecycle behavior when choosing execution modes',
+        'Check state and resource orchestration patterns during implementation',
+        'Use routing notes when connecting docs, onboarding, and reference surfaces',
       ]}
       metrics={[
-        { label: "Reference tracks", value: "3" },
-        { label: "Primary concepts", value: "6+" },
-        { label: "Starter paths", value: "5" },
+        { label: 'Reference tracks', value: '3' },
+        { label: 'Primary concepts', value: '6+' },
+        { label: 'Starter paths', value: '5' },
       ]}
     />
   );
@@ -78,14 +81,14 @@ export function ThemesShowcasePage() {
       title="Theme Reference"
       summary="Theme tokens, light and dark defaults, and styling guidance you can apply while turning an initial app into a coherent documentation experience."
       bullets={[
-        "Inspect token groups before introducing bespoke styling rules",
-        "Review light and dark behavior when validating theme initialization",
-        "Use the examples here when aligning reference and docs surfaces visually",
+        'Inspect token groups before introducing bespoke styling rules',
+        'Review light and dark behavior when validating theme initialization',
+        'Use the examples here when aligning reference and docs surfaces visually',
       ]}
       metrics={[
-        { label: "Token groups", value: "10+" },
-        { label: "Modes covered", value: "2" },
-        { label: "Theme guides", value: "4" },
+        { label: 'Token groups', value: '10+' },
+        { label: 'Modes covered', value: '2' },
+        { label: 'Theme guides', value: '4' },
       ]}
     />
   );

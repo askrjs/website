@@ -1,8 +1,8 @@
-import { state } from "@askrjs/askr";
-import { Input } from "@askrjs/askr-ui/primitives/input";
+import { state } from '@askrjs/askr';
+import { Input } from '../../../ui/primitives/input';
 
 export function InputDemo() {
-  const value = state("");
+  const [value, setValue] = state('');
 
   return (
     <div class="demo-area">
@@ -11,9 +11,9 @@ export function InputDemo() {
         <Input
           placeholder="Type something…"
           value={value()}
-          onInput={(e: Event) => value.set((e.target as HTMLInputElement).value)}
+          onInput={(e: Event) => setValue((e.target as HTMLInputElement).value)}
         />
-        <div class="demo-output">Value: {value}</div>
+        <div class="demo-output">Value: {value()}</div>
       </div>
     </div>
   );

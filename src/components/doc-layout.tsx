@@ -1,16 +1,18 @@
-import { route } from "@askrjs/askr/router";
-import { Separator } from "@askrjs/askr-ui/primitives/separator";
+import { currentRoute } from '@askrjs/askr/router';
+import { BookOpenIcon } from '@askrjs/lucide';
+import { Separator } from '../ui/primitives/separator';
 
-import type { Props } from "../types/props";
-import type { DocMeta, TocEntry } from "../pages/shared/doc-types";
+import type { Props } from '../types/props';
+import type { DocMeta, TocEntry } from '../pages/shared/doc-types';
 import {
   docsNavSections,
   findDocsNavItemBySlug,
   type DocsNavItem,
   type DocsNavSection,
-} from "../pages/shared/content";
-import { SiteAnchor } from "./site-link";
-import { SiteFrame } from "./site-shell";
+} from '../pages/shared/content';
+import { SiteAnchor } from './site-link';
+import { SiteFrame } from './site-shell';
+import { BrandMark } from './site-primitives';
 
 export interface DocLayoutProps extends Props {
   title: string;
@@ -26,8 +28,8 @@ function renderSidebarItem(item: DocsNavItem, currentPath: string) {
     <li>
       <SiteAnchor
         href={item.href}
-        className={current ? "docs-nav-link current" : "docs-nav-link"}
-        aria-current={current ? "page" : undefined}
+        className={current ? 'docs-nav-link current' : 'docs-nav-link'}
+        aria-current={current ? 'page' : undefined}
       >
         <span>{item.label}</span>
       </SiteAnchor>
@@ -38,9 +40,55 @@ function renderSidebarItem(item: DocsNavItem, currentPath: string) {
 function renderSidebarSection(section: DocsNavSection, currentPath: string) {
   return (
     <section class="docs-sidebar-section">
-      <h2>{section.title}</h2>
-      <ul>{section.items.map((item) => renderSidebarItem(item, currentPath))}</ul>
+      <p class="docs-sidebar-section-title">{section.title}</p>
+      <ul>
+        {section.items.map((item) => renderSidebarItem(item, currentPath))}
+      </ul>
     </section>
+  );
+}
+
+function renderMetaList(items?: string[]) {
+  if (!items?.length) return null;
+
+  return (
+    <ul class="docs-meta-list">
+      {items.map((value) => (
+        <li>{value}</li>
+      ))}
+    </ul>
+  );
+}
+
+function renderMetaPanel(item: DocsNavItem) {
+  if (!item) return null;
+
+  return (
+    <div class="docs-meta-panel">
+      {item.goal ? (
+        <div class="docs-meta-row">
+          <span class="docs-meta-label">Goal</span>
+          <p>{item.goal}</p>
+        </div>
+      ) : null}
+      {item.outcome ? (
+        <div class="docs-meta-row">
+          <span class="docs-meta-label">Expected outcome</span>
+          <p>{item.outcome}</p>
+        </div>
+      ) : null}
+      {item.prerequisites?.length ? (
+        <div class="docs-meta-row">
+          <span class="docs-meta-label">Prerequisites</span>
+          {renderMetaList(item.prerequisites)}
+        </div>
+      ) : null}
+      {item.next ? (
+        <SiteAnchor href={item.next} className="docs-next-link">
+          {item.nextLabel ?? 'Continue'}
+        </SiteAnchor>
+      ) : null}
+    </div>
   );
 }
 
@@ -64,9 +112,10 @@ function TocSidebar(props: { toc: TocEntry[] }) {
 }
 
 export function DocLayout(props: DocLayoutProps) {
-  const currentRoute = route();
-  const currentPath = currentRoute.path;
-  const currentItem = props.meta ? findDocsNavItemBySlug(props.meta.slug) : null;
+  const currentPath = currentRoute().path;
+  const currentItem = props.meta
+    ? findDocsNavItemBySlug(props.meta.slug)
+    : null;
 
   const toc = props.meta?.toc;
   const hasToc = toc && toc.length > 0;
@@ -74,16 +123,20 @@ export function DocLayout(props: DocLayoutProps) {
   return (
     <SiteFrame>
       <div class="container docs-page">
-        <div class={hasToc ? "docs-shell has-toc" : "docs-shell"}>
+        <div class={hasToc ? 'docs-shell has-toc' : 'docs-shell'}>
           <aside class="docs-sidebar">
             <div class="docs-sidebar-inner">
               <SiteAnchor href="/docs" className="docs-sidebar-home">
-                <span class="docs-sidebar-kicker">Documentation</span>
-                <strong>Askr Docs</strong>
+                <BrandMark compact />
+                <span class="docs-sidebar-kicker">
+                  Documentation control room
+                </span>
               </SiteAnchor>
               <Separator class="docs-rule" decorative />
               <nav class="docs-sidebar-nav">
-                {docsNavSections.map((section) => renderSidebarSection(section, currentPath))}
+                {docsNavSections.map((section) =>
+                  renderSidebarSection(section, currentPath)
+                )}
               </nav>
             </div>
           </aside>
@@ -92,7 +145,10 @@ export function DocLayout(props: DocLayoutProps) {
             <div class="docs-main-inner">
               <header class="docs-header">
                 <div class="docs-header-meta">
-                  <span class="docs-kicker">{currentItem?.section ?? "Documentation"}</span>
+                  <span class="docs-kicker docs-header-kicker">
+                    <BookOpenIcon size={15} />
+                    {currentItem?.section ?? 'Documentation'}
+                  </span>
                   {currentItem ? (
                     <SiteAnchor href="/docs" className="docs-header-back">
                       ← Docs
@@ -101,6 +157,7 @@ export function DocLayout(props: DocLayoutProps) {
                 </div>
                 <h1>{props.title}</h1>
                 <p>{props.intro}</p>
+                {currentItem ? renderMetaPanel(currentItem) : null}
               </header>
 
               <Separator class="docs-rule" decorative />

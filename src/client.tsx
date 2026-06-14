@@ -1,16 +1,19 @@
-import { createSPA, hydrateSPA } from "@askrjs/askr";
+import { createSPA, hydrateSPA } from '@askrjs/askr/boot';
 
-import { getSpaRoutes } from "./pages/routes";
+import { getSpaRoutes } from './pages/routes';
 
 if (import.meta.env.DEV) {
-  await Promise.all([import("./styles.css"), import("@askrjs/askr-themes/default/tokens.css")]);
+  await Promise.all([
+    import('./styles.css'),
+    import('/themes/default/tokens.css'),
+  ]);
 }
 
 async function boot() {
-  const root = document.getElementById("app");
+  const root = document.getElementById('app');
 
   if (!root) {
-    throw new Error("Missing #app root element.");
+    throw new Error('Missing #app root element.');
   }
 
   const routes = getSpaRoutes();

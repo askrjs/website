@@ -1,7 +1,7 @@
-﻿import { UiComponentDetailPage } from "../component-detail";
-import { requireUiComponent } from "../../../pages/shared/ui-component-registry";
+﻿import { UiComponentDetailPage } from '../component-detail';
+import { requireUiComponent } from '../../../pages/shared/ui-component-registry';
 
-const meta = requireUiComponent("popover");
+const meta = requireUiComponent('popover');
 
 export function PopoverShowcasePage() {
   return <UiComponentDetailPage meta={meta} />;

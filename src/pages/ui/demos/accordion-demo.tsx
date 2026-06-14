@@ -4,7 +4,7 @@ import {
   AccordionHeader,
   AccordionTrigger,
   AccordionContent,
-} from "@askrjs/askr-ui/composites/accordion";
+} from '../../../ui/composites/accordion';
 
 export function AccordionDemo() {
   return (
@@ -16,8 +16,8 @@ export function AccordionDemo() {
             <AccordionTrigger>What is askr?</AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
-            A fine-grained reactive UI framework with actor-backed state management and zero virtual
-            DOM.
+            A fine-grained reactive UI framework with actor-backed state
+            management and direct dependency tracking.
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="why">
@@ -25,8 +25,8 @@ export function AccordionDemo() {
             <AccordionTrigger>Why no virtual DOM?</AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
-            Fine-grained reactivity updates only the DOM nodes that changed, skipping the diffing
-            overhead entirely.
+            Fine-grained reactivity updates only the DOM nodes that changed,
+            skipping the diffing overhead entirely.
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="themes">
@@ -34,8 +34,8 @@ export function AccordionDemo() {
             <AccordionTrigger>How does theming work?</AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
-            askr-themes provides CSS-only theming via data-slot selectors and --ak-* design tokens.
-            No JavaScript required.
+            askr-themes provides CSS-only theming via data-slot selectors and
+            --ak-* design tokens. No JavaScript required.
           </AccordionContent>
         </AccordionItem>
       </Accordion>

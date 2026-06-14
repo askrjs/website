@@ -1,5 +1,5 @@
-﻿import { docsFeatured, docsSections } from "../content";
-import { toAnchorId } from "./common";
+﻿import { docsFeatured, docsSections } from '../content';
+import { toAnchorId } from './common';
 
 export function createDocsIndexModel() {
   const jumpLinks = docsSections.map((section) => ({
@@ -8,26 +8,27 @@ export function createDocsIndexModel() {
   }));
 
   const featuredSection = {
-    kicker: "Featured",
-    title: "Start with the docs that establish the system",
+    kicker: 'Featured',
+    title: 'Start with the docs that establish the system',
     description:
-      "These pages explain installation, the initial build path, and how theming fits into the stack.",
+      'These pages explain installation, the initial build path, and how theming fits into the stack.',
     links: docsFeatured,
-    gridClassName: "grid-featured",
+    gridClassName: 'grid-featured',
   };
 
   const groupedSections = docsSections.map((section) => ({
     id: toAnchorId(section.title),
-    kicker: "Category",
+    kicker: 'Category',
     title: section.title,
     description: section.description,
     links: section.links,
-    gridClassName: "grid-docs",
+    gridClassName: 'grid-docs',
   }));
 
   return {
-    title: "Documentation",
-    intro: "Website-owned docs for learning, implementation, and deployment workflows.",
+    title: 'Documentation',
+    intro:
+      'Website-owned docs for learning, implementation, and deployment workflows.',
     jumpLinks,
     featuredSection,
     groupedSections,

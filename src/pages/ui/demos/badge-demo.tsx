@@ -1,4 +1,4 @@
-import { Badge } from "@askrjs/askr-ui/primitives/badge";
+import { Badge } from '../../../ui/primitives/badge';
 
 export function BadgeDemo() {
   return (

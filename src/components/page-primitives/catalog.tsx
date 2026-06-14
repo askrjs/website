@@ -1,6 +1,6 @@
-﻿import { LinkCardGrid } from "../cards";
-import { PageSection } from "./section";
-import type { SiteLink } from "../../pages/shared/content";
+﻿import { LinkCardGrid } from '../cards';
+import { PageSection } from './section';
+import type { SiteLink } from '../../pages/shared/content';
 
 export interface CatalogGroup {
   id?: string;

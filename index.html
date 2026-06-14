@@ -4,18 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>askr | dev</title>
+    <link rel="icon" type="image/png" href="/assets/askr-logo.png" />
+    <link rel="apple-touch-icon" href="/assets/askr-logo.png" />
     <link rel="stylesheet" href="/src/styles.css" />
     <script>
       (function () {
-        var s = localStorage.getItem("theme"),
+        var s = localStorage.getItem('theme'),
           d = document.documentElement;
         if (
-          s === "dark" ||
-          (s === null && window.matchMedia("(prefers-color-scheme:dark)").matches)
+          s === 'dark' ||
+          (s === null &&
+            window.matchMedia('(prefers-color-scheme:dark)').matches)
         ) {
-          d.setAttribute("data-theme", "dark");
+          d.setAttribute('data-theme', 'dark');
         } else {
-          d.setAttribute("data-theme", "light");
+          d.setAttribute('data-theme', 'light');
         }
       })();
     </script>

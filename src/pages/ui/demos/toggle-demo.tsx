@@ -1,19 +1,22 @@
-import { state, derive } from "@askrjs/askr";
-import { Toggle } from "@askrjs/askr-ui/primitives/toggle";
+import { state, derive } from '@askrjs/askr';
+import { Toggle } from '../../../ui/primitives/toggle';
 
 export function ToggleDemo() {
-  const pressed = state(false);
-  const label = derive(() => (pressed() ? "On" : "Off"));
+  const [pressed, setPressed] = state(false);
+  const label = derive(() => (pressed() ? 'On' : 'Off'));
 
   return (
     <div class="demo-area">
       <h4>Live Demo</h4>
       <div class="demo-row">
-        <Toggle pressed={pressed()} onPressedChange={(v: boolean) => pressed.set(v)}>
+        <Toggle
+          pressed={pressed()}
+          onPressedChange={(v: boolean) => setPressed(v)}
+        >
           Toggle
         </Toggle>
         <span class="demo-output" style="margin-top:0">
-          {label}
+          {label()}
         </span>
       </div>
     </div>

@@ -3,11 +3,11 @@ import {
   CodeSnippetBlock,
   InputRequirementsList,
   ThemeExampleCard,
-} from "../../components/page-primitives";
-import { DetailTemplate } from "../../components/page-templates";
-import { createUiComponentDetailModel } from "../shared/page-models";
-import type { UiComponentMeta } from "../shared/ui-component-registry";
-import { getDemoForSlug } from "./demos";
+} from '../../components/page-primitives';
+import { DetailTemplate } from '../../components/page-templates';
+import { createUiComponentDetailModel } from '../shared/page-models';
+import type { UiComponentMeta } from '../shared/ui-component-registry';
+import { getDemoForSlug } from './demos';
 
 export function UiComponentDetailPage(props: { meta: UiComponentMeta }) {
   const model = createUiComponentDetailModel(props.meta);
@@ -17,8 +17,8 @@ export function UiComponentDetailPage(props: { meta: UiComponentMeta }) {
 
   if (Demo) {
     sections.push({
-      id: "demo",
-      label: "Demo",
+      id: 'demo',
+      label: 'Demo',
       render: () => (
         <PageSection
           id="demo"
@@ -86,8 +86,14 @@ export function UiComponentDetailPage(props: { meta: UiComponentMeta }) {
           <CodeSnippetBlock snippet={model.snippet} />
         </PageSection>
       ),
-    },
+    }
   );
 
-  return <DetailTemplate title={model.title} intro={model.intro} sections={sections} />;
+  return (
+    <DetailTemplate
+      title={model.title}
+      intro={model.intro}
+      sections={sections}
+    />
+  );
 }

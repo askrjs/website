@@ -1,4 +1,4 @@
-import { state } from "@askrjs/askr";
+import { state } from '@askrjs/askr';
 import {
   Select,
   SelectTrigger,
@@ -6,16 +6,16 @@ import {
   SelectContent,
   SelectItem,
   SelectItemText,
-} from "@askrjs/askr-ui/primitives/select";
+} from '../../../ui/primitives/select';
 
 export function SelectDemo() {
-  const value = state("");
+  const [value, setValue] = state('');
 
   return (
     <div class="demo-area">
       <h4>Live Demo</h4>
       <div class="demo-stack">
-        <Select value={value()} onValueChange={(v: string) => value.set(v)}>
+        <Select value={value()} onValueChange={(v: string) => setValue(v)}>
           <SelectTrigger>
             <SelectValue placeholder="Choose a theme…" />
           </SelectTrigger>
@@ -34,7 +34,7 @@ export function SelectDemo() {
             </SelectItem>
           </SelectContent>
         </Select>
-        <div class="demo-output">Selected: {() => value() || "none"}</div>
+        <div class="demo-output">Selected: {value() || 'none'}</div>
       </div>
     </div>
   );

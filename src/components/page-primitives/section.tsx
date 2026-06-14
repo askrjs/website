@@ -23,15 +23,19 @@ export interface PageSectionProps extends SectionHeadProps {
 }
 
 export function PageSection(props: PageSectionProps) {
-  const classNames = ["section-block"];
+  const classNames = ['section-block'];
 
-  if (props.panel) classNames.push("panel");
-  if (props.splitBand) classNames.push("split-band");
+  if (props.panel) classNames.push('panel');
+  if (props.splitBand) classNames.push('split-band');
   if (props.className) classNames.push(props.className);
 
   return (
-    <section id={props.id} class={classNames.join(" ")}>
-      <SectionHead kicker={props.kicker} title={props.title} description={props.description} />
+    <section id={props.id} class={classNames.join(' ')}>
+      <SectionHead
+        kicker={props.kicker}
+        title={props.title}
+        description={props.description}
+      />
       {props.children}
     </section>
   );

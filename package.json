@@ -5,30 +5,33 @@
   "description": "Askr framework website and docs",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "npm run build:client && npm run build:ssg && npm run build:ssr",
-    "build:client": "vite build",
-    "build:ssg": "tsx --tsconfig ./tsconfig.ssg.json ./scripts/build-site.ts",
-    "build:ssr": "vite build --ssr src/server/entry-server.tsx --outDir dist/server",
-    "build:incremental": "npm run build:client && tsx --tsconfig ./tsconfig.ssg.json ./scripts/build-site.ts --incremental",
+    "dev": "vp dev",
+    "build": "npm run build:client && npm run generate && npm run build:ssr",
+    "build:client": "vp build",
+    "build:ssg": "npm run generate",
+    "generate": "tsx --tsconfig ./tsconfig.ssg.json ./scripts/ssg-build.ts",
+    "build:ssr": "vp build --ssr src/server/entry-server.tsx --outDir dist/server",
+    "build:incremental": "npm run build:client && tsx --tsconfig ./tsconfig.ssg.json ./scripts/ssg-build.ts --incremental",
     "lint": "vp lint src scripts ssg.config.ts vite.config.ts",
     "fmt": "vp fmt .",
     "typecheck": "tsc --noEmit",
     "check": "npm run typecheck && npm run build",
-    "serve": "npx serve dist -l 4173",
-    "start": "npm run build && npx serve dist -l 4173"
+    "preview": "vp preview",
+    "serve": "vp preview --host 0.0.0.0 --port 4173",
+    "start": "npm run build && npm run preview"
   },
   "dependencies": {
-    "@askrjs/askr": "file:../askr",
-    "@askrjs/askr-themes": "file:../askr-themes",
-    "@askrjs/askr-ui": "file:../askr-ui",
-    "esbuild": "^0.27.4",
-    "vite": "^8.0.1"
+    "@askrjs/askr": "^0.0.43",
+    "@askrjs/logos": "^0.0.1",
+    "@askrjs/lucide": "^0.0.3",
+    "@askrjs/themes": "^0.0.7",
+    "@askrjs/ui": "^0.0.10",
+    "@askrjs/vite": "^0.0.4"
   },
   "devDependencies": {
-    "@types/node": "^25.5.0",
-    "tsx": "^4.21.0",
-    "typescript": "^5.9.3",
+    "@types/node": "^25.9.3",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3",
     "vite-plus": "latest"
   },
   "tsx": {

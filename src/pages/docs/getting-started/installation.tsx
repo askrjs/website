@@ -1,37 +1,86 @@
-import { DocLayout } from "../../../components/doc-layout";
-import type { DocMeta } from "../../../pages/shared/doc-types";
+import { DocLayout } from '../../../components/doc-layout';
+import type { DocMeta } from '../../../pages/shared/doc-types';
 
 export const meta: DocMeta = {
-  slug: "getting-started/installation",
-  title: "Installation",
-  summary: "Install askr, askr-ui, and askr-themes into your app.",
-  section: "Getting Started",
+  slug: 'getting-started/installation',
+  title: 'Installation',
+  summary: 'Install askr, askr-ui, and askr-themes into your app.',
+  section: 'Getting Started',
   order: 1,
+  goal: 'Set up dependencies with clear versions and a single package-manager strategy.',
+  outcome: 'A workspace that installs and boots reliably on fresh machines.',
+  prerequisites: [
+    'Node.js 18+ or compatible runtime',
+    'A modern package manager (pnpm, npm, or yarn)',
+  ],
+  next: '/docs/getting-started/quick-start',
+  nextLabel: 'Continue to quick start',
   toc: [
-    { id: "project-setup", label: "Project Setup" },
-    { id: "recommended-baseline", label: "Recommended Baseline" },
+    { id: 'project-setup', label: 'Project Setup' },
+    { id: 'recommended-baseline', label: 'Recommended Baseline' },
   ],
 };
+
+const installCommand = `npm install @askrjs/askr @askrjs/ui @askrjs/themes @askrjs/lucide @askrjs/logos`;
+
+const scriptBaseline = `"scripts": {
+  "dev": "vp dev",
+  "fmt": "vp fmt .",
+  "lint": "vp lint src scripts ssg.config.ts vite.config.ts",
+  "typecheck": "tsc --noEmit",
+  "build": "npm run build:client && npm run generate && npm run build:ssr",
+  "preview": "vp preview"
+}`;
 
 export function InstallationDocPage() {
   return (
     <DocLayout title={meta.title} intro={meta.summary} meta={meta}>
-      <section>
+      <section id="project-setup">
         <h2 id="project-setup">Project Setup</h2>
-        <p>Create a new app with your preferred toolchain and enable ESM output.</p>
         <p>
-          Install @askrjs/askr for runtime primitives, @askrjs/askr-ui for headless components, and
-          @askrjs/askr-themes for CSS theme tokens.
+          Start with an ESM TypeScript project and install the runtime,
+          component, theme, icon, and logo packages from the same package
+          manager.
         </p>
-        <p>Use one package manager across your workspace to keep lockfiles consistent.</p>
+        <pre class="code-block">
+          <code>{installCommand}</code>
+        </pre>
+        <dl class="docs-definition-grid">
+          <div>
+            <dt>@askrjs/askr</dt>
+            <dd>State, derived values, routing, boot, SSR, and SSG.</dd>
+          </div>
+          <div>
+            <dt>@askrjs/ui</dt>
+            <dd>
+              Headless primitives for forms, overlays, navigation, and feedback.
+            </dd>
+          </div>
+          <div>
+            <dt>@askrjs/themes</dt>
+            <dd>
+              Semantic CSS tokens and themed controls used by the site layer.
+            </dd>
+          </div>
+        </dl>
       </section>
-      <section>
+      <section id="recommended-baseline">
         <h2 id="recommended-baseline">Recommended Baseline</h2>
         <p>
-          Start with a tiny route graph and one interactive island so rendering and hydration are
-          easy to validate.
+          Add the scripts before the first page lands. The important part is not
+          the exact names; it is that formatting, linting, typing, static
+          generation, and preview are ordinary local commands.
         </p>
-        <p>Add a CI check that runs typecheck and static generation before merge.</p>
+        <pre class="code-block">
+          <code>{scriptBaseline}</code>
+        </pre>
+        <ul class="docs-checklist">
+          <li>One lockfile is committed.</li>
+          <li>Vite Plus owns dev, formatting, linting, build, and preview.</li>
+          <li>
+            The theme token CSS is loaded before site CSS in static output.
+          </li>
+        </ul>
       </section>
     </DocLayout>
   );

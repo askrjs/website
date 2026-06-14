@@ -1,4 +1,4 @@
-import { AppShell } from "../site-shell";
+import { AppShell } from '../site-shell';
 
 export interface ShowcaseMetric {
   label: string;
