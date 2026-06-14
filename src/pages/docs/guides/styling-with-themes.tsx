@@ -1,9 +1,9 @@
-import { DocLayout } from '../../../components/doc-layout';
-import type { DocMeta } from '../../../pages/shared/doc-types';
+import { DocLayout } from '../_layout';
+import type { DocMeta } from '../_types';
 
 export const meta: DocMeta = {
   slug: 'guides/styling-with-themes',
-  title: 'Styling with Themes',
+  title: 'Styling with themes',
   summary:
     'Use askr-themes tokens to create a cohesive, maintainable visual system.',
   section: 'Guides',
@@ -17,8 +17,8 @@ export const meta: DocMeta = {
   next: '/docs/guides/accessibility-checklist',
   nextLabel: 'Check accessibility basics',
   toc: [
-    { id: 'token-foundations', label: 'Token Foundations' },
-    { id: 'mode-strategy', label: 'Mode Strategy' },
+    { id: 'token-foundations', label: 'Token foundations' },
+    { id: 'mode-strategy', label: 'Mode strategy' },
   ],
 };
 
@@ -28,7 +28,7 @@ const tokenCode = `:root {
   --site-oxide: #b5522b;
 }
 
-.product-proof {
+.feature-card {
   background: var(--ak-color-surface);
   color: var(--ak-color-fg);
   border: 1px solid var(--ak-color-border);
@@ -36,19 +36,23 @@ const tokenCode = `:root {
 
 const modeCode = `(function () {
   var stored = localStorage.getItem("theme");
-  var element = document.documentElement;
-  var dark = window.matchMedia("(prefers-color-scheme:dark)").matches;
-  element.setAttribute("data-theme", stored || (dark ? "dark" : "light"));
+  var root = document.documentElement;
+  var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  var explicit = stored === "light" || stored === "dark";
+  var theme = stored === "dark" || (!explicit && prefersDark) ? "dark" : "light";
+  root.setAttribute("data-theme", theme);
+  root.setAttribute("data-theme-choice", explicit ? stored : "system");
 })();`;
 
 export function StylingWithThemesDocPage() {
   return (
     <DocLayout title={meta.title} intro={meta.summary} meta={meta}>
       <section>
-        <h2 id="token-foundations">Token Foundations</h2>
+        <h2 id="token-foundations">Token foundations</h2>
         <p>
-          Start from semantic tokens for color, spacing, typography, and radius
-          so components inherit a coherent language.
+          Start from semantic tokens for color, spacing, typography, and radius.
+          Components should read roles like surface, foreground, border, and
+          primary instead of page-specific color names.
         </p>
         <p>
           Keep local overrides sparse and prefer system-level token changes over
@@ -59,14 +63,14 @@ export function StylingWithThemesDocPage() {
         </pre>
       </section>
       <section>
-        <h2 id="mode-strategy">Mode Strategy</h2>
+        <h2 id="mode-strategy">Mode strategy</h2>
         <p>
           Define light and dark values at the token layer and let components
           consume them without branching.
         </p>
         <p>
-          A small theme bootstrap script can prevent color-mode flash before the
-          page paints.
+          A small theme bootstrap script prevents color-mode flash before the
+          page paints and keeps `data-theme-choice` aligned with ThemeProvider.
         </p>
         <pre class="code-block">
           <code>{modeCode}</code>

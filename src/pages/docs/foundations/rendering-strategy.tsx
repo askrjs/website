@@ -1,5 +1,5 @@
-import { DocLayout } from '../../../components/doc-layout';
-import type { DocMeta } from '../../../pages/shared/doc-types';
+import { DocLayout } from '../_layout';
+import type { DocMeta } from '../_types';
 
 export const meta: DocMeta = {
   slug: 'foundations/rendering-strategy',
@@ -8,9 +8,9 @@ export const meta: DocMeta = {
     'Choose between state-driven updates and route-level rendering modes.',
   section: 'Foundations',
   order: 2,
-  goal: 'Predict how updates, hydration, and route transitions behave across modes.',
+  goal: 'Understand how updates, hydration, and route transitions behave across modes.',
   outcome:
-    'A rendering plan with fewer accidental updates and simpler perf tuning.',
+    'A rendering plan that separates component updates from route delivery.',
   prerequisites: ['Actor model basics', 'Route registry in place'],
   next: '/docs/guides/ssg-overview',
   nextLabel: 'Choose runtime mode',
@@ -47,12 +47,12 @@ export function RenderingStrategyDocPage() {
             <tr>
               <td>SSR</td>
               <td>HTML must be generated per request.</td>
-              <td>Fresh output, more server runtime surface.</td>
+              <td>Fresh output, server runtime required.</td>
             </tr>
             <tr>
               <td>SSG</td>
               <td>Routes can be generated at build time.</td>
-              <td>Predictable files, rebuild needed for content changes.</td>
+              <td>Static files, rebuild needed for content changes.</td>
             </tr>
           </tbody>
         </table>

@@ -1,13 +1,9 @@
 import { createSPA, hydrateSPA } from '@askrjs/askr/boot';
 
-import { getSpaRoutes } from './pages/routes';
+import { installWebsiteDocumentMetaSync } from './client/document-meta';
+import { getSpaRoutes } from './pages/_routes';
 
-if (import.meta.env.DEV) {
-  await Promise.all([
-    import('./styles.css'),
-    import('/themes/default/tokens.css'),
-  ]);
-}
+installWebsiteDocumentMetaSync();
 
 async function boot() {
   const root = document.getElementById('app');

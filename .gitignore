@@ -49,7 +49,13 @@ coverage
 .DS_Store
 Thumbs.db
 
+# Screenshots
+screenshots/
+**/screenshots/
+.codex-screenshots/
+
 # Environment
 .env
 .env.*
 !.env.example
+

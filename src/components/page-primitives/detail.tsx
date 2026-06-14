@@ -1,4 +1,4 @@
-﻿export interface InputRequirement {
+export interface InputRequirement {
   label: string;
   value: string;
 }
@@ -7,7 +7,7 @@ export function InputRequirementsList(props: { items: InputRequirement[] }) {
   return (
     <ul class="input-list">
       {props.items.map((item) => (
-        <li>
+        <li key={`${item.label}:${item.value}`}>
           <strong>{item.label}:</strong> {item.value}
         </li>
       ))}
@@ -48,7 +48,7 @@ export function SpotlightSignals(props: { signals: SpotlightSignal[] }) {
   return (
     <ul class="signal-list">
       {props.signals.map((signal) => (
-        <li>
+        <li key={signal.title}>
           <strong>{signal.title}</strong>
           <span>{signal.detail}</span>
         </li>

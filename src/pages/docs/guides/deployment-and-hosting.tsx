@@ -1,11 +1,10 @@
-import { DocLayout } from '../../../components/doc-layout';
-import type { DocMeta } from '../../../pages/shared/doc-types';
+import { DocLayout } from '../_layout';
+import type { DocMeta } from '../_types';
 
 export const meta: DocMeta = {
   slug: 'guides/deployment-and-hosting',
   title: 'Deployment and hosting',
-  summary:
-    'Generate static output, attach build artifacts, and deploy with confidence.',
+  summary: 'Generate static output, attach build artifacts, and deploy the site.',
   section: 'Guides',
   order: 7,
   goal: 'Move from local validation to repeatable deploys on any static host.',

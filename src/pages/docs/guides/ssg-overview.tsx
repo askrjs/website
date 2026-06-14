@@ -1,16 +1,15 @@
-import { DocLayout } from '../../../components/doc-layout';
-import type { DocMeta } from '../../../pages/shared/doc-types';
+import { DocLayout } from '../_layout';
+import type { DocMeta } from '../_types';
 
 export const meta: DocMeta = {
   slug: 'guides/ssg-overview',
-  title: 'SSG Overview',
+  title: 'SSG overview',
   summary:
     'Understand the static generation flow, output structure, and deployment model.',
   section: 'Guides',
   order: 1,
   goal: 'Choose when static output is the right delivery model for your site.',
-  outcome:
-    'A reliable mental model for deterministic route rendering and predictable file output.',
+  outcome: 'A clear model for route rendering and file output.',
   prerequisites: [
     'A route registry in your Askr app',
     'A package lockfile with build scripts',
@@ -18,13 +17,13 @@ export const meta: DocMeta = {
   next: '/docs/guides/building-pages',
   nextLabel: 'Build pages',
   toc: [
-    { id: 'static-build-flow', label: 'Static Build Flow' },
-    { id: 'deployment-shape', label: 'Deployment Shape' },
+    { id: 'static-build-flow', label: 'Static build flow' },
+    { id: 'deployment-shape', label: 'Deployment shape' },
   ],
 };
 
 const ssgConfigCode = `import type { RouteConfig } from "@askrjs/askr/ssg";
-import { getStaticRoutes } from "./src/pages/routes";
+import { getStaticRoutes } from "./src/pages/_routes";
 
 export const routes: RouteConfig[] = getStaticRoutes();
 export const outputDir = "dist";
@@ -33,8 +32,10 @@ export const seed = 20260315;`;
 const outputShape = `dist/
   index.html
   app.js
-  styles.css
-  theme-tokens.css
+  theme-init.js
+  assets/
+    index-*.css
+    font-and-image-assets
   docs/
     start/
       index.html
@@ -46,10 +47,10 @@ export function SsgOverviewDocPage() {
   return (
     <DocLayout title={meta.title} intro={meta.summary} meta={meta}>
       <section>
-        <h2 id="static-build-flow">Static Build Flow</h2>
+        <h2 id="static-build-flow">Static build flow</h2>
         <p>
-          Askr can render your route table into deterministic HTML at build time
-          and emit output that works on static hosting platforms.
+          Askr can render your route table into HTML at build time and emit
+          output that works on static hosting platforms.
         </p>
         <p>
           The generated metadata makes it easier to verify route coverage and
@@ -60,14 +61,15 @@ export function SsgOverviewDocPage() {
         </pre>
       </section>
       <section>
-        <h2 id="deployment-shape">Deployment Shape</h2>
+        <h2 id="deployment-shape">Deployment shape</h2>
         <p>
           Each route becomes an index.html file inside a folder structure that
           mirrors the URL path.
         </p>
         <p>
-          Keep CSS and theme assets shared at the root of the output directory
-          so every page resolves them consistently.
+          Keep document HTML in index.html. The SSG step renders route bodies
+          and wraps each generated page with the built template so assets and
+          boot scripts stay consistent.
         </p>
         <pre class="code-block">
           <code>{outputShape}</code>

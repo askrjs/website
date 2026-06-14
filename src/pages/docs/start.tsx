@@ -1,5 +1,6 @@
-import { AppShell } from '../../components/site-shell';
-import { SiteAnchor } from '../../components/site-link';
+import { Link } from '@askrjs/askr/router';
+
+import { DocLayout } from './_layout';
 
 const startFlow = [
   {
@@ -11,24 +12,24 @@ const startFlow = [
   {
     title: 'Ship a first page',
     href: '/docs/getting-started/quick-start',
-    copy: 'Create your first route and validate reactive output in minutes.',
+    copy: 'Create your first route and click through a state update.',
     cta: 'Quick start',
   },
   {
     title: 'Choose architecture patterns',
     href: '/docs/getting-started/project-structure',
-    copy: 'Set a structure that scales for docs, components, and future packages.',
+    copy: 'Place pages, docs, features, and shared components where contributors can find them.',
     cta: 'Project structure',
   },
   {
-    title: 'Prepare quality gates',
+    title: 'Prepare release checks',
     href: '/docs/getting-started/development-checklist',
-    copy: 'Lock checks for build output, type safety, and route coverage.',
-    cta: 'Quality checklist',
+    copy: 'Run checks for type safety, generated HTML, metadata, and route coverage.',
+    cta: 'Checklist',
   },
 ];
 
-const confidenceMatrix = [
+const routeMatrix = [
   {
     intent: 'First commit quickly',
     decision: 'I need one working page now.',
@@ -38,17 +39,17 @@ const confidenceMatrix = [
   },
   {
     intent: 'Stabilize architecture',
-    decision: 'I want predictable structure before adding pages.',
+    decision: 'I want a clear structure before adding pages.',
     route: '/docs/getting-started/project-structure',
     next: '/docs/foundations/actor-model',
     tradeoff: 'Spend an extra pass on contracts to save future refactor time.',
   },
   {
-    intent: 'Ship with quality signal',
-    decision: 'I need deterministic validation before release.',
+    intent: 'Verify before release',
+    decision: 'I need checks before publishing.',
     route: '/docs/getting-started/development-checklist',
     next: '/docs/foundations/actor-model',
-    tradeoff: 'Shift effort from local experiments to repeatable checks.',
+    tradeoff: 'Shift effort from manual inspection to repeatable checks.',
   },
   {
     intent: 'Diagnose a production issue',
@@ -61,49 +62,39 @@ const confidenceMatrix = [
 
 export function DocsStartPage() {
   return (
-    <AppShell
+    <DocLayout
       title="Start here with Askr"
-      intro="One deterministic onboarding route from install to deploy, with every step linked to a practical guide."
-      heroChildren={
+      intro="A short path from install to a first deployable page, with each step linked to a practical guide."
+    >
+      <section class="docs-start-actions">
         <div class="docs-start-hero-links">
-          <SiteAnchor
-            className="cta-primary"
+          <Link
+            class="cta-primary"
             href="/docs/getting-started/installation"
           >
             Begin setup
-          </SiteAnchor>
-          <SiteAnchor className="cta-secondary" href="/docs">
+          </Link>
+          <Link class="cta-secondary" href="/docs">
             Open docs hub
-          </SiteAnchor>
-        </div>
-      }
-    >
-      <section class="docs-landing-hero">
-        <div class="docs-landing-heading">
-          <span class="docs-kicker">Execution path</span>
-          <h2>From zero to first deploy in four moves</h2>
-          <p>
-            This lane is the shortest route to working output. Use it when you
-            want momentum before exploring optional guidance.
-          </p>
+          </Link>
         </div>
       </section>
       <section class="docs-start-zone">
         <div class="docs-start-lane">
           <span class="docs-kicker">Execution path</span>
-          <h2>One-click onboarding lane</h2>
+          <h2>Four steps to a working route</h2>
           <p>
-            Each step links to a concrete page you can complete and move forward
-            from.
+            Complete these in order when you want the shortest path through the
+            docs.
           </p>
           <ol class="docs-start-list">
-            {startFlow.map((item, index) => (
-              <li>
-                <strong>{`${index + 1}. ${item.title}`}</strong>
+            {startFlow.map((item) => (
+              <li key={item.href}>
+                <strong>{item.title}</strong>
                 <span>{item.copy}</span>
-                <SiteAnchor href={item.href} className="docs-start-link">
+                <Link href={item.href} class="docs-start-link">
                   {item.cta} →
-                </SiteAnchor>
+                </Link>
               </li>
             ))}
           </ol>
@@ -111,32 +102,32 @@ export function DocsStartPage() {
 
         <div class="docs-start-lane">
           <span class="docs-kicker">Choose by outcome</span>
-          <h2>Decision matrix</h2>
+          <h2>Pick the right next page</h2>
           <p>
-            Pick a lane by desired outcome, then follow the explicit next route.
+            Use this when you already know what you need to unblock.
           </p>
           <div class="docs-start-matrix">
-            {confidenceMatrix.map((item) => (
-              <article class="docs-start-matrix-card">
+            {routeMatrix.map((item) => (
+              <article key={item.route} class="docs-start-matrix-card">
                 <span class="docs-kicker docs-matrix-kicker">
                   {item.intent}
                 </span>
                 <h3>{item.decision}</h3>
                 <p>{item.tradeoff}</p>
-                <SiteAnchor
+                <Link
                   href={item.route}
-                  className="docs-start-link docs-start-link-strong"
+                  class="docs-start-link docs-start-link-strong"
                 >
                   Start here →
-                </SiteAnchor>
-                <SiteAnchor href={item.next} className="docs-start-link">
+                </Link>
+                <Link href={item.next} class="docs-start-link">
                   Then →
-                </SiteAnchor>
+                </Link>
               </article>
             ))}
           </div>
         </div>
       </section>
-    </AppShell>
+    </DocLayout>
   );
 }

@@ -1,28 +1,27 @@
-import { DocLayout } from '../../../components/doc-layout';
-import type { DocMeta } from '../../../pages/shared/doc-types';
+import { DocLayout } from '../_layout';
+import type { DocMeta } from '../_types';
 
 export const meta: DocMeta = {
   slug: 'guides/building-pages',
-  title: 'Building Pages',
+  title: 'Building pages',
   summary: 'Author pages, reuse templates, and organize your website routes.',
   section: 'Guides',
   order: 2,
   goal: 'Create modular page patterns that scale with route growth.',
-  outcome:
-    'A clean page model with reusable templates and predictable file structure.',
+  outcome: 'A clean page model with reusable templates and clear file ownership.',
   prerequisites: ['Installed and scaffolded project', 'Routing table in place'],
   next: '/docs/guides/data-loading',
   nextLabel: 'Learn data loading',
   toc: [
-    { id: 'page-composition', label: 'Page Composition' },
-    { id: 'route-registration', label: 'Route Registration' },
+    { id: 'page-composition', label: 'Page composition' },
+    { id: 'route-registration', label: 'Route registration' },
   ],
 };
 
 const pageModelCode = `export function createHomeModel() {
   return {
     title: "Askr",
-    proof: ["state", "routes", "SSG"],
+    topics: ["state", "routes", "SSG"],
     next: "/docs/start",
   };
 }`;
@@ -42,23 +41,25 @@ export function BuildingPagesDocPage() {
   return (
     <DocLayout title={meta.title} intro={meta.summary} meta={meta}>
       <section>
-        <h2 id="page-composition">Page Composition</h2>
+        <h2 id="page-composition">Page composition</h2>
         <p>
-          Build each page from small view primitives and keep content modeling
-          separate from shell composition.
+          Build each page from small view primitives. Keep route content,
+          reusable page templates, and document HTML in separate files.
         </p>
         <p>
           Shared templates help keep route output consistent across landing
-          pages, docs, and showcase content.
+          pages, docs, and showcase pages without moving page copy into the
+          site shell.
         </p>
         <pre class="code-block">
           <code>{pageModelCode}</code>
         </pre>
       </section>
       <section>
-        <h2 id="route-registration">Route Registration</h2>
+        <h2 id="route-registration">Route registration</h2>
         <p>
-          Register each static path in ssg.config.ts using RouteConfig entries.
+          Register static paths through the website route table, then let
+          ssg.config.ts consume those routes.
         </p>
         <p>
           Prefer explicit route tables so SPA, SSR, and SSG can share the same

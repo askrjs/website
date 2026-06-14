@@ -1,5 +1,5 @@
-import { DocLayout } from '../../../components/doc-layout';
-import type { DocMeta } from '../../../pages/shared/doc-types';
+import { DocLayout } from '../_layout';
+import type { DocMeta } from '../_types';
 
 export const meta: DocMeta = {
   slug: 'guides/data-loading',
@@ -8,8 +8,8 @@ export const meta: DocMeta = {
     'Use resource() for async state with cancellation and explicit UX states.',
   section: 'Guides',
   order: 3,
-  goal: 'Fetch remote data with deterministic loading, success, and error behavior.',
-  outcome: 'Consistent async UX without stale responses or duplicate updates.',
+  goal: 'Fetch remote data with explicit loading, success, and error states.',
+  outcome: 'Async UI without stale responses or duplicate updates.',
   prerequisites: [
     'Route and page shell ready',
     'Basic understanding of derive',

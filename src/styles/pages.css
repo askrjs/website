@@ -66,8 +66,8 @@
   min-height: 28rem;
   overflow: hidden;
   padding: 1rem;
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 74%, transparent);
-  border-radius: 16px;
+  border: 1px solid var(--site-border-muted);
+  border-radius: var(--site-radius-panel);
   background:
     linear-gradient(
         90deg,
@@ -192,7 +192,7 @@
 .runtime-map-controls button {
   min-width: 2rem;
   min-height: 2rem;
-  border-radius: 6px;
+  border-radius: var(--site-radius-control);
 }
 
 .runtime-map-controls span {
@@ -216,9 +216,9 @@
   display: grid;
   gap: 0.35rem;
   padding: 1.1rem;
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 88%, transparent);
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--ak-color-surface) 92%, transparent);
+  border: 1px solid var(--site-border);
+  border-radius: var(--site-radius-card);
+  background: var(--site-surface-soft);
 }
 
 .proof-item dt,
@@ -308,9 +308,9 @@
   max-width: 100%;
   margin: 0;
   overflow: hidden;
-  border: 1px solid var(--ak-color-border);
-  background: #111827;
-  color: #e5e7eb;
+  border: 1px solid var(--site-code-border);
+  background: var(--site-code-bg);
+  color: var(--site-code-fg);
 }
 
 .code-window figcaption {
@@ -318,14 +318,14 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 0.7rem 0.85rem;
-  border-bottom: 1px solid color-mix(in srgb, white 14%, transparent);
-  color: #f9fafb;
+  border-bottom: 1px solid var(--site-code-border);
+  color: var(--site-code-fg);
   font-family: var(--site-font-mono);
   font-size: 0.76rem;
 }
 
 .code-window figcaption small {
-  color: #9ca3af;
+  color: var(--site-code-muted);
 }
 
 .code-window pre,
@@ -347,6 +347,16 @@
   color: inherit;
 }
 
+.code-window pre > code,
+.code-block > code,
+.landing-code > code {
+  display: block;
+  min-width: max-content;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
 .launch-path,
 .docs-pathway {
   display: grid;
@@ -366,9 +376,9 @@
   gap: 0.55rem;
   min-height: 15rem;
   padding: 1.1rem;
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 88%, transparent);
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--ak-color-surface) 92%, transparent);
+  border: 1px solid var(--site-border);
+  border-radius: var(--site-radius-card);
+  background: var(--site-surface-soft);
 }
 
 .launch-path li:nth-child(even),
@@ -430,9 +440,9 @@
   gap: 0.78rem;
   min-width: 0;
   padding: 1.1rem;
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 88%, transparent);
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--ak-color-surface) 93%, transparent);
+  border: 1px solid var(--site-border);
+  border-radius: var(--site-radius-card);
+  background: var(--site-surface-soft);
 }
 
 .icon-feature-list article {
@@ -499,17 +509,17 @@
   gap: 0.75rem;
   min-height: 3.4rem;
   padding: 0.8rem 1rem;
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 86%, transparent);
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--ak-color-surface) 94%, transparent);
+  border: 1px solid var(--site-border);
+  border-radius: var(--site-radius-card);
+  background: var(--site-surface-soft);
 }
 
 .home-final {
   margin: 7rem 0 0;
   padding: 2.6rem;
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 86%, transparent);
-  border-radius: 16px;
-  background: color-mix(in srgb, var(--ak-color-surface) 93%, transparent);
+  border: 1px solid var(--site-border);
+  border-radius: var(--site-radius-panel);
+  background: var(--site-surface-soft);
 }
 
 .home-confidence-grid {
@@ -561,7 +571,7 @@
   border: 1px solid var(--ak-color-border);
   background: var(--ak-color-surface);
   padding: 1rem;
-  box-shadow: 14px 14px 0 var(--site-shadow);
+  box-shadow: var(--site-shadow-card);
 }
 
 .pipeline-row,
@@ -663,15 +673,15 @@
 .proof-item,
 .build-confidence li,
 .next-step-row a {
-  box-shadow: 0 10px 28px var(--site-shadow);
+  box-shadow: var(--site-shadow-card);
 }
 
 .code-window,
 .code-block,
 .landing-code {
-  border: 0;
-  border-radius: 14px;
-  box-shadow: var(--site-elevated-shadow);
+  border: 1px solid var(--site-code-border);
+  border-radius: var(--site-radius-card);
+  box-shadow: none;
 }
 
 .component-cloud a {

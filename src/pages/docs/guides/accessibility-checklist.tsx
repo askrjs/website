@@ -1,14 +1,13 @@
-import { DocLayout } from '../../../components/doc-layout';
-import type { DocMeta } from '../../../pages/shared/doc-types';
+import { DocLayout } from '../_layout';
+import type { DocMeta } from '../_types';
 
 export const meta: DocMeta = {
   slug: 'guides/accessibility-checklist',
   title: 'Accessibility checklist',
-  summary:
-    'Keep UI behavior and keyboard flow predictable across interactive modules.',
+  summary: 'Keep UI behavior and keyboard flow clear across interactive modules.',
   section: 'Guides',
   order: 5,
-  goal: 'Catch the high-risk UX regressions before users do.',
+  goal: 'Check keyboard, focus, label, and status behavior before release.',
   outcome:
     'A product that keeps focus management, labels, and semantics consistent.',
   prerequisites: [
@@ -34,7 +33,7 @@ export function AccessibilityChecklistDocPage() {
         </p>
         <ul class="docs-checklist">
           <li>Open overlays move focus to the first meaningful control.</li>
-          <li>Escape and outside interactions close dismissable surfaces.</li>
+          <li>Escape and outside interactions close dismissable layers.</li>
           <li>Tab order never leaves a modal dialog while it is open.</li>
         </ul>
       </section>
@@ -50,7 +49,7 @@ export function AccessibilityChecklistDocPage() {
           <thead>
             <tr>
               <th>Component family</th>
-              <th>Keyboard proof</th>
+              <th>Keyboard check</th>
             </tr>
           </thead>
           <tbody>
@@ -60,7 +59,7 @@ export function AccessibilityChecklistDocPage() {
             </tr>
             <tr>
               <td>Dialog, popover, tooltip</td>
-              <td>Escape and focus return are predictable.</td>
+              <td>Escape closes the layer and returns focus.</td>
             </tr>
           </tbody>
         </table>

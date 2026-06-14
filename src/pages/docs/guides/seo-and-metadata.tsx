@@ -1,16 +1,14 @@
-import { DocLayout } from '../../../components/doc-layout';
-import type { DocMeta } from '../../../pages/shared/doc-types';
+import { DocLayout } from '../_layout';
+import type { DocMeta } from '../_types';
 
 export const meta: DocMeta = {
   slug: 'guides/seo-and-metadata',
   title: 'SEO and metadata',
-  summary:
-    'Set up deterministic titles, descriptions, and social metadata per route.',
+  summary: 'Set route titles, descriptions, and social metadata in one place.',
   section: 'Guides',
   order: 8,
   goal: 'Ensure route metadata is complete and stable across marketing and app pages.',
-  outcome:
-    'Search-friendly pages with predictable social previews and no metadata drift.',
+  outcome: 'Search-friendly pages with stable social previews and no metadata drift.',
   prerequisites: ['Document metadata configured', 'Route registry complete'],
   next: '/docs/reference/troubleshooting',
   nextLabel: 'Handle runtime issues',
@@ -48,7 +46,7 @@ export function SeoAndMetadataDocPage() {
         <ul>
           <li>Validate robots and sitemap behavior from generated output.</li>
           <li>Verify canonical URLs and social card image paths.</li>
-          <li>Keep OG payload strings short and deterministic.</li>
+          <li>Keep OG payload strings short and specific.</li>
         </ul>
       </section>
     </DocLayout>

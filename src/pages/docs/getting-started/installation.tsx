@@ -1,5 +1,5 @@
-import { DocLayout } from '../../../components/doc-layout';
-import type { DocMeta } from '../../../pages/shared/doc-types';
+import { DocLayout } from '../_layout';
+import type { DocMeta } from '../_types';
 
 export const meta: DocMeta = {
   slug: 'getting-started/installation',
@@ -16,8 +16,8 @@ export const meta: DocMeta = {
   next: '/docs/getting-started/quick-start',
   nextLabel: 'Continue to quick start',
   toc: [
-    { id: 'project-setup', label: 'Project Setup' },
-    { id: 'recommended-baseline', label: 'Recommended Baseline' },
+    { id: 'project-setup', label: 'Project setup' },
+    { id: 'recommended-baseline', label: 'Recommended baseline' },
   ],
 };
 
@@ -28,7 +28,8 @@ const scriptBaseline = `"scripts": {
   "fmt": "vp fmt .",
   "lint": "vp lint src scripts ssg.config.ts vite.config.ts",
   "typecheck": "tsc --noEmit",
-  "build": "npm run build:client && npm run generate && npm run build:ssr",
+  "build": "npm run build:client && npm run build:ssr && npm run generate",
+  "verify:static": "tsx --tsconfig ./tsconfig.ssg.json ./scripts/verify-static-output.ts",
   "preview": "vp preview"
 }`;
 
@@ -36,7 +37,7 @@ export function InstallationDocPage() {
   return (
     <DocLayout title={meta.title} intro={meta.summary} meta={meta}>
       <section id="project-setup">
-        <h2 id="project-setup">Project Setup</h2>
+        <h2>Project setup</h2>
         <p>
           Start with an ESM TypeScript project and install the runtime,
           component, theme, icon, and logo packages from the same package
@@ -65,11 +66,12 @@ export function InstallationDocPage() {
         </dl>
       </section>
       <section id="recommended-baseline">
-        <h2 id="recommended-baseline">Recommended Baseline</h2>
+        <h2>Recommended baseline</h2>
         <p>
           Add the scripts before the first page lands. The important part is not
-          the exact names; it is that formatting, linting, typing, static
-          generation, and preview are ordinary local commands.
+          the exact names; it is that formatting, linting, typing, client
+          build, SSR build, static generation, static verification, and preview
+          are ordinary local commands.
         </p>
         <pre class="code-block">
           <code>{scriptBaseline}</code>
@@ -78,7 +80,8 @@ export function InstallationDocPage() {
           <li>One lockfile is committed.</li>
           <li>Vite Plus owns dev, formatting, linting, build, and preview.</li>
           <li>
-            The theme token CSS is loaded before site CSS in static output.
+            The build creates client assets and the SSR bundle before static
+            generation wraps routes with the document template.
           </li>
         </ul>
       </section>

@@ -1,5 +1,5 @@
-import { DocLayout } from '../../../components/doc-layout';
-import type { DocMeta } from '../../../pages/shared/doc-types';
+import { DocLayout } from '../_layout';
+import type { DocMeta } from '../_types';
 
 export const meta: DocMeta = {
   slug: 'guides/testing-strategy',
@@ -19,7 +19,7 @@ export const meta: DocMeta = {
   ],
 };
 
-const routeSmokeCode = `import { websiteRoutes } from "../pages/routes";
+const routeSmokeCode = `import { websiteRoutes } from "../pages/_routes";
 
 for (const route of websiteRoutes) {
   if (!route.path.startsWith("/")) {
@@ -47,8 +47,8 @@ export function TestingStrategyDocPage() {
       <section id="route-contract">
         <h2>Route contract tests</h2>
         <p>
-          Validate that every route in your registry has a stable render and
-          predictable metadata.
+          Validate that every route in your registry renders and carries
+          complete metadata.
         </p>
         <pre class="code-block">
           <code>{routeSmokeCode}</code>

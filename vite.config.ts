@@ -30,29 +30,6 @@ export default function config({ isSsrBuild }: VitePlusEnv): UserConfig {
     resolve: {
       alias: [
         {
-          find: '/ui/primitives/badge',
-          replacement: resolve(process.cwd(), 'src/ui/primitives/badge.tsx'),
-        },
-        {
-          find: '/ui/primitives/separator',
-          replacement: resolve(
-            process.cwd(),
-            'src/ui/primitives/separator.tsx'
-          ),
-        },
-        {
-          find: '/ui/composites/tabs',
-          replacement: resolve(process.cwd(), 'src/ui/composites/tabs.tsx'),
-        },
-        {
-          find: '/ui/primitives',
-          replacement: resolve(process.cwd(), 'src/ui/primitives'),
-        },
-        {
-          find: '/ui/composites',
-          replacement: resolve(process.cwd(), 'src/ui/composites'),
-        },
-        {
           find: '/themes',
           replacement: resolve(
             process.cwd(),
@@ -67,7 +44,7 @@ export default function config({ isSsrBuild }: VitePlusEnv): UserConfig {
       sourcemap: true,
       cssCodeSplit: false,
       rollupOptions: {
-        input: isSsrBuild ? 'src/server/entry-server.tsx' : 'src/client.tsx',
+        input: isSsrBuild ? 'src/server/entry-server.tsx' : 'index.html',
         output: {
           entryFileNames: isSsrBuild ? 'entry-server.js' : 'app.js',
           chunkFileNames: 'chunks/[name]-[hash].js',

@@ -13,3 +13,4 @@ export {
   type ShowcaseMetric,
   type ShowcaseTemplateProps,
 } from './showcase-template';
+export { PageShell, type PageShellProps } from './page-shell';

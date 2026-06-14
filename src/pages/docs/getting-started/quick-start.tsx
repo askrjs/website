@@ -1,9 +1,9 @@
-import { DocLayout } from '../../../components/doc-layout';
-import type { DocMeta } from '../../../pages/shared/doc-types';
+import { DocLayout } from '../_layout';
+import type { DocMeta } from '../_types';
 
 export const meta: DocMeta = {
   slug: 'getting-started/quick-start',
-  title: 'Quick Start',
+  title: 'Quick start',
   summary: 'Build your first page with state, routing, and themed UI.',
   section: 'Getting Started',
   order: 2,
@@ -13,8 +13,8 @@ export const meta: DocMeta = {
   next: '/docs/getting-started/project-structure',
   nextLabel: 'Set project structure',
   toc: [
-    { id: 'first-island', label: 'First Island' },
-    { id: 'add-ui-and-theme', label: 'Add UI and Theme' },
+    { id: 'first-island', label: 'First island' },
+    { id: 'add-ui-and-theme', label: 'Add UI and theme' },
   ],
 };
 
@@ -48,7 +48,7 @@ export function QuickStartDocPage() {
   return (
     <DocLayout title={meta.title} intro={meta.summary} meta={meta}>
       <section id="first-island">
-        <h2 id="first-island">First Island</h2>
+        <h2>First island</h2>
         <p>
           Define the smallest interactive component with a local state boundary.
           Read state by calling the getter and update it through the paired
@@ -59,7 +59,7 @@ export function QuickStartDocPage() {
         </pre>
       </section>
       <section id="add-ui-and-theme">
-        <h2 id="add-ui-and-theme">Add UI and Theme</h2>
+        <h2>Add UI and theme</h2>
         <p>
           Register the page through a route table so the same shape can be used
           for SPA startup, SSR, and static generation.

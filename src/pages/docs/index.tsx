@@ -1,3 +1,4 @@
+import { Link } from '@askrjs/askr/router';
 import {
   ArrowRightIcon,
   BookOpenIcon,
@@ -5,25 +6,25 @@ import {
   RouteIcon,
 } from '@askrjs/lucide';
 
-import { SiteAnchor } from '../../components/site-link';
-import { DocLayout } from '../../components/doc-layout';
-import { DocsPathway, SectionBand } from '../../components/site-primitives';
+import { PageSection } from '../../components/page-primitives/section';
+import { DocsPathway } from '../../components/site-primitives';
+import { DocLayout } from './_layout';
 import {
   docsFeatured,
   docsLearningPath,
   docsNavSections,
   docsStarterLanes,
-} from '../shared/content';
-import type { DocsNavItem, DocsNavSection } from '../shared/content';
+} from './_content';
+import type { DocsNavItem, DocsNavSection } from './_content';
 
 function renderFeaturedLink(link: (typeof docsFeatured)[number]) {
   return (
-    <SiteAnchor href={link.href} className="docs-feature-row">
+    <Link key={link.href} href={link.href} class="docs-feature-row">
       <span>{link.badge ?? 'Guide'}</span>
       <strong>{link.label}</strong>
       {link.description ? <p>{link.description}</p> : null}
       <ArrowRightIcon size={15} />
-    </SiteAnchor>
+    </Link>
   );
 }
 
@@ -31,22 +32,22 @@ function renderDocsStarter(
   link: DocsNavItem | (typeof docsStarterLanes.links)[number]
 ) {
   return (
-    <SiteAnchor href={link.href} className="docs-starter-row">
+    <Link key={link.href} href={link.href} class="docs-starter-row">
       <span>{link.badge ?? 'Lane'}</span>
       <strong>{link.label}</strong>
       {link.description ? <p>{link.description}</p> : null}
-    </SiteAnchor>
+    </Link>
   );
 }
 
 function renderDocsRow(item: DocsNavItem) {
   return (
-    <SiteAnchor href={item.href} className="docs-reference-row">
+    <Link key={item.href} href={item.href} class="docs-reference-row">
       <span>{item.section}</span>
       <strong>{item.label}</strong>
       <p>{item.goal ?? item.description}</p>
       <small>{item.outcome ?? item.nextLabel ?? 'Open guide'}</small>
-    </SiteAnchor>
+    </Link>
   );
 }
 
@@ -60,24 +61,24 @@ export function DocsIndexPage() {
   return (
     <DocLayout
       title="Documentation"
-      intro="A practical learning system for building Askr apps and static sites without losing the architecture thread."
+      intro="A practical path for building Askr apps, docs, and static output from the same route model."
     >
       <section class="docs-hub-hero">
         <div>
           <span class="docs-kicker">Start here</span>
-          <h2>Follow one path from install to deployable output.</h2>
+          <h2>Start with a working route, then choose how it renders.</h2>
           <p>
-            The docs are organized as a spine, not a pile: install, route,
-            render, style, test, deploy, and troubleshoot.
+            The docs move from install to routing, rendering, styling, testing,
+            deployment, and troubleshooting.
           </p>
         </div>
         <div class="docs-hub-actions">
-          <SiteAnchor className="cta-primary" href="/docs/start">
+          <Link class="cta-primary" href="/docs/start">
             Open onboarding lane
-          </SiteAnchor>
-          <SiteAnchor className="cta-secondary" href="/framework">
-            See framework proof
-          </SiteAnchor>
+          </Link>
+          <Link class="cta-secondary" href="/framework">
+            Open runtime overview
+          </Link>
         </div>
       </section>
 
@@ -85,10 +86,11 @@ export function DocsIndexPage() {
         {docsFeatured.map(renderFeaturedLink)}
       </section>
 
-      <SectionBand
+      <PageSection
+        className="section-band"
         kicker="Learning spine"
-        title="From first install to production output"
-        description="Use this rail when you want the framework, UI, themes, and SSG model to stay connected."
+        title="From install to generated output"
+        description="Follow this path to install Askr, build a route, choose a render mode, add data, style with tokens, and verify the generated files."
       >
         <DocsPathway
           items={docsLearningPath.map((item) => {
@@ -102,20 +104,21 @@ export function DocsIndexPage() {
             };
           })}
         />
-      </SectionBand>
+      </PageSection>
 
-      <SectionBand
+      <PageSection
+        className="section-band"
         kicker="Starter lanes"
         title="Choose the outcome first"
-        description="These lanes keep common starts short without hiding the next guide."
+        description="Pick the lane that matches the task you need to finish next."
       >
         <div class="docs-starter-list">
           {docsStarterLanes.links.map(renderDocsStarter)}
         </div>
-      </SectionBand>
+      </PageSection>
 
       {docsNavSections.map((section: DocsNavSection) => (
-        <section id={section.id} class="docs-reference-section">
+        <section key={section.id} id={section.id} class="docs-reference-section">
           <div class="docs-reference-heading">
             <BookOpenIcon size={18} />
             <div>
@@ -131,18 +134,26 @@ export function DocsIndexPage() {
       ))}
 
       <section class="docs-context-strip">
-        <SiteAnchor href="/docs/reference/troubleshooting">
+        <Link href="/docs/reference/troubleshooting">
           <RouteIcon size={17} />
           Troubleshooting index
-        </SiteAnchor>
-        <SiteAnchor href="https://github.com/nickrepa/askr/blob/main/CHANGELOG.md">
+        </Link>
+        <a
+          href="https://github.com/askrjs/askr/blob/main/CHANGELOG.md"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <ExternalLinkIcon size={17} />
           Changelog
-        </SiteAnchor>
-        <SiteAnchor href="https://github.com/nickrepa/askr/tree/main/examples">
+        </a>
+        <a
+          href="https://github.com/askrjs/askr/tree/main/examples"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <ExternalLinkIcon size={17} />
           Examples
-        </SiteAnchor>
+        </a>
       </section>
     </DocLayout>
   );

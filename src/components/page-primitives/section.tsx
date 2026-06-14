@@ -1,4 +1,6 @@
-﻿export interface SectionHeadProps {
+import { Stack } from '@askrjs/themes/layouts';
+
+export interface SectionHeadProps {
   kicker: string;
   title: string;
   description?: string;
@@ -6,11 +8,11 @@
 
 export function SectionHead(props: SectionHeadProps) {
   return (
-    <div class="section-head">
+    <Stack class="section-head" gap="3">
       <span class="section-kicker">{props.kicker}</span>
       <h2>{props.title}</h2>
       {props.description ? <p>{props.description}</p> : null}
-    </div>
+    </Stack>
   );
 }
 
@@ -30,14 +32,16 @@ export function PageSection(props: PageSectionProps) {
   if (props.className) classNames.push(props.className);
 
   return (
-    <section id={props.id} class={classNames.join(' ')}>
-      <SectionHead
-        kicker={props.kicker}
-        title={props.title}
-        description={props.description}
-      />
-      {props.children}
-    </section>
+    <Stack asChild gap="5">
+      <section id={props.id} class={classNames.join(' ')}>
+        <SectionHead
+          kicker={props.kicker}
+          title={props.title}
+          description={props.description}
+        />
+        {props.children}
+      </section>
+    </Stack>
   );
 }
 
@@ -58,13 +62,15 @@ export function SplitSection(props: SplitSectionProps) {
   }
 
   return (
-    <section id={props.id} class={classNames.join(' ')}>
-      <SectionHead
-        kicker={props.kicker}
-        title={props.title}
-        description={props.description}
-      />
-      {props.children}
-    </section>
+    <Stack asChild gap="5">
+      <section id={props.id} class={classNames.join(' ')}>
+        <SectionHead
+          kicker={props.kicker}
+          title={props.title}
+          description={props.description}
+        />
+        {props.children}
+      </section>
+    </Stack>
   );
 }

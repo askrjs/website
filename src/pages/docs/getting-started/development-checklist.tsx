@@ -1,11 +1,10 @@
-import { DocLayout } from '../../../components/doc-layout';
-import type { DocMeta } from '../../../pages/shared/doc-types';
+import { DocLayout } from '../_layout';
+import type { DocMeta } from '../_types';
 
 export const meta: DocMeta = {
   slug: 'getting-started/development-checklist',
   title: 'Development checklist',
-  summary:
-    'Establish quality gates that prevent regressions as pages multiply.',
+  summary: 'Add local checks that catch regressions as pages multiply.',
   section: 'Getting Started',
   order: 4,
   goal: 'Create a stable baseline process for local and CI validation.',
@@ -16,11 +15,11 @@ export const meta: DocMeta = {
   nextLabel: 'Understand actors',
   toc: [
     { id: 'toolchain-gates', label: 'Toolchain gates' },
-    { id: 'build-proofs', label: 'Build proofs' },
+    { id: 'static-output-checks', label: 'Static output checks' },
   ],
 };
 
-const qualityCommand = `npm run fmt
+const checkCommand = `npm run fmt
 npm run lint
 npm run typecheck
 npm run build`;
@@ -49,19 +48,19 @@ export function DevelopmentChecklistDocPage() {
           </li>
         </ul>
         <pre class="code-block">
-          <code>{qualityCommand}</code>
+          <code>{checkCommand}</code>
         </pre>
       </section>
 
-      <section id="build-proofs">
-        <h2>Build proofs</h2>
+      <section id="static-output-checks">
+        <h2>Static output checks</h2>
         <p>
-          Keep a `dist` inspection step in your CI to detect asset shape changes
-          early.
+          Inspect `dist` in CI so route count, metadata, document shape, and
+          asset references fail before deployment.
         </p>
         <p>
-          Store one sample build output and compare route count, generated file
-          count, and route-level errors before merging large content changes.
+          Compare route count, generated file count, and route-level errors
+          before merging large content or route changes.
         </p>
         <pre class="code-block">
           <code>{metadataCheck}</code>
