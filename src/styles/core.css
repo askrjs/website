@@ -62,7 +62,7 @@
 }
 
 :root {
-  --content-width: 1180px;
+  --content-width: 1200px;
   --reading-width: 760px;
   --sidebar-width: 260px;
   --toc-width: 220px;
@@ -72,29 +72,68 @@
   --site-font-mono:
     'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
   --site-font-serif: 'Source Serif 4', Georgia, serif;
-  --site-ink: #111827;
-  --site-canvas: #f7f4ee;
-  --site-paper: #fffaf0;
-  --site-signal: #0f9f6e;
-  --site-cyan: #0284a8;
-  --site-oxide: #b5522b;
-  --site-red: #b42318;
-  --site-shadow: color-mix(in srgb, var(--ak-color-fg) 10%, transparent);
+  --site-font-display: 'Source Serif 4', Georgia, serif;
+  --site-ink: #0f1720;
+  --site-canvas: #f6f7f9;
+  --site-paper: #ffffff;
+  --site-signal: #12a36a;
+  --site-cyan: #0a66ff;
+  --site-oxide: #8a5520;
+  --site-red: #d63a3a;
+  --site-shadow: rgba(15, 23, 32, 0.1);
+  --site-elevated-shadow:
+    0 26px 72px rgba(15, 23, 32, 0.12), 0 8px 24px rgba(15, 23, 32, 0.08);
+  --site-hairline: rgba(15, 23, 32, 0.12);
+  --site-soft-panel: color-mix(in srgb, var(--site-cyan) 7%, transparent);
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
   --ak-font-family: var(--site-font-sans);
-  --ak-radius-sm: 6px;
-  --ak-radius-md: 8px;
-  --ak-radius-lg: 8px;
+  --ak-radius-sm: 8px;
+  --ak-radius-md: 12px;
+  --ak-radius-lg: 16px;
+}
+
+[data-theme='light'] {
+  --ak-color-bg: #f6f7f9;
+  --ak-color-surface: #ffffff;
+  --ak-color-surface-muted: #f1f3f6;
+  --ak-color-surface-raised: #ffffff;
+  --ak-color-surface-overlay: rgba(255, 255, 255, 0.84);
+  --ak-color-fg: #0f1720;
+  --ak-color-muted: #5d6672;
+  --ak-color-border: #d8dee6;
 }
 
 [data-theme='dark'] {
-  --site-ink: #f7f2e8;
-  --site-canvas: #101214;
-  --site-paper: #171a1d;
-  --site-signal: #34d399;
-  --site-cyan: #22d3ee;
-  --site-oxide: #fb923c;
-  --site-red: #f87171;
-  --site-shadow: color-mix(in srgb, black 32%, transparent);
+  --site-ink: #e9eef7;
+  --site-canvas: #0a0d12;
+  --site-paper: #11161d;
+  --site-signal: #33c98a;
+  --site-cyan: #5b9dff;
+  --site-oxide: #f0ad4e;
+  --site-red: #ff6b6b;
+  --site-shadow: rgba(0, 0, 0, 0.42);
+  --site-elevated-shadow:
+    0 28px 76px rgba(0, 0, 0, 0.46), 0 10px 30px rgba(0, 0, 0, 0.34);
+  --site-hairline: rgba(255, 255, 255, 0.16);
+  --site-soft-panel: color-mix(in srgb, var(--site-cyan) 12%, transparent);
+  --ak-color-bg: #0a0d12;
+  --ak-color-surface: #11161d;
+  --ak-color-surface-muted: #171d26;
+  --ak-color-surface-raised: #11161d;
+  --ak-color-surface-overlay: rgba(17, 22, 29, 0.82);
+  --ak-color-fg: #e9eef7;
+  --ak-color-muted: #9ea9ba;
+  --ak-color-border: #2a3342;
 }
 
 * {
@@ -106,17 +145,17 @@ html {
   min-width: 320px;
   background:
     linear-gradient(
-        90deg,
-        color-mix(in srgb, var(--ak-color-border) 28%, transparent) 1px,
-        transparent 1px
-      )
-      0 0 / 48px 48px,
-    linear-gradient(
         180deg,
-        color-mix(in srgb, var(--ak-color-border) 24%, transparent) 1px,
+        color-mix(in srgb, var(--ak-color-border) 22%, transparent) 1px,
         transparent 1px
       )
-      0 0 / 48px 48px,
+      0 0 / 100% 56px,
+    linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--ak-color-border) 14%, transparent) 1px,
+        transparent 1px
+      )
+      0 0 / 56px 100%,
     var(--ak-color-bg);
   color: var(--ak-color-fg);
   font-family: var(--site-font-sans);
@@ -129,8 +168,8 @@ body {
   color: var(--ak-color-fg);
   background: transparent;
   font-family: var(--site-font-sans);
-  font-size: 1rem;
-  line-height: 1.65;
+  font-size: 1.04rem;
+  line-height: 1.72;
 }
 
 body::selection {
@@ -161,6 +200,8 @@ h1,
 h2,
 h3,
 h4,
+h5,
+h6,
 p {
   margin-top: 0;
 }
@@ -168,34 +209,40 @@ p {
 h1,
 h2,
 h3,
-h4 {
+h4,
+h5,
+h6 {
   color: var(--ak-color-fg);
-  font-weight: 820;
-  line-height: 1.08;
+  font-family: var(--site-font-display);
+  font-weight: 640;
+  line-height: 1.03;
+  letter-spacing: -0.025em;
   text-wrap: balance;
 }
 
 h1 {
-  font-size: 4.35rem;
-}
-
-.signal-hero-copy h1,
-.product-hero h1,
-.hero h1,
-.landing-hero h1,
-.docs-header h1 {
-  font-family: var(--site-font-serif);
-  font-weight: 760;
-  font-optical-sizing: auto;
-  line-height: 0.98;
+  font-size: clamp(3.25rem, 8vw, 5.75rem);
 }
 
 h2 {
-  font-size: 2.1rem;
+  font-size: clamp(2.1rem, 4.8vw, 3.35rem);
 }
 
 h3 {
-  font-size: 1.08rem;
+  font-size: 1.24rem;
+}
+
+h4,
+h5,
+h6 {
+  font-size: 1rem;
+}
+
+.serif-display {
+  font-family: var(--site-font-display);
+  font-weight: 640;
+  font-optical-sizing: auto;
+  letter-spacing: -0.03em;
 }
 
 p {

@@ -170,9 +170,9 @@ export function HomePage() {
     <SiteFrame>
       <main class="site-main home-main">
         <SignalHero
-          eyebrow="Precision reactive UI"
-          title="Askr"
-          intro="A fine-grained framework for static sites, apps, and docs that stay explainable from the first route to production output."
+          eyebrow="Serious infrastructure for developers"
+          title="Ask better questions."
+          intro="Type-safe interactive workflows for modern TypeScript applications. Keep rendering explicit, routing predictable, and output production-ready from first commit to deployment."
           primary={{
             href: docsStartPath,
             label: 'Start building',
@@ -200,24 +200,24 @@ export function HomePage() {
           />
 
           <SectionBand
-            kicker="Route to release"
-            title="A single path from first page to static output"
-            description="Every marketing claim has a matching guide, route, or code artifact. The site teaches the same architecture it uses."
+            kicker="Problem"
+            title="Most stacks hide intent as complexity grows"
+            description="Teams lose confidence when state, routing, and delivery paths diverge. Askr keeps the operational model visible so product decisions stay auditable."
           >
             <LaunchRail steps={launchPath} />
           </SectionBand>
 
           <SectionBand
-            kicker="How it works"
-            title="Reactivity, routing, and theme tokens in one model"
-            description="Askr keeps the moving parts explicit: state updates stay local, routes can render three ways, and theme tokens carry the visual system."
+            kicker="Solution"
+            title="One coherent model across runtime and output"
+            description="Fine-grained reactivity, route orchestration, and theme primitives stay connected. You can trace what changed, why it changed, and where it ships."
           >
             <ArchitecturePass nodes={architecturePass} />
           </SectionBand>
 
           <section class="build-confidence">
             <div>
-              <span class="section-kicker">Build with proof</span>
+              <span class="section-kicker">Developer experience</span>
               <h2>{model.featureSection.title}</h2>
               <p>{model.featureSection.description}</p>
             </div>
@@ -248,12 +248,11 @@ export function HomePage() {
           ))}
 
           <section class="home-final">
-            <span class="section-kicker">Next move</span>
-            <h2>Start with one route, then keep the system honest.</h2>
+            <span class="section-kicker">Production readiness</span>
+            <h2>Ship with a system your team can defend.</h2>
             <p>
-              The fastest way to evaluate Askr is to install the stack, render a
-              first page, and inspect how little framework machinery sits
-              between state and output.
+              Validate the architecture quickly: install once, render a working
+              route, then inspect the exact path from state to final output.
             </p>
             <div class="home-confidence-grid">
               <SiteAnchor href={docsStartPath} className="home-confidence-link">

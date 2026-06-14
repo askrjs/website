@@ -5,6 +5,7 @@ import {
   PaletteIcon,
   SunIcon,
 } from '@askrjs/lucide';
+import { Button } from '@askrjs/themes/controls';
 
 import { SiteFrame } from '../../components/site-shell';
 import { SiteAnchor } from '../../components/site-link';
@@ -76,6 +77,16 @@ const themeCode = `:root {
   border: 1px solid var(--ak-color-border);
 }`;
 
+function setTheme(nextTheme: 'light' | 'dark') {
+  if (typeof document === 'undefined') return;
+
+  document.documentElement.setAttribute('data-theme', nextTheme);
+
+  if (typeof localStorage !== 'undefined') {
+    localStorage.setItem('theme', nextTheme);
+  }
+}
+
 export function ThemesLandingPage() {
   return (
     <SiteFrame>
@@ -104,14 +115,20 @@ export function ThemesLandingPage() {
             </div>
             <div class="theme-lab" aria-label="Theme token lab">
               <div class="theme-lab-modes">
-                <span>
+                <Button
+                  className="theme-lab-mode theme-lab-mode-light"
+                  onPress={() => setTheme('light')}
+                >
                   <SunIcon size={16} />
                   light
-                </span>
-                <span>
+                </Button>
+                <Button
+                  className="theme-lab-mode theme-lab-mode-dark"
+                  onPress={() => setTheme('dark')}
+                >
                   <MoonIcon size={16} />
                   dark
-                </span>
+                </Button>
               </div>
               <div class="theme-lab-card">
                 <strong>token layer</strong>

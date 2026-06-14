@@ -1,3 +1,4 @@
+import { state } from '@askrjs/askr';
 import { currentRoute } from '@askrjs/askr/router';
 import { BookOpenIcon } from '@askrjs/lucide';
 import { Separator } from '../ui/primitives/separator';
@@ -12,13 +13,23 @@ import {
 } from '../pages/shared/content';
 import { SiteAnchor } from './site-link';
 import { SiteFrame } from './site-shell';
-import { BrandMark } from './site-primitives';
 
 export interface DocLayoutProps extends Props {
   title: string;
   intro: string;
   meta?: DocMeta;
   children?: unknown;
+}
+
+function toggleDocsNavigation() {
+  if (typeof document === 'undefined') return;
+
+  const sidebar = document.querySelector('.docs-sidebar');
+  const button = document.querySelector('.docs-mobile-nav-toggle');
+  const nextOpen = button?.getAttribute('aria-expanded') !== 'true';
+
+  sidebar?.classList.toggle('is-open', nextOpen);
+  button?.setAttribute('aria-expanded', nextOpen ? 'true' : 'false');
 }
 
 function renderSidebarItem(item: DocsNavItem, currentPath: string) {
@@ -116,6 +127,23 @@ export function DocLayout(props: DocLayoutProps) {
   const currentItem = props.meta
     ? findDocsNavItemBySlug(props.meta.slug)
     : null;
+  const [searchQuery, setSearchQuery] = state('');
+
+  const query = searchQuery().trim().toLowerCase();
+  const filteredSections = docsNavSections
+    .map((section) => ({
+      ...section,
+      items: section.items.filter((item) => {
+        if (!query) return true;
+        const summary = item.description?.toLowerCase() ?? '';
+        return (
+          item.label.toLowerCase().includes(query) ||
+          item.slug.toLowerCase().includes(query) ||
+          summary.includes(query)
+        );
+      }),
+    }))
+    .filter((section) => section.items.length > 0);
 
   const toc = props.meta?.toc;
   const hasToc = toc && toc.length > 0;
@@ -126,17 +154,36 @@ export function DocLayout(props: DocLayoutProps) {
         <div class={hasToc ? 'docs-shell has-toc' : 'docs-shell'}>
           <aside class="docs-sidebar">
             <div class="docs-sidebar-inner">
-              <SiteAnchor href="/docs" className="docs-sidebar-home">
-                <BrandMark compact />
-                <span class="docs-sidebar-kicker">
-                  Documentation control room
-                </span>
-              </SiteAnchor>
+              <span class="docs-sidebar-kicker">Documentation control room</span>
+              <button
+                class="docs-mobile-nav-toggle"
+                type="button"
+                aria-expanded="false"
+                onClick={toggleDocsNavigation}
+              >
+                Browse docs sections
+              </button>
+              <label class="docs-sidebar-search" for="docs-search">
+                <span>Search docs</span>
+                <input
+                  id="docs-search"
+                  type="search"
+                  placeholder="Filter pages, guides, and references"
+                  value={searchQuery}
+                  onInput={(event) => {
+                    const target = event.currentTarget as HTMLInputElement;
+                    setSearchQuery(target.value);
+                  }}
+                />
+              </label>
               <Separator class="docs-rule" decorative />
               <nav class="docs-sidebar-nav">
-                {docsNavSections.map((section) =>
+                {filteredSections.map((section) =>
                   renderSidebarSection(section, currentPath)
                 )}
+                {!filteredSections.length ? (
+                  <p class="docs-sidebar-empty">No docs pages match that search.</p>
+                ) : null}
               </nav>
             </div>
           </aside>
@@ -144,6 +191,15 @@ export function DocLayout(props: DocLayoutProps) {
           <main class="docs-main">
             <div class="docs-main-inner">
               <header class="docs-header">
+                {currentItem ? (
+                  <nav class="docs-breadcrumb" aria-label="Breadcrumb">
+                    <SiteAnchor href="/docs">Docs</SiteAnchor>
+                    <span>/</span>
+                    <span>{currentItem.section}</span>
+                    <span>/</span>
+                    <span aria-current="page">{currentItem.label}</span>
+                  </nav>
+                ) : null}
                 <div class="docs-header-meta">
                   <span class="docs-kicker docs-header-kicker">
                     <BookOpenIcon size={15} />

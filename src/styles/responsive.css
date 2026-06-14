@@ -119,6 +119,43 @@
 
   .docs-sidebar {
     border-bottom: 1px solid var(--ak-color-border);
+    padding: 0.9rem 0;
+  }
+
+  .docs-sidebar .docs-rule,
+  .docs-sidebar .docs-sidebar-nav,
+  .docs-sidebar .docs-sidebar-search {
+    display: none;
+  }
+
+  .docs-sidebar.is-open .docs-rule,
+  .docs-sidebar.is-open .docs-sidebar-nav,
+  .docs-sidebar.is-open .docs-sidebar-search {
+    display: grid;
+  }
+
+  .docs-sidebar.is-open .docs-rule {
+    display: block;
+  }
+
+  .docs-mobile-nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.4rem;
+    width: 100%;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid color-mix(in srgb, var(--ak-color-border) 88%, transparent);
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--ak-color-surface) 90%, transparent);
+    color: var(--ak-color-fg);
+    font-weight: 650;
+    text-align: left;
+  }
+
+  .docs-mobile-nav-toggle[aria-expanded='true'] {
+    border-color: color-mix(in srgb, var(--site-cyan) 38%, transparent);
+    background: color-mix(in srgb, var(--site-cyan) 10%, transparent);
   }
 
   .docs-main-inner {
