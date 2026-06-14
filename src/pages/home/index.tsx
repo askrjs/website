@@ -13,6 +13,11 @@ import {
 
 import { SiteFrame } from '../../components/site-shell';
 import { SiteAnchor } from '../../components/site-link';
+import { HeroActionGrid } from '../../components/page-primitives/hero';
+import {
+  PageSection,
+  SplitSection,
+} from '../../components/page-primitives/section';
 import {
   CodeWindow,
   DocsPathway,
@@ -67,7 +72,7 @@ function RuntimeSignalMap() {
           <strong>state()</strong>
           <span>local signal {count()}</span>
         </article>
-        <article class="runtime-node">
+        <article class="runtime-node derive">
           <GitBranchIcon size={18} />
           <strong>derive()</strong>
           <span>computed only where used</span>
@@ -139,12 +144,13 @@ function ArchitecturePass(props: { nodes: ArchitectureNode[] }) {
 
 function DocsLane(props: { section: HomeSection; index: number }) {
   return (
-    <section class={`docs-lane ${props.index % 2 ? 'docs-lane-reverse' : ''}`}>
-      <div>
-        <span class="section-kicker">{props.section.kicker}</span>
-        <h2>{props.section.title}</h2>
-        <p>{props.section.description}</p>
-      </div>
+    <SplitSection
+      className="docs-lane"
+      kicker={props.section.kicker}
+      title={props.section.title}
+      description={props.section.description}
+      reverse={Boolean(props.index % 2)}
+    >
       <DocsPathway
         items={props.section.links.map((link, index) => ({
           stage: link.badge ?? `Step ${index + 1}`,
@@ -154,7 +160,7 @@ function DocsLane(props: { section: HomeSection; index: number }) {
           cta: link.cta ?? 'Read guide',
         }))}
       />
-    </section>
+    </SplitSection>
   );
 }
 
@@ -215,12 +221,12 @@ export function HomePage() {
             <ArchitecturePass nodes={architecturePass} />
           </SectionBand>
 
-          <section class="build-confidence">
-            <div>
-              <span class="section-kicker">Developer experience</span>
-              <h2>{model.featureSection.title}</h2>
-              <p>{model.featureSection.description}</p>
-            </div>
+          <SplitSection
+            className="build-confidence"
+            kicker="Developer experience"
+            title={model.featureSection.title}
+            description={model.featureSection.description}
+          >
             <ul>
               <li>
                 <RouteIcon size={18} />
@@ -241,37 +247,38 @@ export function HomePage() {
                 <span>Theme tokens stay inspectable in ordinary CSS.</span>
               </li>
             </ul>
-          </section>
+          </SplitSection>
 
           {sections.map((section, index) => (
             <DocsLane section={section} index={index} />
           ))}
 
-          <section class="home-final">
-            <span class="section-kicker">Production readiness</span>
-            <h2>Ship with a system your team can defend.</h2>
-            <p>
-              Validate the architecture quickly: install once, render a working
-              route, then inspect the exact path from state to final output.
-            </p>
-            <div class="home-confidence-grid">
-              <SiteAnchor href={docsStartPath} className="home-confidence-link">
-                Open onboarding lane
-              </SiteAnchor>
-              <SiteAnchor
-                href="/docs"
-                className="home-confidence-link home-confidence-link-muted"
-              >
-                Open docs hub
-              </SiteAnchor>
-              <SiteAnchor
-                href="/showcase/askr"
-                className="home-confidence-link home-confidence-link-muted"
-              >
-                Inspect runtime reference
-              </SiteAnchor>
-            </div>
-          </section>
+          <PageSection
+            className="home-final"
+            kicker="Production readiness"
+            title="Ship with a system your team can defend."
+            description="Validate the architecture quickly: install once, render a working route, then inspect the exact path from state to final output."
+          >
+            <HeroActionGrid
+              actions={[
+                {
+                  href: docsStartPath,
+                  label: 'Open onboarding lane',
+                  cta: 'Install, route, ship',
+                },
+                {
+                  href: '/docs',
+                  label: 'Open docs hub',
+                  cta: 'Browse the system',
+                },
+                {
+                  href: '/showcase/askr',
+                  label: 'Inspect runtime reference',
+                  cta: 'Review the runtime model',
+                },
+              ]}
+            />
+          </PageSection>
         </div>
       </main>
     </SiteFrame>

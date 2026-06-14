@@ -2,6 +2,7 @@ import { Button } from '@askrjs/themes/controls';
 import { ArrowRightIcon } from '@askrjs/lucide';
 
 import type { Props } from '../types/props';
+import { PageSection } from './page-primitives/section';
 import { SiteAnchor } from './site-link';
 
 type IconComponent = (props: {
@@ -64,14 +65,14 @@ export interface SectionBandProps extends Props {
 
 export function SectionBand(props: SectionBandProps) {
   return (
-    <section class={`section-band ${props.className ?? ''}`}>
-      <div class="section-band-head">
-        <span class="section-kicker">{props.kicker}</span>
-        <h2>{props.title}</h2>
-        {props.description ? <p>{props.description}</p> : null}
-      </div>
+    <PageSection
+      kicker={props.kicker}
+      title={props.title}
+      description={props.description}
+      className={`section-band ${props.className ?? ''}`.trim()}
+    >
       {props.children}
-    </section>
+    </PageSection>
   );
 }
 

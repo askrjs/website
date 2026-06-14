@@ -117,9 +117,10 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: start;
   gap: 1rem;
-  margin-top: 4.2rem;
+  margin-top: 3rem;
 }
 
 .runtime-node {
@@ -132,11 +133,28 @@
 }
 
 .runtime-node.source {
-  transform: translateY(2.3rem);
+  grid-column: 1 / 3;
+  grid-row: 1;
+}
+
+.runtime-node.derive {
+  grid-column: 3 / 5;
+  grid-row: 1;
+}
+
+.runtime-node.route {
+  grid-column: 5 / 7;
+  grid-row: 1;
 }
 
 .runtime-node.output {
-  transform: translateY(4.8rem);
+  grid-column: 2 / 4;
+  grid-row: 2;
+}
+
+.runtime-node.theme {
+  grid-column: 4 / 6;
+  grid-row: 2;
 }
 
 .runtime-node svg,
@@ -446,6 +464,7 @@
   color: var(--site-cyan);
 }
 
+.page-section-split,
 .build-confidence,
 .proof-split,
 .docs-lane {
@@ -456,10 +475,12 @@
   margin: 5rem 0;
 }
 
+.page-section-split-reverse,
 .docs-lane-reverse {
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
 }
 
+.page-section-split-reverse > .section-head,
 .docs-lane-reverse > div:first-child {
   order: 2;
 }
