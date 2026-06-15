@@ -5,9 +5,9 @@ import {
   ThemeExampleCard,
 } from '../../../components/page-primitives';
 import { DetailTemplate } from '../../../components/page-templates';
-import { createUiComponentDetailModel } from '../../../features/ui/model/component-detail-model';
-import type { UiComponentMeta } from '../../../features/ui/registry';
-import { getDemoForSlug } from '../../../features/ui/demos';
+import { createUiComponentDetailModel } from './_model/component-detail-model';
+import type { UiComponentMeta } from './_registry';
+import { getDemoForSlug } from './_demos';
 
 export function UiComponentDetailPage(props: { meta: UiComponentMeta }) {
   const model = createUiComponentDetailModel(props.meta);

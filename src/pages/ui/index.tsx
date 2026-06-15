@@ -10,14 +10,14 @@ import {
   ShieldCheckIcon,
 } from '@askrjs/lucide';
 
-import { SiteFrame } from '../components/site-shell';
-import { PageSection } from '../components/page-primitives/section';
+import { SiteFrame } from '../../components/site-shell';
+import { PageSection } from '../../components/page-primitives/section';
 import {
   IconFeatureList,
   ProofStrip,
-} from '../components/site-primitives';
-import type { IconFeature } from '../components/site-primitives';
-import { uiComponents } from '../features/ui/registry';
+} from '../../components/site-primitives';
+import type { IconFeature } from '../../components/site-primitives';
+import { uiComponents } from '../showcase/ui/_registry';
 
 const features: IconFeature[] = [
   {

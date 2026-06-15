@@ -2,7 +2,7 @@ import type { WebsiteRoute } from '../_types';
 
 import { AskrPage } from './askr';
 import { ThemesPage } from './themes';
-import { UiPage } from './ui';
+import { UiPage } from './ui/index';
 import { uiComponentRoutes } from './ui/components/_routes';
 
 function routeKey(path: string) {

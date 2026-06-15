@@ -1,4 +1,4 @@
-import { groupUiComponents, uiComponents } from '../registry';
+import { groupUiComponents, uiComponents } from '../_registry';
 import { toAnchorId } from './common';
 
 export function createUiShowcaseModel() {

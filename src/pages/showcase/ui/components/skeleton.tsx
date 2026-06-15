@@ -1,5 +1,5 @@
 import { UiComponentDetailPage } from '../_component-detail';
-import { requireUiComponent } from '../../../../features/ui/registry';
+import { requireUiComponent } from '../_registry';
 
 const meta = requireUiComponent('skeleton');
 

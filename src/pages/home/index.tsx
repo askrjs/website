@@ -1,5 +1,5 @@
-import { SiteFrame } from '../components/site-shell';
-import { createHomeModel } from '../features/home/model';
+import { SiteFrame } from '../../components/site-shell';
+import { createHomeModel } from './_model';
 import {
   DocsLaneSection,
   HomeDeveloperExperienceSection,
@@ -12,7 +12,7 @@ import {
   type HomeSection,
   type HomeStat,
   type LaunchStep,
-} from '../features/home/sections';
+} from './_sections';
 
 export function HomePage() {
   const model = createHomeModel();

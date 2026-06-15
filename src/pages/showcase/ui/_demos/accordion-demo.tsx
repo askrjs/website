@@ -4,7 +4,7 @@ import {
   AccordionHeader,
   AccordionTrigger,
   AccordionContent,
-} from '../demo-kit/composites/accordion';
+} from '../_demo-kit/composites/accordion';
 
 export function AccordionDemo() {
   return (

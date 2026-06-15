@@ -21,15 +21,14 @@ Static website for the askr ecosystem, generated with `vite-plus` + Askr SSG and
 - `scripts/verify-static-output.ts`: verifies generated document shape, metadata, and assets
 - `index.html`: canonical document template for dev and generated output
 - `src/pages/_routes.tsx`: root route composition plus SPA/SSR/static adapters
+- `src/pages/home/`, `src/pages/framework/`, `src/pages/ui/`, `src/pages/themes/`: top-level route groups with page-owned `_routes` files
 - `src/pages/docs/_routes.tsx`: docs route group, backed by docs-local `_content`, `_layout`, and `_registry` files
-- `src/pages/showcase/_routes.tsx`: showcase route group, including UI component detail routes
+- `src/pages/showcase/_routes.tsx`: showcase route group, including nested UI component detail routes
 - `src/components/site-shell/`: body-level site chrome shared by pages
 - `src/components/page-templates/page-shell.tsx`: reusable page container template
 - `src/components/site-primitives/`: reusable site-level building blocks
 - `src/pages/docs/`: docs pages and docs-owned private helpers
-- `src/pages/showcase/`: showcase page modules and nested showcase route groups
-- `src/features/home/`: home content, model, and sections
-- `src/features/ui/`: UI showcase registry, demos, and models
+- `src/pages/showcase/`: showcase pages plus UI registry, demos, and models owned by the nested showcase UI route group
 - `src/lib/site-nav.ts`: cross-site navigation contracts and links
 - `src/styles.css`: shared site styles
 

@@ -72,15 +72,71 @@ const themeCode = `:root {
   --site-oxide: #b45309;
 }
 
-.product-proof {
+.feature-card {
   background: var(--ak-color-surface);
   color: var(--ak-color-fg);
   border: 1px solid var(--ak-color-border);
 }`;
 
-export function ThemesLandingPage() {
+function ThemeLab() {
+  return (
+    <div class="theme-lab" aria-label="Theme token lab">
+      <div class="theme-lab-modes">
+        <Button class="theme-lab-mode theme-lab-mode-light">
+          <SunIcon size={16} />
+          light
+        </Button>
+        <Button class="theme-lab-mode theme-lab-mode-dark">
+          <MoonIcon size={16} />
+          dark
+        </Button>
+      </div>
+      <div class="theme-lab-card">
+        <strong>token layer</strong>
+        <span>--ak-color-surface</span>
+        <span>--ak-color-primary</span>
+        <span>--ak-radius-md</span>
+      </div>
+    </div>
+  );
+}
+
+function InteractiveThemeLab() {
+  if (typeof window === 'undefined') {
+    return <ThemeLab />;
+  }
+
   const theme = useTheme();
 
+  return (
+    <div class="theme-lab" aria-label="Theme token lab">
+      <div class="theme-lab-modes">
+        <Button
+          class="theme-lab-mode theme-lab-mode-light"
+          onPress={() => theme.setTheme('light')}
+        >
+          <SunIcon size={16} />
+          light
+        </Button>
+        <Button
+          class="theme-lab-mode theme-lab-mode-dark"
+          onPress={() => theme.setTheme('dark')}
+        >
+          <MoonIcon size={16} />
+          dark
+        </Button>
+      </div>
+      <div class="theme-lab-card">
+        <strong>token layer</strong>
+        <span>--ak-color-surface</span>
+        <span>--ak-color-primary</span>
+        <span>--ak-radius-md</span>
+      </div>
+    </div>
+  );
+}
+
+export function ThemesLandingPage() {
   return (
     <SiteFrame>
       <main class="site-main">
@@ -88,11 +144,11 @@ export function ThemesLandingPage() {
           <div class="container product-hero-grid">
             <div>
               <span class="section-kicker">askr-themes</span>
-              <h1>Theme tokens as the product interface.</h1>
+              <h1>Theme tokens for Askr apps and documentation.</h1>
               <p>
-                askr-themes gives the site a stable semantic base. The Askr
-                brand layer then adds precision, contrast, and motion without
-                breaking the token contract.
+                askr-themes provides semantic CSS variables and default
+                component styles. Use the token layer first, then add brand CSS
+                only where the site needs a specific treatment.
               </p>
               <div class="landing-hero-ctas">
                 <Link href="/showcase/themes" class="cta-primary">
@@ -106,30 +162,7 @@ export function ThemesLandingPage() {
                 </Link>
               </div>
             </div>
-            <div class="theme-lab" aria-label="Theme token lab">
-              <div class="theme-lab-modes">
-                <Button
-                  class="theme-lab-mode theme-lab-mode-light"
-                  onPress={() => theme.setTheme('light')}
-                >
-                  <SunIcon size={16} />
-                  light
-                </Button>
-                <Button
-                  class="theme-lab-mode theme-lab-mode-dark"
-                  onPress={() => theme.setTheme('dark')}
-                >
-                  <MoonIcon size={16} />
-                  dark
-                </Button>
-              </div>
-              <div class="theme-lab-card">
-                <strong>token layer</strong>
-                <span>--ak-color-surface</span>
-                <span>--ak-color-primary</span>
-                <span>--ak-radius-md</span>
-              </div>
-            </div>
+            <InteractiveThemeLab />
           </div>
         </section>
 
@@ -158,7 +191,7 @@ export function ThemesLandingPage() {
             className="section-band"
             kicker="Theme contract"
             title="Lean on the shared tokens, then add a branded layer"
-            description="The site should prove that askr-themes is useful by using it directly: token first, overrides second, bespoke selectors last."
+            description="Use askr-themes for shared colors, radius, spacing, and component states. Keep site-specific selectors small and easy to audit."
           >
             <IconFeatureList features={features} />
           </PageSection>
@@ -188,7 +221,7 @@ export function ThemesLandingPage() {
             className="section-band"
             kicker="CSS"
             title="Override the site without owning a theme engine"
-            description="The brand layer is ordinary CSS. That keeps SSG output predictable and makes inspection straightforward."
+            description="The brand layer is ordinary CSS, so generated pages can be inspected without running a theme runtime."
           >
             <CodeWindow label="precision-lab.css" code={themeCode} />
           </PageSection>

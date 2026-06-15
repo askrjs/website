@@ -2,7 +2,7 @@ import {
   getComponentSource,
   getComponentUsage,
   type UiComponentMeta,
-} from '../registry';
+} from '../_registry';
 
 export function createUiComponentDetailModel(meta: UiComponentMeta) {
   const source = getComponentSource(meta);

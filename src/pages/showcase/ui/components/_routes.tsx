@@ -1,6 +1,6 @@
 import type { WebsiteRoute } from '../../../_types';
 import { UiComponentDetailPage } from '../_component-detail';
-import { uiComponents } from '../../../../features/ui/registry';
+import { uiComponents } from '../_registry';
 
 export const uiComponentRoutes: WebsiteRoute[] = uiComponents.map((meta) => ({
   path: `/showcase/ui/${meta.slug}`,

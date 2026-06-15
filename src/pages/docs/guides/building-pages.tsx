@@ -26,10 +26,11 @@ const pageModelCode = `export function createHomeModel() {
   };
 }`;
 
-const pageRouteCode = `const staticRoutes = [
+const pageRouteCode = `export const homeRoutes = [
   {
     path: "/",
     render: HomePage,
+    invalidationKeys: ["route:/", "home", "site"],
     getDocumentMeta: () => ({
       title: "Askr",
       description: "Fine-grained framework and static docs.",
@@ -62,8 +63,9 @@ export function BuildingPagesDocPage() {
           ssg.config.ts consume those routes.
         </p>
         <p>
-          Prefer explicit route tables so SPA, SSR, and SSG can share the same
-          page inventory.
+          Prefer route-owned `_routes` files so SPA, SSR, and SSG can share the
+          same page inventory without turning the root registry into page
+          content.
         </p>
         <pre class="code-block">
           <code>{pageRouteCode}</code>

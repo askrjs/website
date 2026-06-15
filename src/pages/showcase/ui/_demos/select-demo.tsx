@@ -6,7 +6,7 @@ import {
   SelectContent,
   SelectItem,
   SelectItemText,
-} from '../demo-kit/primitives/select';
+} from '../_demo-kit/primitives/select';
 
 export function SelectDemo() {
   const [value, setValue] = state('');

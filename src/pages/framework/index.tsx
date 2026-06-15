@@ -12,14 +12,14 @@ import {
   ZapIcon,
 } from '@askrjs/lucide';
 
-import { SiteFrame } from '../components/site-shell';
-import { PageSection } from '../components/page-primitives/section';
+import { SiteFrame } from '../../components/site-shell';
+import { PageSection } from '../../components/page-primitives/section';
 import {
   CodeWindow,
   IconFeatureList,
   ProofStrip,
-} from '../components/site-primitives';
-import type { IconFeature } from '../components/site-primitives';
+} from '../../components/site-primitives';
+import type { IconFeature } from '../../components/site-primitives';
 
 const features: IconFeature[] = [
   {

@@ -6,8 +6,8 @@ import {
   DialogTitle,
   DialogDescription,
   DialogClose,
-} from '../demo-kit/composites/dialog';
-import { Button } from '../demo-kit/primitives/button';
+} from '../_demo-kit/composites/dialog';
+import { Button } from '../_demo-kit/primitives/button';
 
 export function DialogDemo() {
   return (

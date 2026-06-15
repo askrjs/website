@@ -1,6 +1,6 @@
-import { CatalogSection } from '../../components/page-primitives';
-import { CatalogTemplate } from '../../components/page-templates';
-import { createUiShowcaseModel } from '../../features/ui/model/showcase-model';
+import { CatalogSection } from '../../../components/page-primitives';
+import { CatalogTemplate } from '../../../components/page-templates';
+import { createUiShowcaseModel } from './_model/showcase-model';
 
 export function UiPage() {
   const model = createUiShowcaseModel();

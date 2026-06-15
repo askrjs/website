@@ -9,11 +9,11 @@ import type {
 
 import { withWebsiteProviders } from '../components/app-providers';
 import { docsRoutes } from './docs/_routes';
-import { FrameworkPage } from './framework';
-import { HomePage } from './home';
+import { frameworkRoutes } from './framework/_routes';
+import { homeRoutes } from './home/_routes';
 import { showcaseRoutes } from './showcase/_routes';
-import { ThemesLandingPage } from './themes';
-import { UiLandingPage } from './ui';
+import { themesRoutes } from './themes/_routes';
+import { uiRoutes } from './ui/_routes';
 
 export function resolveDocumentMeta(
   route: WebsiteRoute,
@@ -71,51 +71,11 @@ function routeKey(path: string) {
   return `route:${path}`;
 }
 
-const staticRoutes: WebsiteRoute[] = [
-  {
-    path: '/',
-    render: HomePage,
-    invalidationKeys: [routeKey('/'), 'home', 'site'],
-    getDocumentMeta: () => ({
-      title: 'Askr',
-      description:
-        'Fine-grained reactive framework, accessible UI primitives, theme tokens, and static site generation for Askr apps.',
-    }),
-  },
-  {
-    path: '/framework',
-    render: FrameworkPage,
-    invalidationKeys: [routeKey('/framework'), 'framework'],
-    getDocumentMeta: () => ({
-      title: 'Framework',
-      description:
-        'Fine-grained reactive framework with actor-backed updates, routing, SSR, and SSG.',
-    }),
-  },
-  {
-    path: '/ui',
-    render: UiLandingPage,
-    invalidationKeys: [routeKey('/ui'), 'ui-components', 'product'],
-    getDocumentMeta: () => ({
-      title: 'UI Components',
-      description:
-        '36+ headless, accessible UI components for askr. Styled by you.',
-    }),
-  },
-  {
-    path: '/themes',
-    render: ThemesLandingPage,
-    invalidationKeys: [routeKey('/themes'), 'themes', 'product'],
-    getDocumentMeta: () => ({
-      title: 'Themes',
-      description:
-        'Token-driven CSS theming with light, dark, and custom theme support.',
-    }),
-  },
-];
-
 export const websiteRoutes: WebsiteRoute[] = [
-  ...staticRoutes,
+  ...homeRoutes,
+  ...frameworkRoutes,
+  ...uiRoutes,
+  ...themesRoutes,
   ...docsRoutes,
   ...showcaseRoutes,
 ];

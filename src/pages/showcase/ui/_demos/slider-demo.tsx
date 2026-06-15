@@ -4,7 +4,7 @@ import {
   SliderTrack,
   SliderRange,
   SliderThumb,
-} from '../demo-kit/primitives/slider';
+} from '../_demo-kit/primitives/slider';
 
 export function SliderDemo() {
   const [value, setValue] = state(50);

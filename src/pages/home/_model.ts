@@ -1,4 +1,4 @@
-import { homeHeroLinks, onboardingTracks, referenceBands } from './content';
+import { homeHeroLinks, onboardingTracks, referenceBands } from './_content';
 
 export function createHomeModel() {
   return {

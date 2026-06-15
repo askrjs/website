@@ -63,14 +63,13 @@ export function SiteHeader() {
             ))}
           </NavGroup>
           <NavGroup align="end" class="header-actions">
-            <NavLink
+            <Link
               href={docsStartPath}
               class="header-start"
               aria-label="Start building with Askr"
-              match="exact"
             >
               Start
-            </NavLink>
+            </Link>
             <a
               href="https://github.com/askrjs/askr"
               target="_blank"

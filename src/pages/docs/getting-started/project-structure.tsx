@@ -27,24 +27,26 @@ const layoutTree = `src/
     site-shell/
     page-templates/
     page-primitives/
-  features/
-    home/
-      content.ts
-      model.ts
-      sections/
-    ui/
-      registry/
-      demos/
-      model/
   lib/
     site-nav.ts
   pages/
     _routes.tsx
     _types.ts
-    home.tsx
-    framework.tsx
-    ui.tsx
-    themes.tsx
+    home/
+      _routes.tsx
+      _content.ts
+      _model.ts
+      _sections/
+      index.tsx
+    framework/
+      _routes.tsx
+      index.tsx
+    ui/
+      _routes.tsx
+      index.tsx
+    themes/
+      _routes.tsx
+      index.tsx
     docs/
       _routes.tsx
       _layout.tsx
@@ -55,10 +57,13 @@ const layoutTree = `src/
     showcase/
       _routes.tsx
       askr.tsx
-      ui.tsx
       themes.tsx
       ui/
+        index.tsx
         _component-detail.tsx
+        _registry/
+        _model/
+        _demos/
         components/
           _routes.tsx
           button.tsx
@@ -68,15 +73,13 @@ scripts/
 ssg.config.ts`;
 
 const routeContract = `import { docsRoutes } from "./docs/_routes";
+import { homeRoutes } from "./home/_routes";
+import { uiRoutes } from "./ui/_routes";
 import { showcaseRoutes } from "./showcase/_routes";
 
-const staticRoutes = [
-  { path: "/", render: HomePage, invalidationKeys: ["route:/", "home"] },
-  { path: "/ui", render: UiLandingPage, invalidationKeys: ["route:/ui", "ui-components"] },
-];
-
 export const websiteRoutes = [
-  ...staticRoutes,
+  ...homeRoutes,
+  ...uiRoutes,
   ...docsRoutes,
   ...showcaseRoutes,
 ];
@@ -115,8 +118,8 @@ export function ProjectStructureDocPage() {
             reference.
           </li>
           <li>
-            Move reusable content, models, demos, and registries into
-            `features`; reserve `lib` for cross-site contracts.
+            Keep page-only content, models, demos, and registries beside the
+            route group that owns them; reserve `lib` for cross-site contracts.
           </li>
         </ul>
         <pre class="code-block">

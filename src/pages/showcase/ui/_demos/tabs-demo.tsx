@@ -3,7 +3,7 @@ import {
   TabsList,
   TabsTrigger,
   TabsContent,
-} from '../demo-kit/composites/tabs';
+} from '../_demo-kit/composites/tabs';
 
 export function TabsDemo() {
   return (

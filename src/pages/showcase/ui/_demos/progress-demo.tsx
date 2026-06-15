@@ -1,6 +1,6 @@
 import { state } from '@askrjs/askr';
-import { Progress, ProgressIndicator } from '../demo-kit/primitives/progress';
-import { Button } from '../demo-kit/primitives/button';
+import { Progress, ProgressIndicator } from '../_demo-kit/primitives/progress';
+import { Button } from '../_demo-kit/primitives/button';
 
 export function ProgressDemo() {
   const [value, setValue] = state(33);

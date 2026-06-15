@@ -1,5 +1,5 @@
 import { state } from '@askrjs/askr';
-import { RadioGroup, RadioGroupItem } from '../demo-kit/primitives/radio-group';
+import { RadioGroup, RadioGroupItem } from '../_demo-kit/primitives/radio-group';
 
 export function RadioGroupDemo() {
   const [selected, setSelected] = state('spa');
