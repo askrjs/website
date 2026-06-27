@@ -1,5 +1,5 @@
 import { DocLayout } from '../_layout';
-import type { DocMeta } from '../_types';
+import type { DocMeta } from '../types';
 
 export const meta: DocMeta = {
   slug: 'getting-started/installation',
@@ -69,9 +69,9 @@ export function InstallationDocPage() {
         <h2>Recommended baseline</h2>
         <p>
           Add the scripts before the first page lands. The important part is not
-          the exact names; it is that formatting, linting, typing, client
-          build, SSR build, static generation, static verification, and preview
-          are ordinary local commands.
+          the exact names; it is that formatting, linting, typing, client build,
+          SSR build, static generation, static verification, and preview are
+          ordinary local commands.
         </p>
         <pre class="code-block">
           <code>{scriptBaseline}</code>

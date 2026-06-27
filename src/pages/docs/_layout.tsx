@@ -13,12 +13,12 @@ import {
 import { Separator } from '@askrjs/themes/surfaces';
 
 import type { Props } from '../../types/props';
-import type { DocMeta } from './_types';
-import { docsNavSections, findDocsNavItemBySlug } from './_content';
-import { SiteFrame } from '../../components/site-shell';
-import { DocsMetaPanel } from './_meta-panel';
-import { DocsSidebar } from './_sidebar';
-import { TocSidebar } from './_toc-sidebar';
+import type { DocMeta } from './types';
+import { docsNavSections, findDocsNavItemBySlug } from './content';
+import { SiteFrame } from '../../site/shell/site-frame';
+import { DocsMetaPanel } from './meta-panel';
+import { DocsSidebar } from './sidebar';
+import { TocSidebar } from './toc-sidebar';
 
 export interface DocLayoutProps extends Props {
   title: string;
@@ -33,7 +33,9 @@ export function DocLayout(props: DocLayoutProps) {
     : null;
   const [searchQuery, setSearchQuery] = state('');
 
-  const query = String(searchQuery() ?? '').trim().toLowerCase();
+  const query = String(searchQuery() ?? '')
+    .trim()
+    .toLowerCase();
   const filteredSections = docsNavSections
     .map((section) => ({
       ...section,
@@ -80,7 +82,9 @@ export function DocLayout(props: DocLayoutProps) {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                          <BreadcrumbCurrent>{currentItem.label}</BreadcrumbCurrent>
+                          <BreadcrumbCurrent>
+                            {currentItem.label}
+                          </BreadcrumbCurrent>
                         </BreadcrumbItem>
                       </BreadcrumbList>
                     </Breadcrumb>

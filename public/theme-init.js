@@ -12,7 +12,8 @@
     window.matchMedia('(prefers-color-scheme: dark)').matches;
 
   var explicitTheme = stored === 'light' || stored === 'dark';
-  var nextTheme = stored === 'dark' || (!explicitTheme && prefersDark) ? 'dark' : 'light';
+  var nextTheme =
+    stored === 'dark' || (!explicitTheme && prefersDark) ? 'dark' : 'light';
   var themeChoice = explicitTheme ? stored : 'system';
 
   root.setAttribute('data-theme', nextTheme);

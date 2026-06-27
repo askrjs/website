@@ -1,5 +1,5 @@
 import { DocLayout } from '../_layout';
-import type { DocMeta } from '../_types';
+import type { DocMeta } from '../types';
 
 export const meta: DocMeta = {
   slug: 'guides/building-pages',
@@ -8,7 +8,8 @@ export const meta: DocMeta = {
   section: 'Guides',
   order: 2,
   goal: 'Create modular page patterns that scale with route growth.',
-  outcome: 'A clean page model with reusable templates and clear file ownership.',
+  outcome:
+    'A clean page model with reusable templates and clear file ownership.',
   prerequisites: ['Installed and scaffolded project', 'Routing table in place'],
   next: '/docs/guides/data-loading',
   nextLabel: 'Learn data loading',
@@ -49,8 +50,8 @@ export function BuildingPagesDocPage() {
         </p>
         <p>
           Shared templates help keep route output consistent across landing
-          pages, docs, and showcase pages without moving page copy into the
-          site shell.
+          pages, docs, and showcase pages without moving page copy into the site
+          shell.
         </p>
         <pre class="code-block">
           <code>{pageModelCode}</code>

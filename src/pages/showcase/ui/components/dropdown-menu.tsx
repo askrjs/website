@@ -1,6 +1,6 @@
-import { UiComponentDetailPage } from '../_component-detail';
+import { UiComponentDetailPage } from '../component-detail';
 
-import { requireUiComponent } from '../_registry';
+import { requireUiComponent } from '../registry';
 
 const meta = requireUiComponent('dropdown-menu');
 

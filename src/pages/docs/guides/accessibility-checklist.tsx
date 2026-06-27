@@ -1,10 +1,11 @@
 import { DocLayout } from '../_layout';
-import type { DocMeta } from '../_types';
+import type { DocMeta } from '../types';
 
 export const meta: DocMeta = {
   slug: 'guides/accessibility-checklist',
   title: 'Accessibility checklist',
-  summary: 'Keep UI behavior and keyboard flow clear across interactive modules.',
+  summary:
+    'Keep UI behavior and keyboard flow clear across interactive modules.',
   section: 'Guides',
   order: 5,
   goal: 'Check keyboard, focus, label, and status behavior before release.',

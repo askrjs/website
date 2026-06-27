@@ -14,9 +14,9 @@ import { pathToFileURL } from 'node:url';
 import { createStaticGen, type SSGResult } from '@askrjs/askr/ssg';
 
 import { getWebsiteDocumentMeta } from '../src/pages/_routes';
-import { renderDocument } from '../src/server/document-template';
-import { renderApp } from '../src/server/entry-server';
-import type { StaticRouteConfig } from '../src/pages/_types';
+import { renderDocument } from '../src/app/server/document-template';
+import { renderApp } from '../src/app/server/entry-server';
+import type { StaticRouteConfig } from '../src/shared/site-routes';
 
 const root = process.cwd();
 const emptyAppRootPattern = /<div([^>]*\bid=["']app["'][^>]*)>\s*<\/div>/i;
@@ -118,7 +118,11 @@ function getGeneratedRouteCachePath(outputDir: string, filePath: string) {
   return resolve(outputDir, '.askr', 'generated-routes', filePath);
 }
 
-function cacheGeneratedRoute(outputDir: string, filePath: string, html: string) {
+function cacheGeneratedRoute(
+  outputDir: string,
+  filePath: string,
+  html: string
+) {
   const cachePath = getGeneratedRouteCachePath(outputDir, filePath);
   mkdirSync(dirname(cachePath), { recursive: true });
   writeFileSync(cachePath, html, 'utf8');
@@ -249,7 +253,9 @@ function updateResultCounts(result: SSGResult) {
   result.successful = result.routes.filter(
     (route) => route.status === 'success' || route.status === 'skipped'
   ).length;
-  result.failed = result.routes.filter((route) => route.status === 'error').length;
+  result.failed = result.routes.filter(
+    (route) => route.status === 'error'
+  ).length;
   result.removed = result.routes.filter(
     (route) => route.status === 'removed'
   ).length;
@@ -294,7 +300,10 @@ function interpolateRoutePath(
 ) {
   if (!params) return routePath;
 
-  return routePath.replace(/\{([^}]+)\}/g, (_, key: string) => params[key] ?? '');
+  return routePath.replace(
+    /\{([^}]+)\}/g,
+    (_, key: string) => params[key] ?? ''
+  );
 }
 
 function writeIncrementalManifest(
@@ -304,10 +313,7 @@ function writeIncrementalManifest(
   routes: StaticRouteConfig[]
 ) {
   const resultById = new Map(
-    result.routes.map((route) => [
-      `${route.path}::${route.filePath}`,
-      route,
-    ])
+    result.routes.map((route) => [`${route.path}::${route.filePath}`, route])
   );
 
   writeJsonFile(resolve(outputDir, '.askr', 'ssg-manifest.json'), {
@@ -400,7 +406,9 @@ async function run() {
       mode: args.mode,
       forceFull,
       changedKeys:
-        args.mode === 'incremental' && !forceFull ? args.changedKeys : undefined,
+        args.mode === 'incremental' && !forceFull
+          ? args.changedKeys
+          : undefined,
       changedRoutes:
         args.mode === 'incremental' && !forceFull
           ? args.changedRoutes
@@ -416,7 +424,12 @@ async function run() {
   removeLegacyStaticArtifacts(resolvedOutputDir);
   mkdirSync(resolve(resolvedOutputDir, '.askr'), { recursive: true });
   writeJsonFile(getTemplateStatePath(resolvedOutputDir), { templateHash });
-  writeIncrementalManifest(result, resolvedOutputDir, config.seed ?? 12345, config.routes);
+  writeIncrementalManifest(
+    result,
+    resolvedOutputDir,
+    config.seed ?? 12345,
+    config.routes
+  );
   copyPublicAssets(resolvedOutputDir);
 }
 

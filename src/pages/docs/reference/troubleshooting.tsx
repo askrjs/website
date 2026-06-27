@@ -1,5 +1,5 @@
 import { DocLayout } from '../_layout';
-import type { DocMeta } from '../_types';
+import type { DocMeta } from '../types';
 
 export const meta: DocMeta = {
   slug: 'reference/troubleshooting',

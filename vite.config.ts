@@ -44,7 +44,7 @@ export default function config({ isSsrBuild }: VitePlusEnv): UserConfig {
       sourcemap: true,
       cssCodeSplit: false,
       rollupOptions: {
-        input: isSsrBuild ? 'src/server/entry-server.tsx' : 'index.html',
+        input: isSsrBuild ? 'src/app/server/entry-server.tsx' : 'index.html',
         output: {
           entryFileNames: isSsrBuild ? 'entry-server.js' : 'app.js',
           chunkFileNames: 'chunks/[name]-[hash].js',

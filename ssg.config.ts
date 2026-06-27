@@ -1,4 +1,4 @@
-import type { StaticRouteConfig } from './src/pages/_types';
+import type { StaticRouteConfig } from './src/shared/site-routes';
 import { getStaticRoutes } from './src/pages/_routes';
 
 export const routes: StaticRouteConfig[] = getStaticRoutes();

@@ -383,7 +383,11 @@
 
 .launch-path li:nth-child(even),
 .docs-pathway li:nth-child(even) {
-  background: color-mix(in srgb, var(--site-soft-panel) 62%, var(--ak-color-surface));
+  background: color-mix(
+    in srgb,
+    var(--site-soft-panel) 62%,
+    var(--ak-color-surface)
+  );
 }
 
 .launch-path span,

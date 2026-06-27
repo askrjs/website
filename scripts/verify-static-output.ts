@@ -2,7 +2,7 @@ import { existsSync, readFileSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import { getWebsiteDocumentMeta, websiteRoutes } from '../src/pages/_routes';
-import { formatDocumentTitle } from '../src/utils/document-meta';
+import { formatDocumentTitle } from '../src/shared/document-meta';
 
 interface StaticMetadataRoute {
   path: string;
@@ -113,7 +113,10 @@ function verifyRoute(route: StaticMetadataRoute) {
     getDescription(html) === (meta.description ?? ''),
     `${route.path} description mismatch`
   );
-  assert(html.includes('/theme-init.js'), `${route.path} is missing theme init`);
+  assert(
+    html.includes('/theme-init.js'),
+    `${route.path} is missing theme init`
+  );
   assert(
     /\/assets\/style-[^"']+\.css/.test(html),
     `${route.path} is missing the built CSS asset`

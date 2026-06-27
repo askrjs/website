@@ -451,7 +451,11 @@
 .docs-feature-row:hover,
 .docs-starter-row:hover,
 .docs-reference-row:hover {
-  border-color: color-mix(in srgb, var(--site-cyan) 42%, var(--ak-color-border));
+  border-color: color-mix(
+    in srgb,
+    var(--site-cyan) 42%,
+    var(--ak-color-border)
+  );
   background: var(--site-hover-surface);
 }
 

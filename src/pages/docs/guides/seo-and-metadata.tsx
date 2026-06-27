@@ -1,5 +1,5 @@
 import { DocLayout } from '../_layout';
-import type { DocMeta } from '../_types';
+import type { DocMeta } from '../types';
 
 export const meta: DocMeta = {
   slug: 'guides/seo-and-metadata',
@@ -8,7 +8,8 @@ export const meta: DocMeta = {
   section: 'Guides',
   order: 8,
   goal: 'Ensure route metadata is complete and stable across marketing and app pages.',
-  outcome: 'Search-friendly pages with stable social previews and no metadata drift.',
+  outcome:
+    'Search-friendly pages with stable social previews and no metadata drift.',
   prerequisites: ['Document metadata configured', 'Route registry complete'],
   next: '/docs/reference/troubleshooting',
   nextLabel: 'Handle runtime issues',

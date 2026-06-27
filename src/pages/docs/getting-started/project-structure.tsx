@@ -1,10 +1,16 @@
 import { DocLayout } from '../_layout';
-import type { DocMeta } from '../_types';
+import type { DocMeta } from '../types';
+import {
+  canonicalProjectStructureTree,
+  structureOwnershipRows,
+  structureRuleRows,
+} from '../../../shared/project-structure';
 
 export const meta: DocMeta = {
   slug: 'getting-started/project-structure',
   title: 'Project structure',
-  summary: 'Define a repeatable structure before adding features.',
+  summary:
+    'Lock the repo around route-owned files, thin components, and small primitives.',
   section: 'Getting Started',
   order: 3,
   goal: 'Create folders and contracts that keep docs, pages, and components discoverable.',
@@ -14,83 +20,26 @@ export const meta: DocMeta = {
   nextLabel: 'Run release checklist',
   toc: [
     { id: 'directory-pattern', label: 'Directory pattern' },
-    { id: 'route-contracts', label: 'Route contracts' },
+    { id: 'file-rules', label: 'File rules' },
+    { id: 'ownership-matrix', label: 'Ownership matrix' },
   ],
 };
 
-const layoutTree = `src/
-  client.tsx
-  server/
-    entry-server.tsx
-  components/
-    app-providers.tsx
-    site-shell/
-    page-templates/
-    page-primitives/
-  lib/
-    site-nav.ts
-  pages/
-    _routes.tsx
-    _types.ts
-    home/
-      _routes.tsx
-      _content.ts
-      _model.ts
-      _sections/
-      index.tsx
-    framework/
-      _routes.tsx
-      index.tsx
-    ui/
-      _routes.tsx
-      index.tsx
-    themes/
-      _routes.tsx
-      index.tsx
-    docs/
-      _routes.tsx
-      _layout.tsx
-      _content.ts
-      _registry.ts
-      getting-started/
-      guides/
-    showcase/
-      _routes.tsx
-      askr.tsx
-      themes.tsx
-      ui/
-        index.tsx
-        _component-detail.tsx
-        _registry/
-        _model/
-        _demos/
-        components/
-          _routes.tsx
-          button.tsx
-  styles.css
-scripts/
-  ssg-build.ts
-ssg.config.ts`;
-
-const routeContract = `import { docsRoutes } from "./docs/_routes";
+const routeRegistrySnippet = `import { docsRoutes } from "./docs/_routes";
+import { frameworkRoutes } from "./framework/_routes";
 import { homeRoutes } from "./home/_routes";
-import { uiRoutes } from "./ui/_routes";
 import { showcaseRoutes } from "./showcase/_routes";
+import { themesRoutes } from "./themes/_routes";
+import { uiRoutes } from "./ui/_routes";
 
 export const websiteRoutes = [
   ...homeRoutes,
+  ...frameworkRoutes,
   ...uiRoutes,
+  ...themesRoutes,
   ...docsRoutes,
   ...showcaseRoutes,
-];
-
-export function getStaticRoutes() {
-  return websiteRoutes.map((route) => ({
-    path: route.path,
-    handler: route.render,
-    invalidationKeys: route.invalidationKeys,
-  }));
-}`;
+];`;
 
 export function ProjectStructureDocPage() {
   return (
@@ -98,33 +47,73 @@ export function ProjectStructureDocPage() {
       <section id="directory-pattern">
         <h2>Directory pattern</h2>
         <p>
-          Build a route-aware structure where docs and showcase content can be
-          versioned side by side.
+          The source tree is split by responsibility, not by framework
+          abstraction. Route packs live in <code>src/pages</code>, shared
+          helpers live in <code>src/shared</code>, branding lives in
+          <code>src/site</code>, and framework entrypoints stay in
+          <code>src/app</code>.
         </p>
         <pre class="landing-code">
-          <code>{layoutTree}</code>
+          <code>{canonicalProjectStructureTree}</code>
         </pre>
       </section>
 
-      <section id="route-contracts">
-        <h2>Route contracts</h2>
-        <ul>
-          <li>
-            Keep route group registries in `_routes.tsx` files beside the pages
-            they own.
-          </li>
-          <li>
-            Group content by domain: getting-started, guides, foundations,
-            reference.
-          </li>
-          <li>
-            Keep page-only content, models, demos, and registries beside the
-            route group that owns them; reserve `lib` for cross-site contracts.
-          </li>
-        </ul>
+      <section id="file-rules">
+        <h2>File rules</h2>
+        <p>
+          The checker and this page use the same rule table. That keeps the
+          route contract and the docs contract aligned.
+        </p>
+        <table class="docs-table">
+          <thead>
+            <tr>
+              <th>Layer</th>
+              <th>Rule</th>
+              <th>Examples</th>
+            </tr>
+          </thead>
+          <tbody>
+            {structureRuleRows.map((row) => (
+              <tr key={row.layer}>
+                <td>{row.layer}</td>
+                <td>{row.rule}</td>
+                <td>{row.examples.join(', ')}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
         <pre class="code-block">
-          <code>{routeContract}</code>
+          <code>{routeRegistrySnippet}</code>
         </pre>
+      </section>
+
+      <section id="ownership-matrix">
+        <h2>Ownership matrix</h2>
+        <p>
+          Pages orchestrate, components compose, primitives stay small, shared
+          code stays generic, and the site layer only wraps package-provided
+          chrome when it needs to be branded.
+        </p>
+        <table class="docs-table">
+          <thead>
+            <tr>
+              <th>Layer</th>
+              <th>Owns</th>
+              <th>Composition</th>
+              <th>Does not own</th>
+            </tr>
+          </thead>
+          <tbody>
+            {structureOwnershipRows.map((row) => (
+              <tr key={row.layer}>
+                <td>{row.layer}</td>
+                <td>{row.owns}</td>
+                <td>{row.composition}</td>
+                <td>{row.doesNotOwn}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </section>
     </DocLayout>
   );

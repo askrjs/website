@@ -3,7 +3,11 @@
   top: 0;
   z-index: 100;
   border-bottom: 1px solid var(--site-border-muted);
-  background: color-mix(in srgb, var(--ak-color-surface-overlay) 90%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--ak-color-surface-overlay) 90%,
+    transparent
+  );
   backdrop-filter: blur(22px);
 }
 
@@ -111,7 +115,11 @@
 }
 
 .header-start {
-  border-color: color-mix(in srgb, var(--site-cyan) 35%, var(--ak-color-border));
+  border-color: color-mix(
+    in srgb,
+    var(--site-cyan) 35%,
+    var(--ak-color-border)
+  );
   background: color-mix(in srgb, var(--site-cyan) 12%, var(--ak-color-bg));
   font-size: 0.82rem;
   font-weight: 820;
