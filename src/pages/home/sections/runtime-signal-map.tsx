@@ -1,6 +1,5 @@
 import { state } from '@askrjs/askr';
-import { Button } from '@askrjs/themes/controls';
-import { Flex, Stack } from '@askrjs/themes/layouts';
+import { Button, Inline, Stack } from '@askrjs/themes/components';
 import {
   BracesIcon,
   CodeXmlIcon,
@@ -18,10 +17,10 @@ export function RuntimeSignalMap() {
       gap="4"
       aria-label="Interactive runtime signal map"
     >
-      <Flex class="runtime-map-topline" justify="between" align="center">
+      <Inline class="runtime-map-topline" justify="between" align="center">
         <span>route:/</span>
         <span>state:{count()}</span>
-      </Flex>
+      </Inline>
       <div class="runtime-map-grid">
         <article class="runtime-node source">
           <BracesIcon size={18} />
@@ -49,7 +48,7 @@ export function RuntimeSignalMap() {
           <span>theme values in CSS</span>
         </article>
       </div>
-      <Flex
+      <Inline
         class="runtime-map-controls"
         justify="center"
         align="center"
@@ -60,7 +59,7 @@ export function RuntimeSignalMap() {
         </Button>
         <span>{count()}</span>
         <Button onPress={() => setCount((value) => value + 1)}>+</Button>
-      </Flex>
+      </Inline>
     </Stack>
   );
 }

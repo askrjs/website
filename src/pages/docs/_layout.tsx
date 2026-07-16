@@ -1,16 +1,17 @@
 import { state } from '@askrjs/askr';
 import { Link } from '@askrjs/askr/router';
 import { BookOpenIcon } from '@askrjs/lucide';
-import { Flex, Stack } from '@askrjs/themes/layouts';
 import {
   Breadcrumb,
-  BreadcrumbCurrent,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
+  BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@askrjs/themes/navs';
-import { Separator } from '@askrjs/themes/surfaces';
+  Inline,
+  Separator,
+  Stack,
+} from '@askrjs/themes/components';
 
 import type { Props } from '../../types/props';
 import type { DocMeta } from './types';
@@ -82,14 +83,14 @@ export function DocLayout(props: DocLayoutProps) {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                          <BreadcrumbCurrent>
+                          <BreadcrumbPage>
                             {currentItem.label}
-                          </BreadcrumbCurrent>
+                          </BreadcrumbPage>
                         </BreadcrumbItem>
                       </BreadcrumbList>
                     </Breadcrumb>
                   ) : null}
-                  <Flex
+                  <Inline
                     class="docs-header-meta"
                     justify="between"
                     align="center"
@@ -105,7 +106,7 @@ export function DocLayout(props: DocLayoutProps) {
                         ← Docs
                       </Link>
                     ) : null}
-                  </Flex>
+                  </Inline>
                   <h1>{props.title}</h1>
                   <p>{props.intro}</p>
                   <DocsMetaPanel item={currentItem} />

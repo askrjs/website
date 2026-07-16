@@ -6,8 +6,8 @@ import {
   PaletteIcon,
   SunIcon,
 } from '@askrjs/lucide';
-import { Button } from '@askrjs/themes/controls';
-import { useTheme } from '@askrjs/themes/theme';
+import { Button } from '@askrjs/themes/components';
+import { theme } from '@askrjs/themes/theme';
 
 import { SiteFrame } from '../../site/shell/site-frame';
 import { PageSection } from '../../shared/page-primitives/section';
@@ -102,21 +102,21 @@ function InteractiveThemeLab() {
     return <ThemeLab />;
   }
 
-  const theme = useTheme();
+  const activeTheme = theme();
 
   return (
     <div class="theme-lab" aria-label="Theme token lab">
       <div class="theme-lab-modes">
         <Button
           class="theme-lab-mode theme-lab-mode-light"
-          onPress={() => theme.setTheme('light')}
+          onPress={() => activeTheme.setTheme('light')}
         >
           <SunIcon size={16} />
           light
         </Button>
         <Button
           class="theme-lab-mode theme-lab-mode-dark"
-          onPress={() => theme.setTheme('dark')}
+          onPress={() => activeTheme.setTheme('dark')}
         >
           <MoonIcon size={16} />
           dark

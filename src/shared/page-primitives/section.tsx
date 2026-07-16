@@ -1,4 +1,4 @@
-import { Stack } from '@askrjs/themes/layouts';
+import { Stack } from '@askrjs/themes/components';
 
 export interface SectionHeadProps {
   kicker: string;

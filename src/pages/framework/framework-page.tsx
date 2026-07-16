@@ -1,6 +1,6 @@
 import { derive, state } from '@askrjs/askr';
 import { Link } from '@askrjs/askr/router';
-import { Button } from '@askrjs/themes/controls';
+import { Button } from '@askrjs/themes/components';
 import {
   BracesIcon,
   GaugeIcon,

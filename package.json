@@ -7,34 +7,39 @@
   "scripts": {
     "dev": "vp dev",
     "build": "npm run build:client && npm run build:ssr && npm run generate",
-    "build:client": "vp build",
+    "build:client": "vp build --outDir .askr/client",
     "build:ssg": "npm run generate",
-    "generate": "tsx --tsconfig ./tsconfig.ssg.json ./scripts/ssg-build.ts",
-    "build:ssr": "vp build --ssr --outDir dist/server",
-    "build:incremental": "npm run build:client && tsx --tsconfig ./tsconfig.ssg.json ./scripts/ssg-build.ts --incremental",
+    "generate": "askr ssg --config ./ssg.config.ts --output ./dist",
+    "generate:incremental": "npm run generate -- --incremental",
+    "build:ssr": "vp build --ssr --outDir .askr/server",
+    "build:incremental": "npm run build:client && npm run build:ssr && npm run generate:incremental",
     "verify:structure": "tsx --tsconfig ./tsconfig.ssg.json ./scripts/verify-structure.ts",
     "verify:static": "tsx --tsconfig ./tsconfig.ssg.json ./scripts/verify-static-output.ts",
     "lint": "vp lint src scripts ssg.config.ts vite.config.ts",
     "fmt": "vp fmt .",
     "typecheck": "tsc --noEmit",
-    "check": "npm run typecheck && npm run verify:structure && npm run build && npm run verify:static",
+    "check": "npm run lint && npm run typecheck && npm run verify:structure && npm run build && npm run verify:static",
     "preview": "vp preview",
     "serve": "vp preview --host 0.0.0.0 --port 4173",
     "start": "npm run build && npm run preview"
   },
   "dependencies": {
-    "@askrjs/askr": "^0.0.44",
-    "@askrjs/logos": "^0.0.1",
-    "@askrjs/lucide": "^0.0.3",
-    "@askrjs/themes": "^0.0.7",
-    "@askrjs/ui": "^0.0.10",
-    "@askrjs/vite": "^0.0.4"
+    "@askrjs/askr": "file:../askr",
+    "@askrjs/logos": "file:../askr-logos",
+    "@askrjs/lucide": "file:../askr-lucide",
+    "@askrjs/themes": "file:../askr-themes",
+    "@askrjs/ui": "file:../askr-ui",
+    "@askrjs/vite": "file:../askr-vite"
   },
   "devDependencies": {
+    "@askrjs/cli": "file:../askr-cli",
     "@types/node": "^25.9.3",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3",
-    "vite-plus": "latest"
+    "vite-plus": "^0.2.4"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
   },
   "tsx": {
     "tsconfig": "./tsconfig.ssg.json"

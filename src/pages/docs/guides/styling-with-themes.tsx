@@ -70,7 +70,7 @@ export function StylingWithThemesDocPage() {
         </p>
         <p>
           A small theme bootstrap script prevents color-mode flash before the
-          page paints and keeps `data-theme-choice` aligned with ThemeProvider.
+          page paints and keeps `data-theme-choice` aligned with ThemeScope.
         </p>
         <pre class="code-block">
           <code>{modeCode}</code>

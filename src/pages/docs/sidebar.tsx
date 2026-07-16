@@ -1,6 +1,4 @@
-import { Stack } from '@askrjs/themes/layouts';
-import { NavLink, Sidebar } from '@askrjs/themes/shells';
-import { Separator } from '@askrjs/themes/surfaces';
+import { NavLink, Separator, Sidebar, Stack } from '@askrjs/themes/components';
 
 import type { DocsNavSection } from './content';
 

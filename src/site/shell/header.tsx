@@ -1,7 +1,7 @@
 import { Link } from '@askrjs/askr/router';
 import { GitHubLogo } from '@askrjs/logos';
 import { MoonIcon, SunIcon } from '@askrjs/lucide';
-import { Header, Navbar, NavGroup, NavLink } from '@askrjs/themes/shells';
+import { Header, Navbar, NavGroup, NavLink } from '@askrjs/themes/components';
 import {
   ThemeToggle,
   type ThemeToggleRenderContext,

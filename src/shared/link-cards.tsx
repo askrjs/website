@@ -1,6 +1,5 @@
 import { Link } from '@askrjs/askr/router';
-import { Flex, Stack } from '@askrjs/themes/layouts';
-import { Badge, Card } from '@askrjs/themes/surfaces';
+import { Badge, Card, Inline, Stack } from '@askrjs/themes/components';
 
 import type { SiteLink } from '../site/navigation';
 
@@ -23,10 +22,10 @@ export function LinkCard(props: SiteLink) {
 export function LinkCardGrid(props: { links: SiteLink[]; className?: string }) {
   const className = props.className ? `grid ${props.className}` : 'grid';
   return (
-    <Flex class={className} gap="4" wrap="wrap">
+    <Inline class={className} gap="4" wrap="wrap">
       {props.links.map((link) => (
         <LinkCard {...link} />
       ))}
-    </Flex>
+    </Inline>
   );
 }

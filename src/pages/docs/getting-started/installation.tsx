@@ -4,13 +4,13 @@ import type { DocMeta } from '../types';
 export const meta: DocMeta = {
   slug: 'getting-started/installation',
   title: 'Installation',
-  summary: 'Install askr, askr-ui, and askr-themes into your app.',
+  summary: 'Install Askr, askr-ui, and askr-themes into your app.',
   section: 'Getting Started',
   order: 1,
   goal: 'Set up dependencies with clear versions and a single package-manager strategy.',
   outcome: 'A workspace that installs and boots reliably on fresh machines.',
   prerequisites: [
-    'Node.js 18+ or compatible runtime',
+    'Node.js 20.19+ or 22.12+ for the current build toolchain',
     'A modern package manager (pnpm, npm, or yarn)',
   ],
   next: '/docs/getting-started/quick-start',
@@ -29,6 +29,7 @@ const scriptBaseline = `"scripts": {
   "lint": "vp lint src scripts ssg.config.ts vite.config.ts",
   "typecheck": "tsc --noEmit",
   "build": "npm run build:client && npm run build:ssr && npm run generate",
+  "generate": "askr ssg --config ./ssg.config.ts --output ./dist",
   "verify:static": "tsx --tsconfig ./tsconfig.ssg.json ./scripts/verify-static-output.ts",
   "preview": "vp preview"
 }`;
@@ -81,7 +82,7 @@ export function InstallationDocPage() {
           <li>Vite Plus owns dev, formatting, linting, build, and preview.</li>
           <li>
             The build creates client assets and the SSR bundle before static
-            generation wraps routes with the document template.
+            generation publishes routes and assets through the Askr CLI.
           </li>
         </ul>
       </section>

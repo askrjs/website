@@ -1,4 +1,4 @@
-import { Flex, Stack } from '@askrjs/themes/layouts';
+import { Inline, Stack } from '@askrjs/themes/components';
 
 export interface ProofItem {
   value: string;
@@ -8,7 +8,7 @@ export interface ProofItem {
 
 export function ProofStrip(props: { items: ProofItem[] }) {
   return (
-    <Flex asChild gap="3" wrap="wrap">
+    <Inline asChild gap="3" wrap="wrap">
       <dl class="proof-strip">
         {props.items.map((item) => (
           <Stack asChild gap="2">
@@ -20,6 +20,6 @@ export function ProofStrip(props: { items: ProofItem[] }) {
           </Stack>
         ))}
       </dl>
-    </Flex>
+    </Inline>
   );
 }

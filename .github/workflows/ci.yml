@@ -12,24 +12,106 @@ permissions:
   contents: read
 
 jobs:
-  ci:
-    name: Release Gate
+  verify:
+    name: Website System Gate
     runs-on: ubuntu-latest
-
+    timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout website
+        uses: actions/checkout@v7
+        with:
+          path: website
+      - name: Checkout Askr runtime
+        uses: actions/checkout@v7
+        with:
+          repository: askrjs/askr
+          path: askr
+      - name: Checkout charts
+        uses: actions/checkout@v7
+        with:
+          repository: askrjs/askr-charts
+          path: askr-charts
+      - name: Checkout CLI
+        uses: actions/checkout@v7
+        with:
+          repository: askrjs/askr-cli
+          path: askr-cli
+      - name: Checkout logos
+        uses: actions/checkout@v7
+        with:
+          repository: askrjs/askr-logos
+          path: askr-logos
+      - name: Checkout Lucide wrappers
+        uses: actions/checkout@v7
+        with:
+          repository: askrjs/askr-lucide
+          path: askr-lucide
+      - name: Checkout Node adapter
+        uses: actions/checkout@v7
+        with:
+          repository: askrjs/askr-node
+          path: askr-node
+      - name: Checkout server
+        uses: actions/checkout@v7
+        with:
+          repository: askrjs/askr-server
+          path: askr-server
+      - name: Checkout themes
+        uses: actions/checkout@v7
+        with:
+          repository: askrjs/askr-themes
+          path: askr-themes
+      - name: Checkout UI
+        uses: actions/checkout@v7
+        with:
+          repository: askrjs/askr-ui
+          path: askr-ui
+      - name: Checkout Vite integration
+        uses: actions/checkout@v7
+        with:
+          repository: askrjs/askr-vite
+          path: askr-vite
 
-      - name: Setup Node
-        uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: 'lts/*'
-          cache: 'npm'
+          cache: npm
+          cache-dependency-path: website/package-lock.json
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Build runtime and server foundations
+        run: |
+          npm ci --prefix askr
+          npm run build --prefix askr
+          npm ci --prefix askr-server
+          npm run build --prefix askr-server
+          npm ci --prefix askr-node
+          npm run build --prefix askr-node
 
-      - name: Build
-        run: npm run build
+      - name: Build visual packages
+        run: |
+          npm ci --prefix askr-ui
+          npm run build --prefix askr-ui
+          npm ci --prefix askr-themes
+          npm run build --prefix askr-themes
+          npm ci --prefix askr-logos
+          npm run build --prefix askr-logos
+          npm ci --prefix askr-lucide
+          npm run build --prefix askr-lucide
 
-      - name: Test
-        run: npm test
+      - name: Build integrations
+        run: |
+          npm ci --prefix askr-vite
+          npm run build --prefix askr-vite
+          npm ci --prefix askr-cli
+          npm run build --prefix askr-cli
+
+      - name: Verify website
+        run: |
+          npm ci --prefix website
+          npm run check --prefix website
+
+      - name: Upload verified website
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-dist
+          path: website/dist

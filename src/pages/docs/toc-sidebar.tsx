@@ -1,4 +1,4 @@
-import { Stack } from '@askrjs/themes/layouts';
+import { Stack } from '@askrjs/themes/components';
 
 import type { TocEntry } from './types';
 

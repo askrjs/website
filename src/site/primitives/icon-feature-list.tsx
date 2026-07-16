@@ -1,4 +1,4 @@
-import { Flex, Stack } from '@askrjs/themes/layouts';
+import { Inline, Stack } from '@askrjs/themes/components';
 
 type IconComponent = (props: {
   class?: string;
@@ -15,7 +15,7 @@ export interface IconFeature {
 
 export function IconFeatureList(props: { features: IconFeature[] }) {
   return (
-    <Flex class="icon-feature-list" gap="3" wrap="wrap">
+    <Inline class="icon-feature-list" gap="3" wrap="wrap">
       {props.features.map((feature) => {
         const Icon = feature.icon;
         return (
@@ -30,6 +30,6 @@ export function IconFeatureList(props: { features: IconFeature[] }) {
           </Stack>
         );
       })}
-    </Flex>
+    </Inline>
   );
 }

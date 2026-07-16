@@ -1,6 +1,8 @@
-# askr website
+# Askr website
 
-Static website for the askr ecosystem, generated with `vite-plus` + Askr SSG and deployed to GitHub Pages.
+Static website for the Askr ecosystem, generated with Vite Plus and the Askr CLI, then deployed to GitHub Pages.
+
+The website is the source-integration consumer for the Askr repositories. Its `file:` dependencies intentionally use sibling checkouts so local work and CI validate one coherent pre-release checkpoint; published-package validation remains owned by each package's pack gate.
 
 ## Commands
 
@@ -17,7 +19,7 @@ Static website for the askr ecosystem, generated with `vite-plus` + Askr SSG and
 ## Architecture
 
 - `ssg.config.ts`: route registry and generation settings
-- `scripts/ssg-build.ts`: renders app routes with Askr SSG and wraps them with the built document template
+- `ssg.config.ts`: declares routes, the document renderer, and built client assets consumed by `askr ssg`
 - `scripts/verify-static-output.ts`: verifies generated document shape, metadata, and assets
 - `index.html`: canonical document template for dev and generated output
 - `src/pages/_routes.tsx`: root route composition plus SPA/SSR/static adapters
@@ -36,7 +38,7 @@ Static website for the askr ecosystem, generated with `vite-plus` + Askr SSG and
 
 - Dev (`vp dev`) uses `index.html` and mounts `src/client.tsx`.
 - Client build (`npm run build:client`) builds `index.html`, app JS, CSS, public assets, and the reusable static document template.
-- Static generation (`npm run generate`) renders shared route handlers as app HTML, then wraps them with the cached built `index.html` template.
+- Static generation (`npm run generate`) runs through `askr ssg`, renders shared route handlers, wraps them with the built client template, and atomically publishes routes and assets.
 - Incremental generation uses route `invalidationKeys`; pass targeted rebuilds with `--changed-route /` or `--changed-key docs`.
 - SSR build (`npm run build:ssr`) compiles `src/server/entry-server.tsx`; SSR callers provide the built document template to `renderPage()`.
 - Theme boot is centralized in `public/theme-init.js` and loaded by `index.html`.

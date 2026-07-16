@@ -1,5 +1,5 @@
 import type { RouteHandler, RouteParams } from '@askrjs/askr/router';
-import { ThemeProvider, type ThemeOption } from '@askrjs/themes/theme';
+import { ThemeScope, type ThemeOption } from '@askrjs/themes/theme';
 
 const WEBSITE_THEME_OPTIONS: readonly ThemeOption[] = [
   { value: 'light', label: 'Light' },
@@ -27,18 +27,14 @@ function getInitialTheme() {
 }
 
 export function WebsiteProviders(props: { children?: unknown }) {
-  if (typeof window === 'undefined') {
-    return <div data-slot="theme-provider">{props.children}</div>;
-  }
-
   return (
-    <ThemeProvider
+    <ThemeScope
       defaultTheme={getInitialTheme()}
       storageKey="theme"
       themes={WEBSITE_THEME_OPTIONS}
     >
       {props.children}
-    </ThemeProvider>
+    </ThemeScope>
   );
 }
 

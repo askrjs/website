@@ -39,8 +39,8 @@ export default function config({ isSsrBuild }: VitePlusEnv): UserConfig {
       ],
     },
     build: {
-      outDir: isSsrBuild ? 'dist/server' : 'dist',
-      emptyOutDir: false,
+      outDir: isSsrBuild ? '.askr/server' : '.askr/client',
+      emptyOutDir: true,
       sourcemap: true,
       cssCodeSplit: false,
       rollupOptions: {

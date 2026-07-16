@@ -1,5 +1,5 @@
 import { Link } from '@askrjs/askr/router';
-import { Stack } from '@askrjs/themes/layouts';
+import { Stack } from '@askrjs/themes/components';
 import { ArrowRightIcon } from '@askrjs/lucide';
 
 import { CodeWindow } from '../../../site/primitives';

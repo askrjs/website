@@ -1,5 +1,5 @@
 import { Link } from '@askrjs/askr/router';
-import { Flex, Stack } from '@askrjs/themes/layouts';
+import { Inline, Stack } from '@askrjs/themes/components';
 
 export interface HeroChipLink {
   href: string;
@@ -8,13 +8,13 @@ export interface HeroChipLink {
 
 export function HeroChipRow(props: { links: HeroChipLink[] }) {
   return (
-    <Flex class="hero-chip-row" gap="2" wrap="wrap">
+    <Inline class="hero-chip-row" gap="2" wrap="wrap">
       {props.links.map((link) => (
         <Link key={link.href} class="hero-chip" href={link.href}>
           {link.label}
         </Link>
       ))}
-    </Flex>
+    </Inline>
   );
 }
 
@@ -26,7 +26,7 @@ export interface HeroAction {
 
 export function HeroActionGrid(props: { actions: HeroAction[] }) {
   return (
-    <Flex class="hero-actions" gap="3" wrap="wrap">
+    <Inline class="hero-actions" gap="3" wrap="wrap">
       {props.actions.map((action) => (
         <Stack asChild gap="2">
           <Link class="hero-action" href={action.href}>
@@ -35,7 +35,7 @@ export function HeroActionGrid(props: { actions: HeroAction[] }) {
           </Link>
         </Stack>
       ))}
-    </Flex>
+    </Inline>
   );
 }
 
@@ -46,7 +46,7 @@ export interface HeroStat {
 
 export function HeroStatGrid(props: { stats: HeroStat[] }) {
   return (
-    <Flex class="hero-stats" gap="3" wrap="wrap">
+    <Inline class="hero-stats" gap="3" wrap="wrap">
       {props.stats.map((stat) => (
         <Stack asChild gap="2">
           <article>
@@ -55,6 +55,6 @@ export function HeroStatGrid(props: { stats: HeroStat[] }) {
           </article>
         </Stack>
       ))}
-    </Flex>
+    </Inline>
   );
 }
