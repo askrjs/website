@@ -33,7 +33,7 @@ const features: IconFeature[] = [
     icon: BracesIcon,
     title: 'Typed by default',
     description:
-      'Props, events, and component boundaries are available to TypeScript without extra wrappers.',
+      'Props, events, and component boundaries are available directly through published package subpaths.',
   },
   {
     icon: ComponentIcon,

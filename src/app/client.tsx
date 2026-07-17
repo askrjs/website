@@ -1,7 +1,7 @@
 import { createSPA, hydrateSPA } from '@askrjs/askr/boot';
 
 import { installWebsiteDocumentMetaSync } from '../shared/document-meta-sync';
-import { getSpaRoutes } from '../pages/_routes';
+import { websiteRouteRegistry } from '../pages/_routes';
 
 installWebsiteDocumentMetaSync();
 
@@ -12,15 +12,14 @@ async function boot() {
     throw new Error('Missing #app root element.');
   }
 
-  const routes = getSpaRoutes();
   const hasServerMarkup = root.childNodes.length > 0;
 
   if (hasServerMarkup) {
-    await hydrateSPA({ root, routes });
+    await hydrateSPA({ root, registry: websiteRouteRegistry });
     return;
   }
 
-  await createSPA({ root, routes });
+  await createSPA({ root, registry: websiteRouteRegistry });
 }
 
 void boot();

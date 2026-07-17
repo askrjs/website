@@ -141,35 +141,44 @@ const learningPathBlueprint = [
     cta: 'Ship first page',
   },
   {
-    slug: 'foundations/actor-model',
+    slug: 'getting-started/cli-workflows',
     stage: 'Phase 3',
+    cta: 'Use the CLI',
+  },
+  {
+    slug: 'foundations/actor-model',
+    stage: 'Phase 4',
     cta: 'Review state model',
   },
   {
     slug: 'foundations/rendering-strategy',
-    stage: 'Phase 4',
+    stage: 'Phase 5',
     cta: 'Choose render strategy',
   },
-  { slug: 'guides/ssg-overview', stage: 'Phase 5', cta: 'Inspect build model' },
+  { slug: 'guides/ssg-overview', stage: 'Phase 6', cta: 'Inspect build model' },
   {
     slug: 'guides/building-pages',
-    stage: 'Phase 6',
+    stage: 'Phase 7',
     cta: 'Scale route authoring',
   },
   {
     slug: 'guides/data-loading',
-    stage: 'Phase 7',
+    stage: 'Phase 8',
     cta: 'Stabilize async data',
   },
   {
     slug: 'guides/styling-with-themes',
-    stage: 'Phase 8',
+    stage: 'Phase 9',
     cta: 'Standardize tokens',
   },
-  { slug: 'guides/testing-strategy', stage: 'Phase 9', cta: 'Harden behavior' },
+  {
+    slug: 'guides/testing-strategy',
+    stage: 'Phase 10',
+    cta: 'Harden behavior',
+  },
   {
     slug: 'guides/deployment-and-hosting',
-    stage: 'Phase 10',
+    stage: 'Phase 11',
     cta: 'Publish static output',
   },
 ] as const;

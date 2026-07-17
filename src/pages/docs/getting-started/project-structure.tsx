@@ -25,7 +25,8 @@ export const meta: DocMeta = {
   ],
 };
 
-const routeRegistrySnippet = `import { docsRoutes } from "./docs/_routes";
+const routeRegistrySnippet = `import { createRouteRegistry, route } from "@askrjs/askr/router";
+import { docsRoutes } from "./docs/_routes";
 import { frameworkRoutes } from "./framework/_routes";
 import { homeRoutes } from "./home/_routes";
 import { showcaseRoutes } from "./showcase/_routes";
@@ -39,7 +40,13 @@ export const websiteRoutes = [
   ...themesRoutes,
   ...docsRoutes,
   ...showcaseRoutes,
-];`;
+];
+
+export const websiteRouteRegistry = createRouteRegistry(() => {
+  for (const page of websiteRoutes) {
+    route(page.path, page.render, { namespace: page.namespace });
+  }
+});`;
 
 export function ProjectStructureDocPage() {
   return (

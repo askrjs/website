@@ -19,14 +19,17 @@ export const meta: DocMeta = {
   ],
 };
 
-const metadataCode = `{
-  path: "/framework",
-  render: FrameworkPage,
-  getDocumentMeta: () => ({
+const metadataCode = `route("/framework", FrameworkPage, {
+  meta: {
     title: "Framework",
     description: "Fine-grained state, routing, SSR, and SSG.",
-  }),
-}`;
+    canonical: "https://askr.dev/framework",
+    openGraph: {
+      "og:title": "Askr framework",
+      "og:type": "website",
+    },
+  },
+});`;
 
 export function SeoAndMetadataDocPage() {
   return (
@@ -34,8 +37,8 @@ export function SeoAndMetadataDocPage() {
       <section id="metadata-contract">
         <h2>Metadata contract</h2>
         <p>
-          Centralize title and description defaults and enforce route-level
-          overrides.
+          Put title, description, canonical, Open Graph, links, JSON-LD, and
+          document-language hints in the route's <code>meta</code> option.
         </p>
         <pre class="code-block">
           <code>{metadataCode}</code>

@@ -22,12 +22,17 @@ export const meta: DocMeta = {
   ],
 };
 
-const ssgConfigCode = `import type { RouteConfig } from "@askrjs/askr/ssg";
-import { getStaticRoutes } from "./src/pages/_routes";
+const ssgConfigCode = `import { websiteRouteRegistry } from "./src/pages/_routes";
 
-export const routes: RouteConfig[] = getStaticRoutes();
+export const registry = websiteRouteRegistry;
 export const outputDir = "dist";
-export const seed = 20260315;`;
+export const seed = 20260315;
+
+export default {
+  registry,
+  outputDir,
+  seed,
+};`;
 
 const outputShape = `dist/
   index.html
@@ -49,8 +54,8 @@ export function SsgOverviewDocPage() {
       <section>
         <h2 id="static-build-flow">Static build flow</h2>
         <p>
-          Askr can render your route table into HTML at build time and emit
-          output that works on static hosting platforms.
+          The Askr CLI can render your route registry into HTML at build time
+          and emit output that works on static hosting platforms.
         </p>
         <p>
           The generated metadata makes it easier to verify route coverage and
@@ -59,6 +64,12 @@ export function SsgOverviewDocPage() {
         <pre class="code-block">
           <code>{ssgConfigCode}</code>
         </pre>
+        <p>
+          Run <code>askr ssg --config ./ssg.config.ts --output ./dist</code>.
+          Add <code>--workers auto</code> for host-selected parallelism or
+          <code>--incremental</code> with changed route/key flags for targeted
+          rebuilds.
+        </p>
       </section>
       <section>
         <h2 id="deployment-shape">Deployment shape</h2>

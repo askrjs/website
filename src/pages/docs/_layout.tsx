@@ -83,9 +83,7 @@ export function DocLayout(props: DocLayoutProps) {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                          <BreadcrumbPage>
-                            {currentItem.label}
-                          </BreadcrumbPage>
+                          <BreadcrumbPage>{currentItem.label}</BreadcrumbPage>
                         </BreadcrumbItem>
                       </BreadcrumbList>
                     </Breadcrumb>

@@ -11,8 +11,8 @@ export const meta: DocMeta = {
   outcome:
     'Reliable builds with repeatable checks and faster onboarding for new contributors.',
   prerequisites: ['Project structure complete', 'Script runner configured'],
-  next: '/docs/foundations/actor-model',
-  nextLabel: 'Understand actors',
+  next: '/docs/getting-started/cli-workflows',
+  nextLabel: 'Use the askr CLI',
   toc: [
     { id: 'toolchain-gates', label: 'Toolchain gates' },
     { id: 'static-output-checks', label: 'Static output checks' },

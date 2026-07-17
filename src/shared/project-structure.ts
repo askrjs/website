@@ -55,8 +55,8 @@ export const structureOwnershipRows: StructureOwnershipRow[] = [
   },
   {
     layer: 'Primitives',
-    owns: 'The smallest site-specific wrappers around package exports and local assets.',
-    composition: 'May wrap icons, tokens, fonts, or low-level controls.',
+    owns: 'Small site-specific layouts built from package exports and local assets.',
+    composition: 'May combine icons, tokens, fonts, or low-level controls.',
     doesNotOwn: 'Multi-step page logic or data shaping.',
   },
   {
@@ -80,7 +80,6 @@ export const canonicalProjectStructureTreeLines = [
   'src/',
   '  app/',
   '    client.tsx',
-  '    providers.tsx',
   '    server/',
   '      document-template.ts',
   '      entry-server.tsx',
@@ -136,7 +135,6 @@ export const canonicalProjectStructureTreeLines = [
   '        ui-reference-page.tsx',
   '        components/',
   '          _routes.ts',
-  '        demo-kit/',
   '        demos.ts',
   '        demos/',
   '        model/',

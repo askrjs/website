@@ -1,5 +1,5 @@
 import { state, derive } from '@askrjs/askr';
-import { Toggle } from '../demo-kit/primitives/toggle';
+import { Toggle } from '@askrjs/ui/toggle';
 
 export function ToggleDemo() {
   const [pressed, setPressed] = state(false);

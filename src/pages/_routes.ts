@@ -1,13 +1,10 @@
-import type { RouteParams } from '@askrjs/askr/router';
-import type {
-  SpaRouteConfig,
-  ServerRouteConfig,
-  StaticRouteConfig,
-  WebsiteDocumentMeta,
-  WebsiteRoute,
-} from '../shared/site-routes';
+import {
+  createRouteRegistry,
+  route,
+  type RouteParams,
+} from '@askrjs/askr/router';
+import type { WebsiteDocumentMeta, WebsiteRoute } from '../shared/site-routes';
 
-import { withWebsiteProviders } from '../app/providers';
 import { docsRoutes } from './docs/_routes';
 import { frameworkRoutes } from './framework/_routes';
 import { homeRoutes } from './home/_routes';
@@ -67,10 +64,6 @@ function matchRoutePath(routePath: string, path: string): RouteParams | null {
   return params;
 }
 
-function routeKey(path: string) {
-  return `route:${path}`;
-}
-
 export const websiteRoutes: WebsiteRoute[] = [
   ...homeRoutes,
   ...frameworkRoutes,
@@ -79,6 +72,14 @@ export const websiteRoutes: WebsiteRoute[] = [
   ...docsRoutes,
   ...showcaseRoutes,
 ];
+
+export const websiteRouteRegistry = createRouteRegistry(() => {
+  for (const websiteRoute of websiteRoutes) {
+    route(websiteRoute.path, websiteRoute.render, {
+      namespace: websiteRoute.namespace,
+    });
+  }
+});
 
 export function getWebsiteDocumentMeta(path: string): WebsiteDocumentMeta {
   for (const route of websiteRoutes) {
@@ -89,33 +90,4 @@ export function getWebsiteDocumentMeta(path: string): WebsiteDocumentMeta {
   return {
     title: titleFromPath(path),
   };
-}
-
-export function getSpaRoutes(): SpaRouteConfig[] {
-  return websiteRoutes.map((route) => ({
-    path: route.path,
-    handler: withWebsiteProviders(route.render),
-    namespace: route.namespace,
-  }));
-}
-
-export function getSsrRoutes(): ServerRouteConfig[] {
-  return websiteRoutes.map((route) => ({
-    path: route.path,
-    handler: withWebsiteProviders(route.render),
-    namespace: route.namespace,
-  }));
-}
-
-export function getStaticRoutes(): StaticRouteConfig[] {
-  return websiteRoutes.map((route) => ({
-    path: route.path,
-    handler: withWebsiteProviders(route.render),
-    namespace: route.namespace,
-    params: route.params,
-    invalidationKeys:
-      route.invalidationKeys && route.invalidationKeys.length > 0
-        ? route.invalidationKeys
-        : [routeKey(route.path)],
-  }));
 }
