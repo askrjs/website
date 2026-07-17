@@ -2,42 +2,38 @@ import { Link } from '@askrjs/askr/router';
 import { GitHubLogo } from '@askrjs/logos';
 import { MoonIcon, SunIcon } from '@askrjs/lucide';
 import { Header, Navbar, NavGroup, NavLink } from '@askrjs/themes/components';
-import {
-  ThemeToggle,
-  type ThemeToggleRenderContext,
-} from '@askrjs/themes/theme';
 
 import { docsStartPath, headerNav } from '../../site/navigation';
 import { BrandMark } from '../brand/brand-mark';
 
-function HeaderThemeToggle() {
-  if (typeof window === 'undefined') {
-    return (
-      <button
-        class="theme-btn header-theme-toggle"
-        type="button"
-        aria-label="Toggle light and dark mode"
-        data-theme-control="toggle"
-      >
-        <SunIcon class="theme-icon" size={16} />
-      </button>
-    );
-  }
+function toggleDocumentTheme() {
+  if (typeof document === 'undefined') return;
 
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+  document.documentElement.setAttribute('data-theme', nextTheme);
+  document.documentElement.setAttribute('data-theme-choice', nextTheme);
+
+  try {
+    localStorage.setItem('theme', nextTheme);
+  } catch {
+    // Theme persistence is optional when storage is unavailable.
+  }
+}
+
+function HeaderThemeToggle() {
   return (
-    <ThemeToggle
+    <button
+      type="button"
       class="theme-btn header-theme-toggle"
       aria-label="Toggle light and dark mode"
-      themes={['light', 'dark']}
+      data-theme-control="toggle"
+      onPress={toggleDocumentTheme}
     >
-      {({ theme }: ThemeToggleRenderContext) =>
-        theme === 'dark' ? (
-          <MoonIcon key="theme-dark" class="theme-icon" size={16} />
-        ) : (
-          <SunIcon key="theme-light" class="theme-icon" size={16} />
-        )
-      }
-    </ThemeToggle>
+      <SunIcon class="theme-icon theme-icon-light" size={16} />
+      <MoonIcon class="theme-icon theme-icon-dark" size={16} />
+    </button>
   );
 }
 

@@ -6,8 +6,6 @@ import {
   PaletteIcon,
   SunIcon,
 } from '@askrjs/lucide';
-import { Button } from '@askrjs/themes/components';
-import { theme } from '@askrjs/themes/theme';
 
 import { SiteFrame } from '../../site/shell/site-frame';
 import { PageSection } from '../../shared/page-primitives/section';
@@ -74,53 +72,39 @@ const themeCode = `:root {
   border: 1px solid var(--ak-color-border);
 }`;
 
+function setDocumentTheme(theme: 'light' | 'dark') {
+  if (typeof document === 'undefined') return;
+
+  document.documentElement.setAttribute('data-theme', theme);
+  document.documentElement.setAttribute('data-theme-choice', theme);
+
+  try {
+    localStorage.setItem('theme', theme);
+  } catch {
+    // Theme persistence is optional when storage is unavailable.
+  }
+}
+
 function ThemeLab() {
   return (
     <div class="theme-lab" aria-label="Theme token lab">
       <div class="theme-lab-modes">
-        <Button class="theme-lab-mode theme-lab-mode-light">
-          <SunIcon size={16} />
-          light
-        </Button>
-        <Button class="theme-lab-mode theme-lab-mode-dark">
-          <MoonIcon size={16} />
-          dark
-        </Button>
-      </div>
-      <div class="theme-lab-card">
-        <strong>token layer</strong>
-        <span>--ak-color-surface</span>
-        <span>--ak-color-primary</span>
-        <span>--ak-radius-md</span>
-      </div>
-    </div>
-  );
-}
-
-function InteractiveThemeLab() {
-  if (typeof window === 'undefined') {
-    return <ThemeLab />;
-  }
-
-  const activeTheme = theme();
-
-  return (
-    <div class="theme-lab" aria-label="Theme token lab">
-      <div class="theme-lab-modes">
-        <Button
+        <button
+          type="button"
           class="theme-lab-mode theme-lab-mode-light"
-          onPress={() => activeTheme.setTheme('light')}
+          onPress={() => setDocumentTheme('light')}
         >
           <SunIcon size={16} />
           light
-        </Button>
-        <Button
+        </button>
+        <button
+          type="button"
           class="theme-lab-mode theme-lab-mode-dark"
-          onPress={() => activeTheme.setTheme('dark')}
+          onPress={() => setDocumentTheme('dark')}
         >
           <MoonIcon size={16} />
           dark
-        </Button>
+        </button>
       </div>
       <div class="theme-lab-card">
         <strong>token layer</strong>
@@ -158,7 +142,7 @@ export function ThemesLandingPage() {
                 </Link>
               </div>
             </div>
-            <InteractiveThemeLab />
+            <ThemeLab />
           </div>
         </section>
 

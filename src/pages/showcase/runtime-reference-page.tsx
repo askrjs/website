@@ -9,12 +9,12 @@ export function AskrPage() {
       bullets={[
         'Choose SPA, SSR, or SSG based on how fresh the HTML needs to be',
         'Use state(), derive(), and resource() for local state, computed reads, and async data',
-        'Keep route handlers app-only so client, server, and static boot paths can share them',
+        'Capture routes once with createRouteRegistry() so SPA, SSR, and SSG share the same manifest',
       ]}
       metrics={[
         { label: 'Render modes', value: '3' },
         { label: 'State primitives', value: '3+' },
-        { label: 'Shared route table', value: '1' },
+        { label: 'Shared registry', value: '1' },
       ]}
     />
   );

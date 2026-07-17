@@ -34,7 +34,7 @@ const features: IconFeature[] = [
     icon: RouteIcon,
     title: 'One route contract',
     description:
-      'The same route table can drive SPA, SSR, and static generation output.',
+      'The same route registry can drive SPA, SSR, and static generation output.',
   },
   {
     icon: WorkflowIcon,
@@ -98,7 +98,7 @@ export function FrameworkPage() {
               <p>
                 Askr keeps the runtime small and the mental model direct: state
                 changes flow to the DOM nodes that read them, and the route
-                table remains the source of truth across render modes.
+                registry remains the source of truth across render modes.
               </p>
               <div class="landing-hero-ctas">
                 <Link

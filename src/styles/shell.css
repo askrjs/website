@@ -140,6 +140,18 @@
   content: none;
 }
 
+.theme-icon-dark {
+  display: none;
+}
+
+[data-theme='dark'] .theme-icon-light {
+  display: none;
+}
+
+[data-theme='dark'] .theme-icon-dark {
+  display: block;
+}
+
 .cta-primary,
 .cta-secondary,
 .home-confidence-link,

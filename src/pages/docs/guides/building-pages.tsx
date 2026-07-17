@@ -10,7 +10,10 @@ export const meta: DocMeta = {
   goal: 'Create modular page patterns that scale with route growth.',
   outcome:
     'A clean page model with reusable templates and clear file ownership.',
-  prerequisites: ['Installed and scaffolded project', 'Routing table in place'],
+  prerequisites: [
+    'Installed and scaffolded project',
+    'Route registry in place',
+  ],
   next: '/docs/guides/data-loading',
   nextLabel: 'Learn data loading',
   toc: [
@@ -27,17 +30,16 @@ const pageModelCode = `export function createHomeModel() {
   };
 }`;
 
-const pageRouteCode = `export const homeRoutes = [
-  {
-    path: "/",
-    render: HomePage,
-    invalidationKeys: ["route:/", "home", "site"],
-    getDocumentMeta: () => ({
+const pageRouteCode = `import { createRouteRegistry, route } from "@askrjs/askr/router";
+
+export const registry = createRouteRegistry(() => {
+  route("/", HomePage, {
+    meta: {
       title: "Askr",
       description: "Fine-grained framework and static docs.",
-    }),
-  },
-];`;
+    },
+  });
+});`;
 
 export function BuildingPagesDocPage() {
   return (
@@ -60,13 +62,12 @@ export function BuildingPagesDocPage() {
       <section>
         <h2 id="route-registration">Route registration</h2>
         <p>
-          Register static paths through the website route table, then let
-          ssg.config.ts consume those routes.
+          Register paths through an Askr route registry, then export that same
+          registry from ssg.config.ts.
         </p>
         <p>
           Prefer route-owned `_routes` files so SPA, SSR, and SSG can share the
-          same page inventory without turning the root registry into page
-          content.
+          same definitions without moving page content into the root registry.
         </p>
         <pre class="code-block">
           <code>{pageRouteCode}</code>

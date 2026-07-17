@@ -31,7 +31,8 @@ export const onboardingTracks: LinkSection[] = [
       {
         href: '/docs/getting-started/installation',
         label: 'Install the stack',
-        description: 'Add askr, askr-ui, and askr-themes to your workspace.',
+        description:
+          'Add the Askr runtime, UI, themes, Vite integration, and CLI.',
         badge: 'Step 1',
         meta: 'Setup',
         cta: 'Read installation',
@@ -55,13 +56,13 @@ export const onboardingTracks: LinkSection[] = [
         cta: 'Open structure',
       },
       {
-        href: '/docs/getting-started/development-checklist',
-        label: 'Lock local checks',
+        href: '/docs/getting-started/cli-workflows',
+        label: 'Use the askr CLI',
         description:
-          'Create a repeatable checklist for linting, type-checking, and build output checks.',
+          'Scaffold features, plan dependency updates, and drive static generation.',
         badge: 'Step 4',
-        meta: 'Checks',
-        cta: 'Open checklist',
+        meta: 'Tooling',
+        cta: 'Open CLI workflows',
       },
     ],
   },

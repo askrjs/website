@@ -24,15 +24,15 @@
     "start": "npm run build && npm run preview"
   },
   "dependencies": {
-    "@askrjs/askr": "file:../askr",
-    "@askrjs/logos": "file:../askr-logos",
-    "@askrjs/lucide": "file:../askr-lucide",
-    "@askrjs/themes": "file:../askr-themes",
-    "@askrjs/ui": "file:../askr-ui",
-    "@askrjs/vite": "file:../askr-vite"
+    "@askrjs/askr": "0.0.53",
+    "@askrjs/logos": "0.0.3",
+    "@askrjs/lucide": "0.0.4",
+    "@askrjs/themes": "0.0.11",
+    "@askrjs/ui": "0.0.12",
+    "@askrjs/vite": "0.0.6"
   },
   "devDependencies": {
-    "@askrjs/cli": "file:../askr-cli",
+    "@askrjs/cli": "0.0.2",
     "@types/node": "^25.9.3",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3",

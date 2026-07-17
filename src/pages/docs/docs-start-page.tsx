@@ -6,7 +6,7 @@ const startFlow = [
   {
     title: 'Install the stack',
     href: '/docs/getting-started/installation',
-    copy: 'Get askr, askr-ui, and askr-themes into your project with one pass.',
+    copy: 'Install the Askr runtime, UI, themes, Vite integration, and CLI.',
     cta: 'Install',
   },
   {
@@ -22,10 +22,10 @@ const startFlow = [
     cta: 'Project structure',
   },
   {
-    title: 'Prepare release checks',
-    href: '/docs/getting-started/development-checklist',
-    copy: 'Run checks for type safety, generated HTML, metadata, and route coverage.',
-    cta: 'Checklist',
+    title: 'Drive the workflow with askr',
+    href: '/docs/getting-started/cli-workflows',
+    copy: 'Scaffold, plan package updates, generate artifacts, and build static output.',
+    cta: 'CLI workflows',
   },
 ];
 
@@ -79,7 +79,7 @@ export function DocsStartPage() {
       <section class="docs-start-zone">
         <div class="docs-start-lane">
           <span class="docs-kicker">Execution path</span>
-          <h2>Four steps to a working route</h2>
+          <h2>Four steps to a working static site</h2>
           <p>
             Complete these in order when you want the shortest path through the
             docs.

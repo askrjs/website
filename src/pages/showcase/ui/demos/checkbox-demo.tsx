@@ -1,5 +1,5 @@
 import { state, derive } from '@askrjs/askr';
-import { Checkbox } from '../demo-kit/primitives/checkbox';
+import { Checkbox } from '@askrjs/ui/checkbox';
 
 export function CheckboxDemo() {
   const [checked, setChecked] = state(false);

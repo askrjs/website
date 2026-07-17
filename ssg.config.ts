@@ -1,14 +1,13 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { DocumentRenderArgs } from '@askrjs/askr/ssg';
-import type { StaticRouteConfig } from './src/shared/site-routes';
 import {
-  getStaticRoutes,
   getWebsiteDocumentMeta,
+  websiteRouteRegistry,
 } from './src/pages/_routes';
 import { renderDocument } from './src/app/server/document-template';
 
-export const routes: StaticRouteConfig[] = getStaticRoutes();
+export const registry = websiteRouteRegistry;
 export const outputDir = 'dist';
 
 export const seed = 20260315;
@@ -30,7 +29,7 @@ function renderStaticDocument({ appHtml, context }: DocumentRenderArgs) {
 }
 
 export const staticConfig = {
-  routes,
+  registry,
   outputDir,
   seed,
   concurrency,

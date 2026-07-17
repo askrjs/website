@@ -33,15 +33,21 @@ export function Counter() {
 }`;
 
 const routeCode = `import { createSPA, hydrateSPA } from "@askrjs/askr/boot";
-import type { Route } from "@askrjs/askr/router";
+import { createRouteRegistry, route } from "@askrjs/askr/router";
 import { Counter } from "./counter";
 
-const routes: Route[] = [{ path: "/", handler: Counter }];
+export const registry = createRouteRegistry(() => {
+  route("/", Counter);
+});
 
-await hydrateSPA({ root: "#app", routes });`;
+const root = document.querySelector("#app");
+const hasServerMarkup = Boolean(root?.childNodes.length);
 
-const themeCode = `import "@askrjs/themes/default/tokens.css";
-import "@askrjs/themes/default/button.css";
+await (hasServerMarkup
+  ? hydrateSPA({ root: "#app", registry })
+  : createSPA({ root: "#app", registry }));`;
+
+const themeCode = `import "@askrjs/themes/default";
 import "./styles.css";`;
 
 export function QuickStartDocPage() {
@@ -61,15 +67,15 @@ export function QuickStartDocPage() {
       <section id="add-ui-and-theme">
         <h2>Add UI and theme</h2>
         <p>
-          Register the page through a route table so the same shape can be used
-          for SPA startup, SSR, and static generation.
+          Capture the page in a route registry so the same definition can be
+          used for SPA startup, hydration, SSR, and static generation.
         </p>
         <pre class="code-block">
           <code>{routeCode}</code>
         </pre>
         <p>
-          Load token CSS before your site layer, then import only the component
-          styles you need.
+          Load the default theme before your site layer. Component styles and
+          semantic tokens ship together through that package export.
         </p>
         <pre class="code-block">
           <code>{themeCode}</code>

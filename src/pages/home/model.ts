@@ -4,7 +4,7 @@ export function createHomeModel() {
   return {
     title: 'Build Askr apps with routes you can reuse.',
     intro:
-      'Askr is a fine-grained reactive framework for apps, docs, and static sites. Define pages once, boot them as SPA or SSR, and generate static output from the same route table.',
+      'Askr is a fine-grained reactive framework for apps, docs, and static sites. Define pages once, boot them as SPA or SSR, and generate static output from the same route registry.',
     heroActions: homeHeroLinks,
     launchPath: [
       {
@@ -32,11 +32,11 @@ export function createHomeModel() {
       },
       {
         phase: 'Ship',
-        title: 'Go live',
+        title: 'Generate with askr',
         detail:
-          'Build static output, verify metadata, and preview direct route loads.',
-        href: '/docs/guides/deployment-and-hosting',
-        cta: 'Prepare deploy',
+          'Use the project-local CLI to generate static output and plan package updates.',
+        href: '/docs/getting-started/cli-workflows',
+        cta: 'Use the CLI',
       },
     ],
     architecturePass: [
@@ -52,7 +52,7 @@ export function createHomeModel() {
         title: 'Shared routes',
         claim:
           'A single registry can drive SPA, SSR, and SSG output without duplicate route definitions.',
-        snippet: `import { route, Router } from "@askrjs/askr/router";`,
+        snippet: `import { createRouteRegistry, route } from "@askrjs/askr/router";\n\nconst registry = createRouteRegistry(() => {\n  route("/", Home);\n});`,
         cta: 'Read routing and SSG',
         href: '/docs/guides/ssg-overview',
       },
@@ -86,6 +86,13 @@ export function createHomeModel() {
           'Theme tokens, light/dark defaults, data-slot selectors, and low-specificity CSS hooks.',
         badge: 'Styling',
         href: '/showcase/themes',
+      },
+      {
+        title: 'askr CLI',
+        description:
+          'Project tooling for scaffolding, dependency planning, generators, OpenAPI, and SSG.',
+        badge: 'Tooling',
+        href: '/docs/getting-started/cli-workflows',
       },
     ],
     stats: [

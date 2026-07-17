@@ -15,6 +15,10 @@ import {
   meta as developmentChecklistMeta,
 } from './getting-started/development-checklist';
 import {
+  CliWorkflowsDocPage,
+  meta as cliWorkflowsMeta,
+} from './getting-started/cli-workflows';
+import {
   SsgOverviewDocPage,
   meta as ssgOverviewMeta,
 } from './guides/ssg-overview';
@@ -70,6 +74,7 @@ export const docRegistry: DocEntry[] = [
   { meta: quickStartMeta, component: QuickStartDocPage },
   { meta: projectStructureMeta, component: ProjectStructureDocPage },
   { meta: developmentChecklistMeta, component: DevelopmentChecklistDocPage },
+  { meta: cliWorkflowsMeta, component: CliWorkflowsDocPage },
   { meta: actorModelMeta, component: ActorModelDocPage },
   { meta: renderingStrategyMeta, component: RenderingStrategyDocPage },
   { meta: ssgOverviewMeta, component: SsgOverviewDocPage },

@@ -31,6 +31,7 @@ export function TroubleshootingDocPage() {
           <li>Theme flash before CSS load.</li>
           <li>Routes rendering without expected wrappers.</li>
           <li>Static page missing assets after deployment.</li>
+          <li>Package family installed at incompatible release generations.</li>
         </ul>
         <table class="docs-table">
           <thead>
@@ -41,6 +42,17 @@ export function TroubleshootingDocPage() {
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <td>Bundle reports missing framework exports</td>
+              <td>
+                Askr, UI, themes, or Vite packages were released from different
+                API generations.
+              </td>
+              <td>
+                Run askr outdated, align the package family, install, then
+                typecheck before building.
+              </td>
+            </tr>
             <tr>
               <td>SSG reports failed routes</td>
               <td>Render-time router API misuse or thrown component.</td>

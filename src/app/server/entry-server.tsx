@@ -1,12 +1,15 @@
 import { renderToString } from '@askrjs/askr/ssr';
 
-import { getSsrRoutes, getWebsiteDocumentMeta } from '../../pages/_routes';
+import {
+  getWebsiteDocumentMeta,
+  websiteRouteRegistry,
+} from '../../pages/_routes';
 import { renderDocument } from './document-template';
 
 export function renderApp(url: string) {
   return renderToString({
     url,
-    routes: getSsrRoutes(),
+    registry: websiteRouteRegistry,
   });
 }
 

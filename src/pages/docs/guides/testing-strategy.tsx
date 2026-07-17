@@ -19,9 +19,9 @@ export const meta: DocMeta = {
   ],
 };
 
-const routeSmokeCode = `import { websiteRoutes } from "../pages/_routes";
+const routeSmokeCode = `import { websiteRouteRegistry } from "../pages/_routes";
 
-for (const route of websiteRoutes) {
+for (const route of websiteRouteRegistry.routes) {
   if (!route.path.startsWith("/")) {
     throw new Error("Route must be absolute: " + route.path);
   }
@@ -36,7 +36,7 @@ export function TestingStrategyDocPage() {
           <li>
             Unit tests for pure helpers, derive pipelines, and route selectors.
           </li>
-          <li>Integration checks for page models and route tables.</li>
+          <li>Integration checks for page models and route registries.</li>
           <li>Smoke checks for generated static output paths.</li>
         </ul>
         <pre class="code-block">

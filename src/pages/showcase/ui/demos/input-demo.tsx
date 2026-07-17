@@ -1,5 +1,5 @@
 import { state } from '@askrjs/askr';
-import { Input } from '../demo-kit/primitives/input';
+import { Input } from '@askrjs/ui/input';
 
 export function InputDemo() {
   const [value, setValue] = state('');

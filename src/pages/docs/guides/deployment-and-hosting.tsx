@@ -20,6 +20,28 @@ export const meta: DocMeta = {
   ],
 };
 
+const pagesWorkflow = `name: Deploy
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    steps:
+      - uses: actions/deploy-pages@v5`;
+
 export function DeploymentAndHostingDocPage() {
   return (
     <DocLayout title={meta.title} intro={meta.summary} meta={meta}>
@@ -41,7 +63,7 @@ export function DeploymentAndHostingDocPage() {
             <tr>
               <td>GitHub Pages</td>
               <td>dist</td>
-              <td>Use a static artifact upload step.</td>
+              <td>Build and publish from deploy.yml.</td>
             </tr>
             <tr>
               <td>Netlify</td>
@@ -55,6 +77,14 @@ export function DeploymentAndHostingDocPage() {
             </tr>
           </tbody>
         </table>
+        <p>
+          Keep Pages permissions, environment configuration, and concurrency
+          controls in the complete workflow; this excerpt shows the build and
+          deploy handoff.
+        </p>
+        <pre class="code-block">
+          <code>{pagesWorkflow}</code>
+        </pre>
       </section>
 
       <section id="artifact-review">

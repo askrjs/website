@@ -4,7 +4,7 @@ import type { DocMeta } from '../types';
 export const meta: DocMeta = {
   slug: 'getting-started/installation',
   title: 'Installation',
-  summary: 'Install Askr, askr-ui, and askr-themes into your app.',
+  summary: 'Install the Askr runtime, packages, Vite plugin, and CLI.',
   section: 'Getting Started',
   order: 1,
   goal: 'Set up dependencies with clear versions and a single package-manager strategy.',
@@ -17,11 +17,13 @@ export const meta: DocMeta = {
   nextLabel: 'Continue to quick start',
   toc: [
     { id: 'project-setup', label: 'Project setup' },
+    { id: 'tooling', label: 'CLI and build tooling' },
     { id: 'recommended-baseline', label: 'Recommended baseline' },
   ],
 };
 
 const installCommand = `npm install @askrjs/askr @askrjs/ui @askrjs/themes @askrjs/lucide @askrjs/logos`;
+const toolingCommand = `npm install --save-dev @askrjs/cli @askrjs/vite vite-plus typescript`;
 
 const scriptBaseline = `"scripts": {
   "dev": "vp dev",
@@ -65,6 +67,17 @@ export function InstallationDocPage() {
             </dd>
           </div>
         </dl>
+      </section>
+      <section id="tooling">
+        <h2>CLI and build tooling</h2>
+        <p>
+          Keep the CLI project-local so builds use the version recorded in the
+          lockfile. The <code>askr</code> command owns scaffolding, generators,
+          skills, dependency planning, OpenAPI artifacts, and SSG.
+        </p>
+        <pre class="code-block">
+          <code>{toolingCommand}</code>
+        </pre>
       </section>
       <section id="recommended-baseline">
         <h2>Recommended baseline</h2>

@@ -18,6 +18,7 @@ export const meta: DocMeta = {
   next: '/docs',
   nextLabel: 'Back to docs index',
   toc: [
+    { id: 'current-breaks', label: 'Current clean breaks' },
     { id: 'migration-stages', label: 'Migration stages' },
     { id: 'rollback-plan', label: 'Rollback plan' },
   ],
@@ -26,11 +27,50 @@ export const meta: DocMeta = {
 export function MigrationGuideDocPage() {
   return (
     <DocLayout title={meta.title} intro={meta.summary} meta={meta}>
+      <section id="current-breaks">
+        <h2>Current clean breaks</h2>
+        <p>
+          Current Askr releases use scope and registry vocabulary directly.
+          Update package families together, then migrate these public seams
+          before changing product behavior.
+        </p>
+        <table class="docs-table">
+          <thead>
+            <tr>
+              <th>Previous surface</th>
+              <th>Current surface</th>
+              <th>Owner</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>defineContext() / readContext()</td>
+              <td>defineScope() / readScope()</td>
+              <td>@askrjs/askr</td>
+            </tr>
+            <tr>
+              <td>ThemeScope / theme()</td>
+              <td>ThemeProvider / useTheme()</td>
+              <td>@askrjs/themes</td>
+            </tr>
+            <tr>
+              <td>Flat Route[] startup</td>
+              <td>createRouteRegistry()</td>
+              <td>@askrjs/askr/router</td>
+            </tr>
+            <tr>
+              <td>Ad hoc dependency update scripts</td>
+              <td>askr outdated / update / upgrade</td>
+              <td>@askrjs/cli</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
       <section id="migration-stages">
         <h2>Migration stages</h2>
         <p>
-          Split work into three steps: compatibility pass, incremental rollout,
-          then verification.
+          Split work into three steps: package-set alignment, clean-break
+          migration, then verification.
         </p>
         <table class="docs-table">
           <thead>
@@ -42,13 +82,17 @@ export function MigrationGuideDocPage() {
           </thead>
           <tbody>
             <tr>
-              <td>Compatibility</td>
-              <td>Update imports and type contracts without changing UI.</td>
+              <td>Package set</td>
+              <td>
+                Resolve all Askr packages through one registry-backed lockfile.
+              </td>
               <td>Typecheck and SSG pass.</td>
             </tr>
             <tr>
               <td>Rollout</td>
-              <td>Move one route or component family at a time.</td>
+              <td>
+                Move route, theme, and component families to current APIs.
+              </td>
               <td>Previewed route has no visual regression.</td>
             </tr>
             <tr>
