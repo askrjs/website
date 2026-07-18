@@ -3,7 +3,6 @@ import { Link, currentRoute } from '@askrjs/askr/router';
 import {
   BookOpenIcon,
   Layers3Icon,
-  MenuIcon,
   PanelLeftCloseIcon,
   PanelLeftOpenIcon,
   RocketIcon,
@@ -12,6 +11,7 @@ import { ThemeScope } from '@askrjs/themes/theme';
 import { AskrBrand, GitHubMark, SiteThemeToggle } from '../_layout';
 
 const DOCS_SIDEBAR_STORAGE_KEY = 'askr-docs-sidebar-collapsed';
+const adoptedSidebarElements = new WeakSet<HTMLElement>();
 
 const docsNavigation = [
   { href: '/docs', label: 'Overview', icon: BookOpenIcon },
@@ -63,7 +63,6 @@ function DocsNavigation({
 
 export function DocsLayout({ children }: Props) {
   const collapsed = state(false);
-  const persistenceAdopted = state(false);
   const activePath = currentRoute().path;
 
   const setCollapsed = (nextCollapsed: boolean) => {
@@ -85,8 +84,8 @@ export function DocsLayout({ children }: Props) {
         data-layout="docs"
         data-sidebar-collapsed={collapsed() ? 'true' : 'false'}
         ref={(element: HTMLElement | null) => {
-          if (!element || persistenceAdopted()) return;
-          persistenceAdopted.set(true);
+          if (!element || adoptedSidebarElements.has(element)) return;
+          adoptedSidebarElements.add(element);
 
           try {
             const stored = window.localStorage.getItem(
@@ -144,7 +143,6 @@ export function DocsLayout({ children }: Props) {
           <DocsNavigation activePath={activePath} collapsed />
           <div class="docs-mobile-rail__footer">
             <SiteThemeToggle />
-            <MenuIcon size={18} aria-hidden="true" />
           </div>
         </aside>
 

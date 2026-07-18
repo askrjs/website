@@ -1,46 +1,19 @@
 import { Link } from '@askrjs/askr/router';
 import { ArrowRightIcon } from '@askrjs/lucide';
-import { Button } from '@askrjs/themes/components';
+import { Button, Container } from '@askrjs/themes/components';
+import { marketingPages } from './_marketing-catalog';
 
-const capabilities = [
-  {
-    title: 'Runtime',
-    description:
-      'A small reactive runtime with explicit state, scopes, and predictable rendering.',
-  },
-  {
-    title: 'UI',
-    description:
-      'Accessible headless primitives and a complete default theme that stay composable.',
-  },
-  {
-    title: 'Server',
-    description:
-      'Typed routes, loaders, actions, and HTTP foundations for full-stack applications.',
-  },
-  {
-    title: 'Tooling',
-    description:
-      'Vite-powered development, project generation, and static output with one workflow.',
-  },
-  {
-    title: 'Production',
-    description:
-      'Choose SPA, SSG, or server rendering without changing the application model.',
-  },
-] as const;
+const capabilities = marketingPages.slice(1);
 
 export function HomePage() {
   return (
     <>
       <section class="hero" aria-labelledby="hero-title">
-        <div class="content-container hero__content">
-          <p class="eyebrow">The TypeScript application framework</p>
+        <Container class="hero__content" size="xl">
           <h1 id="hero-title">Build full-stack TypeScript apps with Askr.</h1>
           <p class="hero__lede">
-            A focused framework for building fast, typed applications across the
-            browser and server—without giving up control of the platform beneath
-            them.
+            A focused framework for typed browser and server applications, with
+            clear package boundaries and one shared route model.
           </p>
           <div class="hero__actions">
             <Button asChild>
@@ -55,42 +28,53 @@ export function HomePage() {
           </div>
           <div class="hero__code" aria-label="Install Askr">
             <span>Start a project</span>
-            <code>npm create askr@latest</code>
+            <code>npx @askrjs/cli@latest create startkit my-app</code>
           </div>
-        </div>
+        </Container>
       </section>
 
-      <section class="capabilities" aria-labelledby="capabilities-title">
-        <div class="content-container capabilities__inner">
+      <section
+        class="capabilities"
+        id="platform"
+        aria-labelledby="capabilities-title"
+      >
+        <Container class="capabilities__inner" size="xl">
           <div class="section-heading">
-            <p class="eyebrow">One coherent stack</p>
             <h2 id="capabilities-title">
-              The pieces you need. Nothing hidden.
+              Take the layers you need. Keep the boundaries explicit.
             </h2>
             <p>
-              Start with a route and grow into a production application using
-              contracts that fit together from end to end.
+              Start with runtime and routes. Add themes, server capabilities,
+              and build tooling as requirements grow.
             </p>
+            <Link class="section-heading__link" href="/platform">
+              Explore the platform
+              <ArrowRightIcon size={16} aria-hidden="true" />
+            </Link>
           </div>
           <div class="capability-list">
-            {capabilities.map(({ title, description }, index) => (
-              <article class="capability-item" key={title}>
+            {capabilities.map((capability, index) => (
+              <Link class="capability-item" href={capability.path}>
                 <span class="capability-item__number">
                   {String(index + 1).padStart(2, '0')}
                 </span>
-                <h3>{title}</h3>
-                <p>{description}</p>
-              </article>
+                <h3>{capability.label}</h3>
+                <p>{capability.homepageSummary}</p>
+                <ArrowRightIcon
+                  class="capability-item__arrow"
+                  size={18}
+                  aria-hidden="true"
+                />
+              </Link>
             ))}
           </div>
-        </div>
+        </Container>
       </section>
 
-      <section class="final-cta">
-        <div class="content-container final-cta__inner">
+      <section class="final-cta" id="get-started">
+        <Container class="final-cta__inner" size="xl">
           <div>
-            <p class="eyebrow">Ready to build?</p>
-            <h2>Take the direct path from idea to application.</h2>
+            <h2>Start with the application you need to ship.</h2>
           </div>
           <Button asChild>
             <Link href="/docs/getting-started">
@@ -98,7 +82,7 @@ export function HomePage() {
               <ArrowRightIcon size={18} aria-hidden="true" />
             </Link>
           </Button>
-        </div>
+        </Container>
       </section>
     </>
   );

@@ -6,7 +6,22 @@
     <title>Askr</title>
     <link rel="icon" type="image/png" href="/assets/askr-logo.png" />
     <link rel="apple-touch-icon" href="/assets/askr-logo.png" />
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-TXZTWQFV59"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'G-TXZTWQFV59');
+    </script>
   </head>
+
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.tsx"></script>

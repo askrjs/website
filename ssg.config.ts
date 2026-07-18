@@ -28,7 +28,10 @@ function renderDocument({ appHtml, context }: DocumentRenderArgs) {
     'utf8'
   );
 
-  const metadata = routeMetadata[context.pathname] ?? routeMetadata['/'];
+  const metadata = routeMetadata[context.route.path];
+  if (!metadata) {
+    throw new Error(`Missing metadata for route: ${context.route.path}`);
+  }
   const document = clientTemplate
     .replace(
       /<title>.*?<\/title>/,
