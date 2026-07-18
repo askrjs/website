@@ -1,54 +1,46 @@
 # Askr website
 
-Static website for the Askr ecosystem, generated with Vite Plus and the Askr CLI, then deployed to GitHub Pages.
+Minimal hydrated Askr static site, generated with Vite Plus and the Askr CLI,
+then deployed to GitHub Pages.
 
 The website consumes published `@askrjs/*` packages from npm. Local builds and
 CI therefore validate the same package boundary used by GitHub Pages.
 
 ## Commands
 
-- `npm run build` - full static build into `dist/`
-- `npm run generate` - run the Askr static-site generator using the built client template
-- `npm run build:incremental` - incremental static generation build
-- `npm run verify:static` - validate generated document output
-- `npm run preview` - run a local production preview
-- `npm run typecheck` - TypeScript validation
-- `npm run lint` - lint project files
-- `npm run fmt` - format project files
-- `npm run check` - lint + typecheck + structure + build + static output verification
+- `npm run dev` starts the Vite development server.
+- `npm run build` builds the client and runs `askr ssg` into `dist/`.
+- `npm run verify:static` validates the generated route, markup, and assets using
+  only Node.js built-ins.
+- `npm run preview` serves `dist/` with `vp preview --outDir dist`.
+- `npm run check` runs lint, typecheck, build, and static verification.
 
 ## Architecture
 
-- `ssg.config.ts`: exports the route registry, document renderer, generation settings, and built assets consumed by `askr ssg`
-- `scripts/verify-static-output.ts`: verifies generated document shape, metadata, and assets
-- `index.html`: canonical document template for dev and generated output
-- `src/pages/_routes.ts`: shared route registry and document metadata lookup
-- `src/pages/home/`, `src/pages/framework/`, `src/pages/ui/`, `src/pages/themes/`: top-level route groups with page-owned `_routes` files
-- `src/pages/docs/_routes.ts`: docs route group backed by docs-local layout and registry modules
-- `src/pages/showcase/_routes.ts`: showcase route group, including nested UI component detail routes
-- `src/site/shell/`: body-level site chrome shared by pages
-- `src/site/primitives/`: reusable site-level building blocks
-- `src/pages/docs/`: docs pages and docs-owned private helpers
-- `src/pages/showcase/`: showcase pages plus UI registry, demos, and models
-- `src/site/navigation.ts`: cross-site navigation contracts and links
-- `src/styles.css`: shared site styles
+- `src/pages/_layout.tsx` owns the root `<main>` shell.
+- `src/pages/_routes.tsx` owns the shared browser/SSG route registry.
+- `src/pages/home.tsx` renders the `/` page.
+- `src/main.tsx` hydrates generated markup and starts the SPA in development.
+- `ssg.config.ts` injects rendered HTML into Vite's built document and publishes
+  its hashed assets.
 
-### Build Pipeline Notes
+The internal route registry is the only interface shared by the browser and
+SSG. This package does not expose a public API.
 
-- Dev (`vp dev`) uses `index.html` and mounts `src/app/client.tsx`.
-- Client build (`npm run build:client`) builds `index.html`, app JS, CSS, public assets, and the reusable static document template.
-- Static generation (`npm run generate`) runs through `askr ssg`, renders shared route handlers, wraps them with the built client template, and atomically publishes routes and assets.
-- Incremental generation is available through `npm run generate:incremental`; use `--changed-route`, `--changed-key`, or `--force-full` when the route source supports those signals.
-- SSR build (`npm run build:ssr`) compiles `src/app/server/entry-server.tsx`; SSR callers provide the built document template to `renderPage()`.
-- Theme boot is centralized in `public/theme-init.js` and loaded by `index.html`.
+## Build and publish flow
 
-## Automation
+1. `npm run build:client` builds the browser entry and stylesheet into
+   `.askr/client/` with hashed asset names.
+2. `npm run build:ssg` renders `/`, injects it into the built Vite document,
+   and publishes the result to `dist/`.
+3. `npm run verify:static` checks `dist/metadata.json`, pre-rendered content,
+   and every referenced asset.
 
-- `.github/workflows/ci.yml` only installs the published dependencies, builds the static site, verifies `dist`, and uploads the build artifact.
-- `.github/workflows/deploy.yml` builds and verifies the site on `main`, then publishes `dist` through GitHub Pages.
+`.github/workflows/deploy.yml` is the only workflow. Pull requests run install
+and all checks without deploying. Pushes to `main` and manual dispatches run the
+same gates, upload `dist/`, and deploy it through the `github-pages`
+environment.
 
-## Initial Scope
-
-- Home page
-- Showcase landing pages for askr, askr-ui, askr-themes, and askr CLI workflows
-- Starter docs pages authored directly in this repository
+The repository does not carry a `CNAME` file. Configure `askrjs.com` in the
+repository's Pages settings (or through the Pages API), wait for DNS and the
+certificate to become healthy, then enable HTTPS enforcement.

@@ -1,46 +1,30 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { DocumentRenderArgs } from '@askrjs/askr/ssg';
-import {
-  getWebsiteDocumentMeta,
-  websiteRouteRegistry,
-} from './src/pages/_routes';
-import { renderDocument } from './src/app/server/document-template';
+import { routeRegistry } from './src/pages/_routes';
 
-export const registry = websiteRouteRegistry;
+export const registry = routeRegistry;
 export const outputDir = 'dist';
-
-export const seed = 20260315;
-export const concurrency = 4;
 
 let clientTemplate: string | undefined;
 
-function renderStaticDocument({ appHtml, context }: DocumentRenderArgs) {
+function renderDocument({ appHtml }: DocumentRenderArgs) {
   clientTemplate ??= readFileSync(
     resolve(process.cwd(), '.askr/client/index.html'),
     'utf8'
   );
 
-  return renderDocument({
-    templateHtml: clientTemplate,
-    appHtml,
-    meta: getWebsiteDocumentMeta(context.pathname),
-  });
+  return clientTemplate.replace(
+    '<div id="app"></div>',
+    `<div id="app">${appHtml}</div>`
+  );
 }
 
 export const staticConfig = {
   registry,
   outputDir,
-  seed,
-  concurrency,
-  document: renderStaticDocument,
+  document: renderDocument,
   assets: [
     { from: resolve(process.cwd(), '.askr/client/assets'), to: 'assets' },
-    { from: resolve(process.cwd(), '.askr/client/app.js'), to: 'app.js' },
-    { from: resolve(process.cwd(), '.askr/client/chunks'), to: 'chunks' },
-    {
-      from: resolve(process.cwd(), '.askr/client/theme-init.js'),
-      to: 'theme-init.js',
-    },
   ],
 };

@@ -1,19 +1,15 @@
 import type { PluginOption, UserConfig } from 'vite-plus';
 import { askr } from '@askrjs/vite';
 
-interface VitePlusEnv {
-  isSsrBuild?: boolean;
-}
-
 function askrPlugin(): PluginOption {
   return askr() as unknown as PluginOption;
 }
 
-export default function config({ isSsrBuild }: VitePlusEnv): UserConfig {
+export default function config(): UserConfig {
   return {
     plugins: [askrPlugin()],
     lint: {
-      ignorePatterns: ['dist/**', 'node_modules/**', 'coverage/**'],
+      ignorePatterns: ['.askr/**', 'dist/**', 'node_modules/**'],
     },
     fmt: {
       semi: true,
@@ -24,21 +20,11 @@ export default function config({ isSsrBuild }: VitePlusEnv): UserConfig {
     },
     server: {
       port: 5173,
-      open: true,
+      open: false,
     },
     build: {
-      outDir: isSsrBuild ? '.askr/server' : '.askr/client',
+      outDir: '.askr/client',
       emptyOutDir: true,
-      sourcemap: true,
-      cssCodeSplit: false,
-      rollupOptions: {
-        input: isSsrBuild ? 'src/app/server/entry-server.tsx' : 'index.html',
-        output: {
-          entryFileNames: isSsrBuild ? 'entry-server.js' : 'app.js',
-          chunkFileNames: 'chunks/[name]-[hash].js',
-          assetFileNames: 'assets/[name]-[hash][extname]',
-        },
-      },
     },
   };
 }
