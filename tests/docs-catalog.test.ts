@@ -5,6 +5,8 @@ import {
   docsByRoute,
   docsCatalog,
   docsSections,
+  normalizeDocsRoute,
+  resolveDocsRoute,
 } from '../src/pages/docs/catalog';
 import { componentGuideRoute } from '../src/pages/docs/component-coverage';
 import { searchDocs } from '../src/pages/docs/search-index';
@@ -23,6 +25,19 @@ describe('documentation catalog', () => {
       );
       expect(page.previous).toBe(docsCatalog[index - 1]?.route);
       expect(page.next).toBe(docsCatalog[index + 1]?.route);
+    }
+  });
+
+  it('normalizes GitHub Pages trailing-slash document URLs', () => {
+    for (const page of docsCatalog) {
+      expect(normalizeDocsRoute(`${page.route}/`)).toBe(page.route);
+      expect(docsByRoute.get(normalizeDocsRoute(`${page.route}/`))).toBe(page);
+      expect(
+        resolveDocsRoute({
+          path: `${page.route}/`,
+          matches: [{ path: page.route }],
+        })
+      ).toBe(page.route);
     }
   });
 

@@ -2,9 +2,10 @@ import { currentRoute, Link } from '@askrjs/askr/router';
 import { ArrowLeftIcon } from '@askrjs/lucide';
 import { apiManifest } from './api-manifest';
 import { apiSymbolSets } from './api-snapshot';
+import { resolveDocsRoute } from './catalog';
 
 export default function ApiPage() {
-  const route = currentRoute().path;
+  const route = resolveDocsRoute(currentRoute());
   const entrypoint = apiManifest.find(
     (candidate) =>
       `/docs/reference/api/${candidate.packageName.slice('@askrjs/'.length)}/${candidate.slug}` ===

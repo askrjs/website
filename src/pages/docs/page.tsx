@@ -1,6 +1,11 @@
 import { Link, currentRoute } from '@askrjs/askr/router';
 import { ArrowLeftIcon, ArrowRightIcon, CopyIcon } from '@askrjs/lucide';
-import { docsByRoute, docsSections, publishedVersions } from './catalog';
+import {
+  docsByRoute,
+  docsSections,
+  publishedVersions,
+  resolveDocsRoute,
+} from './catalog';
 import { cliSnapshot } from './cli-snapshot';
 import type { DocsHeadingDefinition, DocsPageDefinition } from './types';
 import { buildUsageGuide } from './usage-guide';
@@ -181,8 +186,8 @@ function PreviousNext({ page }: { page: DocsPageDefinition }) {
 }
 
 export default function DocsPage() {
-  const route = currentRoute().path;
-  const page = docsByRoute.get(route as `/docs${string}`);
+  const route = resolveDocsRoute(currentRoute());
+  const page = docsByRoute.get(route);
   if (!page)
     return (
       <article class="docs-article">
