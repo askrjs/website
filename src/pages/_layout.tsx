@@ -1,14 +1,18 @@
 import type { Props } from '@askrjs/askr';
 import { Link } from '@askrjs/askr/router';
-import { MoonIcon, SunIcon } from '@askrjs/lucide';
+import { BookOpenIcon, CompassIcon, MoonIcon, SunIcon } from '@askrjs/lucide';
 import {
-  Block,
   Brand,
   BrandLabel,
   BrandMark,
   Button,
   Container,
   Footer,
+  FooterContent,
+  FooterLink,
+  FooterLinks,
+  FooterSection,
+  FooterTitle,
   Header,
   Navbar,
   NavBrand,
@@ -16,6 +20,7 @@ import {
   Text,
 } from '@askrjs/themes/components';
 import { ThemeScope, ThemeToggle } from '@askrjs/themes/theme';
+import { marketingPages } from './_marketing-catalog';
 
 export function AskrBrand({ compact = false }: { compact?: boolean }) {
   return (
@@ -68,22 +73,28 @@ export function MarketingLayout({ children }: Props) {
     <ThemeScope defaultTheme="light" storageKey="askr-theme">
       <div class="marketing-shell" data-layout="marketing">
         <Header sticky>
-          <Container>
+          <Container size="xl">
             <Navbar aria-label="Primary navigation">
               <NavBrand>
                 <AskrBrand />
               </NavBrand>
               <NavGroup align="end">
-                <Button asChild variant="ghost" size="sm">
-                  <Link href="/docs">Docs</Link>
+                <Button asChild variant="ghost" size="icon">
+                  <Link
+                    href="/docs"
+                    aria-label="Documentation"
+                    title="Documentation"
+                  >
+                    <BookOpenIcon size={18} aria-hidden="true" />
+                  </Link>
                 </Button>
-                <Button asChild variant="ghost" size="sm">
+                <Button asChild variant="ghost" size="icon">
                   <a
                     href="https://github.com/askrjs"
                     aria-label="Askr on GitHub"
+                    title="GitHub"
                   >
                     <GitHubMark />
-                    GitHub
                   </a>
                 </Button>
                 <SiteThemeToggle />
@@ -93,30 +104,88 @@ export function MarketingLayout({ children }: Props) {
         </Header>
         <main>{children}</main>
         <Footer>
-          <Container paddingY="xl">
-            <Block
-              class="marketing-footer__content"
-              direction="row"
-              align="center"
-              justify="between"
-              gap="lg"
-            >
-              <AskrBrand />
-              <Text tone="muted" size="sm">
-                Full-stack TypeScript, from first route to production.
-              </Text>
-              <Block direction="row" align="center" gap="sm">
-                <Button asChild variant="ghost" size="sm">
-                  <Link href="/docs">Documentation</Link>
-                </Button>
-                <Button asChild variant="ghost" size="sm">
-                  <a href="https://github.com/askrjs">
+          <Container size="xl" paddingY="xl">
+            <FooterContent class="marketing-footer__columns">
+              <FooterSection>
+                <FooterTitle>
+                  <span class="marketing-footer__title-label">
+                    <CompassIcon
+                      class="marketing-footer__explore-icon"
+                      size={18}
+                      aria-hidden="true"
+                    />
+                    Explore
+                  </span>
+                </FooterTitle>
+                <FooterLinks aria-label="Marketing links">
+                  <FooterLink href="/">Overview</FooterLink>
+                  {marketingPages.map((page) => (
+                    <FooterLink href={page.path}>{page.label}</FooterLink>
+                  ))}
+                </FooterLinks>
+              </FooterSection>
+
+              <FooterSection>
+                <FooterTitle>
+                  <Link class="marketing-footer__title-link" href="/docs">
+                    <BookOpenIcon
+                      class="marketing-footer__documentation-icon"
+                      size={18}
+                      aria-hidden="true"
+                    />
+                    Documentation
+                  </Link>
+                </FooterTitle>
+                <FooterLinks aria-label="Documentation links">
+                  <Link
+                    class="footer-link"
+                    data-slot="footer-link"
+                    href="/docs/getting-started"
+                  >
+                    Getting started
+                  </Link>
+                  <Link
+                    class="footer-link"
+                    data-slot="footer-link"
+                    href="/docs/core-concepts"
+                  >
+                    Core concepts
+                  </Link>
+                </FooterLinks>
+              </FooterSection>
+
+              <FooterSection>
+                <FooterTitle>
+                  <a
+                    class="marketing-footer__title-link"
+                    href="https://github.com/askrjs"
+                  >
                     <GitHubMark />
                     GitHub
                   </a>
-                </Button>
-              </Block>
-            </Block>
+                </FooterTitle>
+                <FooterLinks aria-label="External links">
+                  <FooterLink href="https://github.com/askrjs/askr">
+                    askr
+                  </FooterLink>
+                  <FooterLink href="https://github.com/askrjs/askr-server">
+                    askr-server
+                  </FooterLink>
+                  <FooterLink href="https://github.com/askrjs/askr-ui">
+                    askr-ui
+                  </FooterLink>
+                  <FooterLink href="https://github.com/askrjs/askr-themes">
+                    askr-themes
+                  </FooterLink>
+                  <FooterLink href="https://github.com/askrjs/askr-cli">
+                    askr-cli
+                  </FooterLink>
+                </FooterLinks>
+              </FooterSection>
+            </FooterContent>
+            <Text class="marketing-footer__copyright" size="sm" tone="muted">
+              © 2026 Askr contributors.
+            </Text>
           </Container>
         </Footer>
       </div>

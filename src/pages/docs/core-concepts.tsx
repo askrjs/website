@@ -2,7 +2,6 @@ export function CoreConceptsPage() {
   return (
     <article class="docs-article">
       <header class="docs-article__header">
-        <p class="eyebrow">Core concepts</p>
         <h1>Runtime and rendering</h1>
         <p>
           Askr keeps state local, routing explicit, and rendering modes aligned
@@ -14,11 +13,11 @@ export function CoreConceptsPage() {
         <h2>State is explicit</h2>
         <p>
           A state value is read like a function and updated through its setter.
-          Reads made while rendering establish the work Askr needs to repeat
-          when that value changes.
+          A component subscribes only to state it read during its last committed
+          render.
         </p>
         <div class="code-block">
-          <code>{`const count = state(0);\n\n<button onClick={() => count.set(count() + 1)}>\n  {count()}\n</button>`}</code>
+          <code>{`import { state } from '@askrjs/askr';\n\nexport function Counter() {\n  const [count, setCount] = state(0);\n\n  return (\n    <button onClick={() => setCount((value) => value + 1)}>\n      {count()}\n    </button>\n  );\n}`}</code>
         </div>
       </section>
 
@@ -35,9 +34,10 @@ export function CoreConceptsPage() {
         <h2>Hydration adopts generated HTML</h2>
         <p>
           SSG writes complete page content before deployment. In the browser,
-          <code> hydrateSPA </code> verifies and adopts that markup, then
-          attaches interactions. Keep the first browser render deterministic so
-          the generated document and hydrated tree agree.
+          <code>hydrateSPA</code> adopts matching generated DOM and attaches
+          event bindings. Development builds also verify the generated markup by
+          default. Keep the first browser render deterministic so the generated
+          document and hydrated tree agree.
         </p>
       </section>
     </article>

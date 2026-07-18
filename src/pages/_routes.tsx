@@ -1,10 +1,18 @@
 import { createRouteRegistry, group, route } from '@askrjs/askr/router';
 import { MarketingLayout } from './_layout';
+import { marketingPages, type MarketingPath } from './_marketing-catalog';
+import { ApplicationModelPage } from './application-model';
 import { DocsLayout } from './docs/_layout';
 import { CoreConceptsPage } from './docs/core-concepts';
 import { GettingStartedPage } from './docs/getting-started';
 import { DocsOverviewPage } from './docs/overview';
+import { FullStackPage } from './full-stack';
 import { HomePage } from './home';
+import { PlatformPage } from './platform';
+import { ProductionPage } from './production';
+import { RenderingPage } from './rendering';
+import { ThemesPage } from './themes';
+import { ToolingPage } from './tooling';
 
 export type RouteMetadata = {
   title: string;
@@ -15,7 +23,7 @@ export const routeMetadata: Readonly<Record<string, RouteMetadata>> = {
   '/': {
     title: 'Askr — Full-stack TypeScript applications',
     description:
-      'Build fast, typed applications across the browser and server with Askr.',
+      'Build typed applications across browser and server rendering with Askr.',
   },
   '/docs': {
     title: 'Documentation — Askr',
@@ -32,11 +40,30 @@ export const routeMetadata: Readonly<Record<string, RouteMetadata>> = {
     description:
       'Understand Askr routes, reactive state, rendering modes, and hydration.',
   },
+  ...Object.fromEntries(
+    marketingPages.map(({ path, title, description }) => [
+      path,
+      { title, description },
+    ])
+  ),
+};
+
+const marketingRouteComponents: Record<MarketingPath, typeof PlatformPage> = {
+  '/platform': PlatformPage,
+  '/application-model': ApplicationModelPage,
+  '/rendering': RenderingPage,
+  '/full-stack': FullStackPage,
+  '/themes': ThemesPage,
+  '/tooling': ToolingPage,
+  '/production': ProductionPage,
 };
 
 export const routeRegistry = createRouteRegistry(() => {
   group({ layout: MarketingLayout }, () => {
     route('/', HomePage, { meta: routeMetadata['/'] });
+    for (const page of marketingPages) {
+      route(page.path, marketingRouteComponents[page.path], { meta: page });
+    }
   });
 
   group({ layout: DocsLayout }, () => {

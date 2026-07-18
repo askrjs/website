@@ -5,7 +5,6 @@ export function DocsOverviewPage() {
   return (
     <article class="docs-article">
       <header class="docs-article__header">
-        <p class="eyebrow">Documentation</p>
         <h1>Build with Askr</h1>
         <p>
           Askr is a TypeScript application framework with one component and
@@ -42,9 +41,9 @@ export function DocsOverviewPage() {
       <section>
         <h2>Choose a rendering mode</h2>
         <p>
-          Use an SPA for browser-only applications, SSG for content that can be
-          generated ahead of time, or SSR when every request needs fresh server
-          work. The route registry remains the shared source of truth.
+          Use an SPA for client-rendered applications, SSG for HTML generated at
+          build time, or SSR for HTML rendered at request time. The same page
+          route registry drives all three.
         </p>
       </section>
     </article>
