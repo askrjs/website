@@ -22,7 +22,8 @@
     "@askrjs/askr": ">=0.0.55 <0.1.0",
     "@askrjs/lucide": "^0.0.4",
     "@askrjs/themes": "^0.0.13",
-    "@askrjs/ui": "^0.0.13"
+    "@askrjs/ui": "^0.0.13",
+    "@fontsource-variable/domine": "^5.2.8"
   },
   "devDependencies": {
     "@askrjs/cli": ">=0.0.3 <0.1.0",
