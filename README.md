@@ -12,6 +12,8 @@ CI therefore validate the same package boundary used by GitHub Pages.
 - `npm run build` builds the client and runs `askr ssg` into `dist/`.
 - `npm run verify:static` validates the generated route, markup, and assets using
   only Node.js built-ins.
+- `npm run fmt:check` checks formatting without changing files.
+- `npm test` verifies the generated static output after a build.
 - `npm run preview` serves `dist/` with `vp preview --outDir dist`.
 - `npm run check` runs lint, typecheck, build, and static verification.
 
@@ -37,10 +39,10 @@ SSG. This package does not expose a public API.
 3. `npm run verify:static` checks `dist/metadata.json`, pre-rendered content,
    and every referenced asset.
 
-`.github/workflows/deploy.yml` is the only workflow. Pull requests run install
-and all checks without deploying. Pushes to `main` and manual dispatches run the
-same gates, upload `dist/`, and deploy it through the `github-pages`
-environment.
+`.github/workflows/ci.yml` runs format, lint/typecheck, build, and test on pull
+requests. Pushes to `main` and manual dispatches use
+`.github/workflows/deploy.yml` to run the aggregate check, upload `dist/`, and
+deploy it through the `github-pages` environment.
 
 The repository does not carry a `CNAME` file. Configure `askrjs.com` in the
 repository's Pages settings (or through the Pages API), wait for DNS and the

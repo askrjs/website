@@ -12,8 +12,10 @@
     "verify:static": "node ./scripts/verify-static-output.mjs",
     "lint": "vp lint src scripts ssg.config.ts vite.config.ts",
     "fmt": "vp fmt .",
+    "fmt:check": "vp fmt . --check",
+    "test": "npm run verify:static",
     "typecheck": "tsc --noEmit",
-    "check": "npm run lint && npm run typecheck && npm run build && npm run verify:static",
+    "check": "npm run fmt:check && npm run lint && npm run typecheck && npm run build && npm test",
     "preview": "vp preview --outDir dist"
   },
   "dependencies": {
