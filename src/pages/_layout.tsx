@@ -120,7 +120,9 @@ export function MarketingLayout({ children }: Props) {
                 <FooterLinks aria-label="Marketing links">
                   <FooterLink href="/">Overview</FooterLink>
                   {marketingPages.map((page) => (
-                    <FooterLink href={page.path}>{page.label}</FooterLink>
+                    <FooterLink key={page.path} href={page.path}>
+                      {page.label}
+                    </FooterLink>
                   ))}
                 </FooterLinks>
               </FooterSection>

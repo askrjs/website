@@ -57,7 +57,7 @@ export function PlatformPage() {
         </div>
         <ol class="platform-journey" aria-label="From component to production">
           {journey.map((item) => (
-            <li class="platform-journey__step">
+            <li key={item.step} class="platform-journey__step">
               <span class="platform-journey__number">{item.step}</span>
               <strong>{item.verb}</strong>
               <h3>{item.title}</h3>

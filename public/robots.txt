@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://askrjs.com/sitemap.xml

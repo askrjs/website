@@ -39,7 +39,7 @@ export function ThemesPage() {
             <h3>Themes</h3>
             <p>
               Styled components and named tokens for color, type, space, radius,
-              and motion—replaceable without rewriting behavior.
+              and motion. Replace them without rewriting behavior.
             </p>
             <small>@askrjs/themes</small>
           </li>
@@ -61,12 +61,10 @@ export function ThemesPage() {
             application still owns the complete user journey.
           </p>
           <Vocabulary>
-            <code>@askrjs/ui</code>
-            <code>@askrjs/themes</code>
-            <code>@askrjs/lucide</code>
-            <code>@askrjs/logos</code>
-            <code>@askrjs/charts</code>
-            <code>@askrjs/monaco</code>
+            <code>headless component</code>
+            <code>theme component</code>
+            <code>tokens</code>
+            <code>product surface</code>
           </Vocabulary>
           <RepositoryLink href="https://github.com/askrjs/askr-themes">
             Explore the theme system

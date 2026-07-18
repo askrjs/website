@@ -1,7 +1,5 @@
 import {
-  CapabilityLedger,
   EditorialHero,
-  LedgerItem,
   MarketingPageNavigation,
   RepositoryLink,
   RuledSection,
@@ -15,7 +13,7 @@ export function ApplicationModelPage() {
         title="Explicit state. Explicit routes. Explicit ownership."
         lede="State, routes, resources, and ownership stay visible: where work begins, when it ends, and which scope controls it."
       />
-      <RuledSection>
+      <RuledSection stacked>
         <div class="editorial-section__heading">
           <h2>Local state. Derived values. Lexical lifetimes.</h2>
           <p>
@@ -23,17 +21,35 @@ export function ApplicationModelPage() {
             Scopes make cleanup part of the model.
           </p>
         </div>
-        <CapabilityLedger>
-          <LedgerItem title="State">
-            <p>Mutable facts with explicit reads and writes.</p>
-          </LedgerItem>
-          <LedgerItem title="Derived values">
-            <p>Computed relationships that update from their dependencies.</p>
-          </LedgerItem>
-          <LedgerItem title="Lexical scopes">
-            <p>Ownership boundaries for effects, resources, and teardown.</p>
-          </LedgerItem>
-        </CapabilityLedger>
+        <ol
+          class="concept-sequence"
+          aria-label="Application ownership lifecycle"
+        >
+          <li>
+            <span>01</span>
+            <h3>State</h3>
+            <p>Store mutable facts where they are owned.</p>
+            <small>read · write</small>
+          </li>
+          <li>
+            <span>02</span>
+            <h3>Derived values</h3>
+            <p>Track relationships instead of synchronizing copies.</p>
+            <small>depend · compute</small>
+          </li>
+          <li>
+            <span>03</span>
+            <h3>Resources</h3>
+            <p>Attach asynchronous work to the active lifecycle.</p>
+            <small>load · cancel</small>
+          </li>
+          <li>
+            <span>04</span>
+            <h3>Scopes</h3>
+            <p>End effects and resources with their lexical owner.</p>
+            <small>own · dispose</small>
+          </li>
+        </ol>
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
@@ -52,12 +68,9 @@ export function ApplicationModelPage() {
           <Vocabulary>
             <code>state</code>
             <code>derived</code>
-            <code>scope</code>
-            <code>route</code>
             <code>resource</code>
-            <code>query</code>
-            <code>cancel</code>
-            <code>invalidate</code>
+            <code>scope</code>
+            <code>dispose</code>
           </Vocabulary>
           <RepositoryLink href="https://github.com/askrjs/askr">
             View the core runtime

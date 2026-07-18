@@ -8,6 +8,7 @@ import { GettingStartedPage } from './docs/getting-started';
 import { DocsOverviewPage } from './docs/overview';
 import { FullStackPage } from './full-stack';
 import { HomePage } from './home';
+import { NotFoundPage } from './not-found';
 import { PlatformPage } from './platform';
 import { ProductionPage } from './production';
 import { RenderingPage } from './rendering';
@@ -21,24 +22,28 @@ export type RouteMetadata = {
 
 export const routeMetadata: Readonly<Record<string, RouteMetadata>> = {
   '/': {
-    title: 'Askr — Full-stack TypeScript applications',
+    title: 'A cat named Askr, or how we learned to build full-stack apps',
     description:
       'Build typed applications across browser and server rendering with Askr.',
   },
   '/docs': {
-    title: 'Documentation — Askr',
+    title: 'Documentation | Askr',
     description:
       'Learn how Askr fits together and find the shortest path into the framework.',
   },
   '/docs/getting-started': {
-    title: 'Getting started — Askr',
+    title: 'Getting started | Askr',
     description:
       'Install Askr, create your first application, and run it locally.',
   },
   '/docs/core-concepts': {
-    title: 'Core concepts — Askr',
+    title: 'Core concepts | Askr',
     description:
       'Understand Askr routes, reactive state, rendering modes, and hydration.',
+  },
+  '/404': {
+    title: 'Page not found | Askr',
+    description: 'The requested Askr page does not exist.',
   },
   ...Object.fromEntries(
     marketingPages.map(({ path, title, description }) => [
@@ -64,6 +69,8 @@ export const routeRegistry = createRouteRegistry(() => {
     for (const page of marketingPages) {
       route(page.path, marketingRouteComponents[page.path], { meta: page });
     }
+    route('/404', NotFoundPage, { meta: routeMetadata['/404'] });
+    route('/*', NotFoundPage, { meta: routeMetadata['/404'] });
   });
 
   group({ layout: DocsLayout }, () => {

@@ -1,7 +1,5 @@
 import {
-  CapabilityLedger,
   EditorialHero,
-  LedgerItem,
   MarketingPageNavigation,
   RepositoryLink,
   RuledSection,
@@ -15,7 +13,7 @@ export function FullStackPage() {
         title="Pages, APIs, and actions meet at one explicit composition root."
         lede="Add server capability without adding a second architecture. Page actions, HTTP APIs, policies, and dependencies meet at one visible root."
       />
-      <RuledSection>
+      <RuledSection stacked>
         <div class="editorial-section__heading">
           <h2>Use the browser’s native path first.</h2>
           <p>
@@ -24,19 +22,27 @@ export function FullStackPage() {
             page interactions need no custom client protocol.
           </p>
         </div>
-        <CapabilityLedger>
-          <LedgerItem title="Page actions">
-            <p>
-              Native-first mutations attached to the route that presents them.
-            </p>
-          </LedgerItem>
-          <LedgerItem title="HTTP APIs">
-            <p>Transport-neutral handlers built on Request and Response.</p>
-          </LedgerItem>
-          <LedgerItem title="Composition">
-            <p>Explicit dependencies supplied at the application boundary.</p>
-          </LedgerItem>
-        </CapabilityLedger>
+        <div class="composition-map" aria-label="Full-stack composition root">
+          <ul>
+            <li>
+              <span>Pages</span>
+              <p>Routes and loaders</p>
+            </li>
+            <li>
+              <span>Actions</span>
+              <p>Forms and mutations</p>
+            </li>
+            <li>
+              <span>APIs</span>
+              <p>Request and Response</p>
+            </li>
+          </ul>
+          <div class="composition-map__root">
+            <span>Composition root</span>
+            <h3>Policies + dependencies</h3>
+            <p>Schemas, auth contracts, and application services meet here.</p>
+          </div>
+        </div>
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
@@ -54,12 +60,11 @@ export function FullStackPage() {
             responsibilities.
           </p>
           <Vocabulary>
-            <code>handleAction</code>
             <code>Request</code>
-            <code>Response</code>
             <code>Schema</code>
+            <code>handler</code>
+            <code>Response</code>
             <code>OpenAPI</code>
-            <code>policy</code>
           </Vocabulary>
           <RepositoryLink href="https://github.com/askrjs/askr-server">
             View the server foundation
