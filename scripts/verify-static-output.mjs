@@ -97,6 +97,11 @@ function assertGeneratedDocument(routePath, expectation) {
     `${routePath} does not reference the Askr logo`
   );
   assert(
+    html.includes('/assets/github-mark-black.svg') &&
+      html.includes('/assets/github-mark-white.svg'),
+    `${routePath} does not reference both theme-safe GitHub marks`
+  );
+  assert(
     assetReferences.some((path) => /-[A-Za-z0-9_-]+\.js$/.test(path)),
     `${routePath} does not reference a hashed JavaScript asset`
   );
@@ -137,6 +142,14 @@ if (existsSync(metadataPath)) {
 assert(
   existsSync(resolve(dist, 'assets/askr-logo.png')),
   'the Askr logo must be published'
+);
+assert(
+  existsSync(resolve(dist, 'assets/github-mark-black.svg')),
+  'the black GitHub mark must be published'
+);
+assert(
+  existsSync(resolve(dist, 'assets/github-mark-white.svg')),
+  'the white GitHub mark must be published'
 );
 
 for (const [routePath, expectation] of Object.entries(expectedRoutes)) {

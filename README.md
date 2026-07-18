@@ -24,7 +24,8 @@ CI therefore validate the same package boundary used by GitHub Pages.
 - `src/pages/home.tsx` renders the `/` page.
 - `src/pages/docs/` owns the docs shell and the three documentation pages.
 - `src/main.tsx` hydrates generated markup and starts the SPA in development.
-- `public/assets/askr-logo.png` provides the favicon and touch icon.
+- `public/assets/askr-logo.png` provides the favicon and touch icon; the GitHub
+  mark variants come from the official GitHub Brand Toolkit.
 - `ssg.config.ts` injects rendered HTML and route-specific metadata into Vite's
   built document and publishes its hashed assets.
 

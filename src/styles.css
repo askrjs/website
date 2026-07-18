@@ -46,6 +46,25 @@ a {
   box-shadow: none;
 }
 
+.github-mark,
+.github-mark img {
+  display: block;
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.github-mark img.github-mark__dark {
+  display: none;
+}
+
+html[data-theme='dark'] .github-mark img.github-mark__light {
+  display: none;
+}
+
+html[data-theme='dark'] .github-mark img.github-mark__dark {
+  display: block;
+}
+
 .hero {
   padding: clamp(6rem, 11vw, 10rem) 0 clamp(5rem, 9vw, 8rem);
 }

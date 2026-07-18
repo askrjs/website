@@ -2,7 +2,6 @@ import { state, type Props } from '@askrjs/askr';
 import { Link, currentRoute } from '@askrjs/askr/router';
 import {
   BookOpenIcon,
-  GitBranchIcon,
   Layers3Icon,
   MenuIcon,
   PanelLeftCloseIcon,
@@ -10,7 +9,7 @@ import {
   RocketIcon,
 } from '@askrjs/lucide';
 import { ThemeScope } from '@askrjs/themes/theme';
-import { AskrBrand, SiteThemeToggle } from '../_layout';
+import { AskrBrand, GitHubMark, SiteThemeToggle } from '../_layout';
 
 const DOCS_SIDEBAR_STORAGE_KEY = 'askr-docs-sidebar-collapsed';
 
@@ -125,9 +124,10 @@ export function DocsLayout({ children }: Props) {
             <a
               class="docs-sidebar__github"
               href="https://github.com/askrjs"
+              aria-label="Askr on GitHub"
               title={collapsed() ? 'GitHub' : undefined}
             >
-              <GitBranchIcon size={18} aria-hidden="true" />
+              <GitHubMark />
               <span>GitHub</span>
             </a>
             <SiteThemeToggle />
