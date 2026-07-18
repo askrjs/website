@@ -43,13 +43,13 @@ export function HomePage() {
             them.
           </p>
           <div class="hero__actions">
-            <Button asChild size="lg">
+            <Button asChild>
               <Link href="/docs/getting-started">
                 Get started
                 <ArrowRightIcon size={18} aria-hidden="true" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline">
+            <Button asChild>
               <Link href="/docs">Read the docs</Link>
             </Button>
           </div>
@@ -92,7 +92,7 @@ export function HomePage() {
             <p class="eyebrow">Ready to build?</p>
             <h2>Take the direct path from idea to application.</h2>
           </div>
-          <Button asChild size="lg">
+          <Button asChild>
             <Link href="/docs/getting-started">
               Open the documentation
               <ArrowRightIcon size={18} aria-hidden="true" />
