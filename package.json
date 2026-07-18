@@ -2,7 +2,7 @@
   "name": "@askrjs/website",
   "version": "0.1.0",
   "private": true,
-  "description": "Minimal Askr static site",
+  "description": "Askr marketing and documentation site",
   "type": "module",
   "scripts": {
     "dev": "vp dev",
