@@ -100,9 +100,20 @@ for (const expectation of expectations) {
   if (!existsSync(resolve(dist, file))) continue;
   const html = read(file);
   documents.set(expectation.route, html);
+  const titles = [...html.matchAll(/<title([^>]*)>(.*?)<\/title>/g)];
+  assert(titles.length === 1, `${expectation.route} must have one title`);
   assert(
-    html.includes(`<title>${expectation.title}</title>`),
-    `${expectation.route} has the wrong title`
+    titles[0]?.[1]?.includes('data-askr-head') &&
+      titles[0]?.[2] === expectation.title,
+    `${expectation.route} has the wrong or unowned title`
+  );
+  const descriptions = [
+    ...html.matchAll(/<meta([^>]*name="description"[^>]*)>/g),
+  ];
+  assert(
+    descriptions.length === 1 &&
+      descriptions[0]?.[1]?.includes('data-askr-head'),
+    `${expectation.route} must have one framework-owned description`
   );
   assert(
     html.includes(
