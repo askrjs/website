@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { serializeRouteMeta } from '@askrjs/askr/router';
 import type { DocumentRenderArgs } from '@askrjs/askr/ssg';
 import { routeMetadata, routeRegistry } from './src/pages/_routes';
 
@@ -7,20 +8,6 @@ export const registry = routeRegistry;
 export const outputDir = 'dist';
 
 let clientTemplate: string | undefined;
-
-function escapeHtml(value: string): string {
-  return value.replace(
-    /[&<>"']/g,
-    (character) =>
-      ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;',
-      })[character] ?? character
-  );
-}
 
 function renderDocument({ appHtml, context }: DocumentRenderArgs) {
   clientTemplate ??= readFileSync(
@@ -32,15 +19,10 @@ function renderDocument({ appHtml, context }: DocumentRenderArgs) {
   if (!metadata) {
     throw new Error(`Missing metadata for route: ${context.route.path}`);
   }
-  const document = clientTemplate
-    .replace(
-      /<title>.*?<\/title>/,
-      `<title>${escapeHtml(metadata.title)}</title>`
-    )
-    .replace(
-      '</head>',
-      `    <meta name="description" content="${escapeHtml(metadata.description)}" />\n  </head>`
-    );
+  const document = clientTemplate.replace(
+    /<title(?:\s[^>]*)?>.*?<\/title>/,
+    serializeRouteMeta(metadata)
+  );
 
   return document.replace(
     '<div id="app"></div>',
