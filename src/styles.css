@@ -958,7 +958,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .docs-nav__link[data-active='true'] {
   background: var(--ak-color-primary-soft);
-  color: var(--ak-color-primary-ink);
+  color: var(--ak-color-text);
 }
 
 .docs-sidebar__footer {
@@ -1402,6 +1402,11 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 .docs-shell,
 .docs-shell[data-sidebar-collapsed='true'] {
   --ak-font-family-quote: 'Domine Variable', serif;
+  --docs-color-text-secondary: color-mix(
+    in oklch,
+    var(--ak-color-text-muted) 76%,
+    var(--ak-color-text)
+  );
 
   display: grid;
   min-height: 100vh;
@@ -1450,7 +1455,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   display: block;
   padding: 0.55rem 0.7rem;
   border-radius: 0.55rem;
-  color: var(--ak-color-text-muted);
+  color: var(--docs-color-text-secondary);
   font-size: 0.82rem;
   font-weight: 700;
   text-decoration: none;
@@ -1463,7 +1468,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 .docs-nav__group-link:hover,
 .docs-nav__pages a:hover {
   background: var(--ak-color-primary-soft);
-  color: var(--ak-color-primary-ink);
+  color: var(--ak-color-text);
 }
 
 .docs-nav__pages {
@@ -1474,7 +1479,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .docs-nav__pages p {
   margin: 0.75rem 0 0.2rem 0.65rem;
-  color: var(--ak-color-text-muted);
+  color: var(--docs-color-text-secondary);
   font-size: 0.66rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -1491,7 +1496,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   justify-content: space-between;
   padding: 0.42rem 0.65rem;
   border-radius: 0.5rem;
-  color: var(--ak-color-text-muted);
+  color: var(--docs-color-text-secondary);
   font-size: 0.78rem;
   line-height: 1.3;
   text-decoration: none;
@@ -1499,7 +1504,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .docs-nav__pages a[aria-current='page'] {
   background: var(--ak-color-primary-soft);
-  color: var(--ak-color-primary-ink);
+  color: var(--ak-color-text);
   font-weight: 700;
 }
 
@@ -1518,7 +1523,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   border: 1px solid var(--ak-color-border);
   border-radius: 0.6rem;
   background: var(--ak-color-bg);
-  color: var(--ak-color-text-muted);
+  color: var(--docs-color-text-secondary);
   cursor: pointer;
   font: inherit;
   font-size: 0.78rem;
@@ -1581,7 +1586,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   padding: 0.3rem;
   border: 0;
   background: transparent;
-  color: var(--ak-color-text-muted);
+  color: var(--docs-color-text-secondary);
   cursor: pointer;
 }
 
@@ -1594,7 +1599,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 .docs-search__results > p {
   margin: 0;
   padding: 1.2rem;
-  color: var(--ak-color-text-muted);
+  color: var(--docs-color-text-secondary);
   font-size: 0.86rem;
   line-height: 1.6;
 }
@@ -1630,7 +1635,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .docs-search__results small,
 .docs-search__results em {
-  color: var(--ak-color-text-muted);
+  color: var(--docs-color-text-secondary);
   font-size: 0.72rem;
   font-style: normal;
 }
@@ -1671,7 +1676,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .docs-toc a {
-  color: var(--ak-color-text-muted);
+  color: var(--docs-color-text-secondary);
   font-size: 0.76rem;
   line-height: 1.35;
   text-decoration: none;
@@ -1686,7 +1691,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   flex-wrap: wrap;
   gap: 0.45rem;
   margin-bottom: 1.8rem;
-  color: var(--ak-color-text-muted);
+  color: var(--docs-color-text-secondary);
   font-size: 0.76rem;
 }
 
@@ -1698,7 +1703,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 0.9rem;
-  color: var(--ak-color-text-muted);
+  color: var(--docs-color-text-secondary);
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -1706,7 +1711,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .docs-eyebrow [data-status] {
-  color: var(--ak-color-primary-ink);
+  color: var(--ak-color-text);
 }
 
 .package-badges {
@@ -1735,7 +1740,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 .package-badges span {
   border-left: 1px solid var(--ak-color-border);
   background: var(--ak-color-surface-muted);
-  color: var(--ak-color-text-muted);
+  color: var(--docs-color-text-secondary);
 }
 
 .anchored-heading {
@@ -1749,7 +1754,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .anchored-heading a:hover::after {
   margin-left: 0.4rem;
-  color: var(--ak-color-text-muted);
+  color: var(--docs-color-text-secondary);
   content: '#';
 }
 
@@ -1771,7 +1776,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .docs-callout p {
   margin: 0;
-  color: var(--ak-color-text-muted);
+  color: var(--docs-color-text-secondary);
   font-size: 0.88rem;
   line-height: 1.6;
 }
@@ -1799,7 +1804,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   border: 1px solid var(--ak-color-border);
   border-radius: 0.4rem;
   background: var(--ak-color-bg);
-  color: var(--ak-color-text-muted);
+  color: var(--docs-color-text-secondary);
   cursor: pointer;
   font-size: 0.68rem;
 }
@@ -1841,7 +1846,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .docs-pagination small {
-  color: var(--ak-color-text-muted);
+  color: var(--docs-color-text-secondary);
   font-size: 0.66rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1896,7 +1901,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   padding: 0.12rem 0.35rem;
   border-radius: 0.25rem;
   background: var(--ak-color-surface-muted);
-  color: var(--ak-color-text-muted);
+  color: var(--docs-color-text-secondary);
   font-size: 0.6rem;
   text-transform: uppercase;
 }
@@ -1904,7 +1909,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 .api-symbol pre {
   margin: 0.75rem 0 0;
   overflow-x: auto;
-  color: var(--ak-color-text-muted);
+  color: var(--docs-color-text-secondary);
   font-size: 0.72rem;
   line-height: 1.55;
 }

@@ -31,7 +31,7 @@ import {
 } from '@askrjs/themes/components';
 import { ThemeScope } from '@askrjs/themes/theme';
 import { AskrBrand, GitHubMark, SiteThemeToggle } from '../_layout';
-import { docsByRoute, docsSections } from './catalog';
+import { docsByRoute, docsSections, resolveDocsRoute } from './catalog';
 import { DocsSearch } from './search';
 
 const STORAGE_KEY = 'askr-docs-sidebar-collapsed';
@@ -162,7 +162,7 @@ function TableOfContents({ activePath }: { activePath: string }) {
 export function DocsLayout({ children }: Props) {
   const collapsed = state(false);
   const drawerOpen = state(false);
-  const activePath = currentRoute().path;
+  const activePath = resolveDocsRoute(currentRoute());
   const setCollapsed = (value: boolean) => {
     collapsed.set(value);
     try {

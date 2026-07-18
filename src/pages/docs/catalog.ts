@@ -1468,6 +1468,18 @@ export const docsByRoute = new Map(
   docsCatalog.map((page) => [page.route, page])
 );
 
+export function normalizeDocsRoute(path: string): `/docs${string}` {
+  const normalized = path.length > 1 ? path.replace(/\/+$/, '') : path;
+  return normalized as `/docs${string}`;
+}
+
+export function resolveDocsRoute(location: {
+  path: string;
+  matches: readonly { path: string }[];
+}): `/docs${string}` {
+  return normalizeDocsRoute(location.matches[0]?.path ?? location.path);
+}
+
 export const docsSearchRecords: readonly DocsSearchRecord[] =
   docsCatalog.flatMap((page) => [
     {
