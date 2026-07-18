@@ -10,6 +10,9 @@ CI therefore validate the same package boundary used by GitHub Pages.
 
 - `npm run dev` starts the Vite development server.
 - `npm run build` builds the client and runs `askr ssg` into `dist/`.
+- `npm run docs:api` refreshes the published declaration snapshot.
+- `npm run docs:cli` refreshes the installed CLI command snapshot.
+- `npm run docs:manifest` refreshes the catalog manifest used by static checks.
 - `npm run verify:static` validates the generated route, markup, and assets using
   only Node.js built-ins.
 - `npm run fmt:check` checks formatting without changing files.
@@ -22,7 +25,11 @@ CI therefore validate the same package boundary used by GitHub Pages.
 - `src/pages/_layout.tsx` owns the marketing shell and shared Askr branding.
 - `src/pages/_routes.tsx` owns the shared browser/SSG route registry.
 - `src/pages/home.tsx` renders the `/` page.
-- `src/pages/docs/` owns the docs shell and the three documentation pages.
+- `src/pages/docs/catalog.ts` is the typed source of truth for docs routes,
+  metadata, grouped navigation, breadcrumbs, page ordering, search, and SSG.
+- `src/pages/docs/` also owns the shared content primitives, responsive shell,
+  generated API entrypoint pages, exhaustive Lucide gallery, and lazy search
+  index.
 - `src/main.tsx` hydrates generated markup and starts the SPA in development.
 - `public/assets/askr-logo.png` provides the favicon and touch icon; the GitHub
   mark variants come from the official GitHub Brand Toolkit.
@@ -36,11 +43,17 @@ SSG. This package does not expose a public API.
 
 1. `npm run build:client` builds the browser entry and stylesheet into
    `.askr/client/` with hashed asset names.
-2. `npm run build:ssg` renders the marketing route and three docs routes,
+2. `npm run build:ssg` renders the marketing routes, authored docs catalog, and
+   generated API reference routes,
    injects them into the built Vite document, and publishes the result to
    `dist/`.
 3. `npm run verify:static` checks `dist/metadata.json`, pre-rendered content,
    and every referenced asset.
+
+The build fails when the checked-in API, CLI, or docs manifest drifts from the
+exact package versions in `package-lock.json`. Reference-only packages are kept
+as development dependencies; packages used by live browser examples remain
+runtime dependencies.
 
 `.github/workflows/ci.yml` runs format, lint/typecheck, build, and test on pull
 requests. Pushes to `main` and manual dispatches use

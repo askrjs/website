@@ -1,11 +1,9 @@
-import { createRouteRegistry, group, route } from '@askrjs/askr/router';
+import { createRouteRegistry, group, lazy, route } from '@askrjs/askr/router';
 import { MarketingLayout } from './_layout';
 import { marketingPages, type MarketingPath } from './_marketing-catalog';
 import { ApplicationModelPage } from './application-model';
 import { DocsLayout } from './docs/_layout';
-import { CoreConceptsPage } from './docs/core-concepts';
-import { GettingStartedPage } from './docs/getting-started';
-import { DocsOverviewPage } from './docs/overview';
+import { docsCatalog } from './docs/catalog';
 import { FullStackPage } from './full-stack';
 import { HomePage } from './home';
 import { NotFoundPage } from './not-found';
@@ -26,21 +24,6 @@ export const routeMetadata: Readonly<Record<string, RouteMetadata>> = {
     description:
       'Build typed applications across browser and server rendering with Askr.',
   },
-  '/docs': {
-    title: 'Documentation | Askr',
-    description:
-      'Learn how Askr fits together and find the shortest path into the framework.',
-  },
-  '/docs/getting-started': {
-    title: 'Getting started | Askr',
-    description:
-      'Install Askr, create your first application, and run it locally.',
-  },
-  '/docs/core-concepts': {
-    title: 'Core concepts | Askr',
-    description:
-      'Understand Askr routes, reactive state, rendering modes, and hydration.',
-  },
   '/404': {
     title: 'Page not found | Askr',
     description: 'The requested Askr page does not exist.',
@@ -49,6 +32,12 @@ export const routeMetadata: Readonly<Record<string, RouteMetadata>> = {
     marketingPages.map(({ path, title, description }) => [
       path,
       { title, description },
+    ])
+  ),
+  ...Object.fromEntries(
+    docsCatalog.map((page) => [
+      page.route,
+      { title: `${page.title} | Askr`, description: page.description },
     ])
   ),
 };
@@ -74,12 +63,8 @@ export const routeRegistry = createRouteRegistry(() => {
   });
 
   group({ layout: DocsLayout }, () => {
-    route('/docs', DocsOverviewPage, { meta: routeMetadata['/docs'] });
-    route('/docs/getting-started', GettingStartedPage, {
-      meta: routeMetadata['/docs/getting-started'],
-    });
-    route('/docs/core-concepts', CoreConceptsPage, {
-      meta: routeMetadata['/docs/core-concepts'],
-    });
+    for (const page of docsCatalog) {
+      route(page.route, lazy(page.loader), { meta: routeMetadata[page.route] });
+    }
   });
 });
