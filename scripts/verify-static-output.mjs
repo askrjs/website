@@ -156,6 +156,19 @@ assert(
   'the browser bundle must include theme persistence'
 );
 
+const browserCss = filesIn(resolve(dist, 'assets'))
+  .filter((file) => file.endsWith('.css'))
+  .map((file) => readFileSync(file, 'utf8'))
+  .join('\n');
+assert(
+  browserCss.includes('[data-theme=dark]'),
+  'the stylesheet must include the Askr dark theme selector'
+);
+assert(
+  browserCss.includes('--ak-dark-color-bg'),
+  'the stylesheet must include Askr dark theme color tokens'
+);
+
 for (const legacyDirectory of ['framework', 'showcase', 'themes', 'ui']) {
   assert(
     !existsSync(resolve(dist, legacyDirectory)),

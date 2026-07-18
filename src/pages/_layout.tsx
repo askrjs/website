@@ -1,21 +1,32 @@
 import type { Props } from '@askrjs/askr';
 import { Link } from '@askrjs/askr/router';
 import { GitBranchIcon, MoonIcon, SunIcon } from '@askrjs/lucide';
-import { Button } from '@askrjs/themes/components';
+import {
+  Block,
+  Brand,
+  BrandLabel,
+  BrandMark,
+  Button,
+  Container,
+  Footer,
+  Header,
+  Navbar,
+  NavBrand,
+  NavGroup,
+  Text,
+} from '@askrjs/themes/components';
 import { ThemeScope, ThemeToggle } from '@askrjs/themes/theme';
 
 export function AskrBrand({ compact = false }: { compact?: boolean }) {
   return (
-    <Link class="site-brand" href="/" aria-label="Askr home">
-      <img
-        class="site-brand__logo"
-        src="/assets/askr-logo.png"
-        alt=""
-        width="32"
-        height="32"
-      />
-      {!compact && <span>Askr</span>}
-    </Link>
+    <Brand asChild>
+      <Link href="/" aria-label="Askr home">
+        <BrandMark class="site-brand__mark" aria-hidden="true">
+          <img src="/assets/askr-logo.png" alt="" width="32" height="32" />
+        </BrandMark>
+        {!compact && <BrandLabel>Askr</BrandLabel>}
+      </Link>
+    </Brand>
   );
 }
 
@@ -35,36 +46,52 @@ export function MarketingLayout({ children }: Props) {
   return (
     <ThemeScope defaultTheme="light" storageKey="askr-theme">
       <div class="marketing-shell" data-layout="marketing">
-        <header class="site-header">
-          <div class="site-header__inner">
-            <AskrBrand />
-            <nav class="site-nav" aria-label="Primary navigation">
-              <Link href="/docs">Docs</Link>
-              <a
-                class="site-nav__github"
-                href="https://github.com/askrjs"
-                aria-label="Askr on GitHub"
-              >
-                <GitBranchIcon size={18} aria-hidden="true" />
-                <span>GitHub</span>
-              </a>
-              <SiteThemeToggle />
-            </nav>
-          </div>
-        </header>
+        <Header sticky>
+          <Container>
+            <Navbar aria-label="Primary navigation">
+              <NavBrand>
+                <AskrBrand />
+              </NavBrand>
+              <NavGroup align="end">
+                <Button asChild variant="ghost" size="sm">
+                  <Link href="/docs">Docs</Link>
+                </Button>
+                <Button asChild variant="ghost" size="sm">
+                  <a href="https://github.com/askrjs">
+                    <GitBranchIcon size={18} aria-hidden="true" />
+                    GitHub
+                  </a>
+                </Button>
+                <SiteThemeToggle />
+              </NavGroup>
+            </Navbar>
+          </Container>
+        </Header>
         <main>{children}</main>
-        <footer class="site-footer">
-          <div class="site-footer__inner">
-            <AskrBrand />
-            <p>Full-stack TypeScript, from first route to production.</p>
-            <div class="site-footer__links">
-              <Link href="/docs">Documentation</Link>
-              <Button asChild variant="ghost" size="sm">
-                <a href="https://github.com/askrjs">GitHub</a>
-              </Button>
-            </div>
-          </div>
-        </footer>
+        <Footer>
+          <Container paddingY="xl">
+            <Block
+              class="marketing-footer__content"
+              direction="row"
+              align="center"
+              justify="between"
+              gap="lg"
+            >
+              <AskrBrand />
+              <Text tone="muted" size="sm">
+                Full-stack TypeScript, from first route to production.
+              </Text>
+              <Block direction="row" align="center" gap="sm">
+                <Button asChild variant="ghost" size="sm">
+                  <Link href="/docs">Documentation</Link>
+                </Button>
+                <Button asChild variant="ghost" size="sm">
+                  <a href="https://github.com/askrjs">GitHub</a>
+                </Button>
+              </Block>
+            </Block>
+          </Container>
+        </Footer>
       </div>
     </ThemeScope>
   );
