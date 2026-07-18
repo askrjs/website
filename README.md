@@ -21,6 +21,7 @@ CI therefore validate the same package boundary used by GitHub Pages.
 - `src/pages/_routes.tsx` owns the shared browser/SSG route registry.
 - `src/pages/home.tsx` renders the `/` page.
 - `src/main.tsx` hydrates generated markup and starts the SPA in development.
+- `public/assets/askr-logo.png` provides the favicon and touch icon.
 - `ssg.config.ts` injects rendered HTML into Vite's built document and publishes
   its hashed assets.
 
