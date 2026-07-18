@@ -53,6 +53,7 @@ export const staticConfig = {
   outputDir,
   document: renderDocument,
   assets: [
+    { from: resolve(process.cwd(), 'public'), to: '.' },
     { from: resolve(process.cwd(), '.askr/client/assets'), to: 'assets' },
   ],
 };

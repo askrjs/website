@@ -1,7 +1,5 @@
 import {
-  CapabilityLedger,
   EditorialHero,
-  LedgerItem,
   MarketingPageNavigation,
   RepositoryLink,
   RuledSection,
@@ -15,31 +13,64 @@ export function ToolingPage() {
         title="Scaffolds you can read. Commands you can verify."
         lede="Askr creates ordinary project files, builds with Vite Plus, and keeps generators and updates reviewable in version control."
       />
-      <RuledSection>
+      <RuledSection stacked>
         <div class="editorial-section__heading">
           <h2>Begin near the application you intend to ship.</h2>
         </div>
-        <CapabilityLedger>
-          <LedgerItem title="Startkit">
-            <p>A minimal introduction to components, state, and routes.</p>
-          </LedgerItem>
-          <LedgerItem title="Single Page Application (SPA)">
-            <p>
-              A browser-owned application built from the shared route model.
-            </p>
-          </LedgerItem>
-          <LedgerItem title="Server Side Rendering (SSR)">
-            <p>
-              Server-produced HTML that the browser resumes through hydration.
-            </p>
-          </LedgerItem>
-          <LedgerItem title="Full Stack">
-            <p>Pages, actions, APIs, and a Node delivery boundary.</p>
-          </LedgerItem>
-          <LedgerItem title="Static Site Generation (SSG)">
-            <p>Deterministic HTML and assets written ahead of deployment.</p>
-          </LedgerItem>
-        </CapabilityLedger>
+        <ol class="starter-path" aria-label="Askr application starters">
+          <li>
+            <div class="starter-path__marker">
+              <span>01</span>
+              <span class="starter-path__arrow" aria-hidden="true">
+                →
+              </span>
+            </div>
+            <h3>Startkit</h3>
+            <p>Components, state, and routes.</p>
+            <small>startkit</small>
+          </li>
+          <li>
+            <div class="starter-path__marker">
+              <span>02</span>
+              <span class="starter-path__arrow" aria-hidden="true">
+                →
+              </span>
+            </div>
+            <h3>Single Page Application</h3>
+            <p>A browser-owned application.</p>
+            <small>spa</small>
+          </li>
+          <li>
+            <div class="starter-path__marker">
+              <span>03</span>
+              <span class="starter-path__arrow" aria-hidden="true">
+                →
+              </span>
+            </div>
+            <h3>Server Side Rendering</h3>
+            <p>Server HTML with hydration.</p>
+            <small>ssr</small>
+          </li>
+          <li>
+            <div class="starter-path__marker">
+              <span>04</span>
+              <span class="starter-path__arrow" aria-hidden="true">
+                →
+              </span>
+            </div>
+            <h3>Full Stack</h3>
+            <p>Pages, actions, APIs, and Node.</p>
+            <small>full-stack</small>
+          </li>
+          <li>
+            <div class="starter-path__marker">
+              <span>05</span>
+            </div>
+            <h3>Static Site Generation</h3>
+            <p>HTML written at build time.</p>
+            <small>ssg</small>
+          </li>
+        </ol>
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
@@ -57,12 +88,11 @@ export function ToolingPage() {
             assisted work.
           </p>
           <Vocabulary>
-            <code>vp dev</code>
-            <code>vp check</code>
-            <code>askr generate page</code>
-            <code>askr generate action</code>
-            <code>askr ssg</code>
-            <code>askr update</code>
+            <code>scaffold</code>
+            <code>generate</code>
+            <code>check</code>
+            <code>build</code>
+            <code>update</code>
           </Vocabulary>
           <RepositoryLink href="https://github.com/askrjs/askr-cli">
             View the CLI and starters

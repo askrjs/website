@@ -2,7 +2,6 @@ import type { Props } from '@askrjs/askr';
 import { Link } from '@askrjs/askr/router';
 import { ArrowLeftIcon, ArrowRightIcon } from '@askrjs/lucide';
 import { Button, Container } from '@askrjs/themes/components';
-import { GitHubMark } from './_layout';
 import {
   marketingPage,
   marketingPages,
@@ -41,19 +40,6 @@ export function RuledSection({
   );
 }
 
-export function CapabilityLedger({ children }: Props) {
-  return <div class="editorial-ledger">{children}</div>;
-}
-
-export function LedgerItem({ title, children }: Props & { title: string }) {
-  return (
-    <article class="editorial-ledger__item">
-      <h3>{title}</h3>
-      <div>{children}</div>
-    </article>
-  );
-}
-
 export function Vocabulary({ children }: Props) {
   return <div class="editorial-vocabulary">{children}</div>;
 }
@@ -61,7 +47,6 @@ export function Vocabulary({ children }: Props) {
 export function RepositoryLink({ href, children }: Props & { href: string }) {
   return (
     <a class="repository-link" href={href}>
-      <GitHubMark />
       <span>{children}</span>
       <ArrowRightIcon size={16} aria-hidden="true" />
     </a>

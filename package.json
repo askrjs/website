@@ -8,7 +8,7 @@
     "dev": "vp dev",
     "build": "npm run build:client && npm run build:ssg",
     "build:client": "vp build --outDir .askr/client",
-    "build:ssg": "askr ssg --config ./ssg.config.ts --output ./dist",
+    "build:ssg": "askr ssg --config ./ssg.config.ts --output ./dist && cp ./dist/404/index.html ./dist/404.html && node ./scripts/generate-sitemap.mjs",
     "verify:static": "node ./scripts/verify-static-output.mjs",
     "lint": "vp lint src scripts ssg.config.ts vite.config.ts",
     "fmt": "vp fmt .",

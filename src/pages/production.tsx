@@ -1,7 +1,5 @@
 import {
-  CapabilityLedger,
   EditorialHero,
-  LedgerItem,
   MarketingPageNavigation,
   RepositoryLink,
   RuledSection,
@@ -15,29 +13,29 @@ export function ProductionPage() {
         title="Ordinary artifacts. Explicit operational boundaries."
         lede="Ship static files when they are enough. Add the Node adapter when requests need a runtime. Both outputs stay inspectable."
       />
-      <RuledSection>
+      <RuledSection stacked>
         <div class="editorial-section__heading">
           <h2>Choose the artifact the application requires.</h2>
         </div>
-        <CapabilityLedger>
-          <LedgerItem title="Static output">
-            <p>
-              Pre-rendered documents, hashed assets, and no required server
-              runtime.
-            </p>
-          </LedgerItem>
-          <LedgerItem title="Node adapter">
-            <p>
-              A thin transport boundary for server rendering and HTTP handlers.
-            </p>
-          </LedgerItem>
-          <LedgerItem title="Document ownership">
-            <p>
-              The application controls the HTML shell, metadata, and asset
-              placement.
-            </p>
-          </LedgerItem>
-        </CapabilityLedger>
+        <div class="production-map" aria-label="Askr production outputs">
+          <div class="production-map__source">
+            <span>Application-owned</span>
+            <h3>Document + routes</h3>
+            <p>HTML shell, metadata, and asset placement stay visible.</p>
+          </div>
+          <ol>
+            <li>
+              <span>Static output</span>
+              <h3>Documents + hashed assets</h3>
+              <p>No required server runtime.</p>
+            </li>
+            <li>
+              <span>Node output</span>
+              <h3>Adapter + HTTP handlers</h3>
+              <p>A thin runtime boundary.</p>
+            </li>
+          </ol>
+        </div>
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
@@ -55,12 +53,11 @@ export function ProductionPage() {
             exporter choice and sensitive-data policy.
           </p>
           <Vocabulary>
-            <code>dist/</code>
-            <code>@askrjs/node</code>
-            <code>/livez</code>
-            <code>/readyz</code>
-            <code>@askrjs/i18n</code>
-            <code>@askrjs/otel</code>
+            <code>document</code>
+            <code>adapter</code>
+            <code>probes</code>
+            <code>localization</code>
+            <code>telemetry</code>
           </Vocabulary>
           <RepositoryLink href="https://github.com/askrjs/askr-node">
             View the Node adapter
