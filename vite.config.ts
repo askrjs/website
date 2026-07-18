@@ -1,4 +1,3 @@
-import { resolve } from 'node:path';
 import type { PluginOption, UserConfig } from 'vite-plus';
 import { askr } from '@askrjs/vite';
 
@@ -26,17 +25,6 @@ export default function config({ isSsrBuild }: VitePlusEnv): UserConfig {
     server: {
       port: 5173,
       open: true,
-    },
-    resolve: {
-      alias: [
-        {
-          find: '/themes',
-          replacement: resolve(
-            process.cwd(),
-            'node_modules/@askrjs/themes/src/themes'
-          ),
-        },
-      ],
     },
     build: {
       outDir: isSsrBuild ? '.askr/server' : '.askr/client',
