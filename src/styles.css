@@ -1,4 +1,5 @@
 @import '@askrjs/themes/default';
+@import '@fontsource-variable/domine';
 
 :root {
   color-scheme: light dark;
@@ -36,6 +37,7 @@ a {
 }
 
 .marketing-shell {
+  --ak-font-family-quote: 'Domine Variable', serif;
   min-height: 100vh;
   background: var(--ak-color-bg);
 }

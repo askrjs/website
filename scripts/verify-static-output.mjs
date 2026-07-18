@@ -181,6 +181,14 @@ assert(
   browserCss.includes('--ak-dark-color-bg'),
   'the stylesheet must include Askr dark theme color tokens'
 );
+assert(
+  browserCss.includes('Domine Variable'),
+  'the stylesheet must include the Domine marketing font'
+);
+assert(
+  filesIn(resolve(dist, 'assets')).some((file) => file.endsWith('.woff2')),
+  'the Domine font must be bundled with the static assets'
+);
 
 for (const legacyDirectory of ['framework', 'showcase', 'themes', 'ui']) {
   assert(
