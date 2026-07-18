@@ -52,6 +52,14 @@ if (existsSync(documentPath)) {
   assert(app.trim().length > 0, '#app must contain pre-rendered markup');
   assert(!html.includes('/src/'), 'index.html must not reference source files');
   assert(
+    html.includes('/assets/askr-logo.png'),
+    'index.html must reference the Askr logo'
+  );
+  assert(
+    existsSync(resolve(dist, 'assets/askr-logo.png')),
+    'the Askr logo must be published'
+  );
+  assert(
     assetReferences.some((path) => /-[A-Za-z0-9_-]+\.js$/.test(path)),
     'index.html must reference a hashed JavaScript asset'
   );
