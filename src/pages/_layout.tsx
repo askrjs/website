@@ -1,6 +1,6 @@
 import type { Props } from '@askrjs/askr';
 import { Link } from '@askrjs/askr/router';
-import { GitBranchIcon, MoonIcon, SunIcon } from '@askrjs/lucide';
+import { MoonIcon, SunIcon } from '@askrjs/lucide';
 import {
   Block,
   Brand,
@@ -27,6 +27,27 @@ export function AskrBrand({ compact = false }: { compact?: boolean }) {
         {!compact && <BrandLabel>Askr</BrandLabel>}
       </Link>
     </Brand>
+  );
+}
+
+export function GitHubMark() {
+  return (
+    <span class="github-mark" aria-hidden="true">
+      <img
+        class="github-mark__light"
+        src="/assets/github-mark-black.svg"
+        alt=""
+        width="18"
+        height="18"
+      />
+      <img
+        class="github-mark__dark"
+        src="/assets/github-mark-white.svg"
+        alt=""
+        width="18"
+        height="18"
+      />
+    </span>
   );
 }
 
@@ -57,8 +78,11 @@ export function MarketingLayout({ children }: Props) {
                   <Link href="/docs">Docs</Link>
                 </Button>
                 <Button asChild variant="ghost" size="sm">
-                  <a href="https://github.com/askrjs">
-                    <GitBranchIcon size={18} aria-hidden="true" />
+                  <a
+                    href="https://github.com/askrjs"
+                    aria-label="Askr on GitHub"
+                  >
+                    <GitHubMark />
                     GitHub
                   </a>
                 </Button>
@@ -86,7 +110,10 @@ export function MarketingLayout({ children }: Props) {
                   <Link href="/docs">Documentation</Link>
                 </Button>
                 <Button asChild variant="ghost" size="sm">
-                  <a href="https://github.com/askrjs">GitHub</a>
+                  <a href="https://github.com/askrjs">
+                    <GitHubMark />
+                    GitHub
+                  </a>
                 </Button>
               </Block>
             </Block>
