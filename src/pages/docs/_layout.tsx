@@ -43,14 +43,13 @@ const STORAGE_KEY = 'askr-docs-sidebar-collapsed';
 const adoptedShells = new WeakSet<HTMLElement>();
 
 function DocsNavigation({
-  activePath,
   collapsed = false,
   close,
 }: {
-  activePath: string;
   collapsed?: boolean;
   close?: () => void;
 }) {
+  const activePath = resolveDocsRoute(currentRoute());
   const sectionIcons = [
     BookOpenIcon,
     RocketIcon,
@@ -145,8 +144,8 @@ function DocsNavigation({
   );
 }
 
-function TableOfContents({ activePath }: { activePath: string }) {
-  const page = docsByRoute.get(activePath as `/docs${string}`);
+function TableOfContents() {
+  const page = docsByRoute.get(resolveDocsRoute(currentRoute()));
   const headings = page ? docsTableOfContents(page) : [];
   return (
     <aside class="docs-toc" aria-label="On this page">
@@ -165,7 +164,6 @@ function TableOfContents({ activePath }: { activePath: string }) {
 export function DocsLayout({ children }: Props) {
   const collapsed = state(false);
   const drawerOpen = state(false);
-  const activePath = resolveDocsRoute(currentRoute());
   const setCollapsed = (value: boolean) => {
     collapsed.set(value);
     try {
@@ -212,7 +210,7 @@ export function DocsLayout({ children }: Props) {
             </SidebarTrigger>
           </SidebarHeader>
           {!collapsed() && <DocsSearch />}
-          <DocsNavigation activePath={activePath} collapsed={collapsed()} />
+          <DocsNavigation collapsed={collapsed()} />
           <SidebarFooter>
             <SidebarMenu>
               <SidebarMenuItem>
@@ -267,17 +265,14 @@ export function DocsLayout({ children }: Props) {
                   <XIcon size={20} aria-hidden="true" />
                 </SidebarTrigger>
               </SidebarHeader>
-              <DocsNavigation
-                activePath={activePath}
-                close={() => drawerOpen.set(false)}
-              />
+              <DocsNavigation close={() => drawerOpen.set(false)} />
             </Sidebar>
           </div>
         )}
         <main class="docs-main">
           <div class="docs-content">{children}</div>
         </main>
-        <TableOfContents activePath={activePath} />
+        <TableOfContents />
       </div>
     </ThemeScope>
   );
