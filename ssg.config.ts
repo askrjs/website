@@ -2,9 +2,9 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { serializeRouteMeta } from '@askrjs/askr/router';
 import type { DocumentRenderArgs } from '@askrjs/askr/ssg';
-import { routeMetadata, routeRegistry } from './src/pages/_routes';
+import { createStaticRouteRegistry, routeMetadata } from './src/pages/_routes';
 
-export const registry = routeRegistry;
+export const registry = createStaticRouteRegistry();
 export const outputDir = 'dist';
 
 let clientTemplate: string | undefined;
