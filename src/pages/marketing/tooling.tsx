@@ -3,19 +3,18 @@ import {
   MarketingPageNavigation,
   RepositoryLink,
   RuledSection,
-  Vocabulary,
-} from './_marketing';
+} from './components';
 
 export function ToolingPage() {
   return (
     <>
       <EditorialHero
-        title="Scaffolds you can read. Commands you can verify."
-        lede="Askr creates ordinary project files, builds with Vite Plus, and keeps generators and updates reviewable in version control."
+        title="The CLI writes files you're expected to read and edit."
+        lede="Every generated file shows up as a normal diff. Nothing is written to a hidden build directory you're not supposed to look at."
       />
       <RuledSection stacked>
         <div class="editorial-section__heading">
-          <h2>Begin near the application you intend to ship.</h2>
+          <h2>Five starters, picked by what you're actually building</h2>
         </div>
         <ol class="starter-path" aria-label="Askr application starters">
           <li>
@@ -74,26 +73,23 @@ export function ToolingPage() {
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
-          <h2>Generate the repetitive parts. Keep the result inspectable.</h2>
+          <h2>Generators write plain files; checks catch drift</h2>
         </div>
         <div class="editorial-prose">
           <p>
-            Page and action generators add readable modules. Static generation
-            writes the routes you define. OpenAPI checks compare executable
-            contracts with their committed description.
+            <code>askr add page</code> and <code>askr add action</code> write a
+            normal component and a normal handler — review them like any other
+            change before you commit. <code>askr openapi --check</code> fails CI
+            when your schemas and your committed OpenAPI spec disagree, instead
+            of letting a client silently go stale.
           </p>
           <p>
-            Compatibility guards constrain dependency updates. Project-local
-            agent skills carry the application’s commands and conventions into
-            assisted work.
+            <code>askr update</code> only applies peer-compatible changes;
+            reaching for the latest peer set at all is a separate, deliberate{' '}
+            <code>askr upgrade</code>. And if you use an AI coding assistant,{' '}
+            <code>askr skills</code> checks in project-specific instructions so
+            it doesn't have to rediscover your conventions every session.
           </p>
-          <Vocabulary>
-            <code>scaffold</code>
-            <code>generate</code>
-            <code>check</code>
-            <code>build</code>
-            <code>update</code>
-          </Vocabulary>
           <RepositoryLink href="https://github.com/askrjs/askr-cli">
             View the CLI and starters
           </RepositoryLink>

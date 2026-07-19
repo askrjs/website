@@ -3,23 +3,22 @@ import {
   MarketingPageNavigation,
   RepositoryLink,
   RuledSection,
-  Vocabulary,
-} from './_marketing';
+} from './components';
 
 export function FullStackPage() {
   return (
     <>
       <EditorialHero
-        title="Pages, APIs, and actions meet at one explicit composition root."
-        lede="Add server capability without adding a second architecture. Page actions, HTTP APIs, policies, and dependencies meet at one visible root."
+        title="Adding a server doesn't mean adding a second framework."
+        lede="Page actions, HTTP APIs, and auth policies register on the same router your routes use — no separate client SDK, no parallel backend project to keep in sync."
       />
       <RuledSection stacked>
         <div class="editorial-section__heading">
-          <h2>Use the browser’s native path first.</h2>
+          <h2>Forms submit to actions. Actions are just handlers.</h2>
           <p>
-            Page actions begin with forms, requests, responses, redirects, and
-            progressive enhancement. APIs use the same Web-standard foundation;
-            page interactions need no custom client protocol.
+            A page action is a POST handler that returns a redirect or a
+            field-level error — it works with JavaScript disabled, and the same
+            Request/Response primitives back your JSON APIs.
           </p>
         </div>
         <div class="composition-map" aria-label="Full-stack composition root">
@@ -46,26 +45,20 @@ export function FullStackPage() {
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
-          <h2>Validate at runtime. Describe the same boundary.</h2>
+          <h2>One schema, checked twice</h2>
         </div>
         <div class="editorial-prose">
           <p>
-            Executable schemas validate input and output at trust boundaries.
-            The same contracts describe OpenAPI operations, making drift visible
-            without pretending every application type crosses the network.
+            Define an input schema once with <code>@askrjs/schema</code> and it
+            validates the request at runtime <em>and</em> generates the matching
+            OpenAPI operation — so a CI check can catch the day your handler and
+            your published API contract disagree.
           </p>
           <p>
-            Authentication enters through policies and principal contracts.
-            Identity providers and authorization decisions remain application
-            responsibilities.
+            Auth is a policy function you attach to a route, plus whatever
+            identity provider you plug in — Askr doesn't ship its own user
+            database or decide who counts as logged in.
           </p>
-          <Vocabulary>
-            <code>Request</code>
-            <code>Schema</code>
-            <code>handler</code>
-            <code>Response</code>
-            <code>OpenAPI</code>
-          </Vocabulary>
           <RepositoryLink href="https://github.com/askrjs/askr-server">
             View the server foundation
           </RepositoryLink>

@@ -1,8 +1,8 @@
 import { Link } from '@askrjs/askr/router';
 import { ArrowRightIcon } from '@askrjs/lucide';
 import { Button, Container } from '@askrjs/themes/components';
-import { marketingPages } from './_marketing-catalog';
-import { RepositoryLink } from './_marketing';
+import { marketingPages } from './catalog';
+import { RepositoryLink } from './components';
 
 const capabilities = marketingPages.slice(1);
 const routeSpecimen = `import {
@@ -25,11 +25,12 @@ export function HomePage() {
       <section class="hero" aria-labelledby="hero-title">
         <Container class="hero__content" size="xl">
           <h1 id="hero-title">
-            Build full-stack TypeScript that stays explicit.
+            A full-stack TypeScript framework you can read top to bottom.
           </h1>
           <p class="hero__lede">
-            One visible route model. Inspectable state and dependencies.
-            Browser, server, or static output from ordinary project files.
+            One route registry drives your components, your server, and your
+            build output — so you can trace a request from URL to response
+            without guessing what a file-based convention decided for you.
           </p>
           <div class="hero__actions">
             <Button asChild>
@@ -39,7 +40,7 @@ export function HomePage() {
               </Link>
             </Button>
             <Button asChild>
-              <Link href="/docs">Read the docs</Link>
+              <a href="/docs">Read the docs</a>
             </Button>
           </div>
           <div class="hero__code" aria-label="Install Askr">
@@ -52,12 +53,11 @@ export function HomePage() {
       <section class="differentiation" aria-labelledby="differentiation-title">
         <Container class="differentiation__inner" size="xl">
           <div class="differentiation__heading">
-            <h2 id="differentiation-title">
-              The framework composes. Your application stays visible.
-            </h2>
+            <h2 id="differentiation-title">This is the whole routing layer.</h2>
             <p>
-              Askr connects the layers without turning them into hidden
-              conventions or a second application architecture.
+              No folder-name magic, no generated manifest to reverse-engineer.
+              Routes, layouts, and the data they load are declared once, in code
+              you can open and read.
             </p>
           </div>
           <div class="differentiation__body">
@@ -70,36 +70,41 @@ export function HomePage() {
               <li>
                 <span>01</span>
                 <div>
-                  <h3>One visible route graph</h3>
+                  <h3>Grep the route table, not a file tree</h3>
                   <p>
-                    Routes, layouts, loaders, and actions remain inspectable.
+                    Every path, layout, and param lives in this one registry —
+                    not scattered across a folder-naming convention.
                   </p>
                 </div>
               </li>
               <li>
                 <span>02</span>
                 <div>
-                  <h3>Rendering is a delivery choice</h3>
+                  <h3>Pick your rendering mode later</h3>
                   <p>
-                    Use the same routes for browser, server, or static HTML.
+                    Write the app once. Ship it as an SPA, hydrate it from
+                    server HTML, or pre-render it — swap modes without a
+                    rewrite.
                   </p>
                 </div>
               </li>
               <li>
                 <span>03</span>
                 <div>
-                  <h3>Full-stack seams stay named</h3>
+                  <h3>Server code lives next to the routes it serves</h3>
                   <p>
-                    Schemas, policies, and dependencies meet at a visible root.
+                    Auth policies, schemas, and dependencies are wired in at the
+                    same root, so you can see what a route requires.
                   </p>
                 </div>
               </li>
               <li>
                 <span>04</span>
                 <div>
-                  <h3>Output stays ordinary</h3>
+                  <h3>Deploy a folder of HTML or a small Node process</h3>
                   <p>
-                    Ship static documents and assets or a thin Node adapter.
+                    Nothing exotic to operate — static hosting or a plain
+                    adapter, your call.
                   </p>
                 </div>
               </li>
@@ -124,11 +129,11 @@ export function HomePage() {
         <Container class="capabilities__inner" size="xl">
           <div class="section-heading">
             <h2 id="capabilities-title">
-              Take the layers you need. Keep the boundaries explicit.
+              Start with routes and a runtime. Add the rest when you need it.
             </h2>
             <p>
-              Start with runtime and routes. Add themes, server capabilities,
-              and build tooling as requirements grow.
+              A themed component library, a server, auth, and build tooling are
+              all available — none of them required on day one.
             </p>
             <Link class="section-heading__link" href="/platform">
               Explore the platform
@@ -164,10 +169,10 @@ export function HomePage() {
             </p>
           </div>
           <Button asChild>
-            <Link href="/docs/getting-started">
+            <a href="/docs/getting-started">
               Open the documentation
               <ArrowRightIcon size={18} aria-hidden="true" />
-            </Link>
+            </a>
           </Button>
         </Container>
       </section>

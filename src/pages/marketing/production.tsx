@@ -3,19 +3,18 @@ import {
   MarketingPageNavigation,
   RepositoryLink,
   RuledSection,
-  Vocabulary,
-} from './_marketing';
+} from './components';
 
 export function ProductionPage() {
   return (
     <>
       <EditorialHero
-        title="Ordinary artifacts. Explicit operational boundaries."
-        lede="Ship static files when they are enough. Add the Node adapter when requests need a runtime. Both outputs stay inspectable."
+        title="If it doesn't need a server, it doesn't get one."
+        lede="A fully static app builds to a folder of HTML and hashed assets — no Node process to keep alive. Add the Node adapter only once a route actually needs to run server code per request."
       />
       <RuledSection stacked>
         <div class="editorial-section__heading">
-          <h2>Choose the artifact the application requires.</h2>
+          <h2>Two outputs, one build</h2>
         </div>
         <div class="production-map" aria-label="Askr production outputs">
           <div class="production-map__source">
@@ -39,26 +38,22 @@ export function ProductionPage() {
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
-          <h2>Name the seams production depends on.</h2>
+          <h2>The things your orchestrator actually asks for</h2>
         </div>
         <div class="editorial-prose">
           <p>
-            Middleware surrounds the request boundary. Separate liveness,
-            readiness, startup, and target probes answer distinct operational
-            questions. Auth remains an application-supplied contract.
+            Liveness, readiness, and startup are separate probes, because "is
+            the process running" and "can it serve a database-backed request
+            right now" are different questions — answering them the same way is
+            how you get restart loops.
           </p>
           <p>
-            Typed localization keeps message keys and parameters visible.
-            OpenTelemetry uses redaction-safe attributes; operators retain
-            exporter choice and sensitive-data policy.
+            Message keys for localization are typed, so a missing translation
+            fails at build time, not in front of a user. OpenTelemetry
+            attributes are redaction-aware by default, but you still choose the
+            exporter and the sensitive-data policy — Askr doesn't phone data
+            anywhere on its own.
           </p>
-          <Vocabulary>
-            <code>document</code>
-            <code>adapter</code>
-            <code>probes</code>
-            <code>localization</code>
-            <code>telemetry</code>
-          </Vocabulary>
           <RepositoryLink href="https://github.com/askrjs/askr-node">
             View the Node adapter
           </RepositoryLink>

@@ -38,4 +38,9 @@ export const staticConfig = {
     { from: resolve(process.cwd(), 'public'), to: '.' },
     { from: resolve(process.cwd(), '.askr/client/assets'), to: 'assets' },
   ],
+  siteUrl: 'https://askrjs.com',
+  sitemap: {
+    // 404 is a fallback document, not a crawlable page.
+    routes: { '/404': false },
+  },
 };

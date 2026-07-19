@@ -19,7 +19,7 @@ export function NotFoundPage() {
             </Link>
           </Button>
           <Button asChild variant="outline">
-            <Link href="/docs">Read the documentation</Link>
+            <a href="/docs">Read the documentation</a>
           </Button>
         </div>
       </Container>

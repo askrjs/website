@@ -20,14 +20,15 @@ import {
   Text,
 } from '@askrjs/themes/components';
 import { ThemeScope, ThemeToggle } from '@askrjs/themes/theme';
-import { marketingPages } from './_marketing-catalog';
+import { marketingPages } from './catalog';
+import { docsPrimarySections } from '../docs/primary-sections';
 
 export function AskrBrand({ compact = false }: { compact?: boolean }) {
   return (
     <Brand asChild>
       <Link href="/" aria-label="Askr home">
         <BrandMark class="site-brand__mark" aria-hidden="true">
-          <img src="/assets/askr-logo.png" alt="" width="32" height="32" />
+          <img src="/assets/askr-logo-64.avif" alt="" width="32" height="32" />
         </BrandMark>
         {!compact && <BrandLabel>Askr</BrandLabel>}
       </Link>
@@ -80,13 +81,13 @@ export function MarketingLayout({ children }: Props) {
               </NavBrand>
               <NavGroup align="end">
                 <Button asChild variant="ghost" size="icon">
-                  <Link
+                  <a
                     href="/docs"
                     aria-label="Documentation"
                     title="Documentation"
                   >
                     <BookOpenIcon size={18} aria-hidden="true" />
-                  </Link>
+                  </a>
                 </Button>
                 <Button asChild variant="ghost" size="icon">
                   <a
@@ -129,30 +130,26 @@ export function MarketingLayout({ children }: Props) {
 
               <FooterSection>
                 <FooterTitle>
-                  <Link class="marketing-footer__title-link" href="/docs">
+                  <a class="marketing-footer__title-link" href="/docs">
                     <BookOpenIcon
                       class="marketing-footer__documentation-icon"
                       size={18}
                       aria-hidden="true"
                     />
                     Documentation
-                  </Link>
+                  </a>
                 </FooterTitle>
                 <FooterLinks aria-label="Documentation links">
-                  <Link
-                    class="footer-link"
-                    data-slot="footer-link"
-                    href="/docs/getting-started"
-                  >
-                    Getting started
-                  </Link>
-                  <Link
-                    class="footer-link"
-                    data-slot="footer-link"
-                    href="/docs/core-concepts"
-                  >
-                    Core concepts
-                  </Link>
+                  {docsPrimarySections.map((section) => (
+                    <a
+                      key={section.route}
+                      class="footer-link"
+                      data-slot="footer-link"
+                      href={section.route}
+                    >
+                      {section.label}
+                    </a>
+                  ))}
                 </FooterLinks>
               </FooterSection>
 

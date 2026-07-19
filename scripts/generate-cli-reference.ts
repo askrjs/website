@@ -1,6 +1,7 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { formatGeneratedTypeScript } from './format-generated';
 
 const root = process.cwd();
 const executable = resolve(root, 'node_modules/.bin/askr');
@@ -14,7 +15,7 @@ if (help.status !== 0 || createHelp.status !== 0) {
   process.exit(1);
 }
 
-function namedLines(source, heading) {
+function namedLines(source: string, heading: string) {
   const section = source.split(`${heading}:`)[1]?.split('\n\n')[0] ?? '';
   return section
     .split('\n')
@@ -35,7 +36,8 @@ const snapshot = {
   help: help.stdout.trim(),
   createHelp: createHelp.stdout.trim(),
 };
-const source = `// Generated from @askrjs/cli --help. Do not edit.\nexport const cliSnapshot = ${JSON.stringify(snapshot, null, 2)} as const;\n`;
+const unformattedSource = `// Generated from @askrjs/cli --help. Do not edit.\nexport const cliSnapshot = ${JSON.stringify(snapshot, null, 2)} as const;\n`;
+const source = formatGeneratedTypeScript(outputPath, unformattedSource);
 
 if (process.argv.includes('--check')) {
   if (!existsSync(outputPath) || readFileSync(outputPath, 'utf8') !== source) {

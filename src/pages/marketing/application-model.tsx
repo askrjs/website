@@ -3,22 +3,22 @@ import {
   MarketingPageNavigation,
   RepositoryLink,
   RuledSection,
-  Vocabulary,
-} from './_marketing';
+} from './components';
 
 export function ApplicationModelPage() {
   return (
     <>
       <EditorialHero
-        title="Explicit state. Explicit routes. Explicit ownership."
-        lede="State, routes, resources, and ownership stay visible: where work begins, when it ends, and which scope controls it."
+        title="If you can't say who owns a piece of state, something's wrong."
+        lede="Askr pushes state, derived values, and async work into whatever component or scope actually owns them — instead of a global store you have to trace backward."
       />
       <RuledSection stacked>
         <div class="editorial-section__heading">
-          <h2>Local state. Derived values. Lexical lifetimes.</h2>
+          <h2>Four things, and where each one lives</h2>
           <p>
-            Create state where it is owned. Derived values track dependencies.
-            Scopes make cleanup part of the model.
+            State lives with the component that changes it. Derived values
+            recompute instead of drifting out of sync. When the owning scope
+            goes away, its resources are cleaned up automatically.
           </p>
         </div>
         <ol
@@ -53,25 +53,20 @@ export function ApplicationModelPage() {
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
-          <h2>The application’s visible, typed map.</h2>
+          <h2>Routes are data, not a folder structure</h2>
         </div>
         <div class="editorial-prose">
           <p>
-            Routes form a graph the application can inspect. Parameters,
-            layouts, loaders, and actions meet at named points instead of hiding
-            behind a filesystem convention.
+            You declare params, layouts, loaders, and actions in a typed
+            registry, so tooling (and you) can enumerate every route the app has
+            — no need to reverse-engineer it from a file tree.
           </p>
           <p>
-            Resources attach work to that lifecycle. Queries cancel when
-            ownership ends and invalidate when events make cached data stale.
+            Async work — a query, a resource — is tied to the component or route
+            that requested it. Navigate away mid-fetch and the request is
+            cancelled instead of resolving into a component that no longer
+            exists. When a write invalidates a query, dependents refetch.
           </p>
-          <Vocabulary>
-            <code>state</code>
-            <code>derived</code>
-            <code>resource</code>
-            <code>scope</code>
-            <code>dispose</code>
-          </Vocabulary>
           <RepositoryLink href="https://github.com/askrjs/askr">
             View the core runtime
           </RepositoryLink>

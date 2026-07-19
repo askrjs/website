@@ -1,7 +1,7 @@
 import { state } from '@askrjs/askr';
+import { Link } from '@askrjs/askr/router';
 import * as iconExports from '@askrjs/lucide';
 import { ArrowLeftIcon, CircleIcon, SearchIcon } from '@askrjs/lucide';
-import { DocsLink } from './transition-link';
 
 type IconComponent = typeof CircleIcon;
 const icons = Object.entries(iconExports)
@@ -25,9 +25,9 @@ export default function LucideGalleryPage() {
       data-docs-route="/docs/integrations/lucide-gallery"
     >
       <nav class="docs-breadcrumbs" aria-label="Breadcrumb">
-        <DocsLink href="/docs">Docs</DocsLink>
+        <Link href="/docs">Docs</Link>
         <span>/</span>
-        <DocsLink href="/docs/integrations">Integrations</DocsLink>
+        <Link href="/docs/integrations">Integrations</Link>
         <span>/</span>
         <span aria-current="page">Lucide Gallery</span>
       </nav>
@@ -117,12 +117,12 @@ export default function LucideGalleryPage() {
         </aside>
       </section>
       <nav class="docs-pagination" aria-label="Documentation pagination">
-        <DocsLink href="/docs/integrations/icons-and-logos">
+        <Link href="/docs/integrations/icons-and-logos">
           <ArrowLeftIcon size={16} aria-hidden="true" />
           <span>
             <small>Previous</small>Icons and Logos
           </span>
-        </DocsLink>
+        </Link>
       </nav>
     </article>
   );
