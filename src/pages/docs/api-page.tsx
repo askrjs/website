@@ -48,11 +48,12 @@ export default function ApiPage() {
       </header>
       <section aria-labelledby="exports">
         <h2 id="exports" class="anchored-heading">
-          <a href="#exports">Exports ({symbols.length})</a>
+          <a href="#exports">Exports</a>
         </h2>
         <p>
-          Use the anchored symbol rows for direct links. Type-only exports are
-          labeled separately from runtime values.
+          This entrypoint publishes {symbols.length} exports. Use the anchored
+          symbol rows for direct links. Type-only exports are labeled separately
+          from runtime values.
         </p>
         <div class="api-symbols">
           {symbols.map((symbol) => (

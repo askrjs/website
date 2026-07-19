@@ -5,6 +5,7 @@ import {
   docsByRoute,
   docsCatalog,
   docsSections,
+  docsTableOfContents,
   normalizeDocsRoute,
   resolveDocsRoute,
 } from '../src/pages/docs/catalog';
@@ -53,6 +54,25 @@ describe('documentation catalog', () => {
         docsByRoute.has(route!),
         `${entrypoint.importName} -> ${route}`
       ).toBe(true);
+    }
+  });
+
+  it('defines the exact visible section order for every page renderer', () => {
+    for (const page of docsCatalog) {
+      const toc = docsTableOfContents(page);
+      expect(new Set(toc.map((item) => item.id)).size, page.route).toBe(
+        toc.length
+      );
+      if (page.navSection === 'Generated API') {
+        expect(toc, page.route).toEqual(page.headings);
+      } else if (page.route === '/docs/integrations/lucide-gallery') {
+        expect(toc, page.route).toEqual(page.headings);
+      } else {
+        expect(toc[0]?.id, page.route).toBe('how-to-use');
+        expect(toc.slice(1, 1 + page.headings.length), page.route).toEqual(
+          page.headings
+        );
+      }
     }
   });
 });

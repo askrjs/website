@@ -31,7 +31,12 @@ import {
 } from '@askrjs/themes/components';
 import { ThemeScope } from '@askrjs/themes/theme';
 import { AskrBrand, GitHubMark, SiteThemeToggle } from '../_layout';
-import { docsByRoute, docsSections, resolveDocsRoute } from './catalog';
+import {
+  docsByRoute,
+  docsSections,
+  docsTableOfContents,
+  resolveDocsRoute,
+} from './catalog';
 import { DocsSearch } from './search';
 
 const STORAGE_KEY = 'askr-docs-sidebar-collapsed';
@@ -142,9 +147,7 @@ function DocsNavigation({
 
 function TableOfContents({ activePath }: { activePath: string }) {
   const page = docsByRoute.get(activePath as `/docs${string}`);
-  const headings = page
-    ? [{ id: 'how-to-use', title: 'How to use it' }, ...page.headings]
-    : [{ id: 'exports', title: 'Exports' }];
+  const headings = page ? docsTableOfContents(page) : [];
   return (
     <aside class="docs-toc" aria-label="On this page">
       <p>On this page</p>

@@ -1074,6 +1074,11 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .code-block code {
+  display: block;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   color: var(--ak-color-text);
   font-family: var(--ak-font-family-mono, ui-monospace, monospace);
   font-size: 0.9rem;
@@ -1784,6 +1789,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 .code-block {
   position: relative;
   padding: 0;
+  overflow: hidden;
 }
 
 .code-block pre {
