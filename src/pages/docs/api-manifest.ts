@@ -2,7 +2,7 @@
 export const apiManifest = [
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: '.',
     importName: '@askrjs/askr',
     slug: 'root',
@@ -10,7 +10,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: './boot',
     importName: '@askrjs/askr/boot',
     slug: 'boot',
@@ -18,7 +18,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: './components',
     importName: '@askrjs/askr/components',
     slug: 'components',
@@ -26,7 +26,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: './control',
     importName: '@askrjs/askr/control',
     slug: 'control',
@@ -34,7 +34,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: './foundations',
     importName: '@askrjs/askr/foundations',
     slug: 'foundations',
@@ -42,7 +42,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: './foundations/utilities',
     importName: '@askrjs/askr/foundations/utilities',
     slug: 'foundations--utilities',
@@ -50,7 +50,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: './foundations/interactions',
     importName: '@askrjs/askr/foundations/interactions',
     slug: 'foundations--interactions',
@@ -58,7 +58,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: './foundations/state',
     importName: '@askrjs/askr/foundations/state',
     slug: 'foundations--state',
@@ -66,7 +66,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: './foundations/structures',
     importName: '@askrjs/askr/foundations/structures',
     slug: 'foundations--structures',
@@ -74,7 +74,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: './foundations/icon',
     importName: '@askrjs/askr/foundations/icon',
     slug: 'foundations--icon',
@@ -82,7 +82,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: './resources',
     importName: '@askrjs/askr/resources',
     slug: 'resources',
@@ -90,7 +90,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: './data',
     importName: '@askrjs/askr/data',
     slug: 'data',
@@ -98,7 +98,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: './testing',
     importName: '@askrjs/askr/testing',
     slug: 'testing',
@@ -106,7 +106,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: './fx',
     importName: '@askrjs/askr/fx',
     slug: 'fx',
@@ -114,7 +114,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: './router',
     importName: '@askrjs/askr/router',
     slug: 'router',
@@ -122,7 +122,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: './actions',
     importName: '@askrjs/askr/actions',
     slug: 'actions',
@@ -130,7 +130,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: './ssr',
     importName: '@askrjs/askr/ssr',
     slug: 'ssr',
@@ -138,7 +138,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: './ssg',
     importName: '@askrjs/askr/ssg',
     slug: 'ssg',
@@ -146,7 +146,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: './jsx-runtime',
     importName: '@askrjs/askr/jsx-runtime',
     slug: 'jsx-runtime',
@@ -154,7 +154,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.55',
+    version: '0.0.59',
     subpath: './jsx-dev-runtime',
     importName: '@askrjs/askr/jsx-dev-runtime',
     slug: 'jsx-dev-runtime',
