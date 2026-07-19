@@ -9,7 +9,9 @@ async function main() {
   }
 
   const registry = window.location.pathname.startsWith('/docs')
-    ? (await import('./pages/_routes')).routeRegistry
+    ? (await import('./pages/_routes')).createClientRouteRegistry(
+        window.location.pathname
+      )
     : (await import('./pages/marketing/_routes')).marketingRouteRegistry;
 
   if (root.childNodes.length > 0) {
