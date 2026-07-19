@@ -1527,7 +1527,13 @@ export const apiSymbolSets = {
       name: 'lazy',
       anchor: 'lazy',
       signature:
-        'lazy: <TComponent extends AnyRouteComponent>(factory: () => Promise<{ default: TComponent; } | TComponent>) => TComponent',
+        'lazy: <TComponent extends AnyRouteComponent>(factory: () => Promise<{ default: TComponent; } | TComponent>) => LazyRouteComponent<TComponent>',
+      typeOnly: true,
+    },
+    {
+      name: 'LazyRouteComponent',
+      anchor: 'lazy-route-component',
+      signature: 'LazyRouteComponent: any',
       typeOnly: true,
     },
     {

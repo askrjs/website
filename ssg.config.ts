@@ -4,7 +4,7 @@ import { serializeRouteMeta } from '@askrjs/askr/router';
 import type { DocumentRenderArgs } from '@askrjs/askr/ssg';
 import { createStaticRouteRegistry, routeMetadata } from './src/pages/_routes';
 
-export const registry = createStaticRouteRegistry();
+export const registry = await createStaticRouteRegistry();
 export const outputDir = 'dist';
 
 let clientTemplate: string | undefined;

@@ -471,27 +471,6 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   font-size: var(--ak-font-size-lg);
 }
 
-.editorial-vocabulary {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--ak-space-sm) var(--ak-space-lg);
-  padding-block: var(--ak-space-lg);
-}
-
-.editorial-vocabulary code {
-  display: inline-flex;
-  align-items: center;
-  color: var(--ak-color-text-muted);
-  font-family: var(--ak-font-family-mono);
-  font-size: var(--ak-font-size-sm);
-}
-
-.editorial-vocabulary code:not(:last-child)::after {
-  margin-left: var(--ak-space-lg);
-  color: var(--ak-color-text-muted);
-  content: '→';
-}
-
 .repository-link {
   display: inline-flex;
   width: fit-content;
@@ -869,45 +848,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   }
 }
 
-.docs-shell {
-  display: grid;
-  min-height: 100vh;
-  grid-template-columns: 17rem minmax(0, 1fr);
-  background: var(--ak-color-bg);
-  transition: grid-template-columns 180ms ease;
-}
-
-.docs-shell[data-sidebar-collapsed='true'] {
-  grid-template-columns: 4.75rem minmax(0, 1fr);
-}
-
-.docs-sidebar {
-  position: sticky;
-  top: 0;
-  display: flex;
-  height: 100vh;
-  flex-direction: column;
-  padding: 1rem;
-  overflow: hidden;
-  border-right: 1px solid var(--ak-color-border);
-  background: color-mix(
-    in srgb,
-    var(--ak-color-surface-muted) 72%,
-    var(--ak-color-bg)
-  );
-}
-
-.docs-sidebar__header,
-.docs-sidebar__footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  min-height: 2.5rem;
-}
-
-.icon-button,
-.docs-sidebar__github {
+.icon-button {
   display: inline-flex;
   min-width: 2.5rem;
   min-height: 2.5rem;
@@ -922,88 +863,9 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   text-decoration: none;
 }
 
-.icon-button:hover,
-.docs-sidebar__github:hover {
+.icon-button:hover {
   background: var(--ak-color-primary-soft);
   color: var(--ak-color-text);
-}
-
-.docs-nav {
-  flex: 1;
-  margin-top: 2.5rem;
-}
-
-.docs-nav__label {
-  margin: 0 0 0.75rem 0.7rem;
-  color: var(--ak-color-text-muted);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.docs-nav ul {
-  display: grid;
-  gap: 0.35rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.docs-nav__link {
-  display: flex;
-  min-height: 2.65rem;
-  align-items: center;
-  gap: 0.8rem;
-  padding: 0.55rem 0.7rem;
-  border-radius: 0.65rem;
-  color: var(--ak-color-text-muted);
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.docs-nav__link:hover {
-  background: color-mix(in srgb, var(--ak-color-primary) 7%, transparent);
-  color: var(--ak-color-text);
-}
-
-.docs-nav__link[data-active='true'] {
-  background: var(--ak-color-primary-soft);
-  color: var(--ak-color-text);
-}
-
-.docs-sidebar__footer {
-  padding-top: 1rem;
-}
-
-.docs-sidebar__github {
-  justify-content: flex-start;
-  padding-inline: 0.7rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-}
-
-.docs-shell[data-sidebar-collapsed='true'] .docs-sidebar {
-  padding-inline: 1.1rem;
-}
-
-.docs-shell[data-sidebar-collapsed='true'] .docs-sidebar__header {
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.docs-shell[data-sidebar-collapsed='true'] .docs-nav__label,
-.docs-shell[data-sidebar-collapsed='true'] .docs-nav__link span,
-.docs-shell[data-sidebar-collapsed='true'] .docs-sidebar__github span {
-  display: none;
-}
-
-.docs-shell[data-sidebar-collapsed='true'] .docs-nav__link,
-.docs-shell[data-sidebar-collapsed='true'] .docs-sidebar__github {
-  justify-content: center;
-  padding-inline: 0;
 }
 
 .docs-main {
@@ -1011,9 +873,9 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .docs-content {
-  width: min(calc(100% - 3rem), 50rem);
+  width: min(calc(100% - 4rem), 52rem);
   margin: 0 auto;
-  padding: clamp(4rem, 9vw, 7rem) 0 7rem;
+  padding: clamp(3.5rem, 7vw, 6rem) 0 6rem;
 }
 
 .docs-article__header {
@@ -1097,10 +959,6 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   font-size: 0.9rem;
   line-height: 1.75;
   white-space: pre;
-}
-
-.docs-mobile-rail {
-  display: none;
 }
 
 @media (max-width: 48rem) {
@@ -1284,60 +1142,6 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   .final-cta__inner {
     padding-block: var(--ak-space-2xl);
   }
-
-  .docs-shell,
-  .docs-shell[data-sidebar-collapsed='true'] {
-    grid-template-columns: 4.25rem minmax(0, 1fr);
-  }
-
-  .docs-sidebar {
-    display: none;
-  }
-
-  .docs-mobile-rail {
-    position: sticky;
-    top: 0;
-    display: flex;
-    height: 100vh;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.85rem 0.65rem;
-    border-right: 1px solid var(--ak-color-border);
-    background: color-mix(
-      in srgb,
-      var(--ak-color-surface-muted) 76%,
-      var(--ak-color-bg)
-    );
-  }
-
-  .docs-mobile-rail .docs-nav {
-    width: 100%;
-    margin-top: 1rem;
-  }
-
-  .docs-mobile-rail .docs-nav__label,
-  .docs-mobile-rail .docs-nav__link span {
-    display: none;
-  }
-
-  .docs-mobile-rail .docs-nav__link {
-    justify-content: center;
-    padding-inline: 0;
-  }
-
-  .docs-mobile-rail__footer {
-    display: grid;
-    margin-top: auto;
-    place-items: center;
-    gap: 0.5rem;
-    color: var(--ak-color-text-muted);
-  }
-
-  .docs-content {
-    width: min(calc(100% - 2rem), 50rem);
-    padding-top: 3.5rem;
-  }
 }
 
 /* The docs navigation intentionally delegates color, density, and interaction
@@ -1434,96 +1238,6 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .docs-shell[data-sidebar-collapsed='true'] {
   grid-template-columns: 4.75rem minmax(0, 1fr) 14rem;
-}
-
-.docs-sidebar {
-  position: sticky;
-  top: 0;
-  display: flex;
-  height: 100vh;
-  flex-direction: column;
-  padding: 1rem;
-  overflow: hidden;
-}
-
-.docs-sidebar__header,
-.docs-sidebar__footer {
-  flex: none;
-}
-
-.docs-sidebar__footer {
-  border-top: 1px solid var(--ak-color-border);
-}
-
-.docs-sidebar .docs-nav {
-  min-height: 0;
-  flex: 1;
-  margin: 1rem -0.35rem 0;
-  padding: 0 0.35rem 1rem;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-}
-
-.docs-nav__group {
-  margin: 0;
-  padding: 0.15rem 0;
-}
-
-.docs-nav__group-link {
-  display: block;
-  padding: 0.55rem 0.7rem;
-  border-radius: 0.55rem;
-  color: var(--docs-color-text-secondary);
-  font-size: 0.82rem;
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.docs-nav__group[data-active='true'] > .docs-nav__group-link {
-  color: var(--ak-color-text);
-}
-
-.docs-nav__group-link:hover,
-.docs-nav__pages a:hover {
-  background: var(--ak-color-primary-soft);
-  color: var(--ak-color-text);
-}
-
-.docs-nav__pages {
-  margin: 0.2rem 0 0.65rem;
-  padding-left: 0.6rem;
-  border-left: 1px solid var(--ak-color-border);
-}
-
-.docs-nav__pages p {
-  margin: 0.75rem 0 0.2rem 0.65rem;
-  color: var(--docs-color-text-secondary);
-  font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.docs-nav__pages ul {
-  gap: 0.08rem;
-}
-
-.docs-nav__pages a {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.42rem 0.65rem;
-  border-radius: 0.5rem;
-  color: var(--docs-color-text-secondary);
-  font-size: 0.78rem;
-  line-height: 1.3;
-  text-decoration: none;
-}
-
-.docs-nav__pages a[aria-current='page'] {
-  background: var(--ak-color-primary-soft);
-  color: var(--ak-color-text);
-  font-weight: 700;
 }
 
 .docs-search {
@@ -1656,15 +1370,6 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   color: var(--docs-color-text-secondary);
   font-size: 0.72rem;
   font-style: normal;
-}
-
-.docs-main {
-  min-width: 0;
-}
-
-.docs-content {
-  width: min(calc(100% - 4rem), 52rem);
-  padding: clamp(3.5rem, 7vw, 6rem) 0 6rem;
 }
 
 .docs-toc {
@@ -2005,11 +1710,6 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
     padding-top: 3.7rem;
   }
 
-  .docs-sidebar,
-  .docs-mobile-rail {
-    display: none;
-  }
-
   .docs-mobile-header {
     position: fixed;
     z-index: 60;
@@ -2057,10 +1757,6 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
     padding: 1rem;
     overflow-y: auto;
     background: var(--ak-color-bg);
-  }
-
-  .docs-drawer .docs-nav {
-    margin-top: 1rem;
   }
 
   .docs-content {
