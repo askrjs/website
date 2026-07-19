@@ -1,9 +1,8 @@
-import { currentRoute } from '@askrjs/askr/router';
+import { Link, currentRoute } from '@askrjs/askr/router';
 import { ArrowLeftIcon } from '@askrjs/lucide';
 import { apiManifest } from './api-manifest';
 import { apiSymbolSets } from './api-snapshot';
 import { resolveDocsRoute } from './catalog';
-import { DocsLink } from './transition-link';
 
 export default function ApiPage() {
   const route = resolveDocsRoute(currentRoute());
@@ -22,11 +21,11 @@ export default function ApiPage() {
   return (
     <article class="docs-article docs-api-page" data-docs-route={route}>
       <nav class="docs-breadcrumbs" aria-label="Breadcrumb">
-        <DocsLink href="/docs">Docs</DocsLink>
+        <Link href="/docs">Docs</Link>
         <span>/</span>
-        <DocsLink href="/docs/reference">Reference</DocsLink>
+        <Link href="/docs/reference">Reference</Link>
         <span>/</span>
-        <DocsLink href="/docs/reference/api">API</DocsLink>
+        <Link href="/docs/reference/api">API</Link>
         <span>/</span>
         <span aria-current="page">{entrypoint.importName}</span>
       </nav>
@@ -73,12 +72,12 @@ export default function ApiPage() {
         </div>
       </section>
       <nav class="docs-pagination" aria-label="Documentation pagination">
-        <DocsLink href="/docs/reference/api">
+        <Link href="/docs/reference/api">
           <ArrowLeftIcon size={16} aria-hidden="true" />
           <span>
             <small>Back to</small>API Index
           </span>
-        </DocsLink>
+        </Link>
       </nav>
     </article>
   );

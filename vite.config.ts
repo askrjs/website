@@ -18,10 +18,6 @@ export default function config(): UserConfig {
       printWidth: 80,
       tabWidth: 2,
     },
-    server: {
-      port: 5173,
-      open: false,
-    },
     build: {
       outDir: '.askr/client',
       emptyOutDir: true,

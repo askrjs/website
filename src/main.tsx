@@ -1,5 +1,4 @@
 import { createSPA, hydrateSPA } from '@askrjs/askr/boot';
-import { routeRegistry } from './pages/_routes';
 import './styles.css';
 
 async function main() {
@@ -9,12 +8,16 @@ async function main() {
     throw new Error('Missing #app root element.');
   }
 
+  const registry = window.location.pathname.startsWith('/docs')
+    ? (await import('./pages/_routes')).routeRegistry
+    : (await import('./pages/marketing/_routes')).marketingRouteRegistry;
+
   if (root.childNodes.length > 0) {
-    await hydrateSPA({ root, registry: routeRegistry });
+    await hydrateSPA({ root, registry });
     return;
   }
 
-  await createSPA({ root, registry: routeRegistry });
+  await createSPA({ root, registry });
 }
 
 void main();

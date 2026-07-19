@@ -1,71 +1,49 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { apiManifest } from '../src/pages/docs/api-manifest';
+import { apiSymbolSets } from '../src/pages/docs/api-snapshot';
+import { docsCatalog } from '../src/pages/docs/catalog';
+import { marketingPages } from '../src/pages/marketing/catalog';
+import { marketingRouteMetadata } from '../src/pages/marketing/_routes';
 
 const root = process.cwd();
 const dist = resolve(root, 'dist');
-const errors = [];
-const assert = (condition, message) => {
+const errors: string[] = [];
+const assert = (condition: unknown, message: string) => {
   if (!condition) errors.push(message);
 };
-const read = (path) => readFileSync(resolve(dist, path), 'utf8');
-const routeFile = (route) =>
+const read = (path: string) => readFileSync(resolve(dist, path), 'utf8');
+const routeFile = (route: string) =>
   route === '/' ? 'index.html' : `${route.slice(1)}/index.html`;
-const docsManifest = JSON.parse(
-  readFileSync(resolve(root, 'public/docs-manifest.json'), 'utf8')
+
+const apiSymbolsByRoute = new Map(
+  apiManifest.map((entrypoint) => [
+    `/docs/reference/api/${entrypoint.packageName.slice('@askrjs/'.length)}/${entrypoint.slug}`,
+    apiSymbolSets[entrypoint.symbolSet as keyof typeof apiSymbolSets],
+  ])
 );
+
 const marketing = [
-  [
-    '/',
-    'A cat named Askr, or how we learned to build full-stack apps',
-    'Build typed applications across browser and server rendering with Askr.',
-  ],
-  [
-    '/platform',
-    'Platform | Askr',
-    'See how Askr composes runtime, routes, UI, server capabilities, rendering, and production output without hiding application ownership.',
-  ],
-  [
-    '/application-model',
-    'Application model | Askr',
-    'Explore Askr’s explicit model for state, typed routes, lifecycle-aware resources, queries, cancellation, and invalidation.',
-  ],
-  [
-    '/rendering',
-    'Rendering | Askr',
-    'Choose SPA, server rendering with hydration, or static generation without changing how an Askr application is written.',
-  ],
-  [
-    '/full-stack',
-    'Full stack | Askr',
-    'Compose pages, native-first actions, validated APIs, OpenAPI contracts, auth policies, and explicit dependencies with Askr.',
-  ],
-  [
-    '/themes',
-    'Themes | Askr',
-    'See how Askr headless components connect to replaceable themes, design tokens, icons, logos, charts, and editor integrations.',
-  ],
-  [
-    '/tooling',
-    'Tooling | Askr',
-    'Use readable Askr starters, Vite Plus, generators, static output, OpenAPI drift checks, guarded updates, and project-local agent skills.',
-  ],
-  [
-    '/production',
-    'Production | Askr',
-    'Ship static or Node output with explicit document, middleware, probe, auth, localization, redaction, and telemetry boundaries.',
-  ],
-  ['/404', 'Page not found | Askr', 'The requested Askr page does not exist.'],
-].map(([route, title, description]) => ({
-  route,
-  title,
-  description,
-  layout: 'marketing',
-}));
-const docs = docsManifest.pages.map((page) => ({
-  ...page,
+  { route: '/', ...marketingRouteMetadata['/'] },
+  ...marketingPages.map((page) => ({
+    route: page.path,
+    title: page.title,
+    description: page.description,
+  })),
+  { route: '/404', ...marketingRouteMetadata['/404'] },
+].map((page) => ({ ...page, layout: 'marketing' }));
+
+const docs = docsCatalog.map((page) => ({
+  route: page.route,
   title: `${page.title} | Askr`,
+  description: page.description,
+  headings: page.headings.map(({ id }) => ({ id })),
+  apiSymbols: apiSymbolsByRoute
+    .get(page.route)
+    ?.map(({ anchor }) => ({ anchor })),
   layout: 'docs',
 }));
+
 const expectations = [...marketing, ...docs];
 const expectedRoutes = new Set(expectations.map(({ route }) => route));
 
@@ -73,7 +51,7 @@ assert(existsSync(dist), 'dist/ is missing');
 assert(existsSync(resolve(dist, 'metadata.json')), 'metadata.json is missing');
 const metadata = JSON.parse(read('metadata.json'));
 const generatedRoutes = new Set(
-  (metadata.routes ?? []).map(({ path }) => path)
+  (metadata.routes ?? []).map(({ path }: { path: string }) => path)
 );
 assert(
   metadata.totalRoutes === expectations.length,
@@ -90,9 +68,9 @@ assert(
   'metadata route set must exactly match the catalog and marketing routes'
 );
 
-const documents = new Map();
+const documents = new Map<string, string>();
 
-function textContent(value) {
+function textContent(value: string) {
   return value
     .replace(/<[^>]+>/g, '')
     .replaceAll('&amp;', '&')
@@ -142,18 +120,18 @@ for (const expectation of expectations) {
     `${expectation.route} references source files`
   );
   assert(
-    html.includes('/assets/askr-logo.png'),
+    html.includes('/assets/askr-logo-64.avif'),
     `${expectation.route} is missing the Askr mark`
   );
   const assets = [
     ...html.matchAll(/(?:src|href)="(\/assets\/[^"?]+\.(?:js|css))"/g),
   ].map((match) => match[1]);
   assert(
-    assets.some((asset) => /-[A-Za-z0-9_-]+\.js$/.test(asset)),
+    assets.some((asset) => /-[A-Za-z0-9_-]+\.js$/.test(asset!)),
     `${expectation.route} is missing a hashed script`
   );
   assert(
-    assets.some((asset) => /-[A-Za-z0-9_-]+\.css$/.test(asset)),
+    assets.some((asset) => /-[A-Za-z0-9_-]+\.css$/.test(asset!)),
     `${expectation.route} is missing a hashed stylesheet`
   );
   for (const asset of assets)
@@ -184,12 +162,13 @@ for (const expectation of expectations) {
       new Set(ids).size === ids.length,
       `${expectation.route} contains duplicate anchors`
     );
-    for (const heading of expectation.headings)
+    for (const heading of (expectation as (typeof docs)[number]).headings ?? [])
       assert(
         ids.includes(heading.id),
         `${expectation.route} is missing #${heading.id}`
       );
-    for (const symbol of expectation.apiSymbols ?? [])
+    for (const symbol of (expectation as (typeof docs)[number]).apiSymbols ??
+      [])
       assert(
         ids.includes(symbol.anchor),
         `${expectation.route} is missing API anchor #${symbol.anchor}`
@@ -199,17 +178,17 @@ for (const expectation of expectations) {
     )?.[0];
     const tocHeadings = [
       ...(toc ?? '').matchAll(/<a href="#([^"]+)">([\s\S]*?)<\/a>/g),
-    ].map((match) => ({ id: match[1], title: textContent(match[2]) }));
+    ].map((match) => ({ id: match[1], title: textContent(match[2]!) }));
     const contentHeadings = [
       ...html.matchAll(
         /<h2 id="([^"]+)"[^>]*>[\s\S]*?<a href="#[^"]+">([\s\S]*?)<\/a>[\s\S]*?<\/h2>/g
       ),
-    ].map((match) => ({ id: match[1], title: textContent(match[2]) }));
+    ].map((match) => ({ id: match[1], title: textContent(match[2]!) }));
     assert(
       JSON.stringify(tocHeadings) === JSON.stringify(contentHeadings),
       `${expectation.route} table of contents does not match its visible sections`
     );
-    if (!Array.isArray(expectation.apiSymbols)) {
+    if (!(expectation as (typeof docs)[number]).apiSymbols) {
       assert(
         html.includes('data-code-block'),
         `${expectation.route} must include a directly adaptable code example`
@@ -223,7 +202,7 @@ for (const expectation of expectations) {
   }
 }
 
-const canonicalSmoke = {
+const canonicalSmoke: Record<string, string[]> = {
   '/docs/getting-started/first-application': [
     'createRouteRegistry',
     'count.set',
@@ -267,18 +246,19 @@ for (const [route, html] of documents) {
 }
 
 for (const asset of [
-  'assets/askr-logo.png',
+  'assets/askr-logo-64.avif',
+  'assets/askr-logo-64.png',
+  'assets/askr-logo-180.png',
   'assets/github-mark-black.svg',
   'assets/github-mark-white.svg',
   'robots.txt',
-  'docs-manifest.json',
   'sitemap.xml',
 ])
   assert(existsSync(resolve(dist, asset)), `${asset} must be published`);
 const sitemap = read('sitemap.xml');
 const sitemapRoutes = new Set(
   [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(
-    (match) => new URL(match[1]).pathname.replace(/\/$/, '') || '/'
+    (match) => new URL(match[1]!).pathname.replace(/\/$/, '') || '/'
   )
 );
 for (const route of expectedRoutes)
@@ -309,6 +289,6 @@ if (errors.length) {
   process.exitCode = 1;
 } else {
   console.log(
-    `Static output verified: ${expectations.length} routes, ${docsManifest.pages.reduce((sum, page) => sum + (page.apiSymbols?.length ?? 0), 0)} API anchors.`
+    `Static output verified: ${expectations.length} routes, ${docs.reduce((sum, page) => sum + (page.apiSymbols?.length ?? 0), 0)} API anchors.`
   );
 }

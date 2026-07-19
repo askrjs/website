@@ -1021,7 +1021,7 @@ export function buildUsageGuide(
         'Run the generated application and read its route registry, scripts, and route-tree test before editing them.',
         'Add one page, update the expected route set, then build and preview the real output.',
       ],
-      code: `npx @askrjs/cli@0.0.3 create startkit my-app
+      code: `npx @askrjs/cli@0.0.5 create startkit my-app
 cd my-app
 npm run dev
 npm run build`,
@@ -1212,10 +1212,10 @@ const Plot = createPlot<ProjectRow>();
       intro:
         'Run the published CLI through the project package boundary and review generated artifacts before committing them.',
       steps: sharedSteps(page),
-      code: `npx @askrjs/cli@0.0.3 add page audit-log
-npx @askrjs/cli@0.0.3 add action approve-request --route /requests/{id}
-npx @askrjs/cli@0.0.3 openapi --check
-npx @askrjs/cli@0.0.3 ssg --config ./ssg.config.ts --output ./dist`,
+      code: `npx @askrjs/cli@0.0.5 add page audit-log
+npx @askrjs/cli@0.0.5 add action approve-request --route /requests/{id}
+npx @askrjs/cli@0.0.5 openapi --check
+npx @askrjs/cli@0.0.5 ssg --config ./ssg.config.ts --output ./dist`,
     };
   }
 

@@ -3,19 +3,18 @@ import {
   MarketingPageNavigation,
   RepositoryLink,
   RuledSection,
-  Vocabulary,
-} from './_marketing';
+} from './components';
 
 export function RenderingPage() {
   return (
     <>
       <EditorialHero
-        title="Choose where the HTML is produced, not how the application is written."
-        lede="The same routes and components can start in the browser, arrive as server-rendered HTML, or be written ahead as static documents."
+        title="You shouldn't have to rewrite an app to change how it's hosted."
+        lede="A marketing site that later needs a dashboard, or a dashboard that later needs a fast landing page — both are the same route tree with a different rendering mode switched on."
       />
       <RuledSection stacked>
         <div class="editorial-section__heading">
-          <h2>One route model, three deliberate choices.</h2>
+          <h2>Same routes and components, three ways to serve them</h2>
         </div>
         <div class="rendering-map" aria-label="Shared route model outputs">
           <div class="rendering-map__source">
@@ -44,24 +43,20 @@ export function RenderingPage() {
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
-          <h2>Share components. Name deferred work.</h2>
+          <h2>Switching modes is a boot-file change, not a rewrite</h2>
         </div>
         <div class="editorial-prose">
           <p>
-            Route resolution, components, and render data share contracts across
-            modes. Static output remains ordinary HTML and hashed assets.
+            Swap <code>createSPA</code> for <code>hydrateSPA</code> and a
+            server-rendered document, and the browser takes over the same
+            component tree. Route loaders, params, and render data work the same
+            way regardless of where the HTML came from.
           </p>
           <p>
-            If a loader should not block the first document, the application
-            marks it as deferred. Asynchronous components do not silently become
-            a streaming protocol.
+            A loader that shouldn't block the first paint is marked{' '}
+            <code>defer</code> explicitly — you choose what's slow and deferred,
+            rather than the framework guessing.
           </p>
-          <Vocabulary>
-            <code>route</code>
-            <code>loader</code>
-            <code>render</code>
-            <code>hydrateSPA</code>
-          </Vocabulary>
           <RepositoryLink href="https://github.com/askrjs/askr-examples">
             Compare the rendering examples
           </RepositoryLink>

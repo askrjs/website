@@ -1,4 +1,6 @@
 import { apiManifest } from './api-manifest';
+import { headingOverrides } from './content-overrides';
+import { docsPrimarySections } from './primary-sections';
 import type {
   DocsHeadingDefinition,
   DocsPageDefinition,
@@ -12,7 +14,7 @@ const versions = {
   askr: '0.0.55',
   auth: '0.0.3',
   charts: '0.1.2',
-  cli: '0.0.3',
+  cli: '0.0.5',
   fetch: '0.0.1',
   i18n: '0.0.2',
   logos: '0.0.4',
@@ -95,13 +97,16 @@ function guidance(group: string, title: string, heading: string): string {
 function heading(
   group: string,
   pageTitle: string,
-  value: string | DocsHeadingDefinition
+  value: string | DocsHeadingDefinition,
+  route?: string
 ) {
   if (typeof value !== 'string') return value;
+  const id = slug(value);
+  const override = route ? headingOverrides[route]?.[id] : undefined;
   return {
-    id: slug(value),
+    id,
     title: value,
-    body: guidance(group, pageTitle, value),
+    body: override ?? guidance(group, pageTitle, value),
   };
 }
 
@@ -118,7 +123,7 @@ function definePage(
   ) as `/docs${string}`;
   const headings = (
     input.headings ?? ['Overview', 'Working contract', 'Production checklist']
-  ).map((value) => heading(group, input.title, value));
+  ).map((value) => heading(group, input.title, value, route));
   return {
     route,
     title: input.title,
@@ -893,19 +898,37 @@ const componentStructure = [
   'Related pages',
 ] as const;
 
+type ComponentPageInput = PageInput & {
+  title: string;
+  /** Real @askrjs/ui subpath exports this page covers. Omit (or leave empty)
+   *  when no headless primitive ships for this component — several themed
+   *  components (Tabs, Sidebar, Card, Badge, Combobox, ...) have no
+   *  @askrjs/ui counterpart at all. */
+  ui?: readonly string[];
+  /** Real @askrjs/themes subpath exports this page covers. */
+  themes?: readonly string[];
+};
+
 function componentPages(
   section: string,
-  inputs: readonly (string | (PageInput & { title: string }))[]
+  inputs: readonly (string | ComponentPageInput)[]
 ) {
   return inputs.map((value) => {
     const input = typeof value === 'string' ? { title: value } : value;
+    const uiPackages = (input.ui ?? []).length
+      ? input.ui!.map((path) => packageReference('ui', `@askrjs/ui/${path}`))
+      : input.ui
+        ? []
+        : [packageReference('ui')];
+    const themesPackages = (input.themes ?? []).length
+      ? input.themes!.map((path) =>
+          packageReference('themes', `@askrjs/themes/${path}`)
+        )
+      : [packageReference('themes')];
     return definePage('UI & Components', section, 'components', {
       ...input,
       headings: input.headings ?? componentStructure,
-      packages: input.packages ?? [
-        packageReference('ui', `@askrjs/ui/${slug(input.title.split('/')[0])}`),
-        packageReference('themes'),
-      ],
+      packages: input.packages ?? [...uiPackages, ...themesPackages],
     });
   });
 }
@@ -928,6 +951,9 @@ const componentsLanding = definePage(
     packages: [packageReference('ui'), packageReference('themes')],
   }
 );
+// Foundations pages are conceptual (design-system topics), not single
+// components, so they stay on the package roots rather than a fabricated
+// per-topic subpath.
 const foundations = componentPages('Foundations', [
   'Headless versus Themed',
   'Composition and Accessibility',
@@ -940,59 +966,132 @@ const foundations = componentPages('Foundations', [
   'Focus and Dismissal',
   'Controlled State',
   'ARIA and Ref Utilities',
-  'Icon Contract',
+  {
+    title: 'Icon Contract',
+    // The data-slot="icon" / data-decorative / sizing-token contract this
+    // page documents is implemented by @askrjs/lucide, not by @askrjs/ui or
+    // @askrjs/themes — themes only consumes it via [data-slot="icon"]
+    // selectors in its default theme CSS.
+    packages: [
+      packageReference('ui'),
+      packageReference('themes'),
+      packageReference('lucide'),
+    ],
+  },
 ]);
 const controls = componentPages('Forms and controls', [
-  'Button and Button Group',
-  'Input',
-  'Textarea',
-  'Checkbox',
-  'Radio Group',
-  'Select',
-  'Slider',
-  'Switch',
-  'Toggle Family',
-  'Form, Label, Field, and Input Group',
+  {
+    title: 'Button and Button Group',
+    ui: ['button'],
+    themes: ['button', 'button-group'],
+  },
+  { title: 'Input', ui: ['input'], themes: ['input'] },
+  { title: 'Textarea', ui: ['textarea'], themes: ['textarea'] },
+  { title: 'Checkbox', ui: ['checkbox'], themes: ['checkbox'] },
+  { title: 'Radio Group', ui: ['radio-group'], themes: ['radio-group'] },
+  { title: 'Select', ui: ['select'], themes: ['select'] },
+  { title: 'Slider', ui: ['slider'], themes: ['slider'] },
+  { title: 'Switch', ui: ['switch'], themes: ['switch'] },
+  {
+    title: 'Toggle Family',
+    ui: ['toggle', 'toggle-group'],
+    themes: ['toggle', 'toggle-group'],
+  },
+  {
+    title: 'Form, Label, Field, and Input Group',
+    ui: ['form', 'label'],
+    themes: ['form', 'label', 'field', 'input-group'],
+  },
 ]);
+// These three have no @askrjs/ui headless primitive at all — they exist
+// only as themed components, which is the actual reason they're marked
+// experimental rather than a documentation placeholder.
 const experimentalControls = componentPages('Experimental controls', [
-  { title: 'Combobox and Command', status: 'experimental' },
-  { title: 'Calendar and Date Picker', status: 'experimental' },
-  { title: 'Native Select and Input OTP', status: 'experimental' },
+  {
+    title: 'Combobox and Command',
+    status: 'experimental',
+    ui: [],
+    themes: ['combobox', 'command'],
+  },
+  {
+    title: 'Calendar and Date Picker',
+    status: 'experimental',
+    ui: [],
+    themes: ['calendar', 'date-picker'],
+  },
+  {
+    title: 'Native Select and Input OTP',
+    status: 'experimental',
+    ui: [],
+    themes: ['native-select', 'input-otp'],
+  },
 ]);
 const overlays = componentPages('Overlays', [
-  'Dialog',
-  'Alert Dialog',
-  'Popover',
-  'Hover Card',
-  'Tooltip',
-  'Menu, Dropdown, and Context Menu',
-  { title: 'Drawer and Sheet', status: 'experimental' },
+  { title: 'Dialog', ui: ['dialog'], themes: ['dialog'] },
+  { title: 'Alert Dialog', ui: ['alert-dialog'], themes: ['alert-dialog'] },
+  { title: 'Popover', ui: ['popover'], themes: ['popover'] },
+  { title: 'Hover Card', ui: ['hover-card'], themes: ['hover-card'] },
+  { title: 'Tooltip', ui: ['tooltip'], themes: ['tooltip'] },
+  {
+    title: 'Menu, Dropdown, and Context Menu',
+    ui: ['menu', 'dropdown'],
+    themes: ['dropdown-menu', 'context-menu'],
+  },
+  {
+    title: 'Drawer and Sheet',
+    status: 'experimental',
+    ui: [],
+    themes: ['drawer', 'sheet'],
+  },
 ]);
 const navigation = componentPages('Navigation and chrome', [
-  'Menubar',
-  'Tabs',
-  'Sidebar',
-  'Navbar and Navigation Menu',
-  'Breadcrumb and Pagination',
-  'Application Chrome',
+  { title: 'Menubar', ui: ['menubar'], themes: ['menubar'] },
+  { title: 'Tabs', ui: [], themes: ['tabs'] },
+  { title: 'Sidebar', ui: [], themes: ['sidebar'] },
+  { title: 'Navbar and Navigation Menu', ui: [], themes: ['navigation-menu'] },
+  {
+    title: 'Breadcrumb and Pagination',
+    ui: [],
+    themes: ['breadcrumb', 'pagination'],
+  },
+  { title: 'Application Chrome', ui: [], themes: [] },
 ]);
 const dataLayout = componentPages('Data and layout', [
-  'Table',
-  'Data Table',
-  'Virtual List',
-  'Virtual Table',
-  'Scroll Area',
-  'Card',
-  'Avatar and Item',
-  'Typography and Display Primitives',
-  'Application Layout',
-  'Advanced Layout',
+  { title: 'Table', ui: ['table'], themes: ['table'] },
+  { title: 'Data Table', ui: [], themes: ['data-table'] },
+  { title: 'Virtual List', ui: ['virtual-list'], themes: [] },
+  { title: 'Virtual Table', ui: ['virtual-table'], themes: [] },
+  { title: 'Scroll Area', ui: ['scroll-area'], themes: ['scroll-area'] },
+  { title: 'Card', ui: [], themes: ['card'] },
+  { title: 'Avatar and Item', ui: ['avatar'], themes: ['avatar', 'item'] },
+  {
+    title: 'Typography and Display Primitives',
+    ui: [],
+    themes: ['typography'],
+  },
+  { title: 'Application Layout', ui: [], themes: [] },
+  { title: 'Advanced Layout', ui: [], themes: [] },
 ]);
 const feedback = componentPages('Disclosure and feedback', [
-  'Accordion and Collapsible',
-  'Progress',
-  'Toast and Sonner',
-  'Alert, Badge, Empty, Skeleton, Spinner, and Stat',
+  {
+    title: 'Accordion and Collapsible',
+    ui: ['accordion', 'collapsible'],
+    themes: ['accordion', 'collapsible'],
+  },
+  {
+    title: 'Progress',
+    ui: ['progress', 'progress-circle'],
+    themes: ['progress'],
+  },
+  { title: 'Toast and Sonner', ui: ['toast'], themes: ['toast', 'sonner'] },
+  {
+    // Stat (Stat/StatLabel/StatValue/StatDescription) IS a real export, but
+    // unlike its siblings on this page it has no dedicated subpath — it's
+    // only reachable via the @askrjs/themes/components barrel.
+    title: 'Alert, Badge, Empty, Skeleton, Spinner, and Stat',
+    ui: [],
+    themes: ['alert', 'badge', 'empty', 'skeleton', 'spinner', 'components'],
+  },
 ]);
 
 const charts = sectionPages('UI & Components', 'Charts', 'charts', [
@@ -1374,9 +1473,9 @@ const overview: DocsPageDefinition = {
   status: 'stable',
   packages: [packageReference('askr')],
   headings: [
-    heading('Overview', 'Askr Documentation', 'Choose a path'),
-    heading('Overview', 'Askr Documentation', 'Published package set'),
-    heading('Overview', 'Askr Documentation', 'Application modes'),
+    heading('Overview', 'Askr Documentation', 'Choose a path', '/docs'),
+    heading('Overview', 'Askr Documentation', 'Published package set', '/docs'),
+    heading('Overview', 'Askr Documentation', 'Application modes', '/docs'),
   ],
   keywords: ['documentation', 'Askr', 'TypeScript'],
   loader: pageLoader,
@@ -1443,26 +1542,13 @@ export const docsCatalog: readonly DocsPageDefinition[] = orderedPages.map(
   })
 );
 
-const groupOrder = [
-  'Overview',
-  'Getting Started',
-  'Fundamentals',
-  'Routing & Data',
-  'Rendering',
-  'Server & APIs',
-  'UI & Components',
-  'Tooling',
-  'Guides',
-  'Reference',
-];
-export const docsSections: readonly DocsSectionDefinition[] = groupOrder.map(
-  (label) => {
+export const docsSections: readonly DocsSectionDefinition[] =
+  docsPrimarySections.map(({ label, route }) => {
     const pages = docsCatalog.filter(
       (page) => page.navGroup === label && page.navSection !== 'Generated API'
     );
-    return { id: slug(label), label, landingRoute: pages[0].route, pages };
-  }
-);
+    return { id: slug(label), label, landingRoute: route, pages };
+  });
 
 export const docsByRoute = new Map(
   docsCatalog.map((page) => [page.route, page])

@@ -1,4 +1,4 @@
-import { currentRoute } from '@askrjs/askr/router';
+import { Link, currentRoute } from '@askrjs/askr/router';
 import { ArrowLeftIcon, ArrowRightIcon, CopyIcon } from '@askrjs/lucide';
 import {
   docsByRoute,
@@ -9,7 +9,6 @@ import {
 import { cliSnapshot } from './cli-snapshot';
 import type { DocsHeadingDefinition, DocsPageDefinition } from './types';
 import { buildUsageGuide } from './usage-guide';
-import { DocsLink } from './transition-link';
 
 const routeExamples: Readonly<Record<string, string>> = {
   '/docs/getting-started/first-application': `import { state } from '@askrjs/askr';
@@ -68,8 +67,8 @@ project.jsonSchema;`,
   .tool('lookup-project', { input: projectInput }, async (context, input) => {
     return { content: [{ type: 'text', text: await lookup(input.id) }] };
   });`,
-  '/docs/tooling/create': `npx @askrjs/cli@0.0.3 create startkit my-app
-npx @askrjs/cli@0.0.3 create --prompt "Authenticated operations dashboard"`,
+  '/docs/tooling/create': `npx @askrjs/cli@0.0.5 create startkit my-app
+npx @askrjs/cli@0.0.5 create --prompt "Authenticated operations dashboard"`,
 };
 
 function CodeBlock({ code }: { code: string }) {
@@ -163,24 +162,24 @@ function PreviousNext({ page }: { page: DocsPageDefinition }) {
   return (
     <nav class="docs-pagination" aria-label="Documentation pagination">
       {previous ? (
-        <DocsLink href={previous.route}>
+        <Link href={previous.route}>
           <ArrowLeftIcon size={16} aria-hidden="true" />
           <span>
             <small>Previous</small>
             {previous.title}
           </span>
-        </DocsLink>
+        </Link>
       ) : (
         <span />
       )}
       {next && (
-        <DocsLink href={next.route}>
+        <Link href={next.route}>
           <span>
             <small>Next</small>
             {next.title}
           </span>
           <ArrowRightIcon size={16} aria-hidden="true" />
-        </DocsLink>
+        </Link>
       )}
     </nav>
   );
@@ -199,11 +198,11 @@ export default function DocsPage() {
   return (
     <article class="docs-article" data-docs-route={page.route}>
       <nav class="docs-breadcrumbs" aria-label="Breadcrumb">
-        <DocsLink href="/docs">Docs</DocsLink>
+        <Link href="/docs">Docs</Link>
         <span aria-hidden="true">/</span>
         {group && page.route !== group.landingRoute && (
           <>
-            <DocsLink href={group.landingRoute}>{group.label}</DocsLink>
+            <Link href={group.landingRoute}>{group.label}</Link>
             <span aria-hidden="true">/</span>
           </>
         )}

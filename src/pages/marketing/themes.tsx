@@ -3,22 +3,22 @@ import {
   MarketingPageNavigation,
   RepositoryLink,
   RuledSection,
-  Vocabulary,
-} from './_marketing';
+} from './components';
 
 export function ThemesPage() {
   return (
     <>
       <EditorialHero
-        title="Headless components. Theme-owned appearance."
-        lede="Keep accessibility wiring and interaction behavior, then add a visual system without replacing the component contract."
+        title="Restyle the whole app without re-testing every keyboard interaction."
+        lede="Focus order, ARIA, and dismissal behavior live in the headless layer. Rip out the visual theme and none of that has to be re-verified."
       />
       <RuledSection stacked>
         <div class="editorial-section__heading">
-          <h2>Behavior flows into a replaceable visual layer.</h2>
+          <h2>Two packages, two jobs</h2>
           <p>
-            Headless components own interaction and accessibility. Themes add
-            styled components and tokens without rewriting that behavior.
+            One owns whether a dialog traps focus correctly. The other owns
+            whether it's blue or dark-mode-aware. Neither has to change when you
+            touch the other.
           </p>
         </div>
         <ol
@@ -47,25 +47,21 @@ export function ThemesPage() {
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
-          <h2>Start useful. Change the system, not every component.</h2>
+          <h2>Ship the default theme, or rebuild it from tokens</h2>
         </div>
         <div class="editorial-prose">
           <p>
-            The default theme provides a practical baseline. Token-first
-            customization centralizes product decisions while headless behavior
-            remains available for custom surfaces.
+            The default theme is a real, usable design — not a scaffold you're
+            expected to throw away. When you do want your own look, colors,
+            spacing, radius, and motion are all token-driven, so a rebrand is a
+            token change, not a component rewrite.
           </p>
           <p>
-            Icons, logos, charts, and editor integrations remain focused
-            packages. Accessibility support is a starting structure; the
-            application still owns the complete user journey.
+            Icons, brand logos, charts, and a Monaco editor integration ship as
+            separate packages you opt into. None of this replaces your
+            accessibility testing — it gives you a tested starting point instead
+            of building focus management from scratch.
           </p>
-          <Vocabulary>
-            <code>headless component</code>
-            <code>theme component</code>
-            <code>tokens</code>
-            <code>product surface</code>
-          </Vocabulary>
           <RepositoryLink href="https://github.com/askrjs/askr-themes">
             Explore the theme system
           </RepositoryLink>

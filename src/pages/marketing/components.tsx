@@ -2,11 +2,7 @@ import type { Props } from '@askrjs/askr';
 import { Link } from '@askrjs/askr/router';
 import { ArrowLeftIcon, ArrowRightIcon } from '@askrjs/lucide';
 import { Button, Container } from '@askrjs/themes/components';
-import {
-  marketingPage,
-  marketingPages,
-  type MarketingPath,
-} from './_marketing-catalog';
+import { marketingPage, marketingPages, type MarketingPath } from './catalog';
 
 type HeroProps = {
   title: string;
@@ -38,10 +34,6 @@ export function RuledSection({
       </Container>
     </section>
   );
-}
-
-export function Vocabulary({ children }: Props) {
-  return <div class="editorial-vocabulary">{children}</div>;
 }
 
 export function RepositoryLink({ href, children }: Props & { href: string }) {

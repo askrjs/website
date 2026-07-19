@@ -4,7 +4,7 @@ import {
   MarketingPageNavigation,
   RepositoryLink,
   RuledSection,
-} from './_marketing';
+} from './components';
 
 const journey = [
   {
@@ -44,15 +44,15 @@ export function PlatformPage() {
   return (
     <>
       <EditorialHero
-        title="A clear path from component to production."
-        lede="Start with components and routes. Add themes, server capability, rendering, and operational layers without hiding the composition root."
+        title="Everything a full-stack app needs, none of it required upfront."
+        lede="Start with the runtime and a route registry. Pull in themed components, a server, and production tooling as the app actually grows into them."
       />
       <RuledSection stacked>
         <div class="editorial-section__heading">
-          <h2>From component to production</h2>
+          <h2>Four packages you'll actually reach for, in order</h2>
           <p>
-            Each step adds capability without replacing the routes and
-            components beneath it.
+            Each one builds on the last — adding a server later doesn't mean
+            rewriting the routes and components you already have.
           </p>
         </div>
         <ol class="platform-journey" aria-label="From component to production">
@@ -69,17 +69,19 @@ export function PlatformPage() {
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
-          <h2>Optional layers. Visible boundaries.</h2>
+          <h2>You don't have to decide the shape of the app up front</h2>
         </div>
         <div class="editorial-prose">
           <p>
-            Askr supplies compatible primitives; the application decides where
-            they meet. Routes stay inspectable, server dependencies stay
-            visible, and production concerns enter through named adapters.
+            A static marketing site and a full-stack dashboard can share the
+            same route registry and component code. What changes is which
+            packages you add and which adapter renders the output — not how you
+            write routes or components.
           </p>
           <p>
-            A static site stays small. The same model can grow into a
-            server-rendered or full-stack application as requirements change.
+            That means a project that starts as static HTML doesn't hit a wall
+            the day it needs a server: you add <code>@askrjs/server</code> and a
+            route policy, not a second framework.
           </p>
           <RepositoryLink href="https://github.com/askrjs/askr-examples">
             Explore first-party examples
@@ -87,7 +89,7 @@ export function PlatformPage() {
         </div>
       </RuledSection>
       <EditorialCTA
-        title="See how the application stays explicit."
+        title="Next: how state, routes, and data are actually owned."
         primaryHref="/application-model"
         primaryLabel="Explore the application model"
         secondaryHref="/docs/getting-started"

@@ -1,5 +1,5 @@
 import { state, type Props } from '@askrjs/askr';
-import { currentRoute } from '@askrjs/askr/router';
+import { Link, currentRoute } from '@askrjs/askr/router';
 import {
   BookOpenIcon,
   CompassIcon,
@@ -30,7 +30,7 @@ import {
   SidebarTrigger,
 } from '@askrjs/themes/components';
 import { ThemeScope } from '@askrjs/themes/theme';
-import { AskrBrand, GitHubMark, SiteThemeToggle } from '../_layout';
+import { AskrBrand, GitHubMark, SiteThemeToggle } from '../marketing/_layout';
 import {
   docsByRoute,
   docsSections,
@@ -38,7 +38,6 @@ import {
   resolveDocsRoute,
 } from './catalog';
 import { DocsSearch } from './search';
-import { DocsLink } from './transition-link';
 
 const STORAGE_KEY = 'askr-docs-sidebar-collapsed';
 const adoptedShells = new WeakSet<HTMLElement>();
@@ -91,10 +90,10 @@ function DocsNavigation({
                     tooltip={collapsed ? section.label : undefined}
                     tooltipSide="right"
                   >
-                    <DocsLink href={section.landingRoute} onClick={close}>
+                    <Link href={section.landingRoute} onClick={close}>
                       <SectionIcon size={18} aria-hidden="true" />
                       <span>{section.label}</span>
-                    </DocsLink>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               </SidebarMenu>
@@ -113,7 +112,7 @@ function DocsNavigation({
                               active={page.route === activePath}
                               size="sm"
                             >
-                              <DocsLink
+                              <Link
                                 href={page.route}
                                 aria-current={
                                   page.route === activePath ? 'page' : undefined
@@ -129,7 +128,7 @@ function DocsNavigation({
                                     •
                                   </span>
                                 )}
-                              </DocsLink>
+                              </Link>
                             </SidebarMenuButton>
                           </SidebarMenuItem>
                         ))}
