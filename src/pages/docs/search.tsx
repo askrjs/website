@@ -1,7 +1,7 @@
 import { state } from '@askrjs/askr';
-import { Link } from '@askrjs/askr/router';
 import { SearchIcon, XIcon } from '@askrjs/lucide';
 import type { DocsSearchRecord } from './types';
+import { DocsLink } from './transition-link';
 
 const adoptedSearchRoots = new WeakSet<HTMLElement>();
 
@@ -110,7 +110,7 @@ export function DocsSearch() {
                 <ul>
                   {results().map((result) => (
                     <li key={`${result.route}#${result.anchor ?? ''}`}>
-                      <Link
+                      <DocsLink
                         href={`${result.route}${result.anchor ? `#${result.anchor}` : ''}`}
                         onClick={close}
                       >
@@ -119,7 +119,7 @@ export function DocsSearch() {
                           <small>{result.description}</small>
                         </span>
                         <em>{result.group}</em>
-                      </Link>
+                      </DocsLink>
                     </li>
                   ))}
                 </ul>

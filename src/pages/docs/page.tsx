@@ -1,4 +1,4 @@
-import { Link, currentRoute } from '@askrjs/askr/router';
+import { currentRoute } from '@askrjs/askr/router';
 import { ArrowLeftIcon, ArrowRightIcon, CopyIcon } from '@askrjs/lucide';
 import {
   docsByRoute,
@@ -9,6 +9,7 @@ import {
 import { cliSnapshot } from './cli-snapshot';
 import type { DocsHeadingDefinition, DocsPageDefinition } from './types';
 import { buildUsageGuide } from './usage-guide';
+import { DocsLink } from './transition-link';
 
 const routeExamples: Readonly<Record<string, string>> = {
   '/docs/getting-started/first-application': `import { state } from '@askrjs/askr';
@@ -162,24 +163,24 @@ function PreviousNext({ page }: { page: DocsPageDefinition }) {
   return (
     <nav class="docs-pagination" aria-label="Documentation pagination">
       {previous ? (
-        <Link href={previous.route}>
+        <DocsLink href={previous.route}>
           <ArrowLeftIcon size={16} aria-hidden="true" />
           <span>
             <small>Previous</small>
             {previous.title}
           </span>
-        </Link>
+        </DocsLink>
       ) : (
         <span />
       )}
       {next && (
-        <Link href={next.route}>
+        <DocsLink href={next.route}>
           <span>
             <small>Next</small>
             {next.title}
           </span>
           <ArrowRightIcon size={16} aria-hidden="true" />
-        </Link>
+        </DocsLink>
       )}
     </nav>
   );
@@ -198,11 +199,11 @@ export default function DocsPage() {
   return (
     <article class="docs-article" data-docs-route={page.route}>
       <nav class="docs-breadcrumbs" aria-label="Breadcrumb">
-        <Link href="/docs">Docs</Link>
+        <DocsLink href="/docs">Docs</DocsLink>
         <span aria-hidden="true">/</span>
         {group && page.route !== group.landingRoute && (
           <>
-            <Link href={group.landingRoute}>{group.label}</Link>
+            <DocsLink href={group.landingRoute}>{group.label}</DocsLink>
             <span aria-hidden="true">/</span>
           </>
         )}

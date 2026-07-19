@@ -1,5 +1,5 @@
 import { state, type Props } from '@askrjs/askr';
-import { Link, currentRoute } from '@askrjs/askr/router';
+import { currentRoute } from '@askrjs/askr/router';
 import {
   BookOpenIcon,
   CompassIcon,
@@ -38,6 +38,7 @@ import {
   resolveDocsRoute,
 } from './catalog';
 import { DocsSearch } from './search';
+import { DocsLink } from './transition-link';
 
 const STORAGE_KEY = 'askr-docs-sidebar-collapsed';
 const adoptedShells = new WeakSet<HTMLElement>();
@@ -90,10 +91,10 @@ function DocsNavigation({
                     tooltip={collapsed ? section.label : undefined}
                     tooltipSide="right"
                   >
-                    <Link href={section.landingRoute} onClick={close}>
+                    <DocsLink href={section.landingRoute} onClick={close}>
                       <SectionIcon size={18} aria-hidden="true" />
                       <span>{section.label}</span>
-                    </Link>
+                    </DocsLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               </SidebarMenu>
@@ -112,7 +113,7 @@ function DocsNavigation({
                               active={page.route === activePath}
                               size="sm"
                             >
-                              <Link
+                              <DocsLink
                                 href={page.route}
                                 aria-current={
                                   page.route === activePath ? 'page' : undefined
@@ -128,7 +129,7 @@ function DocsNavigation({
                                     •
                                   </span>
                                 )}
-                              </Link>
+                              </DocsLink>
                             </SidebarMenuButton>
                           </SidebarMenuItem>
                         ))}
