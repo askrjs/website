@@ -91,6 +91,18 @@ assert(
 );
 
 const documents = new Map();
+
+function textContent(value) {
+  return value
+    .replace(/<[^>]+>/g, '')
+    .replaceAll('&amp;', '&')
+    .replaceAll('&lt;', '<')
+    .replaceAll('&gt;', '>')
+    .replaceAll('&quot;', '"')
+    .replaceAll('&#39;', "'")
+    .trim();
+}
+
 for (const expectation of expectations) {
   const file = routeFile(expectation.route);
   assert(
@@ -182,6 +194,21 @@ for (const expectation of expectations) {
         ids.includes(symbol.anchor),
         `${expectation.route} is missing API anchor #${symbol.anchor}`
       );
+    const toc = html.match(
+      /<aside class="docs-toc"[^>]*>[\s\S]*?<\/aside>/
+    )?.[0];
+    const tocHeadings = [
+      ...(toc ?? '').matchAll(/<a href="#([^"]+)">([\s\S]*?)<\/a>/g),
+    ].map((match) => ({ id: match[1], title: textContent(match[2]) }));
+    const contentHeadings = [
+      ...html.matchAll(
+        /<h2 id="([^"]+)"[^>]*>[\s\S]*?<a href="#[^"]+">([\s\S]*?)<\/a>[\s\S]*?<\/h2>/g
+      ),
+    ].map((match) => ({ id: match[1], title: textContent(match[2]) }));
+    assert(
+      JSON.stringify(tocHeadings) === JSON.stringify(contentHeadings),
+      `${expectation.route} table of contents does not match its visible sections`
+    );
     if (!Array.isArray(expectation.apiSymbols)) {
       assert(
         html.includes('data-code-block'),

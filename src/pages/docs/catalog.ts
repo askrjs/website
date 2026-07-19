@@ -1480,6 +1480,32 @@ export function resolveDocsRoute(location: {
   return normalizeDocsRoute(location.matches[0]?.path ?? location.path);
 }
 
+export function docsTableOfContents(
+  page: DocsPageDefinition
+): readonly Pick<DocsHeadingDefinition, 'id' | 'title'>[] {
+  if (
+    page.navSection === 'Generated API' ||
+    page.route === '/docs/integrations/lucide-gallery'
+  ) {
+    return page.headings;
+  }
+
+  const headings: Pick<DocsHeadingDefinition, 'id' | 'title'>[] = [
+    {
+      id: 'how-to-use',
+      title: `How to use ${page.title.toLowerCase()}`,
+    },
+    ...page.headings,
+  ];
+  if (page.route === '/docs') {
+    headings.push({ id: 'versions', title: 'Published versions' });
+  }
+  if (page.route === '/docs/tooling/cli-overview') {
+    headings.push({ id: 'published-commands', title: 'Published commands' });
+  }
+  return headings;
+}
+
 export const docsSearchRecords: readonly DocsSearchRecord[] =
   docsCatalog.flatMap((page) => [
     {
