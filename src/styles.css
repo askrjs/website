@@ -995,6 +995,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .docs-main {
   min-width: 0;
+  view-transition-name: docs-main;
 }
 
 .docs-content {
@@ -1661,6 +1662,42 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   height: 100vh;
   padding: 4.75rem 1.5rem 2rem 0;
   overflow-y: auto;
+  view-transition-name: docs-toc;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .docs-sidebar-shell {
+    view-transition-name: docs-sidebar;
+  }
+
+  ::view-transition-group(docs-main),
+  ::view-transition-group(docs-sidebar),
+  ::view-transition-group(docs-toc) {
+    animation-duration: 160ms;
+    animation-timing-function: ease-out;
+  }
+
+  ::view-transition-old(docs-main) {
+    animation: docs-page-out 90ms ease-in both;
+  }
+
+  ::view-transition-new(docs-main) {
+    animation: docs-page-in 160ms ease-out both;
+  }
+}
+
+@keyframes docs-page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-0.2rem);
+  }
+}
+
+@keyframes docs-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.3rem);
+  }
 }
 
 .docs-toc > p {
