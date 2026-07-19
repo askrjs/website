@@ -11,7 +11,7 @@ import type {
 } from './types';
 
 const versions = {
-  askr: '0.0.55',
+  askr: '0.0.59',
   auth: '0.0.3',
   charts: '0.1.2',
   cli: '0.0.5',

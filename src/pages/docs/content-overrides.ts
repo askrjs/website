@@ -1479,7 +1479,7 @@ export const headingOverrides: Readonly<
   },
   '/docs/getting-started/overview': {
     'published-package-baseline':
-      "The framework itself is `@askrjs/askr`, currently at 0.0.55, with subpath exports for `/boot`, `/router`, `/resources`, `/data`, `/ssr`, `/ssg`, `/components`, and a few others — each maps to its own `dist/*/index.d.ts`, so import from the subpath that owns the feature you're using rather than the root barrel. Scaffolding and static builds come from `@askrjs/cli`; component and theme packages (`@askrjs/ui`, `@askrjs/themes`) are separate, versioned independently.",
+      "The framework itself is `@askrjs/askr`, currently at 0.0.59, with subpath exports for `/boot`, `/router`, `/resources`, `/data`, `/ssr`, `/ssg`, `/components`, and a few others — each maps to its own `dist/*/index.d.ts`, so import from the subpath that owns the feature you're using rather than the root barrel. Scaffolding and static builds come from `@askrjs/cli`; component and theme packages (`@askrjs/ui`, `@askrjs/themes`) are separate, versioned independently.",
     'what-askr-owns':
       'The runtime owns reactivity (`state()`, `derive()`, `selector()`), the JSX runtime, app startup (`createIsland`, `createSPA`, `hydrateSPA` from `@askrjs/askr/boot`), routing (`@askrjs/askr/router`), async resource loading with cancellation (`resource()` from `@askrjs/askr/resources`), and the server-side entrypoints for SSR and SSG. It also ships a scoped lifecycle model — `defineScope()` and `readScope()` — for values that need lexical ownership rather than component-local state.',
     'what-your-application-owns':
@@ -1949,7 +1949,7 @@ export const headingOverrides: Readonly<
     'clean-breaks':
       "Askr's public API favors one vocabulary per concept rather than keeping deprecated aliases around — for example, reactive scope is `defineScope()`/`readScope()` with no legacy `useContext`-style alias shipped alongside it. When a release renames or removes an export, expect it to be gone rather than soft-deprecated, so pin versions deliberately if you can't absorb that immediately.",
     'latest-published-scope':
-      'This site documents the currently published version of each @askrjs package — @askrjs/askr at 0.0.55, @askrjs/ui and @askrjs/themes at 0.0.13, @askrjs/server and @askrjs/auth and @askrjs/node and @askrjs/cli in the 0.0.x range, and so on. Every package is still pre-1.0, so treat minor version bumps as potentially breaking until a package publishes a 1.0.',
+      'This site documents the currently published version of each @askrjs package — @askrjs/askr at 0.0.59, @askrjs/ui and @askrjs/themes at 0.0.13, @askrjs/server and @askrjs/auth and @askrjs/node and @askrjs/cli in the 0.0.x range, and so on. Every package is still pre-1.0, so treat minor version bumps as potentially breaking until a package publishes a 1.0.',
     'migration-checklist':
       "Before upgrading, diff the exports on the relevant API Index pages against what your code currently imports — a missing symbol there means it moved or was removed, not that the docs are stale. Re-run your test suite with @askrjs/askr/testing's route-matching and query-mock helpers after any upgrade, since router and query-state shapes are exactly the kind of thing a minor bump can quietly change.",
     'package-alignment':
