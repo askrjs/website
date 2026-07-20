@@ -205,12 +205,12 @@ for (const expectation of expectations) {
 const canonicalSmoke: Record<string, string[]> = {
   '/docs/getting-started/first-application': [
     'createRouteRegistry',
-    'count.set',
+    'const [count, setCount] = state(0)',
   ],
   '/docs/core-concepts/state-and-derived-values': ['derive', 'unitPrice'],
   '/docs/routing/definitions-and-layouts': [
     'createRouteRegistry',
-    "route('/projects/:projectId'",
+    "route('/projects/{projectId}'",
   ],
   '/docs/data/queries-and-consistency': ['defineQuery', 'createQuery'],
   '/docs/rendering/server-side-rendering': ['renderToString'],

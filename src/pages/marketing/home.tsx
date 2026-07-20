@@ -7,6 +7,7 @@ import { RepositoryLink } from './components';
 const capabilities = marketingPages.slice(1);
 const routeSpecimen = `import {
   createRouteRegistry,
+  fallback,
   group,
   route,
 } from '@askrjs/askr/router';
@@ -15,7 +16,7 @@ export const routes = createRouteRegistry(() => {
   group({ layout: AppLayout }, () => {
     route('/', OverviewPage);
     route('/activity', ActivityPage);
-    route('/*', NotFoundPage);
+    fallback(NotFoundPage);
   });
 });`;
 

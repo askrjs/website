@@ -15,20 +15,24 @@ const routeExamples: Readonly<Record<string, string>> = {
 import { createRouteRegistry, route } from '@askrjs/askr/router';
 
 function HomePage() {
-  const count = state(0);
-  return <button onClick={() => count.set(count() + 1)}>Count: {count()}</button>;
+  const [count, setCount] = state(0);
+  return <button onClick={() => setCount((value) => value + 1)}>Count: {count()}</button>;
 }
 
 export const registry = createRouteRegistry(() => route('/', HomePage));`,
   '/docs/core-concepts/state-and-derived-values': `import { derive, state } from '@askrjs/askr';
 
-const quantity = state(2);
-const unitPrice = state(12);
-const total = derive(() => quantity() * unitPrice());`,
+export function OrderTotal() {
+  const [quantity, setQuantity] = state(2);
+  const [unitPrice] = state(12);
+  const total = derive(() => quantity() * unitPrice());
+
+  return <button onClick={() => setQuantity((value) => value + 1)}>Total: {total()}</button>;
+}`,
   '/docs/routing/definitions-and-layouts': `const registry = createRouteRegistry(() => {
   group({ layout: AppLayout }, () => {
     route('/', HomePage);
-    route('/projects/:projectId', ProjectPage);
+    route('/projects/{projectId}', ProjectPage);
   });
 });`,
   '/docs/data/queries-and-consistency': `const project = defineQuery({
@@ -37,7 +41,7 @@ const total = derive(() => quantity() * unitPrice());`,
 });
 
 const result = createQuery(project, { id: projectId });`,
-  '/docs/rendering/server-side-rendering': `const result = await renderToString({
+  '/docs/rendering/server-side-rendering': `const html = renderToString({
   registry,
   url: request.url,
 });`,
@@ -46,15 +50,16 @@ const result = createQuery(project, { id: projectId });`,
   return created(await projects.create(input));
 });`,
   '/docs/authentication/authorization': `route('/admin', AdminPage, {
-  auth: { requirement: 'authenticated' },
-  policy: ({ auth }) => auth.permissions.includes('admin') ? allow() : forbidden(),
+  auth: requireUser(),
+  policies: [({ auth }) =>
+    auth.permissions.includes('admin') ? allow() : forbidden()],
 });`,
   '/docs/http-contracts/schemas': `const project = schema.object({
   id: schema.string(),
   name: schema.string(),
 });
 
-project.jsonSchema;`,
+project.openapi;`,
   '/docs/charts/cartesian-marks': `const Plot = createPlot<ProjectRow>();
 
 <Plot.Root data={rows} rowKey={(row) => row.id} label="Revenue by day">

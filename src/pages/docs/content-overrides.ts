@@ -1280,7 +1280,7 @@ export const headingOverrides: Readonly<
     'routes-compose-the-application':
       "An Askr app isn't one big tree rendered from a single root — it's a set of routes registered with `route()` and served through a manifest, each one mapping a path to the component that owns it. Layouts and groups nest naturally because a route's component can render further routed children, so shared chrome only has to be written once. This keeps navigation, code-splitting, and server rendering all working off the same route definitions.",
     'state-is-explicit':
-      "State cells are created with `state(initialValue)`, which returns a tuple-like handle: call it as a function to read the current value, call `.set()` (or destructure the second tuple slot) to write a new one. Reading `count()` inside a component subscribes that render to future changes, so nothing re-renders unless it actually read a stale signal. `state()` must run during a component's render call — it captures the owning component instance from context, so calling it at module scope throws.",
+      "State cells are created with `const [value, setValue] = state(initialValue)`. Call the getter to read and the setter to write. Reading `value()` inside a component subscribes that render to future changes, so nothing re-renders unless it actually read a stale signal. `state()` must run during a component's render call — it captures the owning component instance from context, so calling it at module scope throws.",
   },
   '/docs/core-concepts/components-and-jsx': {
     composition:
@@ -1352,7 +1352,7 @@ export const headingOverrides: Readonly<
   },
   '/docs/core-concepts/state-and-derived-values': {
     'create-state':
-      'Call `state(initialValue)` inside a component to allocate a piece of local state; it returns a callable getter combined with a `.set()` method, destructurable as `const [count, setCount] = state(0)`. Under the hood each call records itself against the current component instance, so calling `state()` outside of render — at module scope or inside an event handler — throws instead of silently creating orphaned state.',
+      'Call `state(initialValue)` inside a component and destructure the result as `const [count, setCount] = state(0)`. Read with `count()` and write with `setCount(...)`. Under the hood each call records itself against the current component instance, so calling `state()` outside of render — at module scope or inside an event handler — throws instead of silently creating orphaned state.',
     'derived-values':
       "`derive(fn)` computes a value from other reactive sources and re-evaluates only when one of those sources changes, returning a `Derived<T>` that's callable just like state. It also supports a two-argument form, `derive(source, map)`, for mapping over another readable source such as a resource or query result. Because derived values are read the same way as state, you can swap one for the other without touching the calling code.",
     'read-and-update-state':
@@ -1911,7 +1911,7 @@ export const headingOverrides: Readonly<
     'instrumentation-boundary':
       '`@askrjs/otel` only talks to the standard `@opentelemetry/api` peer dependency — it never bundles an SDK, span processor, exporter, or vendor backend. Call `createTelemetry(options)` once during app composition, and every span or log call routes through whatever provider your app registers; without one, the no-op implementation from the standard API absorbs the calls silently. That keeps this package usable in a test suite or a small app with zero telemetry infrastructure attached.',
     redaction:
-      "Because `TelemetryFields` is a closed interface rather than `Record<string, unknown>`, there's no field for request bodies, submitted form values, cookies, tokens, or arbitrary user attributes — you literally cannot pass them in through the typed API. The `route` field is meant to hold a route pattern like `/projects/:projectId`, not the raw, potentially sensitive URL a user actually requested. This is what keeps span data safe to forward to third-party backends by default, without a separate scrubbing pass.",
+      "Because `TelemetryFields` is a closed interface rather than `Record<string, unknown>`, there's no field for request bodies, submitted form values, cookies, tokens, or arbitrary user attributes — you literally cannot pass them in through the typed API. The `route` field is meant to hold a route pattern like `/projects/{projectId}`, not the raw, potentially sensitive URL a user actually requested. This is what keeps span data safe to forward to third-party backends by default, without a separate scrubbing pass.",
     'spans-and-fields':
       "The returned `Telemetry` object exposes one helper per lifecycle stage — `request`, `routeMatch`, `loader`, `action`, `apiOperation`, `queryPrefetch`, `ssrRender`, `viteDocument` — each wrapping a unit of work and recording it under a fixed `askr.*` `TelemetryOperation` name. `span(operation, fields, work)` is the general form underneath all of them if you need a custom operation. `TelemetryFields` is a narrow, typed shape — `requestId`, `traceId`, `route`, `action`, `status`, `durationMs` — so there's no open-ended bag of attributes to accidentally overload a span with.",
   },

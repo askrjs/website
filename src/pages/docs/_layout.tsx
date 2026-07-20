@@ -162,10 +162,10 @@ function TableOfContents() {
 }
 
 export function DocsLayout({ children }: Props) {
-  const collapsed = state(false);
-  const drawerOpen = state(false);
+  const [collapsed, writeCollapsed] = state(false);
+  const [drawerOpen, setDrawerOpen] = state(false);
   const setCollapsed = (value: boolean) => {
-    collapsed.set(value);
+    writeCollapsed(value);
     try {
       window.localStorage.setItem(STORAGE_KEY, String(value));
     } catch {}
@@ -180,10 +180,10 @@ export function DocsLayout({ children }: Props) {
           if (!element || adoptedShells.has(element)) return;
           adoptedShells.add(element);
           try {
-            collapsed.set(window.localStorage.getItem(STORAGE_KEY) === 'true');
+            writeCollapsed(window.localStorage.getItem(STORAGE_KEY) === 'true');
           } catch {}
           window.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') drawerOpen.set(false);
+            if (event.key === 'Escape') setDrawerOpen(false);
           });
         }}
       >
@@ -235,7 +235,7 @@ export function DocsLayout({ children }: Props) {
             type="button"
             aria-label="Open documentation navigation"
             aria-expanded={drawerOpen()}
-            onClick={() => drawerOpen.set(true)}
+            onClick={() => setDrawerOpen(true)}
           >
             <MenuIcon size={20} aria-hidden="true" />
           </button>
@@ -248,7 +248,7 @@ export function DocsLayout({ children }: Props) {
             class="docs-drawer-backdrop"
             role="presentation"
             onClick={(event: Event) => {
-              if (event.target === event.currentTarget) drawerOpen.set(false);
+              if (event.target === event.currentTarget) setDrawerOpen(false);
             }}
           >
             <Sidebar
@@ -260,12 +260,12 @@ export function DocsLayout({ children }: Props) {
                 <AskrBrand />
                 <SidebarTrigger
                   aria-label="Close documentation navigation"
-                  onClick={() => drawerOpen.set(false)}
+                  onClick={() => setDrawerOpen(false)}
                 >
                   <XIcon size={20} aria-hidden="true" />
                 </SidebarTrigger>
               </SidebarHeader>
-              <DocsNavigation close={() => drawerOpen.set(false)} />
+              <DocsNavigation close={() => setDrawerOpen(false)} />
             </Sidebar>
           </div>
         )}

@@ -12,7 +12,7 @@ const icons = Object.entries(iconExports)
   .sort((left, right) => left.name.localeCompare(right.name));
 
 export default function LucideGalleryPage() {
-  const query = state('');
+  const [query, setQuery] = state('');
   const visible = () => {
     const normalized = query().trim().toLowerCase();
     return normalized
@@ -60,7 +60,7 @@ export default function LucideGalleryPage() {
             value={query()}
             placeholder={`Filter ${icons.length} icons`}
             onInput={(event: Event) =>
-              query.set((event.currentTarget as HTMLInputElement).value)
+              setQuery((event.currentTarget as HTMLInputElement).value)
             }
           />
         </label>
