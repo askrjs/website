@@ -14,6 +14,25 @@ import { searchDocs } from '../src/pages/docs/search-index';
 import { buildUsageGuide } from '../src/pages/docs/usage-guide';
 
 describe('documentation catalog', () => {
+  it('teaches component-owned tuple state and current route syntax', () => {
+    for (const page of docsCatalog.filter(
+      (candidate) => candidate.navSection !== 'Generated API'
+    )) {
+      const code = buildUsageGuide(page).code;
+      expect(
+        code,
+        `${page.route}: state setters must be destructured`
+      ).not.toMatch(/\b(?!headers\b)[A-Za-z_$][\w$]*\.set\s*\(/);
+      expect(
+        code,
+        `${page.route}: state must not be created at module scope`
+      ).not.toMatch(/^const\s+[^\n=]+?=\s*state\s*\(/m);
+      expect(code, `${page.route}: routes use {name} parameters`).not.toMatch(
+        /['"]\/[^'"]*:[A-Za-z_$]/
+      );
+    }
+  });
+
   it('has unique routes, valid groups, anchors, and complete ordering', () => {
     expect(new Set(docsCatalog.map((page) => page.route)).size).toBe(
       docsCatalog.length

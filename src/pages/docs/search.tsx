@@ -6,27 +6,27 @@ import type { DocsSearchRecord } from './types';
 const adoptedSearchRoots = new WeakSet<HTMLElement>();
 
 export function DocsSearch() {
-  const open = state(false);
-  const query = state('');
-  const loading = state(false);
-  const results = state<readonly DocsSearchRecord[]>([]);
+  const [open, setOpen] = state(false);
+  const [query, setQuery] = state('');
+  const [loading, setLoading] = state(false);
+  const [results, setResults] = state<readonly DocsSearchRecord[]>([]);
 
   const runSearch = async (value: string) => {
-    query.set(value);
+    setQuery(value);
     if (!value.trim()) {
-      results.set([]);
+      setResults([]);
       return;
     }
-    loading.set(true);
+    setLoading(true);
     const { searchDocs } = await import('./search-index');
-    results.set(searchDocs(value));
-    loading.set(false);
+    setResults(searchDocs(value));
+    setLoading(false);
   };
 
   const close = () => {
-    open.set(false);
-    query.set('');
-    results.set([]);
+    setOpen(false);
+    setQuery('');
+    setResults([]);
   };
   return (
     <div
@@ -44,7 +44,7 @@ export function DocsSearch() {
               ))
           ) {
             event.preventDefault();
-            open.set(true);
+            setOpen(true);
             window.setTimeout(
               () =>
                 element
@@ -60,7 +60,7 @@ export function DocsSearch() {
       <button
         class="docs-search__trigger"
         type="button"
-        onClick={() => open.set(true)}
+        onClick={() => setOpen(true)}
         aria-haspopup="dialog"
       >
         <SearchIcon size={16} aria-hidden="true" />

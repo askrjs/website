@@ -46,7 +46,7 @@ function componentGuide(page: DocsPageDefinition): UsageGuideDefinition {
       /Collections|Controlled State/,
       `import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@askrjs/themes/components';
 
-<Select value={status()} onValueChange={status.set}>
+<Select value={status()} onValueChange={setStatus}>
   <SelectTrigger aria-label="Project status"><SelectValue /></SelectTrigger>
   <SelectContent>
     {statuses.map((item) => <SelectItem value={item.id}>{item.label}</SelectItem>)}
@@ -66,7 +66,7 @@ import { SearchIcon } from '@askrjs/lucide';
       /Combobox and Command/,
       `import { Combobox, ComboboxInput, ComboboxList, ComboboxOption } from '@askrjs/themes/components';
 
-<Combobox value={owner()} onValueChange={owner.set}>
+<Combobox value={owner()} onValueChange={setOwner}>
   <ComboboxInput aria-label="Project owner" />
   <ComboboxList>
     {people.map((person) => <ComboboxOption value={person.id}>{person.name}</ComboboxOption>)}
@@ -77,7 +77,7 @@ import { SearchIcon } from '@askrjs/lucide';
       /Calendar and Date Picker/,
       `import { DatePicker, DatePickerInput } from '@askrjs/themes/components';
 
-<DatePicker value={dueDate()} onValueChange={dueDate.set}>
+<DatePicker value={dueDate()} onValueChange={setDueDate}>
   <DatePickerInput aria-label="Project due date" />
 </DatePicker>`,
     ],
@@ -88,7 +88,7 @@ import { SearchIcon } from '@askrjs/lucide';
 <NativeSelect name="timezone" aria-label="Timezone">
   <option value="America/New_York">Eastern time</option>
 </NativeSelect>
-<InputOTP maxlength={6} value={code()} onValueChange={code.set}>
+<InputOTP maxLength={6} value={code()} onValueChange={setCode}>
   <InputOTPGroup>{[0, 1, 2, 3, 4, 5].map((index) => <InputOTPSlot index={index} />)}</InputOTPGroup>
 </InputOTP>`,
     ],
@@ -161,7 +161,7 @@ import { SearchIcon } from '@askrjs/lucide';
 <MonacoEditor
   value={source()}
   language="typescript"
-  onChange={(value) => source.set(value ?? '')}
+  onChange={(value) => setSource(value ?? '')}
   options={{ minimap: { enabled: false } }}
 />`,
     ],
@@ -208,7 +208,7 @@ const Editor = await loadEditor();`,
       `import { Checkbox, Field, FieldLabel } from '@askrjs/themes/components';
 
 <Field>
-  <Checkbox id="email-updates" checked={enabled()} onCheckedChange={enabled.set} />
+  <Checkbox id="email-updates" checked={enabled()} onCheckedChange={setEnabled} />
   <FieldLabel for="email-updates">Email project updates</FieldLabel>
 </Field>`,
     ],
@@ -216,7 +216,7 @@ const Editor = await loadEditor();`,
       /Radio Group/,
       `import { FieldLabel, RadioGroup, RadioGroupItem } from '@askrjs/themes/components';
 
-<RadioGroup value={plan()} onValueChange={plan.set}>
+<RadioGroup value={plan()} onValueChange={setPlan}>
   <FieldLabel><RadioGroupItem value="team" /> Team</FieldLabel>
   <FieldLabel><RadioGroupItem value="business" /> Business</FieldLabel>
 </RadioGroup>`,
@@ -225,7 +225,7 @@ const Editor = await loadEditor();`,
       /Select/,
       `import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@askrjs/themes/components';
 
-<Select value={status()} onValueChange={status.set}>
+<Select value={status()} onValueChange={setStatus}>
   <SelectTrigger aria-label="Project status"><SelectValue /></SelectTrigger>
   <SelectContent>
     <SelectItem value="active">Active</SelectItem>
@@ -247,7 +247,7 @@ const Editor = await loadEditor();`,
       `import { Field, FieldLabel, Switch } from '@askrjs/themes/components';
 
 <Field>
-  <Switch id="public" checked={isPublic()} onCheckedChange={isPublic.set} />
+  <Switch id="public" checked={isPublic()} onCheckedChange={setIsPublic} />
   <FieldLabel for="public">Public project</FieldLabel>
 </Field>`,
     ],
@@ -255,8 +255,8 @@ const Editor = await loadEditor();`,
       /Toggle/,
       `import { Toggle, ToggleGroup, ToggleGroupItem } from '@askrjs/themes/components';
 
-<Toggle pressed={bold()} onPressedChange={bold.set}>Bold</Toggle>
-<ToggleGroup type="single" value={alignment()} onValueChange={alignment.set}>
+<Toggle pressed={bold()} onPressedChange={setBold}>Bold</Toggle>
+<ToggleGroup type="single" value={alignment()} onValueChange={setAlignment}>
   <ToggleGroupItem value="left">Left</ToggleGroupItem>
   <ToggleGroupItem value="center">Center</ToggleGroupItem>
 </ToggleGroup>`,
@@ -299,7 +299,7 @@ const Editor = await loadEditor();`,
       /Tabs/,
       `import { Tabs, TabsContent, TabsList, TabsTrigger } from '@askrjs/themes/components';
 
-<Tabs value={tab()} onValueChange={tab.set}>
+<Tabs value={tab()} onValueChange={setTab}>
   <TabsList aria-label="Project sections">
     <TabsTrigger value="overview">Overview</TabsTrigger>
     <TabsTrigger value="activity">Activity</TabsTrigger>
@@ -341,7 +341,7 @@ const Editor = await loadEditor();`,
       `import { Toast, ToastDescription, ToastHost, ToastTitle } from '@askrjs/themes/components';
 
 <ToastHost>
-  <Toast open={saved()} onOpenChange={saved.set}>
+  <Toast open={saved()} onOpenChange={setSaved}>
     <ToastTitle>Project saved</ToastTitle>
     <ToastDescription>Your changes are now visible.</ToastDescription>
   </Toast>
@@ -389,7 +389,7 @@ import { createRouteRegistry, route } from '@askrjs/askr/router';
 
 const registry = createRouteRegistry(() => {
   route('/', DashboardPage);
-  route('/projects/:projectId', ProjectPage);
+  route('/projects/{projectId}', ProjectPage);
 });
 
 await createSPA({ root: document.getElementById('app')!, registry });`,
@@ -401,7 +401,7 @@ await createSPA({ root: document.getElementById('app')!, registry });`,
 import { renderToString } from '@askrjs/askr/ssr';
 
 // Server entry
-const rendered = await renderToString({ registry, url: request.url });
+const html = renderToString({ registry, url: request.url });
 
 // Browser entry
 await hydrateSPA({ root: document.getElementById('app')!, registry });`,
@@ -409,12 +409,12 @@ await hydrateSPA({ root: document.getElementById('app')!, registry });`,
     [
       /^Build an Authenticated Full-Stack App$/,
       'Resolve the session on the server, enforce permissions at both route and handler boundaries, and expose only the principal data needed for rendering.',
-      `import { createAuth, requirePermission, requireUser } from '@askrjs/auth';
+      `import { allOf, createAuth, requirePermission, requireUser } from '@askrjs/auth';
 
 const auth = createAuth({ sessions: sessionStore, principals: principalStore });
-const canManageProjects = [requireUser(), requirePermission('projects:write')];
+const canManageProjects = allOf(requireUser(), requirePermission('projects:write'));
 
-router.post('/projects', ...canManageProjects, createProject);`,
+router.post('/projects', createProject, { auth: canManageProjects });`,
     ],
     [
       /^Build an API-Only Server$/,
@@ -422,12 +422,12 @@ router.post('/projects', ...canManageProjects, createProject);`,
       `import { createRouter, created, notFound, ok } from '@askrjs/server';
 
 export const router = createRouter()
-  .get('/projects/:id', async (context) => {
-    const project = await context.dependencies.projects.get(context.params.id);
-    return project ? ok(project) : notFound();
+  .get('/projects/{id}', async (context) => {
+    const project = await projects.get(context.params.id);
+    return project ? context.ok(project) : context.notFound();
   })
-  .post('/projects', async (context) => created(
-    await context.dependencies.projects.create(await context.bind<CreateProjectInput>())
+  .post('/projects', async (context) => context.created(
+    await projects.create(await context.bind<CreateProjectInput>())
   ));`,
     ],
     [
@@ -486,12 +486,12 @@ const Plot = createPlot<MetricRow>();
     [
       /Protected Routes and Permissions/,
       'Require authentication before rendering protected routes and enforce the same permission again on the server operation that owns the data.',
-      `import { requirePermission, requireUser } from '@askrjs/auth';
+      `import { allOf, requirePermission, requireUser } from '@askrjs/auth';
 
-const canReadBilling = [requireUser(), requirePermission('billing:read')];
+const canReadBilling = allOf(requireUser(), requirePermission('billing:read'));
 
-route('/billing', BillingPage, { auth: { requirements: canReadBilling } });
-router.get('/api/billing', ...canReadBilling, getBilling);`,
+route('/billing', BillingPage, { auth: canReadBilling });
+router.get('/api/billing', getBilling, { auth: canReadBilling });`,
     ],
     [
       /API Integration and Error Handling/,
@@ -561,8 +561,8 @@ const app = createApplication({ config });`,
       `import { state } from '@askrjs/askr';
 
 it('should show the new quantity given increment when clicked', () => {
-  const quantity = state(1);
-  quantity.set(quantity() + 1);
+  const [quantity, setQuantity] = state(1);
+  setQuantity((value) => value + 1);
   expect(quantity()).toBe(2);
 });`,
     ],
@@ -581,9 +581,13 @@ npm run verify:static`,
       `import { derive, state } from '@askrjs/askr';
 import { resource } from '@askrjs/askr/resources';
 
-const projectId = state(initialProjectId);
-const project = resource(({ signal }) => loadProject(projectId(), signal), [projectId]);
-const title = derive(() => project.data?.name ?? 'Loading project');`,
+function ProjectPage({ initialProjectId }: { initialProjectId: string }) {
+  const [projectId] = state(initialProjectId);
+  const project = resource(({ signal }) => loadProject(projectId(), signal), [projectId]);
+  const title = derive(() => project.value?.name ?? 'Loading project');
+
+  return <h1>{title()}</h1>;
+}`,
     ],
     [
       /Lists with For/,
@@ -645,7 +649,7 @@ const project = resource(
     [
       /Paths, Parameters/,
       'Declare typed path parameters in the route and accept them as page props; construct destinations through the route reference.',
-      `const projectRoute = route('/projects/:projectId', ProjectPage);
+      `const projectRoute = route('/projects/{projectId}', ProjectPage);
 
 function ProjectPage({ projectId }: { projectId: string }) {
   return <Project id={projectId} />;
@@ -668,7 +672,7 @@ updateRouteQuery({ status: 'paused', page: 1 });`,
       'Return critical loader data directly and wrap slower independent work in defer so the page can stream a stable shell.',
       `import { defer } from '@askrjs/askr/router';
 
-route('/projects/:projectId', ProjectPage, {
+route('/projects/{projectId}', ProjectPage, {
   loader: async ({ params }) => ({
     project: await projects.get(params.projectId),
     activity: defer(activity.list(params.projectId)),
@@ -679,17 +683,17 @@ route('/projects/:projectId', ProjectPage, {
       /Access Policies/,
       'Return an explicit allow, redirect, unauthorized, or forbidden decision from the route policy and repeat the enforcement on server APIs.',
       `route('/admin', AdminPage, {
-  policy: ({ auth }) =>
-    auth.permissions.includes('admin') ? allow() : forbidden(),
+  policies: [({ auth }) =>
+    auth.permissions.includes('admin') ? allow() : forbidden()],
 });`,
     ],
     [
       /Route Metadata/,
       'Attach title and description metadata to the route so SSG and browser navigation use the same document contract.',
-      `route('/projects/:projectId', ProjectPage, {
-  meta: ({ data }) => ({
-    title: data.project.name + ' | Projects',
-    description: data.project.summary,
+      `route('/projects/{projectId}', ProjectPage, {
+  meta: ({ params }) => ({
+    title: 'Project ' + params.projectId,
+    description: 'Project details and activity.',
   }),
 });`,
     ],
@@ -750,9 +754,9 @@ if (root?.childNodes.length) {
     [
       /Context and Responses/,
       'Read dependencies and request state from the handler context and return a response helper instead of mutating a global response object.',
-      `router.get('/projects/:id', async (context) => {
-  const project = await context.dependencies.projects.get(context.params.id);
-  return project ? ok(project) : notFound();
+      `router.get('/projects/{id}', async (context) => {
+  const project = await projects.get(context.params.id);
+  return project ? context.ok(project) : context.notFound();
 });`,
     ],
     [
@@ -1036,10 +1040,10 @@ npm run build`,
       code: `import { derive, state } from '@askrjs/askr';
 
 export function Quantity() {
-  const count = state(1);
+  const [count, setCount] = state(1);
   const label = derive(() => 'Quantity: ' + count());
 
-  return <button onClick={() => count.set(count() + 1)}>{label()}</button>;
+  return <button onClick={() => setCount((value) => value + 1)}>{label()}</button>;
 }`,
     };
   }
@@ -1054,7 +1058,7 @@ export function Quantity() {
 export const registry = createRouteRegistry(() => {
   group({ layout: AppLayout }, () => {
     route('/', HomePage);
-    route('/projects/:projectId', ProjectPage);
+  route('/projects/{projectId}', ProjectPage);
   });
 });`,
     };
@@ -1118,7 +1122,7 @@ export const manageProjects = [
   if (page.navSection === 'HTTP Contracts') {
     return {
       intro:
-        'Define an executable schema once and reuse its jsonSchema representation in the HTTP contract and generated-client workflow.',
+        'Define an executable schema once and reuse its OpenAPI representation in the HTTP contract and generated-client workflow.',
       steps: sharedSteps(page),
       code: `import { schema } from '@askrjs/schema';
 
@@ -1128,7 +1132,7 @@ export const projectInput = schema.object({
 });
 
 const parsed = projectInput.safeParse(await request.json());
-const jsonSchema = projectInput.jsonSchema;`,
+const openapiSchema = projectInput.openapi;`,
     };
   }
 
@@ -1180,7 +1184,7 @@ export const i18n = createI18n('en', {
 
 export const router = createRouter().post('/projects', async (context) => {
   const input = await context.bind<CreateProjectInput>();
-  const project = await context.dependencies.projects.create(input);
+  const project = await projects.create(input);
   return created(project);
 });`,
     };
@@ -1227,7 +1231,7 @@ npx @askrjs/cli@0.0.5 ssg --config ./ssg.config.ts --output ./dist`,
       code: `export const registry = createRouteRegistry(() => {
   group({ layout: AppLayout }, () => {
     route('/', DashboardPage);
-    route('/projects/:projectId', ProjectPage);
+    route('/projects/{projectId}', ProjectPage);
     route('/404', NotFoundPage);
   });
 });`,
@@ -1253,7 +1257,9 @@ const availableExports = Object.keys(api);`,
     steps: sharedSteps(page),
     code: `import { state } from '@askrjs/askr';
 
-const ready = state(false);
-ready.set(true);`,
+export function Status() {
+  const [ready, setReady] = state(false);
+  return <button onClick={() => setReady(true)}>{ready() ? 'Ready' : 'Start'}</button>;
+}`,
   };
 }
