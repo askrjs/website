@@ -1,6 +1,7 @@
 import { apiManifest } from './api-manifest';
 import { headingOverrides } from './content-overrides';
 import { docsPrimarySections } from './primary-sections';
+import { packageVersions } from './package-versions';
 import type {
   DocsHeadingDefinition,
   DocsPageDefinition,
@@ -9,25 +10,6 @@ import type {
   DocsStatus,
   PackageReference,
 } from './types';
-
-const versions = {
-  askr: '0.0.59',
-  auth: '0.0.3',
-  charts: '0.1.2',
-  cli: '0.0.5',
-  fetch: '0.0.1',
-  i18n: '0.0.2',
-  logos: '0.0.4',
-  lucide: '0.0.4',
-  monaco: '0.0.2',
-  node: '0.0.3',
-  otel: '0.0.2',
-  schema: '0.0.2',
-  server: '0.0.3',
-  themes: '0.0.13',
-  ui: '0.0.13',
-  vite: '0.0.7',
-} as const;
 
 function slug(value: string): string {
   return value
@@ -39,12 +21,12 @@ function slug(value: string): string {
 }
 
 function packageReference(
-  name: keyof typeof versions,
+  name: keyof typeof packageVersions,
   importPath?: string
 ): PackageReference {
   return {
     name: `@askrjs/${name}`,
-    version: versions[name],
+    version: packageVersions[name],
     importPath: importPath ?? `@askrjs/${name}`,
   };
 }
@@ -1342,6 +1324,16 @@ const guides = sectionPages(
     'Environment Configuration',
     'Accessibility',
     'Testing Deterministic Applications',
+    {
+      title: 'Testing HTTP Applications',
+      headings: [
+        'Goal and architecture',
+        'Request injection',
+        'Cookie and redirect flows',
+        'Verification',
+      ],
+      packages: [packageReference('testing'), packageReference('server')],
+    },
     'Production Readiness',
     'Migration from React',
   ].map((value) =>
@@ -1615,4 +1607,4 @@ export const docsSearchRecords: readonly DocsSearchRecord[] =
     })),
   ]);
 
-export { versions as publishedVersions };
+export { packageVersions as publishedVersions };

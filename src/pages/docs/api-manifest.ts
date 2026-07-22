@@ -258,7 +258,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/monaco',
-    version: '0.0.2',
+    version: '0.0.3',
     subpath: '.',
     importName: '@askrjs/monaco',
     slug: 'root',
@@ -266,7 +266,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/monaco',
-    version: '0.0.2',
+    version: '0.0.3',
     subpath: './monaco-editor',
     importName: '@askrjs/monaco/monaco-editor',
     slug: 'monaco-editor',
@@ -369,12 +369,20 @@ export const apiManifest = [
     symbolSet: 'symbols45',
   },
   {
+    packageName: '@askrjs/testing',
+    version: '0.0.1',
+    subpath: '.',
+    importName: '@askrjs/testing',
+    slug: 'root',
+    symbolSet: 'symbols46',
+  },
+  {
     packageName: '@askrjs/themes',
     version: '0.0.13',
     subpath: '.',
     importName: '@askrjs/themes',
     slug: 'root',
-    symbolSet: 'symbols46',
+    symbolSet: 'symbols47',
   },
   {
     packageName: '@askrjs/themes',
@@ -382,7 +390,7 @@ export const apiManifest = [
     subpath: './default',
     importName: '@askrjs/themes/default',
     slug: 'default',
-    symbolSet: 'symbols46',
+    symbolSet: 'symbols47',
   },
   {
     packageName: '@askrjs/themes',
@@ -390,7 +398,7 @@ export const apiManifest = [
     subpath: './presets',
     importName: '@askrjs/themes/presets',
     slug: 'presets',
-    symbolSet: 'symbols46',
+    symbolSet: 'symbols47',
   },
   {
     packageName: '@askrjs/themes',
@@ -398,7 +406,7 @@ export const apiManifest = [
     subpath: './components',
     importName: '@askrjs/themes/components',
     slug: 'components',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -406,7 +414,7 @@ export const apiManifest = [
     subpath: './theme',
     importName: '@askrjs/themes/theme',
     slug: 'theme',
-    symbolSet: 'symbols48',
+    symbolSet: 'symbols49',
   },
   {
     packageName: '@askrjs/themes',
@@ -414,7 +422,7 @@ export const apiManifest = [
     subpath: './accordion',
     importName: '@askrjs/themes/accordion',
     slug: 'accordion',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -422,7 +430,7 @@ export const apiManifest = [
     subpath: './alert',
     importName: '@askrjs/themes/alert',
     slug: 'alert',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -430,7 +438,7 @@ export const apiManifest = [
     subpath: './alert-dialog',
     importName: '@askrjs/themes/alert-dialog',
     slug: 'alert-dialog',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -438,7 +446,7 @@ export const apiManifest = [
     subpath: './aspect-ratio',
     importName: '@askrjs/themes/aspect-ratio',
     slug: 'aspect-ratio',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -446,7 +454,7 @@ export const apiManifest = [
     subpath: './avatar',
     importName: '@askrjs/themes/avatar',
     slug: 'avatar',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -454,7 +462,7 @@ export const apiManifest = [
     subpath: './badge',
     importName: '@askrjs/themes/badge',
     slug: 'badge',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -462,7 +470,7 @@ export const apiManifest = [
     subpath: './breadcrumb',
     importName: '@askrjs/themes/breadcrumb',
     slug: 'breadcrumb',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -470,7 +478,7 @@ export const apiManifest = [
     subpath: './button',
     importName: '@askrjs/themes/button',
     slug: 'button',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -478,7 +486,7 @@ export const apiManifest = [
     subpath: './button-group',
     importName: '@askrjs/themes/button-group',
     slug: 'button-group',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -486,7 +494,7 @@ export const apiManifest = [
     subpath: './calendar',
     importName: '@askrjs/themes/calendar',
     slug: 'calendar',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -494,7 +502,7 @@ export const apiManifest = [
     subpath: './card',
     importName: '@askrjs/themes/card',
     slug: 'card',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -502,7 +510,7 @@ export const apiManifest = [
     subpath: './carousel',
     importName: '@askrjs/themes/carousel',
     slug: 'carousel',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -510,7 +518,7 @@ export const apiManifest = [
     subpath: './checkbox',
     importName: '@askrjs/themes/checkbox',
     slug: 'checkbox',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -518,7 +526,7 @@ export const apiManifest = [
     subpath: './collapsible',
     importName: '@askrjs/themes/collapsible',
     slug: 'collapsible',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -526,7 +534,7 @@ export const apiManifest = [
     subpath: './combobox',
     importName: '@askrjs/themes/combobox',
     slug: 'combobox',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -534,7 +542,7 @@ export const apiManifest = [
     subpath: './command',
     importName: '@askrjs/themes/command',
     slug: 'command',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -542,7 +550,7 @@ export const apiManifest = [
     subpath: './context-menu',
     importName: '@askrjs/themes/context-menu',
     slug: 'context-menu',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -550,7 +558,7 @@ export const apiManifest = [
     subpath: './data-table',
     importName: '@askrjs/themes/data-table',
     slug: 'data-table',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -558,7 +566,7 @@ export const apiManifest = [
     subpath: './date-picker',
     importName: '@askrjs/themes/date-picker',
     slug: 'date-picker',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -566,7 +574,7 @@ export const apiManifest = [
     subpath: './dialog',
     importName: '@askrjs/themes/dialog',
     slug: 'dialog',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -574,7 +582,7 @@ export const apiManifest = [
     subpath: './direction',
     importName: '@askrjs/themes/direction',
     slug: 'direction',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -582,7 +590,7 @@ export const apiManifest = [
     subpath: './drawer',
     importName: '@askrjs/themes/drawer',
     slug: 'drawer',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -590,7 +598,7 @@ export const apiManifest = [
     subpath: './dropdown-menu',
     importName: '@askrjs/themes/dropdown-menu',
     slug: 'dropdown-menu',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -598,7 +606,7 @@ export const apiManifest = [
     subpath: './empty',
     importName: '@askrjs/themes/empty',
     slug: 'empty',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -606,7 +614,7 @@ export const apiManifest = [
     subpath: './field',
     importName: '@askrjs/themes/field',
     slug: 'field',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -614,7 +622,7 @@ export const apiManifest = [
     subpath: './form',
     importName: '@askrjs/themes/form',
     slug: 'form',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -622,7 +630,7 @@ export const apiManifest = [
     subpath: './hover-card',
     importName: '@askrjs/themes/hover-card',
     slug: 'hover-card',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -630,7 +638,7 @@ export const apiManifest = [
     subpath: './input',
     importName: '@askrjs/themes/input',
     slug: 'input',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -638,7 +646,7 @@ export const apiManifest = [
     subpath: './input-group',
     importName: '@askrjs/themes/input-group',
     slug: 'input-group',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -646,7 +654,7 @@ export const apiManifest = [
     subpath: './input-otp',
     importName: '@askrjs/themes/input-otp',
     slug: 'input-otp',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -654,7 +662,7 @@ export const apiManifest = [
     subpath: './item',
     importName: '@askrjs/themes/item',
     slug: 'item',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -662,7 +670,7 @@ export const apiManifest = [
     subpath: './kbd',
     importName: '@askrjs/themes/kbd',
     slug: 'kbd',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -670,7 +678,7 @@ export const apiManifest = [
     subpath: './label',
     importName: '@askrjs/themes/label',
     slug: 'label',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -678,7 +686,7 @@ export const apiManifest = [
     subpath: './menubar',
     importName: '@askrjs/themes/menubar',
     slug: 'menubar',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -686,7 +694,7 @@ export const apiManifest = [
     subpath: './native-select',
     importName: '@askrjs/themes/native-select',
     slug: 'native-select',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -694,7 +702,7 @@ export const apiManifest = [
     subpath: './navigation-menu',
     importName: '@askrjs/themes/navigation-menu',
     slug: 'navigation-menu',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -702,7 +710,7 @@ export const apiManifest = [
     subpath: './pagination',
     importName: '@askrjs/themes/pagination',
     slug: 'pagination',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -710,7 +718,7 @@ export const apiManifest = [
     subpath: './popover',
     importName: '@askrjs/themes/popover',
     slug: 'popover',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -718,7 +726,7 @@ export const apiManifest = [
     subpath: './progress',
     importName: '@askrjs/themes/progress',
     slug: 'progress',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -726,7 +734,7 @@ export const apiManifest = [
     subpath: './radio-group',
     importName: '@askrjs/themes/radio-group',
     slug: 'radio-group',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -734,7 +742,7 @@ export const apiManifest = [
     subpath: './resizable',
     importName: '@askrjs/themes/resizable',
     slug: 'resizable',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -742,7 +750,7 @@ export const apiManifest = [
     subpath: './scroll-area',
     importName: '@askrjs/themes/scroll-area',
     slug: 'scroll-area',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -750,7 +758,7 @@ export const apiManifest = [
     subpath: './select',
     importName: '@askrjs/themes/select',
     slug: 'select',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -758,7 +766,7 @@ export const apiManifest = [
     subpath: './separator',
     importName: '@askrjs/themes/separator',
     slug: 'separator',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -766,7 +774,7 @@ export const apiManifest = [
     subpath: './sheet',
     importName: '@askrjs/themes/sheet',
     slug: 'sheet',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -774,7 +782,7 @@ export const apiManifest = [
     subpath: './sidebar',
     importName: '@askrjs/themes/sidebar',
     slug: 'sidebar',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -782,7 +790,7 @@ export const apiManifest = [
     subpath: './skeleton',
     importName: '@askrjs/themes/skeleton',
     slug: 'skeleton',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -790,7 +798,7 @@ export const apiManifest = [
     subpath: './slider',
     importName: '@askrjs/themes/slider',
     slug: 'slider',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -798,7 +806,7 @@ export const apiManifest = [
     subpath: './sonner',
     importName: '@askrjs/themes/sonner',
     slug: 'sonner',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -806,7 +814,7 @@ export const apiManifest = [
     subpath: './spinner',
     importName: '@askrjs/themes/spinner',
     slug: 'spinner',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -814,7 +822,7 @@ export const apiManifest = [
     subpath: './switch',
     importName: '@askrjs/themes/switch',
     slug: 'switch',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -822,7 +830,7 @@ export const apiManifest = [
     subpath: './table',
     importName: '@askrjs/themes/table',
     slug: 'table',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -830,7 +838,7 @@ export const apiManifest = [
     subpath: './tabs',
     importName: '@askrjs/themes/tabs',
     slug: 'tabs',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -838,7 +846,7 @@ export const apiManifest = [
     subpath: './textarea',
     importName: '@askrjs/themes/textarea',
     slug: 'textarea',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -846,7 +854,7 @@ export const apiManifest = [
     subpath: './toast',
     importName: '@askrjs/themes/toast',
     slug: 'toast',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -854,7 +862,7 @@ export const apiManifest = [
     subpath: './toggle',
     importName: '@askrjs/themes/toggle',
     slug: 'toggle',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -862,7 +870,7 @@ export const apiManifest = [
     subpath: './toggle-group',
     importName: '@askrjs/themes/toggle-group',
     slug: 'toggle-group',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -870,7 +878,7 @@ export const apiManifest = [
     subpath: './tooltip',
     importName: '@askrjs/themes/tooltip',
     slug: 'tooltip',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -878,7 +886,7 @@ export const apiManifest = [
     subpath: './typography',
     importName: '@askrjs/themes/typography',
     slug: 'typography',
-    symbolSet: 'symbols47',
+    symbolSet: 'symbols48',
   },
   {
     packageName: '@askrjs/themes',
@@ -886,7 +894,7 @@ export const apiManifest = [
     subpath: './default/tokens.css',
     importName: '@askrjs/themes/default/tokens.css',
     slug: 'default--tokens.css',
-    symbolSet: 'symbols46',
+    symbolSet: 'symbols47',
   },
   {
     packageName: '@askrjs/ui',
@@ -894,7 +902,7 @@ export const apiManifest = [
     subpath: '.',
     importName: '@askrjs/ui',
     slug: 'root',
-    symbolSet: 'symbols49',
+    symbolSet: 'symbols50',
   },
   {
     packageName: '@askrjs/ui',
@@ -902,7 +910,7 @@ export const apiManifest = [
     subpath: './avatar',
     importName: '@askrjs/ui/avatar',
     slug: 'avatar',
-    symbolSet: 'symbols50',
+    symbolSet: 'symbols51',
   },
   {
     packageName: '@askrjs/ui',
@@ -910,7 +918,7 @@ export const apiManifest = [
     subpath: './button',
     importName: '@askrjs/ui/button',
     slug: 'button',
-    symbolSet: 'symbols51',
+    symbolSet: 'symbols52',
   },
   {
     packageName: '@askrjs/ui',
@@ -918,7 +926,7 @@ export const apiManifest = [
     subpath: './checkbox',
     importName: '@askrjs/ui/checkbox',
     slug: 'checkbox',
-    symbolSet: 'symbols52',
+    symbolSet: 'symbols53',
   },
   {
     packageName: '@askrjs/ui',
@@ -926,7 +934,7 @@ export const apiManifest = [
     subpath: './input',
     importName: '@askrjs/ui/input',
     slug: 'input',
-    symbolSet: 'symbols53',
+    symbolSet: 'symbols54',
   },
   {
     packageName: '@askrjs/ui',
@@ -934,7 +942,7 @@ export const apiManifest = [
     subpath: './form',
     importName: '@askrjs/ui/form',
     slug: 'form',
-    symbolSet: 'symbols54',
+    symbolSet: 'symbols55',
   },
   {
     packageName: '@askrjs/ui',
@@ -942,7 +950,7 @@ export const apiManifest = [
     subpath: './label',
     importName: '@askrjs/ui/label',
     slug: 'label',
-    symbolSet: 'symbols55',
+    symbolSet: 'symbols56',
   },
   {
     packageName: '@askrjs/ui',
@@ -950,7 +958,7 @@ export const apiManifest = [
     subpath: './progress',
     importName: '@askrjs/ui/progress',
     slug: 'progress',
-    symbolSet: 'symbols56',
+    symbolSet: 'symbols57',
   },
   {
     packageName: '@askrjs/ui',
@@ -958,7 +966,7 @@ export const apiManifest = [
     subpath: './progress-circle',
     importName: '@askrjs/ui/progress-circle',
     slug: 'progress-circle',
-    symbolSet: 'symbols57',
+    symbolSet: 'symbols58',
   },
   {
     packageName: '@askrjs/ui',
@@ -966,7 +974,7 @@ export const apiManifest = [
     subpath: './radio-group',
     importName: '@askrjs/ui/radio-group',
     slug: 'radio-group',
-    symbolSet: 'symbols58',
+    symbolSet: 'symbols59',
   },
   {
     packageName: '@askrjs/ui',
@@ -974,7 +982,7 @@ export const apiManifest = [
     subpath: './select',
     importName: '@askrjs/ui/select',
     slug: 'select',
-    symbolSet: 'symbols59',
+    symbolSet: 'symbols60',
   },
   {
     packageName: '@askrjs/ui',
@@ -982,7 +990,7 @@ export const apiManifest = [
     subpath: './slider',
     importName: '@askrjs/ui/slider',
     slug: 'slider',
-    symbolSet: 'symbols60',
+    symbolSet: 'symbols61',
   },
   {
     packageName: '@askrjs/ui',
@@ -990,7 +998,7 @@ export const apiManifest = [
     subpath: './switch',
     importName: '@askrjs/ui/switch',
     slug: 'switch',
-    symbolSet: 'symbols61',
+    symbolSet: 'symbols62',
   },
   {
     packageName: '@askrjs/ui',
@@ -998,7 +1006,7 @@ export const apiManifest = [
     subpath: './table',
     importName: '@askrjs/ui/table',
     slug: 'table',
-    symbolSet: 'symbols62',
+    symbolSet: 'symbols63',
   },
   {
     packageName: '@askrjs/ui',
@@ -1006,7 +1014,7 @@ export const apiManifest = [
     subpath: './virtual-list',
     importName: '@askrjs/ui/virtual-list',
     slug: 'virtual-list',
-    symbolSet: 'symbols63',
+    symbolSet: 'symbols64',
   },
   {
     packageName: '@askrjs/ui',
@@ -1014,7 +1022,7 @@ export const apiManifest = [
     subpath: './virtual-table',
     importName: '@askrjs/ui/virtual-table',
     slug: 'virtual-table',
-    symbolSet: 'symbols64',
+    symbolSet: 'symbols65',
   },
   {
     packageName: '@askrjs/ui',
@@ -1022,7 +1030,7 @@ export const apiManifest = [
     subpath: './textarea',
     importName: '@askrjs/ui/textarea',
     slug: 'textarea',
-    symbolSet: 'symbols65',
+    symbolSet: 'symbols66',
   },
   {
     packageName: '@askrjs/ui',
@@ -1030,7 +1038,7 @@ export const apiManifest = [
     subpath: './toggle',
     importName: '@askrjs/ui/toggle',
     slug: 'toggle',
-    symbolSet: 'symbols66',
+    symbolSet: 'symbols67',
   },
   {
     packageName: '@askrjs/ui',
@@ -1038,7 +1046,7 @@ export const apiManifest = [
     subpath: './toggle-group',
     importName: '@askrjs/ui/toggle-group',
     slug: 'toggle-group',
-    symbolSet: 'symbols67',
+    symbolSet: 'symbols68',
   },
   {
     packageName: '@askrjs/ui',
@@ -1046,7 +1054,7 @@ export const apiManifest = [
     subpath: './visually-hidden',
     importName: '@askrjs/ui/visually-hidden',
     slug: 'visually-hidden',
-    symbolSet: 'symbols68',
+    symbolSet: 'symbols69',
   },
   {
     packageName: '@askrjs/ui',
@@ -1054,7 +1062,7 @@ export const apiManifest = [
     subpath: './accordion',
     importName: '@askrjs/ui/accordion',
     slug: 'accordion',
-    symbolSet: 'symbols69',
+    symbolSet: 'symbols70',
   },
   {
     packageName: '@askrjs/ui',
@@ -1062,7 +1070,7 @@ export const apiManifest = [
     subpath: './alert-dialog',
     importName: '@askrjs/ui/alert-dialog',
     slug: 'alert-dialog',
-    symbolSet: 'symbols70',
+    symbolSet: 'symbols71',
   },
   {
     packageName: '@askrjs/ui',
@@ -1070,7 +1078,7 @@ export const apiManifest = [
     subpath: './collapsible',
     importName: '@askrjs/ui/collapsible',
     slug: 'collapsible',
-    symbolSet: 'symbols71',
+    symbolSet: 'symbols72',
   },
   {
     packageName: '@askrjs/ui',
@@ -1078,7 +1086,7 @@ export const apiManifest = [
     subpath: './dialog',
     importName: '@askrjs/ui/dialog',
     slug: 'dialog',
-    symbolSet: 'symbols72',
+    symbolSet: 'symbols73',
   },
   {
     packageName: '@askrjs/ui',
@@ -1086,7 +1094,7 @@ export const apiManifest = [
     subpath: './dismissable-layer',
     importName: '@askrjs/ui/dismissable-layer',
     slug: 'dismissable-layer',
-    symbolSet: 'symbols73',
+    symbolSet: 'symbols74',
   },
   {
     packageName: '@askrjs/ui',
@@ -1094,7 +1102,7 @@ export const apiManifest = [
     subpath: './dropdown',
     importName: '@askrjs/ui/dropdown',
     slug: 'dropdown',
-    symbolSet: 'symbols74',
+    symbolSet: 'symbols75',
   },
   {
     packageName: '@askrjs/ui',
@@ -1102,7 +1110,7 @@ export const apiManifest = [
     subpath: './focus-scope',
     importName: '@askrjs/ui/focus-scope',
     slug: 'focus-scope',
-    symbolSet: 'symbols75',
+    symbolSet: 'symbols76',
   },
   {
     packageName: '@askrjs/ui',
@@ -1110,7 +1118,7 @@ export const apiManifest = [
     subpath: './hover-card',
     importName: '@askrjs/ui/hover-card',
     slug: 'hover-card',
-    symbolSet: 'symbols76',
+    symbolSet: 'symbols77',
   },
   {
     packageName: '@askrjs/ui',
@@ -1118,7 +1126,7 @@ export const apiManifest = [
     subpath: './menu',
     importName: '@askrjs/ui/menu',
     slug: 'menu',
-    symbolSet: 'symbols77',
+    symbolSet: 'symbols78',
   },
   {
     packageName: '@askrjs/ui',
@@ -1126,7 +1134,7 @@ export const apiManifest = [
     subpath: './menubar',
     importName: '@askrjs/ui/menubar',
     slug: 'menubar',
-    symbolSet: 'symbols78',
+    symbolSet: 'symbols79',
   },
   {
     packageName: '@askrjs/ui',
@@ -1134,7 +1142,7 @@ export const apiManifest = [
     subpath: './popover',
     importName: '@askrjs/ui/popover',
     slug: 'popover',
-    symbolSet: 'symbols79',
+    symbolSet: 'symbols80',
   },
   {
     packageName: '@askrjs/ui',
@@ -1142,7 +1150,7 @@ export const apiManifest = [
     subpath: './scroll-area',
     importName: '@askrjs/ui/scroll-area',
     slug: 'scroll-area',
-    symbolSet: 'symbols80',
+    symbolSet: 'symbols81',
   },
   {
     packageName: '@askrjs/ui',
@@ -1150,7 +1158,7 @@ export const apiManifest = [
     subpath: './toast',
     importName: '@askrjs/ui/toast',
     slug: 'toast',
-    symbolSet: 'symbols81',
+    symbolSet: 'symbols82',
   },
   {
     packageName: '@askrjs/ui',
@@ -1158,7 +1166,7 @@ export const apiManifest = [
     subpath: './tooltip',
     importName: '@askrjs/ui/tooltip',
     slug: 'tooltip',
-    symbolSet: 'symbols82',
+    symbolSet: 'symbols83',
   },
   {
     packageName: '@askrjs/vite',
@@ -1166,7 +1174,7 @@ export const apiManifest = [
     subpath: '.',
     importName: '@askrjs/vite',
     slug: 'root',
-    symbolSet: 'symbols83',
+    symbolSet: 'symbols84',
   },
   {
     packageName: '@askrjs/vite',
@@ -1174,6 +1182,6 @@ export const apiManifest = [
     subpath: './server',
     importName: '@askrjs/vite/server',
     slug: 'server',
-    symbolSet: 'symbols84',
+    symbolSet: 'symbols85',
   },
 ] as const;

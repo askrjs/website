@@ -1695,6 +1695,16 @@ export const headingOverrides: Readonly<
     verification:
       "Treat `createInvalidationRecorder()` assertions as part of your contract for mutations — a mutation that's supposed to invalidate a `'users'` prefix should have a test asserting exactly that prefix appears in `recorder.calls`, not just that the mutation resolved. Snapshot route warnings from `getRouteWarnings()` in CI so a newly introduced route collision fails the build instead of surfacing as a confusing 404 in production.",
   },
+  '/docs/guides/testing-http-applications': {
+    'cookie-and-redirect-flows':
+      'Cookie handling is opt-in. Pass `cookies: true` for a client-private standards-backed jar, or share a jar created by `createTestCookieJar()` across clients. Redirects are manual by default; use `redirect: "follow"` to exercise cookie capture, relative locations, method rewriting, and cross-origin credential stripping without allowing the test to reach the network.',
+    'goal-and-architecture':
+      '`@askrjs/testing` drives an Askr server through its Web `Request`/`Response` boundary without opening a port. It is Node-only, runner-neutral, and deliberately returns native `Response` objects so Vitest, Node test, or another assertion library can inspect the same contract production adapters receive.',
+    'request-injection':
+      'Use `inject(target, input, init?)` for one request, `createTestRequest()` when you need explicit query, JSON, form, header, or abort setup, and `createTestClient(target, options?)` for repeated method calls against one base URL. The target can be a fetch-compatible object or a request handler function; thrown errors and streaming bodies pass through unchanged.',
+    verification:
+      'Assert the native response status, headers, and body, then cover abort propagation, redirect policy, and cookie scope when the endpoint uses them. Keep transport-adapter tests separate: request injection proves the application contract, while a smaller adapter suite proves Node or another host translates real network requests correctly.',
+  },
   '/docs/http-contracts': {
     'endpoint-descriptors':
       'get(), post(), put(), patch(), del(), head(), and options() from @askrjs/fetch each return an EndpointBuilder you chain .params<T>(), .query<T>(), .headers<T>(), .body(codec), .returns(status, codec), and .errors({...}) on to describe one HTTP operation. defineApi({...}, metadata?) collects a map of these builders into an ApiDefinition that both the client and the server side of the contract can share. Paths use OpenAPI-style {name} parameters — colon params and wildcards are rejected, and a declared parameter name must exactly match one in the path.',
@@ -1949,7 +1959,7 @@ export const headingOverrides: Readonly<
     'clean-breaks':
       "Askr's public API favors one vocabulary per concept rather than keeping deprecated aliases around — for example, reactive scope is `defineScope()`/`readScope()` with no legacy `useContext`-style alias shipped alongside it. When a release renames or removes an export, expect it to be gone rather than soft-deprecated, so pin versions deliberately if you can't absorb that immediately.",
     'latest-published-scope':
-      'This site documents the currently published version of each @askrjs package — @askrjs/askr at 0.0.59, @askrjs/ui and @askrjs/themes at 0.0.13, @askrjs/server and @askrjs/auth and @askrjs/node and @askrjs/cli in the 0.0.x range, and so on. Every package is still pre-1.0, so treat minor version bumps as potentially breaking until a package publishes a 1.0.',
+      'This site documents the exact @askrjs package versions installed by its lockfile. The version displayed on each guide and generated API page comes from generated package metadata, so upgrading the website dependencies and regenerating the snapshots updates the documentation baseline together. Every package is still pre-1.0, so treat minor version bumps as potentially breaking until a package publishes a 1.0.',
     'migration-checklist':
       "Before upgrading, diff the exports on the relevant API Index pages against what your code currently imports — a missing symbol there means it moved or was removed, not that the docs are stale. Re-run your test suite with @askrjs/askr/testing's route-matching and query-mock helpers after any upgrade, since router and query-state shapes are exactly the kind of thing a minor bump can quietly change.",
     'package-alignment':
@@ -1999,7 +2009,7 @@ export const headingOverrides: Readonly<
     'runtime-packages':
       '@askrjs/askr is the core: `state()`, `derive()`, `selector()`, `defineScope()`/`readScope()`, the JSX runtime, and app startup helpers under its /boot, /router, /resources, /data, /fx, and /testing subpaths. Auxiliary runtime concerns — timing helpers, async resources, query caching — live as subpath exports on this same package rather than as separate installs.',
     'server-packages':
-      '@askrjs/server hosts HTTP handling, middleware, routing, auth integration, MCP support, and OpenAPI generation behind subpaths like /http, /middleware, /router, /mcp, and /openapi. @askrjs/node and @askrjs/auth sit alongside it for Node-specific adapters and JWT/OIDC auth flows respectively.',
+      '@askrjs/server hosts HTTP handling, middleware, routing, auth integration, MCP support, and OpenAPI generation behind subpaths like /http, /middleware, /router, /mcp, and /openapi. @askrjs/node and @askrjs/auth sit alongside it for Node-specific adapters and JWT/OIDC auth flows, while @askrjs/testing exercises the same Web Request/Response boundary in process without opening a port.',
     'tooling-packages':
       '@askrjs/vite provides the build integration (with a /server subpath for SSR dev tooling), @askrjs/cli scaffolds and runs projects, and @askrjs/schema, @askrjs/i18n, @askrjs/otel, @askrjs/logos, @askrjs/lucide, @askrjs/monaco, @askrjs/fetch, and @askrjs/charts round out validation, localization, telemetry, icons, editor embedding, HTTP client, and charting concerns as separate installs.',
     'ui-packages':

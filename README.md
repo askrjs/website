@@ -57,6 +57,13 @@ package versions in `package-lock.json`. Reference-only packages are kept as
 development dependencies; packages used by live browser examples remain
 runtime dependencies.
 
+`docs:api` also generates `src/pages/docs/package-versions.ts` from the
+installed package manifests. Guide badges and package references read from that
+map instead of repeating version literals. To refresh the site after releases,
+upgrade the relevant `@askrjs/*` dependencies, run `npm install`, then run
+`npm run docs:api` and `npm run docs:cli`. The aggregate check verifies that the
+catalog, CLI snapshot, and every generated API entrypoint agree on versions.
+
 `.github/workflows/ci.yml` runs format, lint/typecheck, build, and test on pull
 requests. Pushes to `main` and manual dispatches use
 `.github/workflows/deploy.yml` to run the aggregate check, upload `dist/`, and
