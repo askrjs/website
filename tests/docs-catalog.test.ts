@@ -10,10 +10,32 @@ import {
   resolveDocsRoute,
 } from '../src/pages/docs/catalog';
 import { componentGuideRoute } from '../src/pages/docs/component-coverage';
+import { cliSnapshot } from '../src/pages/docs/cli-snapshot';
+import { packageVersions } from '../src/pages/docs/package-versions';
 import { searchDocs } from '../src/pages/docs/search-index';
 import { buildUsageGuide } from '../src/pages/docs/usage-guide';
 
 describe('documentation catalog', () => {
+  it('derives documented versions from installed package metadata', () => {
+    expect(cliSnapshot.version).toBe(packageVersions.cli);
+
+    for (const entrypoint of apiManifest) {
+      const packageName = entrypoint.packageName.slice('@askrjs/'.length);
+      expect(entrypoint.version, entrypoint.importName).toBe(
+        packageVersions[packageName as keyof typeof packageVersions]
+      );
+    }
+
+    for (const page of docsCatalog) {
+      for (const pkg of page.packages) {
+        const packageName = pkg.name.slice('@askrjs/'.length);
+        expect(pkg.version, `${page.route}: ${pkg.name}`).toBe(
+          packageVersions[packageName as keyof typeof packageVersions]
+        );
+      }
+    }
+  });
+
   it('teaches component-owned tuple state and current route syntax', () => {
     for (const page of docsCatalog.filter(
       (candidate) => candidate.navSection !== 'Generated API'

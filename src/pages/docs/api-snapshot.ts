@@ -19020,8 +19020,121 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols46: [],
-  symbols47: [
+  symbols46: [
+    {
+      name: 'BodyRequestOptions',
+      anchor: 'body-request-options',
+      signature: 'BodyRequestOptions: any',
+      typeOnly: true,
+    },
+    {
+      name: 'createTestClient',
+      anchor: 'create-test-client',
+      signature:
+        'createTestClient: (target: Injectable, options?: TestClientOptions) => TestClient',
+      typeOnly: true,
+    },
+    {
+      name: 'createTestCookieJar',
+      anchor: 'create-test-cookie-jar',
+      signature: 'createTestCookieJar: () => TestCookieJar',
+      typeOnly: true,
+    },
+    {
+      name: 'createTestRequest',
+      anchor: 'create-test-request',
+      signature:
+        'createTestRequest: (input: string | URL, options?: InjectOptions) => Request',
+      typeOnly: true,
+    },
+    {
+      name: 'Form',
+      anchor: 'form',
+      signature: 'Form: any',
+      typeOnly: true,
+    },
+    {
+      name: 'FormValue',
+      anchor: 'form-value',
+      signature: 'FormValue: any',
+      typeOnly: true,
+    },
+    {
+      name: 'GetHeadOptions',
+      anchor: 'get-head-options',
+      signature: 'GetHeadOptions: any',
+      typeOnly: true,
+    },
+    {
+      name: 'inject',
+      anchor: 'inject',
+      signature:
+        'inject: { (target: Injectable, request: Request, options?: Pick<InjectOptions, "maxRedirects">): Promise<Response>; (target: Injectable, input: string | URL, options?: InjectOptions): Promise<Response>; }',
+      typeOnly: true,
+    },
+    {
+      name: 'Injectable',
+      anchor: 'injectable',
+      signature: 'Injectable: any',
+      typeOnly: true,
+    },
+    {
+      name: 'InjectOptions',
+      anchor: 'inject-options',
+      signature: 'InjectOptions: any',
+      typeOnly: true,
+    },
+    {
+      name: 'Query',
+      anchor: 'query',
+      signature: 'Query: any',
+      typeOnly: true,
+    },
+    {
+      name: 'QueryValue',
+      anchor: 'query-value',
+      signature: 'QueryValue: any',
+      typeOnly: true,
+    },
+    {
+      name: 'RequestHandler',
+      anchor: 'request-handler',
+      signature: 'RequestHandler: any',
+      typeOnly: true,
+    },
+    {
+      name: 'RequestTarget',
+      anchor: 'request-target',
+      signature: 'RequestTarget: any',
+      typeOnly: true,
+    },
+    {
+      name: 'TestClient',
+      anchor: 'test-client',
+      signature: 'TestClient: any',
+      typeOnly: true,
+    },
+    {
+      name: 'TestClientOptions',
+      anchor: 'test-client-options',
+      signature: 'TestClientOptions: any',
+      typeOnly: true,
+    },
+    {
+      name: 'TestCookie',
+      anchor: 'test-cookie',
+      signature: 'TestCookie: any',
+      typeOnly: true,
+    },
+    {
+      name: 'TestCookieJar',
+      anchor: 'test-cookie-jar',
+      signature: 'TestCookieJar: any',
+      typeOnly: true,
+    },
+  ],
+  symbols47: [],
+  symbols48: [
     {
       name: 'Accordion',
       anchor: 'accordion',
@@ -22090,7 +22203,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols48: [
+  symbols49: [
     {
       name: 'CAT_THEME_NAMES',
       anchor: 'cat-theme-names',
@@ -22183,7 +22296,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols49: [
+  symbols50: [
     {
       name: 'Accordion',
       anchor: 'accordion',
@@ -25197,100 +25310,100 @@ export const apiSymbolSets = {
       name: 'VisuallyHiddenSpanProps',
       anchor: 'visually-hidden-span-props',
       signature: 'VisuallyHiddenSpanProps: any',
-      typeOnly: true,
-    },
-  ],
-  symbols50: [
-    {
-      name: 'Avatar',
-      anchor: 'avatar',
-      signature:
-        'Avatar: { (props: AvatarProps): JSX.Element; (props: AvatarAsChildProps): JSX.Element; }',
-      typeOnly: true,
-    },
-    {
-      name: 'AVATAR_A11Y_CONTRACT',
-      anchor: 'avatar-a11-y-contract',
-      signature:
-        'AVATAR_A11Y_CONTRACT: { readonly ROOT: { readonly slot: "data-slot"; readonly marker: "data-avatar"; }; readonly IMAGE: { readonly slot: "data-slot"; readonly marker: "data-avatar-image"; readonly requiresAlt: true; }; readonly FALLBACK: { readonly slot: "data-slot"; readonly marker: "data-avatar-fallback"; readonly visibleBeforeImageLoad: true; }; }',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarA11yContract',
-      anchor: 'avatar-a11y-contract',
-      signature: 'AvatarA11yContract: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarAsChildProps',
-      anchor: 'avatar-as-child-props',
-      signature: 'AvatarAsChildProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarFallback',
-      anchor: 'avatar-fallback',
-      signature:
-        'AvatarFallback: { (props: AvatarFallbackProps): JSX.Element | null; (props: AvatarFallbackAsChildProps): JSX.Element | null; }',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarFallbackAsChildProps',
-      anchor: 'avatar-fallback-as-child-props',
-      signature: 'AvatarFallbackAsChildProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarFallbackOwnProps',
-      anchor: 'avatar-fallback-own-props',
-      signature: 'AvatarFallbackOwnProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarFallbackProps',
-      anchor: 'avatar-fallback-props',
-      signature: 'AvatarFallbackProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarImage',
-      anchor: 'avatar-image',
-      signature: 'AvatarImage: (props: AvatarImageProps) => JSX.Element',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarImageOwnProps',
-      anchor: 'avatar-image-own-props',
-      signature: 'AvatarImageOwnProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarImageProps',
-      anchor: 'avatar-image-props',
-      signature: 'AvatarImageProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarLoadingStatus',
-      anchor: 'avatar-loading-status',
-      signature: 'AvatarLoadingStatus: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarOwnProps',
-      anchor: 'avatar-own-props',
-      signature: 'AvatarOwnProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarProps',
-      anchor: 'avatar-props',
-      signature: 'AvatarProps: any',
       typeOnly: true,
     },
   ],
   symbols51: [
     {
+      name: 'Avatar',
+      anchor: 'avatar',
+      signature:
+        'Avatar: { (props: AvatarProps): JSX.Element; (props: AvatarAsChildProps): JSX.Element; }',
+      typeOnly: true,
+    },
+    {
+      name: 'AVATAR_A11Y_CONTRACT',
+      anchor: 'avatar-a11-y-contract',
+      signature:
+        'AVATAR_A11Y_CONTRACT: { readonly ROOT: { readonly slot: "data-slot"; readonly marker: "data-avatar"; }; readonly IMAGE: { readonly slot: "data-slot"; readonly marker: "data-avatar-image"; readonly requiresAlt: true; }; readonly FALLBACK: { readonly slot: "data-slot"; readonly marker: "data-avatar-fallback"; readonly visibleBeforeImageLoad: true; }; }',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarA11yContract',
+      anchor: 'avatar-a11y-contract',
+      signature: 'AvatarA11yContract: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarAsChildProps',
+      anchor: 'avatar-as-child-props',
+      signature: 'AvatarAsChildProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarFallback',
+      anchor: 'avatar-fallback',
+      signature:
+        'AvatarFallback: { (props: AvatarFallbackProps): JSX.Element | null; (props: AvatarFallbackAsChildProps): JSX.Element | null; }',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarFallbackAsChildProps',
+      anchor: 'avatar-fallback-as-child-props',
+      signature: 'AvatarFallbackAsChildProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarFallbackOwnProps',
+      anchor: 'avatar-fallback-own-props',
+      signature: 'AvatarFallbackOwnProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarFallbackProps',
+      anchor: 'avatar-fallback-props',
+      signature: 'AvatarFallbackProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarImage',
+      anchor: 'avatar-image',
+      signature: 'AvatarImage: (props: AvatarImageProps) => JSX.Element',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarImageOwnProps',
+      anchor: 'avatar-image-own-props',
+      signature: 'AvatarImageOwnProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarImageProps',
+      anchor: 'avatar-image-props',
+      signature: 'AvatarImageProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarLoadingStatus',
+      anchor: 'avatar-loading-status',
+      signature: 'AvatarLoadingStatus: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarOwnProps',
+      anchor: 'avatar-own-props',
+      signature: 'AvatarOwnProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarProps',
+      anchor: 'avatar-props',
+      signature: 'AvatarProps: any',
+      typeOnly: true,
+    },
+  ],
+  symbols52: [
+    {
       name: 'Button',
       anchor: 'button',
       signature:
@@ -25359,7 +25472,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols52: [
+  symbols53: [
     {
       name: 'Checkbox',
       anchor: 'checkbox',
@@ -25405,7 +25518,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols53: [
+  symbols54: [
     {
       name: 'DebouncedInput',
       anchor: 'debounced-input',
@@ -25470,7 +25583,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols54: [
+  symbols55: [
     {
       name: 'Form',
       anchor: 'form',
@@ -25491,7 +25604,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols55: [
+  symbols56: [
     {
       name: 'Label',
       anchor: 'label',
@@ -25537,7 +25650,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols56: [
+  symbols57: [
     {
       name: 'Progress',
       anchor: 'progress',
@@ -25590,7 +25703,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols57: [
+  symbols58: [
     {
       name: 'PROGRESS_CIRCLE_A11Y_CONTRACT',
       anchor: 'progress-circle-a11-y-contract',
@@ -25643,7 +25756,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols58: [
+  symbols59: [
     {
       name: 'RADIO_GROUP_A11Y_CONTRACT',
       anchor: 'radio-group-a11-y-contract',
@@ -25702,7 +25815,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols59: [
+  symbols60: [
     {
       name: 'Select',
       anchor: 'select',
@@ -25931,7 +26044,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols60: [
+  symbols61: [
     {
       name: 'Slider',
       anchor: 'slider',
@@ -26028,7 +26141,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols61: [
+  symbols62: [
     {
       name: 'Switch',
       anchor: 'switch',
@@ -26074,7 +26187,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols62: [
+  symbols63: [
     {
       name: 'Table',
       anchor: 'table',
@@ -26228,7 +26341,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols63: [
+  symbols64: [
     {
       name: 'VirtualList',
       anchor: 'virtual-list',
@@ -26285,7 +26398,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols64: [
+  symbols65: [
     {
       name: 'VirtualTable',
       anchor: 'virtual-table',
@@ -26354,7 +26467,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols65: [
+  symbols66: [
     {
       name: 'Textarea',
       anchor: 'textarea',
@@ -26400,7 +26513,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols66: [
+  symbols67: [
     {
       name: 'PressEvent',
       anchor: 'press-event',
@@ -26452,7 +26565,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols67: [
+  symbols68: [
     {
       name: 'TOGGLE_GROUP_A11Y_CONTRACT',
       anchor: 'toggle-group-a11-y-contract',
@@ -26523,7 +26636,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols68: [
+  symbols69: [
     {
       name: 'VISUALLY_HIDDEN_A11Y_CONTRACT',
       anchor: 'visually-hidden-a11-y-contract',
@@ -26569,7 +26682,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols69: [
+  symbols70: [
     {
       name: 'Accordion',
       anchor: 'accordion',
@@ -26696,7 +26809,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols70: [
+  symbols71: [
     {
       name: 'ALERT_DIALOG_A11Y_CONTRACT',
       anchor: 'alert-dialog-a11-y-contract',
@@ -26888,7 +27001,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols71: [
+  symbols72: [
     {
       name: 'Collapsible',
       anchor: 'collapsible',
@@ -26948,7 +27061,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols72: [
+  symbols73: [
     {
       name: 'Dialog',
       anchor: 'dialog',
@@ -27121,7 +27234,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols73: [
+  symbols74: [
     {
       name: 'DISMISSABLE_LAYER_A11Y_CONTRACT',
       anchor: 'dismissable-layer-a11-y-contract',
@@ -27161,7 +27274,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols74: [
+  symbols75: [
     {
       name: 'Dropdown',
       anchor: 'dropdown',
@@ -27358,7 +27471,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols75: [
+  symbols76: [
     {
       name: 'FOCUS_SCOPE_A11Y_CONTRACT',
       anchor: 'focus-scope-a11-y-contract',
@@ -27398,7 +27511,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols76: [
+  symbols77: [
     {
       name: 'HoverCard',
       anchor: 'hover-card',
@@ -27476,7 +27589,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols77: [
+  symbols78: [
     {
       name: 'Menu',
       anchor: 'menu',
@@ -27611,7 +27724,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols78: [
+  symbols79: [
     {
       name: 'Menubar',
       anchor: 'menubar',
@@ -27842,7 +27955,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols79: [
+  symbols80: [
     {
       name: 'Popover',
       anchor: 'popover',
@@ -27958,7 +28071,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols80: [
+  symbols81: [
     {
       name: 'ScrollArea',
       anchor: 'scroll-area',
@@ -28043,7 +28156,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols81: [
+  symbols82: [
     {
       name: 'Toast',
       anchor: 'toast',
@@ -28190,7 +28303,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols82: [
+  symbols83: [
     {
       name: 'Tooltip',
       anchor: 'tooltip',
@@ -28281,7 +28394,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols83: [
+  symbols84: [
     {
       name: 'askr',
       anchor: 'askr',
@@ -28308,7 +28421,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols84: [
+  symbols85: [
     {
       name: 'ASKR_APP_MARKER',
       anchor: 'askr-app-marker',

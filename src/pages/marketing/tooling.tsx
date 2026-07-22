@@ -81,7 +81,9 @@ export function ToolingPage() {
             normal component and a normal handler — review them like any other
             change before you commit. <code>askr openapi --check</code> fails CI
             when your schemas and your committed OpenAPI spec disagree, instead
-            of letting a client silently go stale.
+            of letting a client silently go stale. <code>askr generate</code>{' '}
+            turns that OpenAPI document into an <code>@askrjs/fetch</code>{' '}
+            client when another application needs the contract.
           </p>
           <p>
             <code>askr update</code> only applies peer-compatible changes;
