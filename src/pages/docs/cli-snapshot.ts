@@ -1,6 +1,6 @@
 // Generated from @askrjs/cli --help. Do not edit.
 export const cliSnapshot = {
-  version: '0.0.8',
+  version: '0.0.10',
   commands: [
     'add',
     'create',
