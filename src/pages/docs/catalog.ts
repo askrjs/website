@@ -1615,7 +1615,11 @@ export function docsTableOfContents(
     ...page.headings,
   ];
   if (page.route === '/docs') {
-    headings.push({ id: 'versions', title: 'Published versions' });
+    headings.push(
+      { id: 'maturity', title: 'Maturity' },
+      { id: 'versions', title: 'Published versions' },
+      { id: 'release-notes', title: 'Release notes' }
+    );
   }
   if (page.route === '/docs/tooling/cli-overview') {
     headings.push({ id: 'published-commands', title: 'Published commands' });
