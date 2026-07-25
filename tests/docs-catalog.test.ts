@@ -15,6 +15,7 @@ import { packageVersions } from '../src/pages/docs/package-versions';
 import { searchDocs } from '../src/pages/docs/search-index';
 import { buildUsageGuide } from '../src/pages/docs/usage-guide';
 import { releaseNotes } from '../src/pages/docs/release-notes';
+import { headingOverrides } from '../src/pages/docs/content-overrides';
 import {
   componentDemoFor,
   componentDemoTitles,
@@ -151,6 +152,16 @@ describe('documentation catalog', () => {
     expect(
       releaseNotes.every((note) => note.version && note.date && note.summary)
     ).toBe(true);
+  });
+
+  it('keeps route guidance registry-first and signature-accurate', () => {
+    const prose = JSON.stringify(headingOverrides);
+    expect(prose).toContain('getRouteWarnings({ registry })');
+    expect(prose).not.toContain('getRouteWarnings()');
+    expect(prose).not.toContain(
+      'ServerAppOptions also accepts a standalone routes array'
+    );
+    expect(prose).not.toContain('manifest-only');
   });
 });
 

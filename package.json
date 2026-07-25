@@ -25,7 +25,7 @@
     "preview": "vp preview --outDir dist"
   },
   "dependencies": {
-    "@askrjs/askr": "0.0.65",
+    "@askrjs/askr": "0.0.66",
     "@askrjs/charts": "0.1.3",
     "@askrjs/fetch": "0.0.2",
     "@askrjs/i18n": "0.0.2",
@@ -39,10 +39,10 @@
   },
   "devDependencies": {
     "@askrjs/auth": "0.0.7",
-    "@askrjs/cli": "0.0.8",
+    "@askrjs/cli": "0.0.10",
     "@askrjs/node": "0.0.6",
     "@askrjs/schema": "0.0.3",
-    "@askrjs/server": "0.0.9",
+    "@askrjs/server": "0.0.10",
     "@askrjs/testing": "0.0.1",
     "@askrjs/vite": "0.0.7",
     "@types/node": "^26.1.1",
