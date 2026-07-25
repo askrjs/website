@@ -10,23 +10,54 @@ export function DocsSearch() {
   const [query, setQuery] = state('');
   const [loading, setLoading] = state(false);
   const [results, setResults] = state<readonly DocsSearchRecord[]>([]);
+  const [error, setError] = state(false);
+  let searchGeneration = 0;
+
+  const focusInput = (element: HTMLElement | null) => {
+    window.setTimeout(
+      () =>
+        element
+          ?.querySelector<HTMLInputElement>('[data-docs-search-input]')
+          ?.focus(),
+      0
+    );
+  };
+
+  const openSearch = (element?: HTMLElement | null) => {
+    setOpen(true);
+    focusInput(element ?? null);
+  };
 
   const runSearch = async (value: string) => {
+    const generation = ++searchGeneration;
     setQuery(value);
+    setError(false);
     if (!value.trim()) {
       setResults([]);
+      setLoading(false);
       return;
     }
     setLoading(true);
-    const { searchDocs } = await import('./search-index');
-    setResults(searchDocs(value));
-    setLoading(false);
+    try {
+      const { searchDocs } = await import('./search-index');
+      if (generation !== searchGeneration) return;
+      setResults(searchDocs(value));
+    } catch {
+      if (generation !== searchGeneration) return;
+      setResults([]);
+      setError(true);
+    } finally {
+      if (generation === searchGeneration) setLoading(false);
+    }
   };
 
   const close = () => {
+    searchGeneration += 1;
     setOpen(false);
     setQuery('');
     setResults([]);
+    setLoading(false);
+    setError(false);
   };
   return (
     <div
@@ -44,14 +75,7 @@ export function DocsSearch() {
               ))
           ) {
             event.preventDefault();
-            setOpen(true);
-            window.setTimeout(
-              () =>
-                element
-                  .querySelector<HTMLInputElement>('[data-docs-search-input]')
-                  ?.focus(),
-              0
-            );
+            openSearch(element);
           }
           if (event.key === 'Escape' && open()) close();
         });
@@ -60,7 +84,9 @@ export function DocsSearch() {
       <button
         class="docs-search__trigger"
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={(event: Event) =>
+          openSearch((event.currentTarget as HTMLElement).parentElement)
+        }
         aria-haspopup="dialog"
       >
         <SearchIcon size={16} aria-hidden="true" />
@@ -106,6 +132,8 @@ export function DocsSearch() {
                   Search page titles, component aliases, package imports, CLI
                   commands, and every published API symbol.
                 </p>
+              ) : error() ? (
+                <p>Search is temporarily unavailable. Please try again.</p>
               ) : results().length ? (
                 <ul>
                   {results().map((result) => (
