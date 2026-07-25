@@ -25,7 +25,7 @@
     "preview": "vp preview --outDir dist"
   },
   "dependencies": {
-    "@askrjs/askr": "0.0.64",
+    "@askrjs/askr": "0.0.65",
     "@askrjs/charts": "0.1.3",
     "@askrjs/fetch": "0.0.2",
     "@askrjs/i18n": "0.0.2",

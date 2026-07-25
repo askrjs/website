@@ -1,6 +1,6 @@
 // Generated from installed @askrjs package manifests. Do not edit.
 export const packageVersions = {
-  askr: '0.0.64',
+  askr: '0.0.65',
   auth: '0.0.7',
   charts: '0.1.3',
   cli: '0.0.8',
