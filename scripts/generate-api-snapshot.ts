@@ -173,13 +173,19 @@ const snapshot = entrypoints.map((entrypoint) => {
             const baseAnchor = anchorFor(symbol.name) || 'export';
             const count = usedAnchors.get(baseAnchor) ?? 0;
             usedAnchors.set(baseAnchor, count + 1);
+            const signature = signatureFor(symbol);
+            const isRouterEntrypoint =
+              entrypoint.packageName === '@askrjs/askr' &&
+              entrypoint.subpath === './router';
             return {
               name: symbol.name,
               anchor: count === 0 ? baseAnchor : `${baseAnchor}-${count + 1}`,
-              signature: signatureFor(symbol).replaceAll(
-                'RegisterRoutesOptions',
-                'RouteRegistryOptions'
-              ),
+              signature: isRouterEntrypoint
+                ? signature.replaceAll(
+                    'RegisterRoutesOptions',
+                    'RouteRegistryOptions'
+                  )
+                : signature,
               typeOnly: !symbol.valueDeclaration,
             };
           })
