@@ -1616,7 +1616,6 @@ export function docsTableOfContents(
   ];
   if (page.route === '/docs') {
     headings.push(
-      { id: 'maturity', title: 'Maturity' },
       { id: 'versions', title: 'Published versions' },
       { id: 'release-notes', title: 'Release notes' }
     );
