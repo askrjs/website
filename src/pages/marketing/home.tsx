@@ -52,9 +52,8 @@ export function HomePage() {
         </Container>
       </section>
 
-      <section class="editorial-prose" aria-labelledby="maturity-title">
+      <section class="editorial-prose" aria-label="Release guidance">
         <Container size="xl">
-          <h2 id="maturity-title">A young framework, stated plainly.</h2>
           <p>{maturityStatement}</p>
           <p>
             Read the <a href="/docs#release-notes">release notes</a> before
