@@ -1,9 +1,40 @@
 import {
+  EditorialCTA,
   EditorialHero,
   MarketingPageNavigation,
   RepositoryLink,
   RuledSection,
+  SequenceList,
+  type SequenceItem,
 } from './components';
+
+const starters: readonly SequenceItem[] = [
+  {
+    title: 'Startkit',
+    description: 'Components, state, and routes.',
+    meta: 'startkit',
+  },
+  {
+    title: 'Single Page Application',
+    description: 'A browser-owned application.',
+    meta: 'spa',
+  },
+  {
+    title: 'Server Side Rendering',
+    description: 'Server HTML with hydration.',
+    meta: 'ssr',
+  },
+  {
+    title: 'Full Stack',
+    description: 'Pages, actions, APIs, and Node.',
+    meta: 'full-stack',
+  },
+  {
+    title: 'Static Site Generation',
+    description: 'HTML written at build time.',
+    meta: 'ssg',
+  },
+];
 
 export function ToolingPage() {
   return (
@@ -16,60 +47,7 @@ export function ToolingPage() {
         <div class="editorial-section__heading">
           <h2>Five starters, picked by what you're actually building</h2>
         </div>
-        <ol class="starter-path" aria-label="Askr application starters">
-          <li>
-            <div class="starter-path__marker">
-              <span>01</span>
-              <span class="starter-path__arrow" aria-hidden="true">
-                →
-              </span>
-            </div>
-            <h3>Startkit</h3>
-            <p>Components, state, and routes.</p>
-            <small>startkit</small>
-          </li>
-          <li>
-            <div class="starter-path__marker">
-              <span>02</span>
-              <span class="starter-path__arrow" aria-hidden="true">
-                →
-              </span>
-            </div>
-            <h3>Single Page Application</h3>
-            <p>A browser-owned application.</p>
-            <small>spa</small>
-          </li>
-          <li>
-            <div class="starter-path__marker">
-              <span>03</span>
-              <span class="starter-path__arrow" aria-hidden="true">
-                →
-              </span>
-            </div>
-            <h3>Server Side Rendering</h3>
-            <p>Server HTML with hydration.</p>
-            <small>ssr</small>
-          </li>
-          <li>
-            <div class="starter-path__marker">
-              <span>04</span>
-              <span class="starter-path__arrow" aria-hidden="true">
-                →
-              </span>
-            </div>
-            <h3>Full Stack</h3>
-            <p>Pages, actions, APIs, and Node.</p>
-            <small>full-stack</small>
-          </li>
-          <li>
-            <div class="starter-path__marker">
-              <span>05</span>
-            </div>
-            <h3>Static Site Generation</h3>
-            <p>HTML written at build time.</p>
-            <small>ssg</small>
-          </li>
-        </ol>
+        <SequenceList label="Askr application starters" items={starters} />
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
@@ -97,6 +75,13 @@ export function ToolingPage() {
           </RepositoryLink>
         </div>
       </RuledSection>
+      <EditorialCTA
+        title="Scaffold a project and read every file it writes."
+        primaryHref="/docs/tooling"
+        primaryLabel="Read the tooling docs"
+        secondaryHref="/docs/getting-started"
+        secondaryLabel="Create an app"
+      />
       <MarketingPageNavigation current="/tooling" />
     </>
   );

@@ -10,6 +10,7 @@ type PackageLock = {
 type PackageManifest = {
   version: string;
   exports?: Record<string, unknown>;
+  peerDependencies?: Record<string, string>;
 };
 
 type Entrypoint = {
@@ -42,16 +43,30 @@ const packageNames = installedPackageNames.filter(
   (name) => name !== '@askrjs/cli'
 );
 
+const installedManifests = installedPackageNames.map((packageName) => {
+  const manifest = JSON.parse(
+    readFileSync(
+      resolve(root, 'node_modules', packageName, 'package.json'),
+      'utf8'
+    )
+  ) as PackageManifest;
+  return [packageName.slice('@askrjs/'.length), manifest] as const;
+});
+
 const packageVersions = Object.fromEntries(
-  installedPackageNames.map((packageName) => {
-    const manifest = JSON.parse(
-      readFileSync(
-        resolve(root, 'node_modules', packageName, 'package.json'),
-        'utf8'
-      )
-    ) as PackageManifest;
-    return [packageName.slice('@askrjs/'.length), manifest.version];
-  })
+  installedManifests.map(([name, manifest]) => [name, manifest.version])
+);
+
+// Which @askrjs packages each package requires you to already have.
+// Drives the platform page's dependency table.
+const packagePeers = Object.fromEntries(
+  installedManifests.map(([name, manifest]) => [
+    name,
+    Object.keys(manifest.peerDependencies ?? {})
+      .filter((peer) => peer.startsWith('@askrjs/'))
+      .map((peer) => peer.slice('@askrjs/'.length))
+      .sort(),
+  ])
 );
 
 function exportedTypesTarget(value: unknown): string | undefined {
@@ -173,7 +188,8 @@ const unformattedSnapshotSource =
   `export const apiSymbolSets = ${JSON.stringify(symbolSets, null, 2)} as const;\n`;
 const unformattedVersionsSource =
   `// Generated from installed @askrjs package manifests. Do not edit.\n` +
-  `export const packageVersions = ${JSON.stringify(packageVersions, null, 2)} as const;\n`;
+  `export const packageVersions = ${JSON.stringify(packageVersions, null, 2)} as const;\n\n` +
+  `export const packagePeers = ${JSON.stringify(packagePeers, null, 2)} as const;\n`;
 const manifestSource = formatGeneratedTypeScript(
   manifestPath,
   unformattedManifestSource

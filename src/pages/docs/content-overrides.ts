@@ -211,7 +211,7 @@ export const headingOverrides: Readonly<
     'keyboard-and-accessibility':
       'Triggers in both components carry `role="button"` semantics with `aria-expanded` and `aria-controls`, and respond to Enter or Space to toggle open state — behavior the `COLLAPSIBLE_A11Y_CONTRACT` and `ACCORDION_A11Y_CONTRACT` constants codify directly. Accordion goes a step further, wrapping its panels in `role="region"` and giving triggers arrow-key roving focus governed by `orientation` and `loop`, since a set of triggers benefits from list-style navigation between them. Collapsible skips that roving-focus layer entirely, since managing a single trigger leaves nothing to navigate across.',
     'live-examples':
-      'The examples on this page render the themed Accordion and Collapsible directly, so you can toggle items, inspect the resulting `data-state` and `aria-expanded` values in devtools, and compare that output against the source right next to it. Use them to confirm your own markup matches before you start layering custom CSS on top.',
+      'The example composes the themed Accordion and Collapsible directly. Once it is running in your own app, open devtools and watch `data-state` and `aria-expanded` change as you toggle an item — those attributes are the styling and testing contract, so confirm your markup produces them before layering custom CSS on top.',
     purpose:
       'Accordion groups several related disclosures — think an FAQ list or a settings panel — and manages roving keyboard focus and open state across all of them at once. Collapsible is the single-region primitive Accordion is effectively built from: reach for it when you have one thing to show or hide, and reach for Accordion once you have a list of items sharing that same behavior.',
     'related-pages':
@@ -253,7 +253,7 @@ export const headingOverrides: Readonly<
     'keyboard-and-accessibility':
       "Alert accepts a `dismissLabel` for the accessible name of its optional dismiss control, since that's the only interactive part across this group. Badge, Skeleton, Empty, Stat, and Spinner are non-interactive and have no keyboard behavior to test; because Spinner is effectively ProgressCircle's indeterminate look, give it a `label` so assistive tech gets something better than silence while it spins.",
     'live-examples':
-      'Alert, Badge, Empty, Skeleton, and Spinner all have live, interactive renders on this page so you can see their variants and states without wiring up your own harness. Stat renders live too, just via the `@askrjs/themes/components` barrel import rather than its own subpath — the example is otherwise a normal `Stat` / `StatLabel` / `StatValue` composition.',
+      'The example branches across the states these components exist to cover — pending, failed, empty, and loaded — so you can see which one belongs in each branch rather than reaching for whichever is nearest. Stat comes from the `@askrjs/themes/components` barrel rather than its own subpath, and is otherwise a normal `Stat` / `StatLabel` / `StatValue` composition.',
     purpose:
       'None of Alert, Badge, Empty, Skeleton, Spinner, or Stat ships a headless counterpart in `@askrjs/ui` — each lives only in the themes package, since their behavior amounts to static markup and styling rather than anything complex enough to justify a separate logic layer. Stat is the odd one out in a different way: it has no dedicated `@askrjs/themes/stat` subpath, so you reach it through the shared `@askrjs/themes/components` barrel instead of importing it on its own.',
     'related-pages':
@@ -917,7 +917,7 @@ export const headingOverrides: Readonly<
     'keyboard-and-accessibility':
       'Both variants render `role="progressbar"` with `aria-valuenow`, `aria-valuemin`, and `aria-valuemax` kept in sync with `value`/`max`, per PROGRESS_A11Y_CONTRACT. Neither is focusable, so there\'s no keyboard behavior to test — the accessibility work on your end is almost entirely about supplying a meaningful `getValueLabel`.',
     'live-examples':
-      "Run the linear and circular variants side by side on this page and watch how `value` changes drive the fill width or the ring's stroke offset in real time. That's also the fastest way to see what an indeterminate `value={null}` state actually looks like before you commit to it in your own UI.",
+      "The example puts the linear and circular variants side by side: `value` drives the fill width on one and the ring's stroke offset on the other. Render both with a changing `value`, then with `value={null}`, to see how the indeterminate state reads before you commit to it in your own UI.",
     purpose:
       'Progress and ProgressCircle communicate how far along a task with a known endpoint is — a linear bar or a ring, picked by layout rather than meaning. Neither is interactive: they render a value, not a control, so if what you actually have is an unknown-duration wait, use Spinner instead of forcing a fake percentage into either of these.',
     'related-pages':
@@ -978,7 +978,7 @@ export const headingOverrides: Readonly<
     'keyboard-and-accessibility':
       'The trigger carries `role="button"` with `aria-expanded`, `aria-controls`, and `aria-haspopup` wired automatically; the popover content gets `role="listbox"` and each item `role="option"` with `aria-selected` reflecting the current value. These roles come straight from the `SELECT_A11Y_CONTRACT` object the package exports, so you can inspect it directly if you want to assert on the contract in tests rather than guessing at attribute names.',
     'live-examples':
-      'The demos on this page compose `Select`, `SelectTrigger`, `SelectValue`, `SelectContent`, `SelectItem`, and friends the same way you will in application code — nothing in the examples reaches into internals. Copy a demo wholesale and swap in your own `SelectItem` values as a starting point.',
+      'The example composes `Select`, `SelectTrigger`, `SelectValue`, `SelectContent`, and `SelectItem` the same way you will in application code — nothing in it reaches into internals. Copy it wholesale and swap in your own `SelectItem` values as a starting point.',
     purpose:
       "Select gives you a native-feeling listbox trigger without dictating how it looks. The headless `@askrjs/ui/select` primitive tracks the open state, the selected value, and keyboard navigation; `@askrjs/themes/select` layers on the visual trigger, popover content, and item styling you see in the demos. Reach for it when a user needs to pick exactly one value from a list that's too long or too structured for a radio group.",
     'related-pages':
@@ -1436,7 +1436,7 @@ export const headingOverrides: Readonly<
     prerequisites:
       'You need a recent Node.js (18+) and npm on your PATH; the CLI is published as a global binary, `askr`, from `@askrjs/cli`. No other tooling is required to get a project running — the generated project brings its own dev server and build scripts. If you plan to deploy with SSR or SSG, make sure your host can run a Node process or serve static files, respectively.',
     'the-shortest-path':
-      'Install the CLI globally with `npm install -g @askrjs/cli`, then run `askr create startkit my-app`. `cd my-app && npm run dev` gets a live app in the browser. If you\'d rather describe what you\'re building, `askr create --prompt "..."` picks a template for you and writes `.askr/blueprint.json` plus a `builder-brief.md` explaining the choice.',
+      'Run `npx @askrjs/cli@latest create startkit my-app` — no global install needed to get going. `cd my-app && npm run dev` gets a live app in the browser. If you expect to scaffold often, `npm install -g @askrjs/cli` puts `askr` on your PATH so you can drop the `npx` prefix. If you\'d rather describe what you\'re building, `askr create --prompt "..."` picks a template for you and writes `.askr/blueprint.json` plus a `builder-brief.md` explaining the choice.',
     'where-to-go-next':
       "Read Core Concepts for the mental model — functions, explicit state, and deterministic rendering — before you start wiring up routes. If you're choosing between SPA, SSR, SSG, or the full-stack/startkit templates, see Choosing an Application Mode. Once you have a route rendering, First Application walks through adding state and a second route.",
   },
@@ -1465,11 +1465,11 @@ export const headingOverrides: Readonly<
     'create-the-project':
       'Run `askr create spa my-app` (or another template) and `cd my-app`. Open the generated route registry file — typically `src/pages/**/_routes.tsx` — to see how the starter route is already wired up with `route()`.',
     'register-a-route':
-      "Routes are declared with `route(path, Component, options?)` inside a `registerRoutes()` call, or captured explicitly with `createRouteRegistry()`. Add a new entry — `route('/about', () => <About />)` — inside the existing `registerRoutes(() => { ... })` block, then confirm `getManifest()` or the registry you pass to `createSPA` picks it up.",
+      "Routes are declared with `route(path, Component, options?)` inside a `createRouteRegistry(() => { ... })` callback, which returns the registry your application boots from. Add a new entry — `route('/about', () => <About />)` — inside the existing callback, then confirm the exported registry you pass to `createSPA` picks it up.",
   },
   '/docs/getting-started/installation': {
     'create-with-the-cli':
-      'Install `@askrjs/cli` globally (`npm install -g @askrjs/cli`) and run `askr create <template> <name>`, where template is one of `spa`, `ssr`, `ssg`, `full-stack`, or `startkit`. This scaffolds the project, installs bundled agent skills into `skills/` unless you pass `--no-skills`, and runs the install for you unless you pass `--no-install`.',
+      'Run it without installing anything — `npx @askrjs/cli@latest create <template> <name>` — or install `@askrjs/cli` globally (`npm install -g @askrjs/cli`) to get the `askr` command on your PATH. Template is one of `spa`, `ssr`, `ssg`, `full-stack`, or `startkit`. This scaffolds the project, installs bundled agent skills into `skills/` unless you pass `--no-skills`, and runs the install for you unless you pass `--no-install`.',
     'install-packages-directly':
       "If you're adding Askr to an existing project instead of scaffolding a new one, install `@askrjs/askr` directly with `npm install @askrjs/askr` and import from its subpaths as needed — `@askrjs/askr` for state and JSX, `@askrjs/askr/boot` for startup, `@askrjs/askr/router` for routing. The CLI itself has no subpath exports beyond `package.json`; it's consumed only as the `askr` binary, not imported into application code.",
     'runtime-requirements':
@@ -1569,11 +1569,11 @@ export const headingOverrides: Readonly<
     'failure-states':
       "Wrap render-time failures in `ErrorBoundary` with a `fallback` — it logs the underlying error and can reset when your app state changes, which matters in an SPA where a bad route param or a malformed API response shouldn't take down the whole shell. Register a `fallback(Component)` route for unmatched paths so users don't hit a blank screen on a typo'd URL. If a route has an `auth` policy and the resolver returns `deny`/`redirect`, make sure you've actually mounted with `auth` options on `createSPA`, or those policies never run.",
     'goal-and-architecture':
-      "A client-only SPA mounts once, owns routing in the browser, and never touches the server beyond static asset delivery and whatever APIs it calls at runtime. You register routes with `registerRoutes()` or build a registry via `createRouteRegistry(() => { ... })`, then hand that to `createSPA({ root: '#app', registry })`. `@askrjs/vite`'s `askr()` plugin is the only build-time piece you need — there's no server plugin, no `askrServer()` entry, and no document markers to manage.",
+      "A client-only SPA mounts once, owns routing in the browser, and never touches the server beyond static asset delivery and whatever APIs it calls at runtime. You build a registry with `createRouteRegistry(() => { ... })`, export it, and hand it to `createSPA({ root: '#app', registry })` — the registry is an ordinary value, so the path from route declaration to boot is something you can follow through the imports. `@askrjs/vite`'s `askr()` plugin is the only build-time piece you need — there's no server plugin, no `askrServer()` entry, and no document markers to manage.",
     implementation:
       "Define routes with `route(path, Component)` or the nested `page()`/`group()`/`index()` helpers inside your registration function, and read the matched params straight from the component's first argument — Askr infers `RoutePathParams<Path>` from the literal path string, so `route('/users/{id}', UserPage)` gives `UserPage` a typed `id: string` without you writing the type by hand. State inside components is `state()`/`derive()`: read through the getter, write through the setter, no proxies. Wire up `<Link>` or `navigate()` for transitions and `Outlet()` in any layout component that needs to render nested routes.",
     verification:
-      'Click through every route you registered and confirm the URL bar, browser back/forward, and scroll position all behave — `scrollRestoration` on `SPAConfig` is opt-in, so verify it\'s doing what you expect rather than assuming a default. Force a render-time error in a leaf component and confirm the nearest `ErrorBoundary` catches it instead of a blank page. Finally check `getManifest()` against your actual route tree; a stale manifest is the most common source of "routes work in dev but not in the built app."',
+      'Click through every route you registered and confirm the URL bar, browser back/forward, and scroll position all behave — `scrollRestoration` on `SPAConfig` is opt-in, so verify it\'s doing what you expect rather than assuming a default. Force a render-time error in a leaf component and confirm the nearest `ErrorBoundary` catches it instead of a blank page. Finally confirm the registry you passed to `createSPA` is the one you actually edited — that is an import you can follow, which is why "routes work in dev but not in the built app" is a much rarer failure with an explicit registry than with an ambient one.',
   },
   '/docs/guides/dashboards-charts-and-polling': {
     'failure-states':
@@ -1661,7 +1661,7 @@ export const headingOverrides: Readonly<
     'goal-and-architecture':
       "Route protection in Askr is split into two layers: `@askrjs/auth` resolves who is making the request into an `AuthContext` (principal, session, tenant, scopes), and the router's `RouteAuthOptions` decides what that context is allowed to see. A route's `auth.resolve` function runs `createAuth(...).resolve(request)` and returns the context; the route or group's `auth.check` (an `AuthRequirement`) inspects that context and returns an `AccessDecision`. Compose requirements with `requireUser()`, `requireRole('admin')`, `requirePermission('billing:write')`, `requireScope(...)`, `allOf(...)`, and `anyOf(...)` rather than writing ad-hoc boolean checks scattered through page components. Because the check runs before a route renders, denied users never see a flash of protected UI.",
     implementation:
-      "Build the resolver once with `createAuth({ sessions, principals, jwtCookie, tenant })` and pass it as the `auth` option to `registerRoutes` (browser) or `createServerApp` (server), so every matched route gets the same `AuthContext`. Inside a route's guard, return `allow()` to proceed, `deny('forbidden' | 'unauthorized' | ...)` for a hard stop, or `redirect(to, init)` to bounce anonymous users to a login page while preserving their intended destination. `unauthorized()`, `forbidden()`, and `notFound()` are shorthand `deny()` variants for the common HTTP-flavored cases. On the server, `registerAuthRoutes(api, { issuer, cookie, principalSchema, register, authenticate, allowAttempt })` wires up ready-made register/login endpoints that issue a signed cookie via a `TokenIssuer`, so you don't hand-roll session cookie handling.",
+      "Build the resolver once with `createAuth({ sessions, principals, jwtCookie, tenant })` and pass it as the `auth` option in the second argument to `createRouteRegistry` (browser) or to `createServerApp` (server), so every matched route gets the same `AuthContext`. Inside a route's guard, return `allow()` to proceed, `deny('forbidden' | 'unauthorized' | ...)` for a hard stop, or `redirect(to, init)` to bounce anonymous users to a login page while preserving their intended destination. `unauthorized()`, `forbidden()`, and `notFound()` are shorthand `deny()` variants for the common HTTP-flavored cases. On the server, `registerAuthRoutes(api, { issuer, cookie, principalSchema, register, authenticate, allowAttempt })` wires up ready-made register/login endpoints that issue a signed cookie via a `TokenIssuer`, so you don't hand-roll session cookie handling.",
     verification:
       "Test each `AuthRequirement` directly by calling it with hand-built `AuthContext` fixtures (`{ authenticated, principal, session, tenant, scopes }`) and asserting on the returned `AccessDecision` — no HTTP server needed. For end-to-end coverage, hit protected routes with and without a valid session cookie and confirm you get `allow`, `redirect`, or the expected `deny` status, including the `already_authenticated` reason for routes like login that should reject already-signed-in users. Rotate a JWT's `kid` in your JWKS fixture and confirm `createJwtValidator` rejects it with `unknown_key` rather than silently accepting an unverifiable token.",
   },
@@ -2043,7 +2043,7 @@ export const headingOverrides: Readonly<
     'selection-checklist':
       "Reach for SSG when route output doesn't depend on the requesting user and can be precomputed with `createStaticGen`; reach for SSR (`renderRouteRequest`) when it does. Add streaming (`renderToStream`) once a page has slow data that shouldn't block the rest of the response, and add islands (`createIsland`) when only a fragment of an otherwise static page needs interactivity. Selective hydration is worth reaching for only after profiling shows hydration cost is the bottleneck — it's still a limited feature and shouldn't be the default choice.",
     'shared-application-model':
-      'Routes, components, and data loaders are defined once through the router DSL (`route()`, `registerRoutes()`, `getManifest()`) and consumed by whichever renderer you wire up. `RouteHandler` and `RouteRegistry` show up identically in `@askrjs/askr/ssr`, `@askrjs/askr/ssg`, and `@askrjs/askr/boot`, which is why `resolveRequest`, `createStaticGen`, and `createSPA` all accept the same `registry` or `routes` shape. Swapping SSR for SSG in production means changing which function calls your routes, not restructuring them.',
+      'Routes, components, and data loaders are defined once through the router DSL (`route()`, `group()`, `createRouteRegistry()`) and consumed by whichever renderer you wire up. `RouteHandler` and `RouteRegistry` show up identically in `@askrjs/askr/ssr`, `@askrjs/askr/ssg`, and `@askrjs/askr/boot`, which is why `resolveRequest`, `createStaticGen`, and `createSPA` all accept the same `registry` shape. Swapping SSR for SSG in production means changing which function calls your routes, not restructuring them.',
   },
   '/docs/rendering/client-and-islands': {
     'client-boundaries':
@@ -2051,7 +2051,7 @@ export const headingOverrides: Readonly<
     'island-ownership':
       '`createIsland` enhances a single existing DOM node with one component and mounts once — no router involved. `createIslands` does the same for a list of `{ root, component }` pairs in one call and is described in the type as "the only public islands constructor," meaning multi-island pages should go through it rather than calling `createIsland` in a loop. Neither function touches routing state, so islands stay independent of whatever else is on the page.',
     'spa-boot':
-      '`createSPA` from `@askrjs/askr/boot` mounts a fully client-rendered app into a root element and initializes the router from either a `manifest` (via `getManifest()`) or a plain `routes` array — manifest is the preferred, type-checked path. It accepts `auth`, `scrollRestoration`, and `cleanupStrict` alongside the route source, and returns a `Promise<void>` that resolves once the initial route has mounted.',
+      '`createSPA` from `@askrjs/askr/boot` mounts a fully client-rendered app into a root element and initializes the router from the `registry` you built with `createRouteRegistry()`. It accepts `auth`, `scrollRestoration`, and `cleanupStrict` alongside the registry, and returns a `Promise<void>` that resolves once the initial route has mounted.',
     'when-to-choose-client-rendering':
       "Pick `createSPA` when the whole page is interactive and there's no server response to enhance — dashboards, authenticated tools, anything behind a login wall where SEO and first-paint latency matter less. Pick islands (`createIsland`/`createIslands`) when most of the page is static content and only a widget or two needs `state()` and event handlers. If server-rendered markup already exists and needs to become interactive without a full remount, `hydrateSPA` is the right call instead of either.",
   },
@@ -2113,7 +2113,7 @@ export const headingOverrides: Readonly<
     'route-groups':
       "`group(options, fn)` nests a block of route declarations under a shared layout and shared access rules without repeating them on every child route. The `layout` you pass in `GroupHelperOptions` wraps whatever the group renders, and `auth`/`policies` on the group apply to every route declared inside its callback. Groups compose: nesting one group inside another builds up a `layoutChain` and a merged set of policies that Askr walks top-down when it resolves a request, so a route three groups deep still only needs to declare what's specific to it.",
     'route-registry':
-      "Every route in an Askr app is registered through `registerRoutes()`, which takes a definition function and builds a `RouteManifest` out of it by calling `route()`, `page()`, `group()`, `index()`, and `fallback()` inside that function. The manifest isn't a side effect you have to wire up yourself — call `getManifest()` afterward and hand it straight to `createSPA`, `hydrateSPA`, or `renderToString`, so the same registered routes drive client rendering, hydration, and SSR from one source. `createRouteRegistry()` gives you the lower-level `{ manifest, routes }` pair if you need to inspect route records directly, and `clearRoutes()` resets the registry, which matters mostly in tests.",
+      'Every route in an Askr app is declared through `createRouteRegistry()`, which takes a definition function and returns a `{ manifest, routes }` pair built by calling `route()`, `page()`, `group()`, `index()`, and `fallback()` inside that function. The registry is an ordinary value: export it, then hand it to `createSPA`, `hydrateSPA`, `createStaticGen`, or `renderToString`, so client rendering, hydration, SSG, and SSR all read the same declaration. Because nothing is stored globally, two registries can coexist — which is what lets a static build settle its own route tree without disturbing the one the browser boots from, and what keeps a server rendering concurrent requests off shared mutable state.',
   },
   '/docs/routing/access-policies': {
     'authentication-context':
@@ -2345,4 +2345,144 @@ export const headingOverrides: Readonly<
     'server-entry':
       "askrServer({ entry, exportName?, indexHtml? }), imported from the @askrjs/vite/server subpath, wires up the SSR side: entry points at your server entry module (for example src/server/entry-server.ts), and the plugin composes the app's rendered response against your HTML document template. Like the browser plugin, its published type only exposes name: 'askr:server' publicly, for the same cross-Vite-version type-identity reason.",
   },
+};
+
+// Hand-written meta descriptions, keyed by route. These become the page's
+// <meta name="description"> and its search-result snippet. Where a route has
+// no entry here, definePage() falls back to a per-section template — see
+// sectionDescription() in catalog.ts.
+// The ten heading bodies that previously fell through to guidance(). Written
+// against the published prop types in @askrjs/ui.
+export const lateHeadingOverrides: Readonly<
+  Record<string, Readonly<Record<string, string>>>
+> = {
+  '/docs/components/switch': {
+    anatomy:
+      'Switch has no sub-parts — it is a single control, unlike Accordion or Select. It renders as a button carrying `role="switch"` and `aria-checked`, and takes `checked` with `onCheckedChange` for controlled use or `defaultChecked` for uncontrolled. `name` and `value` make it submit inside a plain form, and `required` and `disabled` behave as they would on a native input. Pair it with `Field` and `FieldLabel` rather than a bare `label`, so the description and error slots line up with the rest of your form controls.',
+  },
+  '/docs/components/table': {
+    purpose:
+      "Table is semantic table markup with the theme's type, spacing, and border tokens applied — `Table`, `TableCaption`, `TableHead`, `TableHeaderCell`, `TableBody`, `TableRow`, `TableCell`, and `TableFoot` map one-to-one onto the HTML elements of the same name. Reach for it when you already have the rows in hand and want them to look right. It does no sorting, filtering, paging, or windowing; when the row count grows past what you want in the DOM at once, move to Virtual Table.",
+  },
+  '/docs/components/data-table': {
+    purpose:
+      'Data Table is the themed composition layer over Table: it takes the same semantic parts and wires in the presentational conventions an application table usually needs, so you are not rebuilding header, body, and cell styling per feature. It is typed loosely against the shared catalog prop shape rather than a bespoke column API, so treat the composition on this page as the contract and keep sorting, filtering, and pagination state in your own application code, where the URL or server can own it.',
+  },
+  '/docs/components/virtual-list': {
+    purpose:
+      'Virtual List renders only the rows currently in view, for collections long enough that putting every node in the DOM costs you scroll performance. You give it `items`, a fixed `rowHeight`, a `getKey` for stable identity, and a `rowComponent` that renders one item; `overscan` controls how many extra rows are kept outside the viewport. `followBottom` pins the view to the newest row, which is what you want for a log or a chat transcript, and `apiRef` exposes imperative scrolling for jump-to-row.',
+  },
+  '/docs/components/virtual-table': {
+    purpose:
+      'Virtual Table applies the same windowing as Virtual List, but along columns as well as rows. Each entry in `columns` is a `VirtualTableColumn` — an `id`, a `header` (string or element), an optional `width`, and a `cellComponent` that renders one cell for one row — so the table describes itself as data rather than as nested markup. Use it when both the row count and the column count are large enough that a plain Table would put more nodes in the DOM than the browser can scroll smoothly.',
+  },
+  '/docs/components/scroll-area': {
+    purpose:
+      'Scroll Area gives you a scroll container whose scrollbars you can style, without giving up native scrolling, keyboard paging, or momentum on touch. Compose `ScrollArea` around a `ScrollAreaViewport` holding the content, plus a `ScrollAreaScrollbar` and `ScrollAreaThumb` per axis and a `ScrollAreaCorner` when both axes are present. Reach for it when a default scrollbar would break the visual design — not to hide that content overflows, which users still need to be able to discover.',
+  },
+  '/docs/components/structures': {
+    'live-examples':
+      'The example on this page composes `Dialog` with its trigger, content, and title as you would in application code. The pattern generalizes across the structural components: a root that owns open state, a trigger that trips it, and a portalled content region that takes focus. Read the composition rather than copying it verbatim — your own content, labels, and actions belong in the same slots.',
+  },
+  '/docs/components/navbar-and-navigation-menu': {
+    'live-examples':
+      'The example composes `NavigationMenu` with a `NavigationMenuList` of `NavigationMenuItem`/`NavigationMenuLink` pairs, and passes route destinations rather than hand-written path strings. Note the `aria-label` on the menu itself: with more than one navigation landmark on a page, each needs its own name for that landmark list to be usable.',
+  },
+  '/docs/components/breadcrumb-and-pagination': {
+    'live-examples':
+      'The example composes `Breadcrumb` down to the current page, with `BreadcrumbPage` marking the last crumb rather than a link — that is what stops a screen reader announcing the page you are already on as somewhere to go. Build the intermediate `BreadcrumbLink` destinations from route parameters so the trail stays correct when the route shape changes.',
+  },
+  '/docs/components/application-chrome': {
+    'live-examples':
+      'The example composes the persistent frame around routed content: brand, primary navigation, and the actions that stay put while the page beneath them changes. Keep the chrome in a layout component registered on a route group rather than repeating it per page, so navigating within the group replaces only the routed region.',
+  },
+};
+
+export const descriptionOverrides: Readonly<Record<string, string>> = {
+  '/docs/getting-started/overview':
+    'What the Askr runtime owns, what your application owns, and which published packages the docs are written against.',
+  '/docs/getting-started/installation':
+    'Run the CLI with npx or install it globally, check the Node version Askr needs, and confirm a scaffolded project starts.',
+  '/docs/getting-started/choose-a-starter':
+    'Compare the startkit, spa, ssr, ssg, and full-stack templates, or describe your product and let the CLI pick one.',
+  '/docs/getting-started/first-application':
+    'Scaffold a project, register a route, add a piece of state, and produce a real production build.',
+  '/docs/getting-started/project-structure':
+    'Where the composition root, routes, server boundary, and generated artifacts live in a scaffolded Askr project.',
+  '/docs/getting-started/application-modes':
+    'Choose between SPA, SSR, SSG, and full-stack delivery — and see why the choice is a boot-file change, not a rewrite.',
+
+  '/docs/core-concepts/components-and-jsx':
+    'Askr components are plain functions returning JSX, with no compiler-owned reactivity and no hidden re-render rules.',
+  '/docs/core-concepts/state-and-derived-values':
+    'Read and write state through explicit getter/setter pairs, and derive values instead of synchronizing copies.',
+  '/docs/core-concepts/lists-with-for':
+    'Render keyed collections with For so list updates move DOM nodes instead of rebuilding them.',
+  '/docs/core-concepts/conditional-rendering':
+    'Branch markup with Show and friends, keeping the mounted and unmounted paths explicit.',
+  '/docs/core-concepts/scopes':
+    'Scopes own effects and resources, and dispose of them with their lexical owner rather than on a manual cleanup list.',
+  '/docs/core-concepts/lifecycle-work':
+    'Attach mount, cleanup, and DOM-only work to the component lifecycle so server rendering stays deterministic.',
+  '/docs/core-concepts/error-boundaries':
+    'Catch render-time failures at a boundary with a fallback and a reset path, instead of losing the whole application shell.',
+  '/docs/core-concepts/determinism':
+    'The runtime rules that let the same component tree render identically on the server and in the browser.',
+
+  '/docs/routing/definitions-and-layouts':
+    'Declare routes, nested layouts, and groups in one typed registry you can read and enumerate.',
+  '/docs/routing/paths-and-parameters':
+    'Path params are inferred from the literal route string, so a component gets typed params without hand-written types.',
+  '/docs/routing/navigation-and-url-state':
+    'Navigate with Link and navigate(), and keep URL-owned state in the URL rather than mirroring it into component state.',
+  '/docs/routing/loaders-and-deferred':
+    'Load route data before render, and mark the slow parts deferred so they do not block the first paint.',
+  '/docs/routing/access-policies':
+    'Attach auth requirements to a route or group so denied users never see a flash of protected UI.',
+  '/docs/routing/route-metadata':
+    'Set titles, meta tags, and structured data per route, and serialize them into server-rendered documents.',
+  '/docs/data/choosing-a-primitive':
+    'When to reach for a resource, a query, or a plain loader — and what each one owns.',
+  '/docs/data/resources':
+    'Bind asynchronous work to the active lifecycle so navigating away cancels it instead of resolving into a dead component.',
+  '/docs/data/queries-and-consistency':
+    'Key queries, share results between components, and control how cached data goes stale.',
+  '/docs/data/mutations-and-invalidation':
+    'Write through a mutation, invalidate the queries it affects, and let dependents refetch.',
+  '/docs/data/server-queries':
+    'Resolve query data on the server and hand it to the browser so hydration does not refetch what you already have.',
+  '/docs/data/actions-and-forms':
+    'Page actions are POST handlers that return a redirect or field-level errors, and work with JavaScript disabled.',
+
+  '/docs/rendering/client-and-islands':
+    'Boot a fully client-rendered app, or mount single interactive components into an otherwise static page.',
+  '/docs/rendering/server-side-rendering':
+    'Render a route to HTML on the server, including how request data and loader results reach the renderer.',
+  '/docs/rendering/streaming':
+    'Stream a response so slow data arrives after the shell, without blocking the rest of the page.',
+  '/docs/rendering/hydration':
+    'Attach the browser runtime to server-rendered markup, and verify the markup matches before it does.',
+  '/docs/rendering/selective-hydration':
+    'Defer hydration until idle or below the fold — worth reaching for only once profiling says hydration is the bottleneck.',
+  '/docs/rendering/static-site-generation':
+    'Render every route to HTML at build time and deploy the output as plain files with no server runtime.',
+
+  '/docs/tooling':
+    'Scaffold, generate, and check an Askr project with the published CLI and Vite plugin.',
+  '/docs/tooling/cli-overview':
+    'The commands @askrjs/cli actually ships, how to target a project with --cwd, and which generators do not exist.',
+  '/docs/tooling/create':
+    'Create a project from a template, or from a product prompt that picks the template and writes a build blueprint.',
+  '/docs/tooling/add':
+    'Generate a page or a declared action as ordinary files you review in a normal diff before committing.',
+  '/docs/tooling/openapi':
+    'Emit an OpenAPI document from your schemas, fail CI when it drifts, and generate a typed client from it.',
+  '/docs/tooling/ssg':
+    'Run static generation from a config file, choose the output directory, and verify what was written.',
+  '/docs/tooling/dependency-updates':
+    'askr update applies peer-compatible changes; askr upgrade moves to the latest peer set as a deliberate step.',
+  '/docs/tooling/skills':
+    'Check project-specific instructions into the repo so an AI assistant does not rediscover your conventions each session.',
+  '/docs/tooling/vite':
+    'How the Vite plugin owns the HTML document, injects Askr-managed head content, and composes the SSR response.',
 };

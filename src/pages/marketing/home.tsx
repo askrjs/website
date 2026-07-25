@@ -12,7 +12,7 @@ const routeSpecimen = `import {
   route,
 } from '@askrjs/askr/router';
 
-export const routes = createRouteRegistry(() => {
+export const pageRegistry = createRouteRegistry(() => {
   group({ layout: AppLayout }, () => {
     route('/', OverviewPage);
     route('/activity', ActivityPage);
@@ -35,13 +35,13 @@ export function HomePage() {
           </p>
           <div class="hero__actions">
             <Button asChild>
-              <Link href="/platform">
+              <a href="/docs/getting-started">
                 Get started
                 <ArrowRightIcon size={18} aria-hidden="true" />
-              </Link>
+              </a>
             </Button>
-            <Button asChild>
-              <a href="/docs">Read the docs</a>
+            <Button asChild variant="outline">
+              <Link href="/platform">Explore the platform</Link>
             </Button>
           </div>
           <div class="hero__code" aria-label="Install Askr">
@@ -71,10 +71,11 @@ export function HomePage() {
               <li>
                 <span>01</span>
                 <div>
-                  <h3>Grep the route table, not a file tree</h3>
+                  <h3>The route table is a value, not a global</h3>
                   <p>
                     Every path, layout, and param lives in this one registry —
-                    not scattered across a folder-naming convention.
+                    which you export and hand to whatever renders it. Nothing is
+                    filled in behind you by a folder-naming convention.
                   </p>
                 </div>
               </li>
@@ -113,10 +114,10 @@ export function HomePage() {
           </div>
           <div class="differentiation__links">
             <RepositoryLink href="https://github.com/askrjs/askr">
-              Read the framework source
+              Read the runtime source
             </RepositoryLink>
             <RepositoryLink href="https://github.com/askrjs/askr-examples">
-              Compare first-party examples
+              Compare the example applications
             </RepositoryLink>
           </div>
         </Container>
@@ -171,7 +172,7 @@ export function HomePage() {
           </div>
           <Button asChild>
             <a href="/docs/getting-started">
-              Open the documentation
+              Create an app
               <ArrowRightIcon size={18} aria-hidden="true" />
             </a>
           </Button>

@@ -18,3 +18,23 @@ export const packageVersions = {
   ui: '0.0.13',
   vite: '0.0.7',
 } as const;
+
+export const packagePeers = {
+  askr: [],
+  auth: [],
+  charts: ['askr'],
+  cli: ['askr'],
+  fetch: [],
+  i18n: ['askr'],
+  logos: ['askr'],
+  lucide: ['askr'],
+  monaco: ['askr'],
+  node: [],
+  otel: [],
+  schema: [],
+  server: ['askr'],
+  testing: [],
+  themes: ['askr', 'ui'],
+  ui: ['askr'],
+  vite: ['askr'],
+} as const;

@@ -1,9 +1,35 @@
 import {
+  EditorialCTA,
   EditorialHero,
   MarketingPageNavigation,
   RepositoryLink,
   RuledSection,
+  SequenceList,
+  type SequenceItem,
 } from './components';
+
+const ownership: readonly SequenceItem[] = [
+  {
+    title: 'State',
+    description: 'Store mutable facts where they are owned.',
+    meta: 'read · write',
+  },
+  {
+    title: 'Derived values',
+    description: 'Track relationships instead of synchronizing copies.',
+    meta: 'depend · compute',
+  },
+  {
+    title: 'Resources',
+    description: 'Attach asynchronous work to the active lifecycle.',
+    meta: 'load · cancel',
+  },
+  {
+    title: 'Scopes',
+    description: 'End effects and resources with their lexical owner.',
+    meta: 'own · dispose',
+  },
+];
 
 export function ApplicationModelPage() {
   return (
@@ -21,35 +47,10 @@ export function ApplicationModelPage() {
             goes away, its resources are cleaned up automatically.
           </p>
         </div>
-        <ol
-          class="concept-sequence"
-          aria-label="Application ownership lifecycle"
-        >
-          <li>
-            <span>01</span>
-            <h3>State</h3>
-            <p>Store mutable facts where they are owned.</p>
-            <small>read · write</small>
-          </li>
-          <li>
-            <span>02</span>
-            <h3>Derived values</h3>
-            <p>Track relationships instead of synchronizing copies.</p>
-            <small>depend · compute</small>
-          </li>
-          <li>
-            <span>03</span>
-            <h3>Resources</h3>
-            <p>Attach asynchronous work to the active lifecycle.</p>
-            <small>load · cancel</small>
-          </li>
-          <li>
-            <span>04</span>
-            <h3>Scopes</h3>
-            <p>End effects and resources with their lexical owner.</p>
-            <small>own · dispose</small>
-          </li>
-        </ol>
+        <SequenceList
+          label="Application ownership lifecycle"
+          items={ownership}
+        />
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
@@ -72,6 +73,13 @@ export function ApplicationModelPage() {
           </RepositoryLink>
         </div>
       </RuledSection>
+      <EditorialCTA
+        title="Put state, routes, and lifecycle to work."
+        primaryHref="/docs/core-concepts"
+        primaryLabel="Read the fundamentals"
+        secondaryHref="/docs/getting-started"
+        secondaryLabel="Create an app"
+      />
       <MarketingPageNavigation current="/application-model" />
     </>
   );

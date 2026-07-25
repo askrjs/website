@@ -14,6 +14,10 @@ import { cliSnapshot } from '../src/pages/docs/cli-snapshot';
 import { packageVersions } from '../src/pages/docs/package-versions';
 import { searchDocs } from '../src/pages/docs/search-index';
 import { buildUsageGuide } from '../src/pages/docs/usage-guide';
+import {
+  componentDemoFor,
+  componentDemoTitles,
+} from '../src/pages/docs/component-demos';
 
 describe('documentation catalog', () => {
   it('derives documented versions from installed package metadata', () => {
@@ -40,7 +44,10 @@ describe('documentation catalog', () => {
     for (const page of docsCatalog.filter(
       (candidate) => candidate.navSection !== 'Generated API'
     )) {
-      const code = buildUsageGuide(page).code;
+      // Pages with nothing page-specific to show render no example section.
+      const guide = buildUsageGuide(page);
+      if (!guide) continue;
+      const code = guide.code;
       expect(
         code,
         `${page.route}: state setters must be destructured`
@@ -96,6 +103,27 @@ describe('documentation catalog', () => {
         `${entrypoint.importName} -> ${route}`
       ).toBe(true);
     }
+  });
+
+  it('provides interactive demos for behavior-heavy component pages', () => {
+    const expected = [
+      'Dialog',
+      'Select',
+      'Combobox and Command',
+      'Calendar and Date Picker',
+      'Tabs',
+      'Accordion and Collapsible',
+      'Switch',
+      'Slider',
+      'Checkbox',
+      'Radio Group',
+      'Popover',
+      'Tooltip',
+      'Menu, Dropdown, and Context Menu',
+      'Toast and Sonner',
+    ];
+    expect(componentDemoTitles).toEqual(expect.arrayContaining(expected));
+    for (const title of expected) expect(componentDemoFor(title)).toBeTruthy();
   });
 
   it('defines the exact visible section order for every page renderer', () => {
@@ -163,7 +191,9 @@ describe('generated API reference', () => {
     for (const page of docsCatalog.filter(
       (candidate) => candidate.navSection !== 'Generated API'
     )) {
-      const code = buildUsageGuide(page).code;
+      const guide = buildUsageGuide(page);
+      if (!guide) continue;
+      const code = guide.code;
       for (const match of code.matchAll(
         /import\s*\{([\s\S]*?)\}\s*from\s*['"](@askrjs\/[^'"]+)['"]/g
       )) {

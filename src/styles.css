@@ -442,21 +442,6 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .editorial-section__heading > p:last-child,
-.editorial-section__intro {
-  margin: var(--ak-space-lg) 0 0;
-  color: var(--ak-color-text-muted);
-  font-size: var(--ak-font-size-lg);
-  line-height: var(--ak-line-height-relaxed);
-}
-
-.platform-journey h3 {
-  margin: 0;
-  font-family: var(--ak-font-family-quote);
-  font-size: var(--ak-font-size-xl);
-  font-weight: var(--ak-font-weight-regular);
-  line-height: var(--ak-line-height-tight);
-}
-
 .editorial-prose p {
   margin: 0;
   color: var(--ak-color-text-muted);
@@ -482,128 +467,64 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   text-underline-offset: 0.22em;
 }
 
-.platform-journey {
+/* Ordered progression: numbered steps, read left to right. */
+.sequence {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.platform-journey__step {
-  position: relative;
+.sequence[data-columns='2'] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(4rem, 10vw, 9rem);
+}
+
+.sequence[data-columns='4'] {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.sequence[data-columns='5'] {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.sequence__item {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
   padding: var(--ak-space-lg) var(--ak-space-lg) 0 0;
   border-top: 1px solid var(--ak-color-border);
 }
 
-.platform-journey__step:not(:last-child)::after {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding-inline: var(--ak-space-xs);
-  transform: translate(50%, -50%);
-  background: var(--ak-color-bg);
-  color: var(--ak-color-text-muted);
-  content: '→';
+.sequence[data-columns='2'] .sequence__item {
+  max-width: 34rem;
 }
 
-.platform-journey__number,
-.platform-journey__step > small {
+/* One quiet metadata treatment, shared by both patterns: the step number,
+   the optional eyebrow above a title, and the terse trailing line. */
+.sequence__number,
+.sequence__label,
+.sequence__item > small,
+.flow-map span,
+.flow-map small {
   display: block;
   color: var(--ak-color-text-muted);
   font-family: var(--ak-font-family-mono);
-  font-size: 0.68rem;
+  font-size: var(--ak-font-size-xs);
   line-height: 1.6;
 }
 
-.platform-journey__step > strong {
-  display: block;
-  margin: var(--ak-space-md) 0 var(--ak-space-sm);
-  font-size: var(--ak-font-size-xs);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+.sequence__label {
+  margin-top: var(--ak-space-xs);
 }
 
-.platform-journey__step > p {
-  min-height: 5rem;
-  margin: var(--ak-space-md) 0 var(--ak-space-xs);
-  color: var(--ak-color-text-muted);
-  font-size: var(--ak-font-size-sm);
-  line-height: 1.6;
+/* Pins the terse trailing line to the bottom so it aligns across a row. */
+.sequence__item > small {
+  margin-top: auto;
+  padding-top: var(--ak-space-md);
 }
 
-.platform-journey__step > small {
-  min-height: 3.4rem;
-}
-
-.concept-sequence,
-.starter-path {
-  display: grid;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.concept-sequence {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.starter-path {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-}
-
-.concept-sequence li,
-.starter-path li {
-  position: relative;
-  min-width: 0;
-  padding-right: var(--ak-space-lg);
-}
-
-.concept-sequence li:not(:last-child)::after {
-  position: absolute;
-  top: 50%;
-  right: var(--ak-space-sm);
-  color: var(--ak-color-text-muted);
-  content: '→';
-  transform: translate(50%, -50%);
-}
-
-.starter-path li:not(:last-child)::after {
-  display: none;
-  position: absolute;
-  color: var(--ak-color-text-muted);
-}
-
-.starter-path__marker {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--ak-space-md);
-}
-
-.starter-path__arrow {
-  margin-left: auto;
-}
-
-.concept-sequence span,
-.concept-sequence small,
-.starter-path span,
-.starter-path small,
-.rendering-map span,
-.rendering-map small,
-.composition-map span,
-.production-map span {
-  color: var(--ak-color-text-muted);
-  font-family: var(--ak-font-family-mono);
-  font-size: var(--ak-font-size-xs);
-}
-
-.concept-sequence h3,
-.starter-path h3,
-.rendering-map h3,
-.composition-map h3,
-.production-map h3 {
+.sequence__item h3 {
   margin: var(--ak-space-md) 0 var(--ak-space-sm);
   font-family: var(--ak-font-family-quote);
   font-size: var(--ak-font-size-xl);
@@ -611,134 +532,166 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   line-height: var(--ak-line-height-tight);
 }
 
-.concept-sequence p,
-.starter-path p,
-.rendering-map p,
-.composition-map p,
-.production-map p {
+.sequence[data-columns='2'] .sequence__item h3 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.sequence__item p {
   margin: 0 0 var(--ak-space-sm);
   color: var(--ak-color-text-muted);
   font-size: var(--ak-font-size-sm);
   line-height: 1.6;
 }
 
-.starter-path h3 {
-  font-size: var(--ak-font-size-lg);
+.sequence[data-columns='2'] .sequence__item p {
+  max-width: 32rem;
+  font-size: inherit;
+  line-height: 1.7;
 }
 
-.rendering-map__source,
-.production-map__source {
+/* A hub and the nodes it relates to: fan-out puts the hub first,
+   converge puts it last. */
+.flow-map {
+  display: grid;
+  gap: var(--ak-space-2xl);
+}
+
+.flow-map__hub {
   position: relative;
-  max-width: 32rem;
+  max-width: 34rem;
   margin-inline: auto;
-  padding-bottom: var(--ak-space-3xl);
   text-align: center;
 }
 
-.rendering-map__source::after,
-.production-map__source::after {
+.flow-map[data-direction='fan-out'] .flow-map__hub {
+  padding-bottom: var(--ak-space-3xl);
+}
+
+.flow-map[data-direction='converge'] .flow-map__hub {
+  padding-top: var(--ak-space-3xl);
+}
+
+.flow-map__hub::after {
   position: absolute;
-  bottom: var(--ak-space-md);
   left: 50%;
-  color: var(--ak-color-text-muted);
-  content: '↓';
+  width: 1px;
+  height: var(--ak-space-xl);
+  background: var(--ak-color-border);
+  content: '';
   transform: translateX(-50%);
 }
 
-.rendering-map ol,
-.production-map ol,
-.composition-map ul {
+.flow-map[data-direction='fan-out'] .flow-map__hub::after {
+  bottom: var(--ak-space-md);
+}
+
+.flow-map[data-direction='converge'] .flow-map__hub::after {
+  top: var(--ak-space-md);
+}
+
+.flow-map__nodes {
   display: grid;
   gap: clamp(2rem, 6vw, 5rem);
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-.rendering-map ol {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
   text-align: center;
 }
 
-.composition-map ul {
+.flow-map__nodes[data-count='2'] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.flow-map__nodes[data-count='3'] {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.composition-map li {
-  position: relative;
-  padding-bottom: var(--ak-space-3xl);
-  text-align: center;
+.flow-map__nodes li {
+  min-width: 0;
 }
 
-.composition-map li::after {
-  position: absolute;
-  bottom: var(--ak-space-md);
-  left: 50%;
-  color: var(--ak-color-text-muted);
-  content: '↓';
-  transform: translateX(-50%);
+.flow-map small {
+  margin-top: var(--ak-space-sm);
 }
 
-.composition-map li > span,
-.production-map li > span {
-  color: var(--ak-color-text);
+.flow-map h3 {
+  margin: var(--ak-space-md) 0 var(--ak-space-sm);
   font-family: var(--ak-font-family-quote);
-  font-size: var(--ak-font-size-2xl);
+  font-size: var(--ak-font-size-xl);
+  font-weight: var(--ak-font-weight-regular);
+  line-height: var(--ak-line-height-tight);
 }
 
-.composition-map__root {
-  max-width: 34rem;
-  margin-inline: auto;
-  text-align: center;
-}
-
-.production-map ol {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  text-align: center;
-}
-
-.theme-relationship {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(4rem, 10vw, 9rem);
+.flow-map p {
   margin: 0;
-  padding: 0;
-  list-style: none;
+  color: var(--ak-color-text-muted);
+  font-size: var(--ak-font-size-sm);
+  line-height: 1.6;
 }
 
-.theme-relationship li {
-  position: relative;
-  max-width: 34rem;
-}
-
-.theme-relationship li:first-child::after {
+.visually-hidden {
   position: absolute;
-  top: 50%;
-  right: calc(clamp(4rem, 10vw, 9rem) / -2);
-  color: var(--ak-color-text-muted);
-  content: '→';
-  transform: translate(50%, -50%);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
-.theme-relationship span,
-.theme-relationship small {
+.package-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.package-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--ak-font-size-sm);
+  text-align: left;
+}
+
+.package-table th,
+.package-table td {
+  padding: var(--ak-space-md) var(--ak-space-lg) var(--ak-space-md) 0;
+  border-bottom: 1px solid var(--ak-color-border);
+  vertical-align: baseline;
+}
+
+.package-table thead th {
   color: var(--ak-color-text-muted);
+  font-family: var(--ak-font-family-mono);
+  font-size: var(--ak-font-size-xs);
+  font-weight: var(--ak-font-weight-regular);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.package-table tbody th {
+  font-weight: var(--ak-font-weight-regular);
+  white-space: nowrap;
+}
+
+.package-table code {
   font-family: var(--ak-font-family-mono);
   font-size: var(--ak-font-size-xs);
 }
 
-.theme-relationship h3 {
-  margin: var(--ak-space-md) 0 var(--ak-space-sm);
-  font-family: var(--ak-font-family-quote);
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  font-weight: var(--ak-font-weight-regular);
+.package-table td {
+  color: var(--ak-color-text-muted);
 }
 
-.theme-relationship p {
-  max-width: 32rem;
-  margin: 0 0 var(--ak-space-sm);
-  color: var(--ak-color-text-muted);
-  line-height: 1.7;
+.package-table__standalone {
+  font-style: italic;
+}
+
+.package-table__version {
+  font-family: var(--ak-font-family-mono);
+  font-size: var(--ak-font-size-xs);
+  white-space: nowrap;
 }
 
 .editorial-cta__inner {
@@ -1039,89 +992,36 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
     padding-block: var(--ak-space-3xl);
   }
 
-  .platform-journey {
+  .sequence {
     grid-template-columns: 1fr;
+    gap: var(--ak-space-2xl);
   }
 
-  .platform-journey__step {
+  .sequence[data-columns='2'] {
+    gap: var(--ak-space-3xl);
+  }
+
+  .sequence__item {
+    max-width: none;
     padding: var(--ak-space-xl) 0 var(--ak-space-xl) var(--ak-space-xl);
     border-top: 0;
     border-left: 1px solid var(--ak-color-border);
   }
 
-  .platform-journey__step:not(:last-child)::after {
-    top: auto;
-    right: auto;
-    bottom: 0;
-    left: 0;
-    padding-block: var(--ak-space-xs);
-    transform: translate(-50%, 50%);
-    background: var(--ak-color-bg);
-    content: '↓';
+  .sequence__item > small {
+    margin-top: var(--ak-space-md);
+    padding-top: 0;
   }
 
-  .platform-journey__step > p,
-  .platform-journey__step > small {
-    min-height: 0;
-  }
-
-  .theme-relationship {
-    grid-template-columns: 1fr;
-    gap: var(--ak-space-3xl);
-  }
-
-  .theme-relationship li:first-child::after {
-    top: auto;
-    right: auto;
-    bottom: calc(var(--ak-space-3xl) / -2);
-    left: 50%;
-    content: '↓';
-    transform: translate(-50%, 50%);
-  }
-
-  .concept-sequence,
-  .starter-path,
-  .rendering-map ol {
+  .flow-map__nodes {
     grid-template-columns: 1fr;
     gap: var(--ak-space-2xl);
-  }
-
-  .concept-sequence li,
-  .starter-path li {
-    padding: 0 0 var(--ak-space-xl) var(--ak-space-xl);
-  }
-
-  .concept-sequence li:not(:last-child)::after,
-  .starter-path li:not(:last-child)::after {
-    top: auto;
-    right: auto;
-    bottom: 0;
-    left: 0;
-    content: '↓';
-    transform: translate(-50%, 50%);
-  }
-
-  .starter-path li:not(:last-child)::after {
-    display: block;
-  }
-
-  .starter-path__arrow {
-    display: none;
-  }
-
-  .rendering-map ol {
     text-align: left;
   }
 
-  .rendering-map ol li {
+  .flow-map__nodes li {
     padding-left: var(--ak-space-xl);
-  }
-
-  .rendering-map ol li::before {
-    margin-left: calc(var(--ak-space-xl) * -1);
-    padding-right: var(--ak-space-md);
-    color: var(--ak-color-text-muted);
-    content: '↳';
+    border-left: 1px solid var(--ak-color-border);
   }
 
   .editorial-cta__inner {
