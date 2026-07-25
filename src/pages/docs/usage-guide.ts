@@ -29,7 +29,7 @@ import { renderToString } from '@askrjs/askr/ssr';`,
 // declares them, so this is what you are matching against locally:
 import { createRouteRegistry } from '@askrjs/askr/router';
 
-// createRouteRegistry: (definition: RouteDefinition, options?: RegisterRoutesOptions) => RouteRegistry
+// createRouteRegistry: (definition: RouteDefinition, options?: RouteRegistryOptions) => RouteRegistry
 const pageRegistry = createRouteRegistry(() => {});`,
   '/docs/reference/package-map': `// Which package owns which concern, as an import block.
 import { derive, state } from '@askrjs/askr';        // runtime: state and rendering
@@ -1052,7 +1052,7 @@ const project = resource(
 const projects = mockQuery({ data: [{ id: 'p1', name: 'Northstar' }] });
 const invalidations = createInvalidationRecorder();
 
-expect(matchRoute('/projects/p1', { routes: registry.routes })?.params.id).toBe('p1');
+expect(matchRoute('/projects/p1', { registry })?.params.id).toBe('p1');
 expect(invalidations.calls).toEqual([]);`,
     ],
     [

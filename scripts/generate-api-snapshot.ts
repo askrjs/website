@@ -28,6 +28,17 @@ type ApiSymbol = {
   typeOnly: boolean;
 };
 
+// These symbols were removed from Askr's canonical route contract. Keep the
+// website from reintroducing ambient-route guidance while older published
+// artifacts remain installable during the staged clean break.
+const removedRouterSymbols = new Set([
+  'registerRoutes',
+  'getManifest',
+  'getRoutes',
+  'clearRoutes',
+  'RegisterRoutesOptions',
+]);
+
 const root = process.cwd();
 const snapshotPath = resolve(root, 'src/pages/docs/api-snapshot.ts');
 const manifestPath = resolve(root, 'src/pages/docs/api-manifest.ts');
@@ -149,7 +160,15 @@ const snapshot = entrypoints.map((entrypoint) => {
     const symbols = moduleSymbol
       ? checker
           .getExportsOfModule(moduleSymbol)
-          .filter((symbol) => symbol.name !== 'default')
+          .filter(
+            (symbol) =>
+              symbol.name !== 'default' &&
+              !(
+                entrypoint.packageName === '@askrjs/askr' &&
+                entrypoint.subpath === './router' &&
+                removedRouterSymbols.has(symbol.name)
+              )
+          )
           .map((symbol) => {
             const baseAnchor = anchorFor(symbol.name) || 'export';
             const count = usedAnchors.get(baseAnchor) ?? 0;
@@ -157,7 +176,10 @@ const snapshot = entrypoints.map((entrypoint) => {
             return {
               name: symbol.name,
               anchor: count === 0 ? baseAnchor : `${baseAnchor}-${count + 1}`,
-              signature: signatureFor(symbol),
+              signature: signatureFor(symbol).replaceAll(
+                'RegisterRoutesOptions',
+                'RouteRegistryOptions'
+              ),
               typeOnly: !symbol.valueDeclaration,
             };
           })
