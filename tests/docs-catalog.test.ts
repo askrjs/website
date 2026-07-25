@@ -15,6 +15,10 @@ import { packageVersions } from '../src/pages/docs/package-versions';
 import { searchDocs } from '../src/pages/docs/search-index';
 import { buildUsageGuide } from '../src/pages/docs/usage-guide';
 import {
+  maturityStatement,
+  releaseNotes,
+} from '../src/pages/docs/release-notes';
+import {
   componentDemoFor,
   componentDemoTitles,
 } from '../src/pages/docs/component-demos';
@@ -143,6 +147,14 @@ describe('documentation catalog', () => {
         );
       }
     }
+  });
+
+  it('keeps maturity and release-note content present for the docs landing page', () => {
+    expect(maturityStatement).toMatch(/pre-1\.0/);
+    expect(releaseNotes.length).toBeGreaterThanOrEqual(2);
+    expect(releaseNotes.every((note) => note.version && note.summary)).toBe(
+      true
+    );
   });
 });
 
