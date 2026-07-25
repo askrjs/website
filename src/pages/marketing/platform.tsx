@@ -1,4 +1,5 @@
 import { packagePeers, packageVersions } from '../docs/package-versions';
+import { askrBenchmarkSnapshot } from './benchmarks';
 import {
   EditorialCTA,
   EditorialHero,
@@ -111,6 +112,47 @@ export function PlatformPage() {
           </p>
         </div>
         <SequenceList label="From component to production" items={journey} />
+      </RuledSection>
+      <RuledSection stacked>
+        <div class="editorial-section__heading">
+          <h2>A measured starting point</h2>
+          <p>
+            This is a small, reproducible snapshot of the Askr benchmark
+            implementation, not a cross-framework claim. It uses{' '}
+            {askrBenchmarkSnapshot.frameworkVersion},{' '}
+            {askrBenchmarkSnapshot.browser}, and {askrBenchmarkSnapshot.runs}{' '}
+            runs per operation.
+          </p>
+        </div>
+        <div class="api-table-wrap">
+          <table class="api-table">
+            <caption>
+              Median operation time in milliseconds; lower is better.
+            </caption>
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>Keyed</th>
+                <th>Non-keyed</th>
+              </tr>
+            </thead>
+            <tbody>
+              {askrBenchmarkSnapshot.rows.map(
+                ([operation, keyed, nonKeyed]) => (
+                  <tr key={operation}>
+                    <th scope="row">{operation}</th>
+                    <td>{keyed.toFixed(1)} ms</td>
+                    <td>{nonKeyed.toFixed(1)} ms</td>
+                  </tr>
+                )
+              )}
+            </tbody>
+          </table>
+        </div>
+        <p class="editorial-prose">
+          Measured {askrBenchmarkSnapshot.measuredAt}. Re-run the benchmark
+          before comparing releases or making a broader performance claim.
+        </p>
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
