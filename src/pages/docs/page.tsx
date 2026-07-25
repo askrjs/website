@@ -8,6 +8,7 @@ import {
 } from './catalog';
 import { cliSnapshot } from './cli-snapshot';
 import { componentDemoFor } from './component-demos';
+import { maturityStatement, releaseNotes } from './release-notes';
 import type { DocsHeadingDefinition, DocsPageDefinition } from './types';
 import { buildUsageGuide, routeExampleFor } from './usage-guide';
 
@@ -188,31 +189,53 @@ export default function DocsPage() {
         <HeadingContent item={item} page={page} />
       ))}
       {page.route === '/docs' && (
-        <section aria-labelledby="versions">
-          <h2 id="versions" class="anchored-heading">
-            <a href="#versions">Published versions</a>
-          </h2>
-          <div class="api-table-wrap">
-            <table class="api-table">
-              <thead>
-                <tr>
-                  <th>Package</th>
-                  <th>Version</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.entries(publishedVersions).map(([name, version]) => (
-                  <tr key={name}>
-                    <td>
-                      <code>@askrjs/{name}</code>
-                    </td>
-                    <td>{version}</td>
+        <>
+          <section aria-labelledby="maturity">
+            <h2 id="maturity" class="anchored-heading">
+              <a href="#maturity">Maturity</a>
+            </h2>
+            <p>{maturityStatement}</p>
+          </section>
+          <section aria-labelledby="versions">
+            <h2 id="versions" class="anchored-heading">
+              <a href="#versions">Published versions</a>
+            </h2>
+            <div class="api-table-wrap">
+              <table class="api-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Package</th>
+                    <th scope="col">Version</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
+                </thead>
+                <tbody>
+                  {Object.entries(publishedVersions).map(([name, version]) => (
+                    <tr key={name}>
+                      <td>
+                        <code>@askrjs/{name}</code>
+                      </td>
+                      <td>{version}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+          <section aria-labelledby="release-notes">
+            <h2 id="release-notes" class="anchored-heading">
+              <a href="#release-notes">Release notes</a>
+            </h2>
+            {releaseNotes.map((note) => (
+              <article key={note.version} class="docs-release-note">
+                <h3>{note.version}</h3>
+                <p>
+                  <small>{note.date}</small>
+                </p>
+                <p>{note.summary}</p>
+              </article>
+            ))}
+          </section>
+        </>
       )}
       {page.route === '/docs/tooling/cli-overview' && (
         <section aria-labelledby="published-commands">
