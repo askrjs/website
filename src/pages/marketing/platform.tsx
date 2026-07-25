@@ -131,9 +131,9 @@ export function PlatformPage() {
             </caption>
             <thead>
               <tr>
-                <th>Operation</th>
-                <th>Keyed</th>
-                <th>Non-keyed</th>
+                <th scope="col">Operation</th>
+                <th scope="col">Keyed</th>
+                <th scope="col">Non-keyed</th>
               </tr>
             </thead>
             <tbody>
