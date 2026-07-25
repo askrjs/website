@@ -1959,7 +1959,7 @@ export const headingOverrides: Readonly<
     'clean-breaks':
       "Askr's public API favors one vocabulary per concept rather than keeping deprecated aliases around — for example, reactive scope is `defineScope()`/`readScope()` with no legacy `useContext`-style alias shipped alongside it. When a release renames or removes an export, expect it to be gone rather than soft-deprecated, so pin versions deliberately if you can't absorb that immediately.",
     'latest-published-scope':
-      'This site documents the exact @askrjs package versions installed by its lockfile. The version displayed on each guide and generated API page comes from generated package metadata, so upgrading the website dependencies and regenerating the snapshots updates the documentation baseline together. Every package is still pre-1.0, so treat minor version bumps as potentially breaking until a package publishes a 1.0.',
+      'This site documents the exact @askrjs package versions installed by its lockfile. The version displayed on each guide and generated API page comes from generated package metadata, so upgrading the website dependencies and regenerating the snapshots updates the documentation baseline together. Review the generated package versions before upgrading an application.',
     'migration-checklist':
       "Before upgrading, diff the exports on the relevant API Index pages against what your code currently imports — a missing symbol there means it moved or was removed, not that the docs are stale. Re-run your test suite with @askrjs/askr/testing's route-matching and query-mock helpers after any upgrade, since router and query-state shapes are exactly the kind of thing a minor bump can quietly change.",
     'package-alignment':
