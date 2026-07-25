@@ -1,25 +1,125 @@
+import { packageVersions } from './package-versions';
 import type { DocsPageDefinition } from './types';
 
+/** Pinned to the installed CLI so examples cannot drift from the snapshot. */
+const cli = `@askrjs/cli@${packageVersions.cli}`;
+
+// Hand-written examples for routes where the generic topic example is not
+// specific enough. Read by both the page renderer and the table of contents.
+const routeExamples: Readonly<Record<string, string>> = {
+  '/docs': `import { state } from '@askrjs/askr';
+import { createSPA } from '@askrjs/askr/boot';
+import { createRouteRegistry, route } from '@askrjs/askr/router';
+
+function HomePage() {
+  const [count, setCount] = state(0);
+  return <button onClick={() => setCount((value) => value + 1)}>Count: {count()}</button>;
+}
+
+export const pageRegistry = createRouteRegistry(() => route('/', HomePage));
+
+await createSPA({ root: '#app', registry: pageRegistry });`,
+  '/docs/reference': `// Every public API is reached through a published entrypoint.
+// Reaching into dist/ or src/ is not supported and will break on upgrade.
+import { derive, state } from '@askrjs/askr';
+import { createSPA } from '@askrjs/askr/boot';
+import { createRouteRegistry } from '@askrjs/askr/router';
+import { renderToString } from '@askrjs/askr/ssr';`,
+  '/docs/reference/api': `// Reference pages list signatures exactly as the installed package
+// declares them, so this is what you are matching against locally:
+import { createRouteRegistry } from '@askrjs/askr/router';
+
+// createRouteRegistry: (definition: RouteDefinition, options?: RegisterRoutesOptions) => RouteRegistry
+const pageRegistry = createRouteRegistry(() => {});`,
+  '/docs/reference/package-map': `// Which package owns which concern, as an import block.
+import { derive, state } from '@askrjs/askr';        // runtime: state and rendering
+import { createRouteRegistry } from '@askrjs/askr/router'; // routing
+import { Button } from '@askrjs/themes/components';  // styled components
+import { Dialog } from '@askrjs/ui';                 // headless behavior
+import { schema } from '@askrjs/schema';             // validation and OpenAPI
+import { createServerApp } from '@askrjs/server';    // HTTP boundary`,
+  '/docs/reference/glossary': `// The vocabulary on this page, as it appears in code.
+const [count, setCount] = state(0);        // state: a mutable fact you own
+const doubled = derive(() => count() * 2); // derived value: recomputed, never copied
+const pageRegistry = createRouteRegistry(() => {
+  route('/projects/{projectId}', ProjectPage); // route: a path plus its component
+});`,
+  '/docs/getting-started/first-application': `import { state } from '@askrjs/askr';
+import { createRouteRegistry, route } from '@askrjs/askr/router';
+
+function HomePage() {
+  const [count, setCount] = state(0);
+  return <button onClick={() => setCount((value) => value + 1)}>Count: {count()}</button>;
+}
+
+export const registry = createRouteRegistry(() => route('/', HomePage));`,
+  '/docs/core-concepts/state-and-derived-values': `import { derive, state } from '@askrjs/askr';
+
+export function OrderTotal() {
+  const [quantity, setQuantity] = state(2);
+  const [unitPrice] = state(12);
+  const total = derive(() => quantity() * unitPrice());
+
+  return <button onClick={() => setQuantity((value) => value + 1)}>Total: {total()}</button>;
+}`,
+  '/docs/routing/definitions-and-layouts': `const registry = createRouteRegistry(() => {
+  group({ layout: AppLayout }, () => {
+    route('/', HomePage);
+    route('/projects/{projectId}', ProjectPage);
+  });
+});`,
+  '/docs/data/queries-and-consistency': `const project = defineQuery({
+  key: ({ id }: { id: string }) => 'project:' + id,
+  fetch: ({ id, signal }) => api.projects.get(id, { signal }),
+});
+
+const result = createQuery(project, { id: projectId });`,
+  '/docs/rendering/server-side-rendering': `const html = renderToString({
+  registry,
+  url: request.url,
+});`,
+  '/docs/server/request-binding': `router.post('/projects', async (context) => {
+  const input = await context.bind<CreateProjectInput>();
+  return created(await projects.create(input));
+});`,
+  '/docs/authentication/authorization': `route('/admin', AdminPage, {
+  auth: requireUser(),
+  policies: [({ auth }) =>
+    auth.permissions.includes('admin') ? allow() : forbidden()],
+});`,
+  '/docs/http-contracts/schemas': `const project = schema.object({
+  id: schema.string(),
+  name: schema.string(),
+});
+
+project.openapi;`,
+  '/docs/charts/cartesian-marks': `const Plot = createPlot<ProjectRow>();
+
+<Plot.Root data={rows} rowKey={(row) => row.id} label="Revenue by day">
+  <Plot.Axis axis="x" />
+  <Plot.Axis axis="y" />
+  <Plot.Line x="createdAt" y="revenue" />
+  <Plot.Point x="createdAt" y="revenue" />
+</Plot.Root>`,
+  '/docs/mcp/primitives': `const mcp = createMcpServer({ name: 'project-tools', version: '1.0.0' })
+  .tool('lookup-project', { input: projectInput }, async (context, input) => {
+    return { content: [{ type: 'text', text: await lookup(input.id) }] };
+  });`,
+  '/docs/tooling/create': `npx ${cli} create startkit my-app
+npx ${cli} create --prompt "Authenticated operations dashboard"`,
+};
+
+export function routeExampleFor(route: string): string | undefined {
+  return routeExamples[route];
+}
+
 export type UsageGuideDefinition = {
-  intro: string;
-  steps: readonly string[];
+  /** Only set when there is something page-specific to say. */
+  intro?: string;
   code: string;
 };
 
-function sharedSteps(page: DocsPageDefinition): readonly string[] {
-  return [
-    `Import the published ${page.packages.map((pkg) => pkg.importPath ?? pkg.name).join(' and ')} entrypoint.`,
-    `Keep ${page.title.toLowerCase()} configuration next to the component, route, or server composition root that owns it.`,
-    'Handle pending, unavailable, cancellation, and failure states, then verify the production path.',
-  ];
-}
-
 function componentGuide(page: DocsPageDefinition): UsageGuideDefinition {
-  const steps = [
-    'Import the themed component from @askrjs/themes/components; use @askrjs/ui directly only when building a custom visual system.',
-    `Keep ${page.title.toLowerCase()} labels, state, and application actions visible at the call site instead of styling internal DOM nodes.`,
-    'Verify keyboard behavior, focus movement or return, disabled state, and both standard themes.',
-  ];
   const examples: readonly [RegExp, string][] = [
     [
       /^UI and Components$|Headless versus Themed|Composition and Accessibility|Theme Tokens|Customization/,
@@ -370,11 +470,9 @@ import { ThemeScope } from '@askrjs/themes/theme';
   if (!code) {
     throw new Error(`Missing component usage guide for ${page.route}`);
   }
-  return {
-    intro: `${page.title} should use the standard themed surface unless the application is deliberately implementing its own design system on top of @askrjs/ui.`,
-    steps,
-    code,
-  };
+  // The example itself is page-specific and does the explaining; the intro
+  // here was title substitution, so there isn't one.
+  return { code };
 }
 
 function topicGuide(
@@ -998,19 +1096,15 @@ rg 'data-askr|<main|<title' dist`,
   ];
   const match = topics.find(([pattern]) => pattern.test(page.title));
   if (!match) return undefined;
-  return { intro: match[1], steps: sharedSteps(page), code: match[2] };
+  return { intro: match[1], code: match[2] };
 }
 
 export function buildUsageGuide(
   page: DocsPageDefinition,
   exactExample?: string
-): UsageGuideDefinition {
+): UsageGuideDefinition | undefined {
   if (exactExample) {
-    return {
-      intro: `Start with this complete ${page.title.toLowerCase()} shape, then replace the example data and application service with your own.`,
-      steps: sharedSteps(page),
-      code: exactExample,
-    };
+    return { code: exactExample };
   }
 
   const focusedGuide = topicGuide(page);
@@ -1020,12 +1114,7 @@ export function buildUsageGuide(
     return {
       intro:
         'Create a readable starter, run it unchanged, and make one small production build after the first route works.',
-      steps: [
-        'Choose startkit for the recommended product baseline; choose spa, ssr, ssg, or full-stack only when that delivery boundary is already known.',
-        'Run the generated application and read its route registry, scripts, and route-tree test before editing them.',
-        'Add one page, update the expected route set, then build and preview the real output.',
-      ],
-      code: `npx @askrjs/cli@0.0.5 create startkit my-app
+      code: `npx ${cli} create startkit my-app
 cd my-app
 npm run dev
 npm run build`,
@@ -1036,7 +1125,6 @@ npm run build`,
     return {
       intro:
         'Put reactive state inside the component that owns the interaction and derive display values from it during render.',
-      steps: sharedSteps(page),
       code: `import { derive, state } from '@askrjs/askr';
 
 export function Quantity() {
@@ -1052,7 +1140,6 @@ export function Quantity() {
     return {
       intro:
         'Register a route once and let the same registry drive browser navigation, SSR, and static generation.',
-      steps: sharedSteps(page),
       code: `import { createRouteRegistry, group, route } from '@askrjs/askr/router';
 
 export const registry = createRouteRegistry(() => {
@@ -1068,7 +1155,6 @@ export const registry = createRouteRegistry(() => {
     return {
       intro:
         'Define the cache key and cancellable fetch contract once, then create the query where a component needs the result.',
-      steps: sharedSteps(page),
       code: `import { createQuery, defineQuery } from '@askrjs/askr/data';
 
 const project = defineQuery({
@@ -1084,7 +1170,6 @@ const result = createQuery(project, { id: projectId });`,
     return {
       intro:
         'Keep the route tree shared and change the delivery adapter—not the component contract—when moving between client, server, and static rendering.',
-      steps: sharedSteps(page),
       code: `import { createSPA, hydrateSPA } from '@askrjs/askr/boot';
 
 const root = document.getElementById('app')!;
@@ -1100,7 +1185,6 @@ if (root.childNodes.length) {
     return {
       intro:
         'Resolve identity at the request boundary and express authorization as reusable requirements instead of component-only checks.',
-      steps: sharedSteps(page),
       code: `import {
   createAuth,
   requirePermission,
@@ -1123,7 +1207,6 @@ export const manageProjects = [
     return {
       intro:
         'Define an executable schema once and reuse its OpenAPI representation in the HTTP contract and generated-client workflow.',
-      steps: sharedSteps(page),
       code: `import { schema } from '@askrjs/schema';
 
 export const projectInput = schema.object({
@@ -1140,7 +1223,6 @@ const openapiSchema = projectInput.openapi;`,
     return {
       intro:
         'Create one MCP server, register typed primitives on it, and let the selected transport supply auth, cancellation, sessions, and progress.',
-      steps: sharedSteps(page),
       code: `import { schema } from '@askrjs/schema';
 import { createMcpServer } from '@askrjs/server/mcp';
 
@@ -1161,7 +1243,6 @@ export const mcp = createMcpServer({
     return {
       intro:
         'Create the platform service at the application composition root and pass its provider-neutral contract into routes or components.',
-      steps: sharedSteps(page),
       code: `import { createI18n } from '@askrjs/i18n';
 
 export const i18n = createI18n('en', {
@@ -1179,7 +1260,6 @@ export const i18n = createI18n('en', {
     return {
       intro:
         'Build the HTTP surface from a router and context-first handlers; bind input and return an explicit response helper from the same boundary.',
-      steps: sharedSteps(page),
       code: `import { createRouter, created } from '@askrjs/server';
 
 export const router = createRouter().post('/projects', async (context) => {
@@ -1194,7 +1274,6 @@ export const router = createRouter().post('/projects', async (context) => {
     return {
       intro:
         'Create a typed plot factory once, give the root stable row data, and compose only the scales, marks, and interactions the chart needs.',
-      steps: sharedSteps(page),
       code: `import { createPlot } from '@askrjs/charts';
 
 const Plot = createPlot<ProjectRow>();
@@ -1215,11 +1294,10 @@ const Plot = createPlot<ProjectRow>();
     return {
       intro:
         'Run the published CLI through the project package boundary and review generated artifacts before committing them.',
-      steps: sharedSteps(page),
-      code: `npx @askrjs/cli@0.0.5 add page audit-log
-npx @askrjs/cli@0.0.5 add action approve-request --route /requests/{id}
-npx @askrjs/cli@0.0.5 openapi --check
-npx @askrjs/cli@0.0.5 ssg --config ./ssg.config.ts --output ./dist`,
+      code: `npx ${cli} add page audit-log
+npx ${cli} add action approve-request --route /requests/{id}
+npx ${cli} openapi --check
+npx ${cli} ssg --config ./ssg.config.ts --output ./dist`,
     };
   }
 
@@ -1227,7 +1305,6 @@ npx @askrjs/cli@0.0.5 ssg --config ./ssg.config.ts --output ./dist`,
     return {
       intro:
         'Start from an explicit route registry and add one application boundary at a time so browser, server, and production behavior stay testable.',
-      steps: sharedSteps(page),
       code: `export const registry = createRouteRegistry(() => {
   group({ layout: AppLayout }, () => {
     route('/', DashboardPage);
@@ -1238,28 +1315,8 @@ npx @askrjs/cli@0.0.5 ssg --config ./ssg.config.ts --output ./dist`,
     };
   }
 
-  if (page.navGroup === 'Reference') {
-    const importPath = page.packages[0]?.importPath ?? '@askrjs/askr';
-    return {
-      intro:
-        'Import only the entrypoint that owns the API. Use generated reference pages for exact signatures and this guide for behavioral constraints.',
-      steps: sharedSteps(page),
-      code: `import * as api from '${importPath}';
-
-// Stay on the published entrypoint instead of reaching into dist/ or src/.
-const availableExports = Object.keys(api);`,
-    };
-  }
-
-  return {
-    intro:
-      'Begin at the owning package boundary, keep the application contract explicit, and verify the generated or server result before adding abstraction.',
-    steps: sharedSteps(page),
-    code: `import { state } from '@askrjs/askr';
-
-export function Status() {
-  const [ready, setReady] = state(false);
-  return <button onClick={() => setReady(true)}>{ready() ? 'Ready' : 'Start'}</button>;
-}`,
-  };
+  // Reference entrypoints already render generated signature tables, and the
+  // generic fallback had nothing page-specific to say. Both render no example
+  // section rather than a templated one.
+  return undefined;
 }

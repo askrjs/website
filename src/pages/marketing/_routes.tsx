@@ -23,7 +23,8 @@ export type RouteMetadata = {
 
 export const marketingRouteMetadata: Readonly<Record<string, RouteMetadata>> = {
   '/': {
-    title: 'A cat named Askr, or how we learned to build full-stack apps',
+    title:
+      'A cat named Askr, or how we learned to build full-stack apps | Askr',
     description:
       'Build typed applications across browser and server rendering with Askr.',
   },

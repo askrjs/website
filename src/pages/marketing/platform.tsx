@@ -1,44 +1,99 @@
+import { packagePeers, packageVersions } from '../docs/package-versions';
 import {
   EditorialCTA,
   EditorialHero,
   MarketingPageNavigation,
+  PackageTable,
   RepositoryLink,
   RuledSection,
+  SequenceList,
+  type SequenceItem,
 } from './components';
 
-const journey = [
+// Keyed on the generated version map, so adding a package to the workspace
+// fails typecheck here until it is described.
+const packagePurpose: Record<keyof typeof packageVersions, string> = {
+  askr: 'Components, state, routing, resources, and the SSR/SSG renderers.',
+  cli: 'Scaffolding, generators, OpenAPI checks, and dependency updates.',
+  vite: 'The build plugin for JSX, SSR, and static generation.',
+  ui: 'Headless components: keyboard behavior, focus, and ARIA.',
+  themes: 'Styled components and design tokens on top of the headless layer.',
+  lucide: 'The Lucide icon set as Askr components.',
+  logos: 'A curated set of brand logo components.',
+  charts: 'Typed Canvas plots with SVG and data export.',
+  monaco: 'A Monaco editor wrapper for in-app code editing.',
+  server: 'Transport-neutral HTTP built on Request and Response.',
+  node: 'The Node adapter that runs the server in production.',
+  schema: 'Executable schemas that also project to OpenAPI.',
+  auth: 'Identity resolution and route access policies.',
+  fetch: 'Typed HTTP clients, generated from an OpenAPI document.',
+  i18n: 'Typed message keys that fail the build when a translation is missing.',
+  otel: 'Redaction-aware OpenTelemetry instrumentation.',
+  testing: 'Request injection and HTTP testing helpers.',
+};
+
+const packageOrder = [
+  'askr',
+  'cli',
+  'vite',
+  'ui',
+  'themes',
+  'lucide',
+  'logos',
+  'charts',
+  'monaco',
+  'server',
+  'node',
+  'schema',
+  'auth',
+  'fetch',
+  'i18n',
+  'otel',
+  'testing',
+] as const satisfies readonly (keyof typeof packageVersions)[];
+
+const packageRows = packageOrder.map((name) => ({
+  name,
+  version: packageVersions[name],
+  purpose: packagePurpose[name],
+  peers: packagePeers[name] as readonly string[],
+}));
+
+const packageCount = packageRows.length;
+// Packages other than the runtime itself that require no @askrjs peer at all.
+const standaloneCount = packageRows.filter(
+  (row) => row.name !== 'askr' && row.peers.length === 0
+).length;
+
+const journey: readonly SequenceItem[] = [
   {
-    step: '01',
-    verb: 'Build',
+    label: 'Build',
     title: 'Start with a component',
     description: 'Core runtime, CLI scaffolding, and Vite Plus.',
-    packages: '@askrjs/askr · @askrjs/cli · @askrjs/vite',
+    meta: '@askrjs/askr · @askrjs/cli · @askrjs/vite',
   },
   {
-    step: '02',
-    verb: 'Compose',
+    label: 'Compose',
     title: 'Shape the application',
     description:
       'State, routes, data, headless components, themes, schemas, and an optional server.',
-    packages: '@askrjs/ui · @askrjs/themes · @askrjs/schema · @askrjs/server',
+    meta: '@askrjs/ui · @askrjs/themes · @askrjs/schema · @askrjs/server',
   },
   {
-    step: '03',
-    verb: 'Deliver',
+    label: 'Deliver',
     title: 'Choose when HTML happens',
     description:
       'Single Page Application, Server Side Rendering with hydration, Static Site Generation, or full-stack delivery.',
-    packages: 'SPA · SSR + hydration · SSG',
+    meta: 'SPA · SSR + hydration · SSG',
   },
   {
-    step: '04',
-    verb: 'Operate',
+    label: 'Operate',
     title: 'Ship the production site',
     description:
       'Static files or Node output, with clear security, localization, probe, and telemetry seams.',
-    packages: '@askrjs/node · @askrjs/auth · @askrjs/i18n · @askrjs/otel',
+    meta: '@askrjs/node · @askrjs/auth · @askrjs/i18n · @askrjs/otel',
   },
-] as const;
+];
 
 export function PlatformPage() {
   return (
@@ -55,17 +110,7 @@ export function PlatformPage() {
             rewriting the routes and components you already have.
           </p>
         </div>
-        <ol class="platform-journey" aria-label="From component to production">
-          {journey.map((item) => (
-            <li key={item.step} class="platform-journey__step">
-              <span class="platform-journey__number">{item.step}</span>
-              <strong>{item.verb}</strong>
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
-              <small>{item.packages}</small>
-            </li>
-          ))}
-        </ol>
+        <SequenceList label="From component to production" items={journey} />
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
@@ -84,16 +129,29 @@ export function PlatformPage() {
             route policy, not a second framework.
           </p>
           <RepositoryLink href="https://github.com/askrjs/askr-examples">
-            Explore first-party examples
+            View the example applications
           </RepositoryLink>
         </div>
       </RuledSection>
+      <RuledSection stacked>
+        <div class="editorial-section__heading">
+          <h2>{packageCount} packages, one of them required</h2>
+          <p>
+            Only <code>@askrjs/askr</code> is a prerequisite for anything else,
+            and {standaloneCount} of the rest don&rsquo;t need even that. The
+            &ldquo;requires&rdquo; column is read from each package&rsquo;s
+            published peer dependencies, so this table cannot drift from what
+            npm actually installs.
+          </p>
+        </div>
+        <PackageTable label="Published Askr packages" rows={packageRows} />
+      </RuledSection>
       <EditorialCTA
-        title="Next: how state, routes, and data are actually owned."
-        primaryHref="/application-model"
-        primaryLabel="Explore the application model"
-        secondaryHref="/docs/getting-started"
-        secondaryLabel="Create an app"
+        title="Start with the runtime. Add the rest when the app asks for it."
+        primaryHref="/docs/getting-started"
+        primaryLabel="Create an app"
+        secondaryHref="/docs"
+        secondaryLabel="Browse the documentation"
       />
       <MarketingPageNavigation current="/platform" />
     </>

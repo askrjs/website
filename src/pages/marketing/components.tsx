@@ -2,7 +2,14 @@ import type { Props } from '@askrjs/askr';
 import { Link } from '@askrjs/askr/router';
 import { ArrowLeftIcon, ArrowRightIcon } from '@askrjs/lucide';
 import { Button, Container } from '@askrjs/themes/components';
-import { marketingPage, marketingPages, type MarketingPath } from './catalog';
+import { marketingPages, type MarketingPath } from './catalog';
+
+// The browser boots one of two registries depending on the entry path
+// (see src/main.tsx), so the marketing registry has no /docs routes in it.
+// Client-side navigating to one would land on the marketing fallback.
+function isMarketingRoute(href: string) {
+  return href.startsWith('/') && !href.startsWith('/docs');
+}
 
 type HeroProps = {
   title: string;
@@ -66,14 +73,25 @@ export function EditorialCTA({
         <h2>{title}</h2>
         <div class="editorial-cta__actions">
           <Button asChild>
-            <Link href={primaryHref}>
-              {primaryLabel}
-              <ArrowRightIcon size={18} aria-hidden="true" />
-            </Link>
+            {isMarketingRoute(primaryHref) ? (
+              <Link href={primaryHref}>
+                {primaryLabel}
+                <ArrowRightIcon size={18} aria-hidden="true" />
+              </Link>
+            ) : (
+              <a href={primaryHref}>
+                {primaryLabel}
+                <ArrowRightIcon size={18} aria-hidden="true" />
+              </a>
+            )}
           </Button>
           {secondaryHref && secondaryLabel ? (
             <Button asChild variant="outline">
-              <Link href={secondaryHref}>{secondaryLabel}</Link>
+              {isMarketingRoute(secondaryHref) ? (
+                <Link href={secondaryHref}>{secondaryLabel}</Link>
+              ) : (
+                <a href={secondaryHref}>{secondaryLabel}</a>
+              )}
             </Button>
           ) : null}
         </div>
@@ -126,7 +144,155 @@ export function MarketingPageNavigation({
   );
 }
 
-export function PageIntro({ path }: { path: MarketingPath }) {
-  const page = marketingPage(path);
-  return <p class="editorial-section__intro">{page.homepageSummary}</p>;
+export type SequenceItem = {
+  /** Optional eyebrow above the title. Mirrors FlowNode.label. */
+  label?: string;
+  title: string;
+  description: string;
+  /** Terse trailing line — package names, mode labels, verb pairs. */
+  meta?: string;
+};
+
+/**
+ * An ordered progression: numbered steps read left to right.
+ * Use when the items have a sequence. For a fan-out or a convergence,
+ * reach for FlowMap instead.
+ */
+export function SequenceList({
+  label,
+  items,
+}: {
+  label: string;
+  items: readonly SequenceItem[];
+}) {
+  return (
+    <ol class="sequence" aria-label={label} data-columns={items.length}>
+      {items.map((item, index) => (
+        <li key={item.title} class="sequence__item">
+          <span class="sequence__number">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          {item.label && <span class="sequence__label">{item.label}</span>}
+          <h3>{item.title}</h3>
+          <p>{item.description}</p>
+          {item.meta && <small>{item.meta}</small>}
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+export type PackageRow = {
+  name: string;
+  version: string;
+  purpose: string;
+  /** Other @askrjs packages this one requires, from its peerDependencies. */
+  peers: readonly string[];
+};
+
+/**
+ * The published package set, with what each one requires. Rows come from the
+ * generated version map, so the table cannot drift from what is installed.
+ */
+export function PackageTable({
+  label,
+  rows,
+}: {
+  label: string;
+  rows: readonly PackageRow[];
+}) {
+  return (
+    <div class="package-table-wrap">
+      <table class="package-table">
+        <caption class="visually-hidden">{label}</caption>
+        <thead>
+          <tr>
+            <th scope="col">Package</th>
+            <th scope="col">What it gives you</th>
+            <th scope="col">Requires</th>
+            <th scope="col">Version</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.name}>
+              <th scope="row">
+                <code>@askrjs/{row.name}</code>
+              </th>
+              <td>{row.purpose}</td>
+              <td>
+                {row.peers.length === 0 ? (
+                  <span class="package-table__standalone">Nothing</span>
+                ) : (
+                  row.peers.map((peer, index) => (
+                    <>
+                      {index > 0 && ' '}
+                      <code>@askrjs/{peer}</code>
+                    </>
+                  ))
+                )}
+              </td>
+              <td>
+                <span class="package-table__version">{row.version}</span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export type FlowNode = {
+  /** Optional eyebrow above the title. */
+  label?: string;
+  title: string;
+  description?: string;
+  meta?: string;
+};
+
+/**
+ * A hub and the nodes it relates to. `fan-out` renders the hub first
+ * (one input, several outputs); `converge` renders it last (several
+ * inputs meeting at one root).
+ */
+export function FlowMap({
+  label,
+  direction,
+  hub,
+  nodes,
+}: {
+  label: string;
+  direction: 'fan-out' | 'converge';
+  hub: FlowNode;
+  nodes: readonly FlowNode[];
+}) {
+  const hubBlock = (
+    <div class="flow-map__hub">
+      {hub.label && <span>{hub.label}</span>}
+      <h3>{hub.title}</h3>
+      {hub.description && <p>{hub.description}</p>}
+    </div>
+  );
+  return (
+    <div
+      class="flow-map"
+      role="group"
+      aria-label={label}
+      data-direction={direction}
+    >
+      {direction === 'fan-out' && hubBlock}
+      <ol class="flow-map__nodes" data-count={nodes.length}>
+        {nodes.map((node) => (
+          <li key={node.title}>
+            {node.label && <span>{node.label}</span>}
+            <h3>{node.title}</h3>
+            {node.description && <p>{node.description}</p>}
+            {node.meta && <small>{node.meta}</small>}
+          </li>
+        ))}
+      </ol>
+      {direction === 'converge' && hubBlock}
+    </div>
+  );
 }

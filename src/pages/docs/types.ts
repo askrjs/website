@@ -18,6 +18,7 @@ export type DocsHeadingDefinition = {
 export type ComponentDemoDefinition = {
   title: string;
   description: string;
+  component: (props: Props) => any;
   load: () => Promise<{ default: (props: Props) => any }>;
 };
 

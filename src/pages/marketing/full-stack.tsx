@@ -1,5 +1,7 @@
 import {
+  EditorialCTA,
   EditorialHero,
+  FlowMap,
   MarketingPageNavigation,
   RepositoryLink,
   RuledSection,
@@ -21,27 +23,21 @@ export function FullStackPage() {
             Request/Response primitives back your JSON APIs.
           </p>
         </div>
-        <div class="composition-map" aria-label="Full-stack composition root">
-          <ul>
-            <li>
-              <span>Pages</span>
-              <p>Routes and loaders</p>
-            </li>
-            <li>
-              <span>Actions</span>
-              <p>Forms and mutations</p>
-            </li>
-            <li>
-              <span>APIs</span>
-              <p>Request and Response</p>
-            </li>
-          </ul>
-          <div class="composition-map__root">
-            <span>Composition root</span>
-            <h3>Policies + dependencies</h3>
-            <p>Schemas, auth contracts, and application services meet here.</p>
-          </div>
-        </div>
+        <FlowMap
+          label="Full-stack composition root"
+          direction="converge"
+          hub={{
+            label: 'Composition root',
+            title: 'Policies + dependencies',
+            description:
+              'Schemas, auth contracts, and application services meet here.',
+          }}
+          nodes={[
+            { title: 'Pages', description: 'Routes and loaders' },
+            { title: 'Actions', description: 'Forms and mutations' },
+            { title: 'APIs', description: 'Request and Response' },
+          ]}
+        />
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
@@ -64,6 +60,13 @@ export function FullStackPage() {
           </RepositoryLink>
         </div>
       </RuledSection>
+      <EditorialCTA
+        title="Add the server when a route actually needs one."
+        primaryHref="/docs/server"
+        primaryLabel="Read the server docs"
+        secondaryHref="/docs/getting-started"
+        secondaryLabel="Create an app"
+      />
       <MarketingPageNavigation current="/full-stack" />
     </>
   );
