@@ -1642,7 +1642,7 @@ export const apiSymbolSets = {
       name: 'resolveRouteRequest',
       anchor: 'resolve-route-request',
       signature:
-        'resolveRouteRequest: (target: string, options?: RouteRequestOptions) => RouteRequestResult | Promise<RouteRequestResult>',
+        'resolveRouteRequest: (target: string, options: RouteRequestOptions) => RouteRequestResult | Promise<RouteRequestResult>',
       typeOnly: true,
     },
     {
