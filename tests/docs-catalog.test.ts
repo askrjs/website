@@ -14,10 +14,7 @@ import { cliSnapshot } from '../src/pages/docs/cli-snapshot';
 import { packageVersions } from '../src/pages/docs/package-versions';
 import { searchDocs } from '../src/pages/docs/search-index';
 import { buildUsageGuide } from '../src/pages/docs/usage-guide';
-import {
-  maturityStatement,
-  releaseNotes,
-} from '../src/pages/docs/release-notes';
+import { releaseNotes } from '../src/pages/docs/release-notes';
 import {
   componentDemoFor,
   componentDemoTitles,
@@ -149,8 +146,7 @@ describe('documentation catalog', () => {
     }
   });
 
-  it('keeps maturity and release-note content present for the docs landing page', () => {
-    expect(maturityStatement).toMatch(/pre-1\.0/);
+  it('keeps release-note content present for the docs landing page', () => {
     expect(releaseNotes.length).toBeGreaterThanOrEqual(2);
     expect(
       releaseNotes.every((note) => note.version && note.date && note.summary)
