@@ -3,7 +3,6 @@ import { ArrowRightIcon } from '@askrjs/lucide';
 import { Button, Container } from '@askrjs/themes/components';
 import { marketingPages } from './catalog';
 import { RepositoryLink } from './components';
-import { maturityStatement } from '../docs/release-notes';
 
 const capabilities = marketingPages.slice(1);
 const routeSpecimen = `import {
@@ -49,16 +48,6 @@ export function HomePage() {
             <span>Start a project</span>
             <code>npx @askrjs/cli@latest create startkit my-app</code>
           </div>
-        </Container>
-      </section>
-
-      <section class="editorial-prose" aria-label="Release guidance">
-        <Container size="xl">
-          <p>{maturityStatement}</p>
-          <p>
-            Read the <a href="/docs#release-notes">release notes</a> before
-            moving a production app between package versions.
-          </p>
         </Container>
       </section>
 
