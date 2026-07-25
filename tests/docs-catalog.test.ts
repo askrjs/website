@@ -152,9 +152,9 @@ describe('documentation catalog', () => {
   it('keeps maturity and release-note content present for the docs landing page', () => {
     expect(maturityStatement).toMatch(/pre-1\.0/);
     expect(releaseNotes.length).toBeGreaterThanOrEqual(2);
-    expect(releaseNotes.every((note) => note.version && note.summary)).toBe(
-      true
-    );
+    expect(
+      releaseNotes.every((note) => note.version && note.date && note.summary)
+    ).toBe(true);
   });
 });
 
