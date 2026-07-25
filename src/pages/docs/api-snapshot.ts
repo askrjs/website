@@ -39,6 +39,18 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'cspNonce',
+      anchor: 'csp-nonce',
+      signature: 'cspNonce: () => string | undefined',
+      typeOnly: true,
+    },
+    {
+      name: 'CspNonceScope',
+      anchor: 'csp-nonce-scope',
+      signature: 'CspNonceScope: Scope<string | undefined>',
+      typeOnly: true,
+    },
+    {
       name: 'DataRuntime',
       anchor: 'data-runtime',
       signature: 'DataRuntime: any',
@@ -1198,7 +1210,7 @@ export const apiSymbolSets = {
       name: 'getRouteWarnings',
       anchor: 'get-route-warnings',
       signature:
-        'getRouteWarnings: (options?: MatchRouteOptions) => RoutePatternWarning[]',
+        'getRouteWarnings: (options: MatchRouteOptions) => RoutePatternWarning[]',
       typeOnly: true,
     },
     {
@@ -1217,7 +1229,7 @@ export const apiSymbolSets = {
       name: 'matchRoute',
       anchor: 'match-route',
       signature:
-        'matchRoute: (path: string, options?: MatchRouteOptions) => RouteMatch | null',
+        'matchRoute: (path: string, options: MatchRouteOptions) => RouteMatch | null',
       typeOnly: true,
     },
     {
@@ -1411,16 +1423,10 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
-      name: 'clearRoutes',
-      anchor: 'clear-routes',
-      signature: 'clearRoutes: () => void',
-      typeOnly: true,
-    },
-    {
       name: 'createRouteRegistry',
       anchor: 'create-route-registry',
       signature:
-        'createRouteRegistry: (definition: RouteDefinition, options?: RegisterRoutesOptions) => RouteRegistry',
+        'createRouteRegistry: (definition: RouteDefinition, options?: RouteRegistryOptions) => RouteRegistry',
       typeOnly: true,
     },
     {
@@ -1470,18 +1476,6 @@ export const apiSymbolSets = {
       name: 'forbidden',
       anchor: 'forbidden',
       signature: 'forbidden: () => AccessDenyDecision',
-      typeOnly: true,
-    },
-    {
-      name: 'getManifest',
-      anchor: 'get-manifest',
-      signature: 'getManifest: () => RouteManifest',
-      typeOnly: true,
-    },
-    {
-      name: 'getRoutes',
-      anchor: 'get-routes',
-      signature: 'getRoutes: () => Route[]',
       typeOnly: true,
     },
     {
@@ -1616,19 +1610,6 @@ export const apiSymbolSets = {
       anchor: 'redirect',
       signature:
         'redirect: (to: string, init?: { status?: AccessRedirectStatus; replace?: boolean; }) => AccessRedirectDecision',
-      typeOnly: true,
-    },
-    {
-      name: 'registerRoutes',
-      anchor: 'register-routes',
-      signature:
-        'registerRoutes: (definition: RouteDefinition, options?: RegisterRoutesOptions) => void',
-      typeOnly: true,
-    },
-    {
-      name: 'RegisterRoutesOptions',
-      anchor: 'register-routes-options',
-      signature: 'RegisterRoutesOptions: any',
       typeOnly: true,
     },
     {
@@ -1828,6 +1809,12 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'RouteRegistryOptions',
+      anchor: 'route-registry-options',
+      signature: 'RouteRegistryOptions: any',
+      typeOnly: true,
+    },
+    {
       name: 'RouteRenderResult',
       anchor: 'route-render-result',
       signature: 'RouteRenderResult: any',
@@ -1948,7 +1935,7 @@ export const apiSymbolSets = {
       name: 'createRenderContext',
       anchor: 'create-render-context',
       signature:
-        'createRenderContext: (seed?: number, opts?: { url?: string; data?: SSRData; params?: Record<string, string>; routes?: readonly Route[]; routeAuth?: RouteAuthOptions; signal?: AbortSignal; dataRuntime?: unknown; mode?: "ssr" | "spa"; queryPrefetch?: QueryPrefetchContext; framework?: Readonly<Record<string, unknown>>; envelope?: PageRenderEnvelope; }) => RenderContext',
+        'createRenderContext: (seed?: number, opts?: { url?: string; data?: SSRData; params?: Record<string, string>; routes?: readonly Route[]; routeAuth?: RouteAuthOptions; signal?: AbortSignal; dataRuntime?: unknown; mode?: "ssr" | "spa"; queryPrefetch?: QueryPrefetchContext; framework?: Readonly<Record<string, unknown>>; envelope?: PageRenderEnvelope; cspNonce?: string; }) => RenderContext',
       typeOnly: true,
     },
     {
@@ -1979,7 +1966,7 @@ export const apiSymbolSets = {
       name: 'renderResolvedToStringSync',
       anchor: 'render-resolved-to-string-sync',
       signature:
-        'renderResolvedToStringSync: (opts: { url: string; routes: ReadonlyArray<{ path: string; handler: RouteHandler; namespace?: string; }>; handler: RouteHandler; params?: Record<string, string>; options?: { seed?: number; data?: SSRData; dataRuntime?: DataRuntime; envelope?: PageRenderEnvelope; }; }) => string',
+        'renderResolvedToStringSync: (opts: { url: string; registry: RouteRegistry; handler: RouteHandler; params?: Record<string, string>; options?: { seed?: number; data?: SSRData; dataRuntime?: DataRuntime; envelope?: PageRenderEnvelope; cspNonce?: string; }; }) => string',
       typeOnly: true,
     },
     {
@@ -2025,14 +2012,14 @@ export const apiSymbolSets = {
       name: 'renderToStringSync',
       anchor: 'render-to-string-sync',
       signature:
-        'renderToStringSync: (component: (props?: Record<string, unknown>) => VNode | JSXElement | string | number | boolean | null | undefined, props?: Record<string, unknown>, options?: { seed?: number; data?: SSRData; envelope?: PageRenderEnvelope; }) => string',
+        'renderToStringSync: (component: (props?: Record<string, unknown>) => VNode | JSXElement | string | number | boolean | null | undefined, props?: Record<string, unknown>, options?: { seed?: number; data?: SSRData; envelope?: PageRenderEnvelope; cspNonce?: string; }) => string',
       typeOnly: true,
     },
     {
       name: 'resolveRequest',
       anchor: 'resolve-request',
       signature:
-        'resolveRequest: (opts: { url: string; registry: RouteRegistry; manifest?: RouteManifest; routes?: Array<{ path: string; handler: RouteHandler; namespace?: string; }>; auth?: RouteAuthOptions; authContext?: AuthContext; request?: Request; signal?: AbortSignal; } | { url: string; manifest: RouteManifest; registry?: RouteRegistry; routes?: Array<{ path: string; handler: RouteHandler; namespace?: string; }>; auth?: RouteAuthOptions; authContext?: AuthContext; request?: Request; signal?: AbortSignal; } | { url: string; manifest?: RouteManifest; registry?: RouteRegistry; routes: Array<{ path: string; handler: RouteHandler; namespace?: string; }>; auth?: RouteAuthOptions; authContext?: AuthContext; request?: Request; signal?: AbortSignal; }) => Promise<RouteRequestResult>',
+        'resolveRequest: (opts: { url: string; registry: RouteRegistry; auth?: RouteAuthOptions; authContext?: AuthContext; request?: Request; signal?: AbortSignal; }) => Promise<RouteRequestResult>',
       typeOnly: true,
     },
     {
@@ -2078,7 +2065,7 @@ export const apiSymbolSets = {
       name: 'createStaticGen',
       anchor: 'create-static-gen',
       signature:
-        'createStaticGen: <const TRoutes extends readonly AnyRouteConfig[]>(options: Omit<SSGOptions<TRoutes>, "routes" | "registry"> & StaticGenRouteSource<TRoutes>) => { generate(generateOptions?: SSGGenerateOptions): Promise<SSGResult>; getConfig(): { routeCount: number; outputDir: string; seed: number; concurrency: number; parallelism: number; hasDataOverrides: boolean; assetCount: number; }; getResult(): SSGResult | null; }',
+        'createStaticGen: (options: SSGOptions) => { generate(generateOptions?: SSGGenerateOptions): Promise<SSGResult>; getConfig(): { routeCount: number; outputDir: string; seed: number; concurrency: number; parallelism: number; hasDataOverrides: boolean; assetCount: number; }; getResult(): SSGResult | null; }',
       typeOnly: true,
     },
     {
@@ -2391,10 +2378,23 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'createJwtSigner',
+      anchor: 'create-jwt-signer',
+      signature: 'createJwtSigner: (options: JwtSignerOptions) => JwtSigner',
+      typeOnly: true,
+    },
+    {
       name: 'createJwtValidator',
       anchor: 'create-jwt-validator',
       signature:
         'createJwtValidator: (options: JwtValidatorOptions) => JwtValidator',
+      typeOnly: true,
+    },
+    {
+      name: 'issueTimedJwt',
+      anchor: 'issue-timed-jwt',
+      signature:
+        'issueTimedJwt: (signer: JwtSigner, input: TimedJwtInput) => Promise<string>',
       typeOnly: true,
     },
     {
@@ -2428,6 +2428,24 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'JwtSigner',
+      anchor: 'jwt-signer',
+      signature: 'JwtSigner: any',
+      typeOnly: true,
+    },
+    {
+      name: 'JwtSignerOptions',
+      anchor: 'jwt-signer-options',
+      signature: 'JwtSignerOptions: any',
+      typeOnly: true,
+    },
+    {
+      name: 'JwtSignInput',
+      anchor: 'jwt-sign-input',
+      signature: 'JwtSignInput: any',
+      typeOnly: true,
+    },
+    {
       name: 'JwtValidationError',
       anchor: 'jwt-validation-error',
       signature: 'JwtValidationError: typeof JwtValidationError',
@@ -2455,6 +2473,12 @@ export const apiSymbolSets = {
       name: 'OidcIdTokenOptions',
       anchor: 'oidc-id-token-options',
       signature: 'OidcIdTokenOptions: any',
+      typeOnly: true,
+    },
+    {
+      name: 'TimedJwtInput',
+      anchor: 'timed-jwt-input',
+      signature: 'TimedJwtInput: any',
       typeOnly: true,
     },
     {
@@ -2715,6 +2739,58 @@ export const apiSymbolSets = {
     },
   ],
   symbols25: [
+    {
+      name: 'createPasskey',
+      anchor: 'create-passkey',
+      signature:
+        'createPasskey: (options: CreatePasskeyOptions) => Promise<PasskeyRegistration>',
+      typeOnly: true,
+    },
+    {
+      name: 'CreatePasskeyOptions',
+      anchor: 'create-passkey-options',
+      signature: 'CreatePasskeyOptions: any',
+      typeOnly: true,
+    },
+    {
+      name: 'decodeBase64Url',
+      anchor: 'decode-base64-url',
+      signature: 'decodeBase64Url: (value: string) => ArrayBuffer',
+      typeOnly: true,
+    },
+    {
+      name: 'encodeBase64Url',
+      anchor: 'encode-base64-url',
+      signature: 'encodeBase64Url: (buffer: ArrayBuffer) => string',
+      typeOnly: true,
+    },
+    {
+      name: 'getPasskeyAssertion',
+      anchor: 'get-passkey-assertion',
+      signature:
+        'getPasskeyAssertion: (options: GetPasskeyAssertionOptions) => Promise<PasskeyAssertion>',
+      typeOnly: true,
+    },
+    {
+      name: 'GetPasskeyAssertionOptions',
+      anchor: 'get-passkey-assertion-options',
+      signature: 'GetPasskeyAssertionOptions: any',
+      typeOnly: true,
+    },
+    {
+      name: 'PasskeyAssertion',
+      anchor: 'passkey-assertion',
+      signature: 'PasskeyAssertion: any',
+      typeOnly: true,
+    },
+    {
+      name: 'PasskeyRegistration',
+      anchor: 'passkey-registration',
+      signature: 'PasskeyRegistration: any',
+      typeOnly: true,
+    },
+  ],
+  symbols26: [
     {
       name: 'AggregatedNumericChannelInput',
       anchor: 'aggregated-numeric-channel-input',
@@ -3333,8 +3409,8 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols26: [],
-  symbols27: [
+  symbols27: [],
+  symbols28: [
     {
       name: 'AdHocCall',
       anchor: 'ad-hoc-call',
@@ -3630,7 +3706,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols28: [
+  symbols29: [
     {
       name: 'apiKeyAuth',
       anchor: 'api-key-auth',
@@ -3677,7 +3753,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols29: [
+  symbols30: [
     {
       name: 'Catalog',
       anchor: 'catalog',
@@ -3722,7 +3798,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols30: [
+  symbols31: [
     {
       name: 'AppleLogo',
       anchor: 'apple-logo',
@@ -3778,7 +3854,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols31: [
+  symbols32: [
     {
       name: 'AArrowDownIcon',
       anchor: 'aarrow-down-icon',
@@ -17511,74 +17587,6 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols32: [
-    {
-      name: 'MonacoBeforeMount',
-      anchor: 'monaco-before-mount',
-      signature: 'MonacoBeforeMount: any',
-      typeOnly: true,
-    },
-    {
-      name: 'MonacoEditor',
-      anchor: 'monaco-editor',
-      signature: 'MonacoEditor: (props: MonacoEditorProps) => JSX.Element',
-      typeOnly: true,
-    },
-    {
-      name: 'MonacoEditorInstance',
-      anchor: 'monaco-editor-instance',
-      signature: 'MonacoEditorInstance: any',
-      typeOnly: true,
-    },
-    {
-      name: 'MonacoEditorOptions',
-      anchor: 'monaco-editor-options',
-      signature: 'MonacoEditorOptions: any',
-      typeOnly: true,
-    },
-    {
-      name: 'MonacoEditorProps',
-      anchor: 'monaco-editor-props',
-      signature: 'MonacoEditorProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'MonacoErrorHandler',
-      anchor: 'monaco-error-handler',
-      signature: 'MonacoErrorHandler: any',
-      typeOnly: true,
-    },
-    {
-      name: 'MonacoLoader',
-      anchor: 'monaco-loader',
-      signature: 'MonacoLoader: any',
-      typeOnly: true,
-    },
-    {
-      name: 'MonacoMountHandler',
-      anchor: 'monaco-mount-handler',
-      signature: 'MonacoMountHandler: any',
-      typeOnly: true,
-    },
-    {
-      name: 'MonacoNamespace',
-      anchor: 'monaco-namespace',
-      signature: 'MonacoNamespace: any',
-      typeOnly: true,
-    },
-    {
-      name: 'MonacoTextModel',
-      anchor: 'monaco-text-model',
-      signature: 'MonacoTextModel: any',
-      typeOnly: true,
-    },
-    {
-      name: 'MonacoUri',
-      anchor: 'monaco-uri',
-      signature: 'MonacoUri: any',
-      typeOnly: true,
-    },
-  ],
   symbols33: [
     {
       name: 'MonacoBeforeMount',
@@ -17649,6 +17657,74 @@ export const apiSymbolSets = {
   ],
   symbols34: [
     {
+      name: 'MonacoBeforeMount',
+      anchor: 'monaco-before-mount',
+      signature: 'MonacoBeforeMount: any',
+      typeOnly: true,
+    },
+    {
+      name: 'MonacoEditor',
+      anchor: 'monaco-editor',
+      signature: 'MonacoEditor: (props: MonacoEditorProps) => JSX.Element',
+      typeOnly: true,
+    },
+    {
+      name: 'MonacoEditorInstance',
+      anchor: 'monaco-editor-instance',
+      signature: 'MonacoEditorInstance: any',
+      typeOnly: true,
+    },
+    {
+      name: 'MonacoEditorOptions',
+      anchor: 'monaco-editor-options',
+      signature: 'MonacoEditorOptions: any',
+      typeOnly: true,
+    },
+    {
+      name: 'MonacoEditorProps',
+      anchor: 'monaco-editor-props',
+      signature: 'MonacoEditorProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'MonacoErrorHandler',
+      anchor: 'monaco-error-handler',
+      signature: 'MonacoErrorHandler: any',
+      typeOnly: true,
+    },
+    {
+      name: 'MonacoLoader',
+      anchor: 'monaco-loader',
+      signature: 'MonacoLoader: any',
+      typeOnly: true,
+    },
+    {
+      name: 'MonacoMountHandler',
+      anchor: 'monaco-mount-handler',
+      signature: 'MonacoMountHandler: any',
+      typeOnly: true,
+    },
+    {
+      name: 'MonacoNamespace',
+      anchor: 'monaco-namespace',
+      signature: 'MonacoNamespace: any',
+      typeOnly: true,
+    },
+    {
+      name: 'MonacoTextModel',
+      anchor: 'monaco-text-model',
+      signature: 'MonacoTextModel: any',
+      typeOnly: true,
+    },
+    {
+      name: 'MonacoUri',
+      anchor: 'monaco-uri',
+      signature: 'MonacoUri: any',
+      typeOnly: true,
+    },
+  ],
+  symbols35: [
+    {
       name: 'ConnectNext',
       anchor: 'connect-next',
       signature: 'ConnectNext: any',
@@ -17693,6 +17769,12 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'NodeWebSocketOptions',
+      anchor: 'node-web-socket-options',
+      signature: 'NodeWebSocketOptions: any',
+      typeOnly: true,
+    },
+    {
       name: 'serve',
       anchor: 'serve',
       signature:
@@ -17712,7 +17794,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols35: [
+  symbols36: [
     {
       name: 'connectMcpStdio',
       anchor: 'connect-mcp-stdio',
@@ -17733,7 +17815,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols36: [
+  symbols37: [
     {
       name: 'createTelemetry',
       anchor: 'create-telemetry',
@@ -17777,7 +17859,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols37: [
+  symbols38: [
     {
       name: 'InferSchema',
       anchor: 'infer-schema',
@@ -17834,12 +17916,18 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols38: [
+  symbols39: [
     {
       name: 'accepted',
       anchor: 'accepted',
       signature:
         'accepted: (value?: JsonValue, init?: ResponseInit) => Response',
+      typeOnly: true,
+    },
+    {
+      name: 'AccessDeniedHandler',
+      anchor: 'access-denied-handler',
+      signature: 'AccessDeniedHandler: any',
       typeOnly: true,
     },
     {
@@ -17942,6 +18030,12 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'createCspNonce',
+      anchor: 'create-csp-nonce',
+      signature: 'createCspNonce: () => CspNonceProvider',
+      typeOnly: true,
+    },
+    {
       name: 'created',
       anchor: 'created',
       signature:
@@ -17966,6 +18060,18 @@ export const apiSymbolSets = {
       anchor: 'create-server-app',
       signature:
         'createServerApp: { (router: Router): ServerApp; (options?: ServerAppOptions): ServerApp; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CspNonceProvider',
+      anchor: 'csp-nonce-provider',
+      signature: 'CspNonceProvider: any',
+      typeOnly: true,
+    },
+    {
+      name: 'DEFAULT_MAX_REQUEST_BYTES',
+      anchor: 'default-max-request-bytes',
+      signature: 'DEFAULT_MAX_REQUEST_BYTES: 1048576',
       typeOnly: true,
     },
     {
@@ -18089,6 +18195,12 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'PayloadTooLargeError',
+      anchor: 'payload-too-large-error',
+      signature: 'PayloadTooLargeError: typeof PayloadTooLargeError',
+      typeOnly: true,
+    },
+    {
       name: 'ProbeHandler',
       anchor: 'probe-handler',
       signature: 'ProbeHandler: any',
@@ -18123,6 +18235,27 @@ export const apiSymbolSets = {
       name: 'ProblemOptions',
       anchor: 'problem-options',
       signature: 'ProblemOptions: any',
+      typeOnly: true,
+    },
+    {
+      name: 'readRequestBytes',
+      anchor: 'read-request-bytes',
+      signature:
+        'readRequestBytes: (request: Request, maximum?: number) => Promise<Uint8Array>',
+      typeOnly: true,
+    },
+    {
+      name: 'readRequestFormData',
+      anchor: 'read-request-form-data',
+      signature:
+        'readRequestFormData: (request: Request, maximum?: number) => Promise<FormData>',
+      typeOnly: true,
+    },
+    {
+      name: 'readRequestText',
+      anchor: 'read-request-text',
+      signature:
+        'readRequestText: (request: Request, maximum?: number) => Promise<string>',
       typeOnly: true,
     },
     {
@@ -18186,6 +18319,12 @@ export const apiSymbolSets = {
       name: 'ServerContext',
       anchor: 'server-context',
       signature: 'ServerContext: any',
+      typeOnly: true,
+    },
+    {
+      name: 'ServerDispatchOptions',
+      anchor: 'server-dispatch-options',
+      signature: 'ServerDispatchOptions: any',
       typeOnly: true,
     },
     {
@@ -18267,6 +18406,12 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'WebSocketCloseEvent',
+      anchor: 'web-socket-close-event',
+      signature: 'WebSocketCloseEvent: any',
+      typeOnly: true,
+    },
+    {
       name: 'WebSocketHandler',
       anchor: 'web-socket-handler',
       signature: 'WebSocketHandler: any',
@@ -18279,7 +18424,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols39: [
+  symbols40: [
     {
       name: 'ApiRoute',
       anchor: 'api-route',
@@ -18336,7 +18481,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols40: [
+  symbols41: [
     {
       name: 'accepted',
       anchor: 'accepted',
@@ -18536,7 +18681,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols41: [
+  symbols42: [
     {
       name: 'accessLog',
       anchor: 'access-log',
@@ -18563,6 +18708,13 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'createMemoryRateLimitStore',
+      anchor: 'create-memory-rate-limit-store',
+      signature:
+        'createMemoryRateLimitStore: (options?: MemoryRateLimitStoreOptions) => RateLimitStore',
+      typeOnly: true,
+    },
+    {
       name: 'csrf',
       anchor: 'csrf',
       signature: 'csrf: (options: CsrfOptions) => Middleware',
@@ -18579,6 +18731,12 @@ export const apiSymbolSets = {
       anchor: 'enforce-https',
       signature:
         'enforceHttps: (options?: { trustProxy?: boolean; status?: 301 | 302 | 307 | 308; }) => Middleware',
+      typeOnly: true,
+    },
+    {
+      name: 'MemoryRateLimitStoreOptions',
+      anchor: 'memory-rate-limit-store-options',
+      signature: 'MemoryRateLimitStoreOptions: any',
       typeOnly: true,
     },
     {
@@ -18616,7 +18774,7 @@ export const apiSymbolSets = {
       name: 'securityHeaders',
       anchor: 'security-headers',
       signature:
-        'securityHeaders: (options?: { contentSecurityPolicy?: string; referrerPolicy?: string; frameOptions?: string; }) => Middleware',
+        'securityHeaders: (options?: { contentSecurityPolicy?: string | ((context: ServerContext) => string); referrerPolicy?: string; frameOptions?: string; }) => Middleware',
       typeOnly: true,
     },
     {
@@ -18634,7 +18792,13 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols42: [
+  symbols43: [
+    {
+      name: 'ActionCookieInstruction',
+      anchor: 'action-cookie-instruction',
+      signature: 'ActionCookieInstruction: any',
+      typeOnly: true,
+    },
     {
       name: 'ActionEntry',
       anchor: 'action-entry',
@@ -18754,7 +18918,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols43: [
+  symbols44: [
     {
       name: 'AuthCredentials',
       anchor: 'auth-credentials',
@@ -18794,7 +18958,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols44: [
+  symbols45: [
     {
       name: 'ApiDefinition',
       anchor: 'api-definition',
@@ -18913,7 +19077,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols45: [
+  symbols46: [
     {
       name: 'createMcpServer',
       anchor: 'create-mcp-server',
@@ -19020,7 +19184,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols46: [
+  symbols47: [
     {
       name: 'BodyRequestOptions',
       anchor: 'body-request-options',
@@ -19133,8 +19297,8 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols47: [],
-  symbols48: [
+  symbols48: [],
+  symbols49: [
     {
       name: 'Accordion',
       anchor: 'accordion',
@@ -19766,6 +19930,12 @@ export const apiSymbolSets = {
       name: 'CardTitle',
       anchor: 'card-title',
       signature: 'CardTitle: (props: CardTitleProps) => JSX.Element',
+      typeOnly: true,
+    },
+    {
+      name: 'CardTitleHeadingTag',
+      anchor: 'card-title-heading-tag',
+      signature: 'CardTitleHeadingTag: any',
       typeOnly: true,
     },
     {
@@ -22203,7 +22373,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols49: [
+  symbols50: [
     {
       name: 'CAT_THEME_NAMES',
       anchor: 'cat-theme-names',
@@ -22296,7 +22466,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols50: [
+  symbols51: [
     {
       name: 'Accordion',
       anchor: 'accordion',
@@ -25310,100 +25480,100 @@ export const apiSymbolSets = {
       name: 'VisuallyHiddenSpanProps',
       anchor: 'visually-hidden-span-props',
       signature: 'VisuallyHiddenSpanProps: any',
-      typeOnly: true,
-    },
-  ],
-  symbols51: [
-    {
-      name: 'Avatar',
-      anchor: 'avatar',
-      signature:
-        'Avatar: { (props: AvatarProps): JSX.Element; (props: AvatarAsChildProps): JSX.Element; }',
-      typeOnly: true,
-    },
-    {
-      name: 'AVATAR_A11Y_CONTRACT',
-      anchor: 'avatar-a11-y-contract',
-      signature:
-        'AVATAR_A11Y_CONTRACT: { readonly ROOT: { readonly slot: "data-slot"; readonly marker: "data-avatar"; }; readonly IMAGE: { readonly slot: "data-slot"; readonly marker: "data-avatar-image"; readonly requiresAlt: true; }; readonly FALLBACK: { readonly slot: "data-slot"; readonly marker: "data-avatar-fallback"; readonly visibleBeforeImageLoad: true; }; }',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarA11yContract',
-      anchor: 'avatar-a11y-contract',
-      signature: 'AvatarA11yContract: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarAsChildProps',
-      anchor: 'avatar-as-child-props',
-      signature: 'AvatarAsChildProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarFallback',
-      anchor: 'avatar-fallback',
-      signature:
-        'AvatarFallback: { (props: AvatarFallbackProps): JSX.Element | null; (props: AvatarFallbackAsChildProps): JSX.Element | null; }',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarFallbackAsChildProps',
-      anchor: 'avatar-fallback-as-child-props',
-      signature: 'AvatarFallbackAsChildProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarFallbackOwnProps',
-      anchor: 'avatar-fallback-own-props',
-      signature: 'AvatarFallbackOwnProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarFallbackProps',
-      anchor: 'avatar-fallback-props',
-      signature: 'AvatarFallbackProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarImage',
-      anchor: 'avatar-image',
-      signature: 'AvatarImage: (props: AvatarImageProps) => JSX.Element',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarImageOwnProps',
-      anchor: 'avatar-image-own-props',
-      signature: 'AvatarImageOwnProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarImageProps',
-      anchor: 'avatar-image-props',
-      signature: 'AvatarImageProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarLoadingStatus',
-      anchor: 'avatar-loading-status',
-      signature: 'AvatarLoadingStatus: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarOwnProps',
-      anchor: 'avatar-own-props',
-      signature: 'AvatarOwnProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarProps',
-      anchor: 'avatar-props',
-      signature: 'AvatarProps: any',
       typeOnly: true,
     },
   ],
   symbols52: [
     {
+      name: 'Avatar',
+      anchor: 'avatar',
+      signature:
+        'Avatar: { (props: AvatarProps): JSX.Element; (props: AvatarAsChildProps): JSX.Element; }',
+      typeOnly: true,
+    },
+    {
+      name: 'AVATAR_A11Y_CONTRACT',
+      anchor: 'avatar-a11-y-contract',
+      signature:
+        'AVATAR_A11Y_CONTRACT: { readonly ROOT: { readonly slot: "data-slot"; readonly marker: "data-avatar"; }; readonly IMAGE: { readonly slot: "data-slot"; readonly marker: "data-avatar-image"; readonly requiresAlt: true; }; readonly FALLBACK: { readonly slot: "data-slot"; readonly marker: "data-avatar-fallback"; readonly visibleBeforeImageLoad: true; }; }',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarA11yContract',
+      anchor: 'avatar-a11y-contract',
+      signature: 'AvatarA11yContract: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarAsChildProps',
+      anchor: 'avatar-as-child-props',
+      signature: 'AvatarAsChildProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarFallback',
+      anchor: 'avatar-fallback',
+      signature:
+        'AvatarFallback: { (props: AvatarFallbackProps): JSX.Element | null; (props: AvatarFallbackAsChildProps): JSX.Element | null; }',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarFallbackAsChildProps',
+      anchor: 'avatar-fallback-as-child-props',
+      signature: 'AvatarFallbackAsChildProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarFallbackOwnProps',
+      anchor: 'avatar-fallback-own-props',
+      signature: 'AvatarFallbackOwnProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarFallbackProps',
+      anchor: 'avatar-fallback-props',
+      signature: 'AvatarFallbackProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarImage',
+      anchor: 'avatar-image',
+      signature: 'AvatarImage: (props: AvatarImageProps) => JSX.Element',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarImageOwnProps',
+      anchor: 'avatar-image-own-props',
+      signature: 'AvatarImageOwnProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarImageProps',
+      anchor: 'avatar-image-props',
+      signature: 'AvatarImageProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarLoadingStatus',
+      anchor: 'avatar-loading-status',
+      signature: 'AvatarLoadingStatus: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarOwnProps',
+      anchor: 'avatar-own-props',
+      signature: 'AvatarOwnProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarProps',
+      anchor: 'avatar-props',
+      signature: 'AvatarProps: any',
+      typeOnly: true,
+    },
+  ],
+  symbols53: [
+    {
       name: 'Button',
       anchor: 'button',
       signature:
@@ -25472,7 +25642,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols53: [
+  symbols54: [
     {
       name: 'Checkbox',
       anchor: 'checkbox',
@@ -25518,7 +25688,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols54: [
+  symbols55: [
     {
       name: 'DebouncedInput',
       anchor: 'debounced-input',
@@ -25583,7 +25753,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols55: [
+  symbols56: [
     {
       name: 'Form',
       anchor: 'form',
@@ -25604,7 +25774,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols56: [
+  symbols57: [
     {
       name: 'Label',
       anchor: 'label',
@@ -25650,7 +25820,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols57: [
+  symbols58: [
     {
       name: 'Progress',
       anchor: 'progress',
@@ -25703,7 +25873,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols58: [
+  symbols59: [
     {
       name: 'PROGRESS_CIRCLE_A11Y_CONTRACT',
       anchor: 'progress-circle-a11-y-contract',
@@ -25756,7 +25926,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols59: [
+  symbols60: [
     {
       name: 'RADIO_GROUP_A11Y_CONTRACT',
       anchor: 'radio-group-a11-y-contract',
@@ -25815,7 +25985,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols60: [
+  symbols61: [
     {
       name: 'Select',
       anchor: 'select',
@@ -26044,7 +26214,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols61: [
+  symbols62: [
     {
       name: 'Slider',
       anchor: 'slider',
@@ -26141,7 +26311,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols62: [
+  symbols63: [
     {
       name: 'Switch',
       anchor: 'switch',
@@ -26187,7 +26357,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols63: [
+  symbols64: [
     {
       name: 'Table',
       anchor: 'table',
@@ -26341,7 +26511,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols64: [
+  symbols65: [
     {
       name: 'VirtualList',
       anchor: 'virtual-list',
@@ -26398,7 +26568,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols65: [
+  symbols66: [
     {
       name: 'VirtualTable',
       anchor: 'virtual-table',
@@ -26467,7 +26637,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols66: [
+  symbols67: [
     {
       name: 'Textarea',
       anchor: 'textarea',
@@ -26513,7 +26683,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols67: [
+  symbols68: [
     {
       name: 'PressEvent',
       anchor: 'press-event',
@@ -26565,7 +26735,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols68: [
+  symbols69: [
     {
       name: 'TOGGLE_GROUP_A11Y_CONTRACT',
       anchor: 'toggle-group-a11-y-contract',
@@ -26636,7 +26806,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols69: [
+  symbols70: [
     {
       name: 'VISUALLY_HIDDEN_A11Y_CONTRACT',
       anchor: 'visually-hidden-a11-y-contract',
@@ -26682,7 +26852,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols70: [
+  symbols71: [
     {
       name: 'Accordion',
       anchor: 'accordion',
@@ -26809,7 +26979,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols71: [
+  symbols72: [
     {
       name: 'ALERT_DIALOG_A11Y_CONTRACT',
       anchor: 'alert-dialog-a11-y-contract',
@@ -27001,7 +27171,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols72: [
+  symbols73: [
     {
       name: 'Collapsible',
       anchor: 'collapsible',
@@ -27061,7 +27231,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols73: [
+  symbols74: [
     {
       name: 'Dialog',
       anchor: 'dialog',
@@ -27234,7 +27404,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols74: [
+  symbols75: [
     {
       name: 'DISMISSABLE_LAYER_A11Y_CONTRACT',
       anchor: 'dismissable-layer-a11-y-contract',
@@ -27274,7 +27444,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols75: [
+  symbols76: [
     {
       name: 'Dropdown',
       anchor: 'dropdown',
@@ -27471,7 +27641,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols76: [
+  symbols77: [
     {
       name: 'FOCUS_SCOPE_A11Y_CONTRACT',
       anchor: 'focus-scope-a11-y-contract',
@@ -27511,7 +27681,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols77: [
+  symbols78: [
     {
       name: 'HoverCard',
       anchor: 'hover-card',
@@ -27589,7 +27759,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols78: [
+  symbols79: [
     {
       name: 'Menu',
       anchor: 'menu',
@@ -27724,7 +27894,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols79: [
+  symbols80: [
     {
       name: 'Menubar',
       anchor: 'menubar',
@@ -27955,7 +28125,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols80: [
+  symbols81: [
     {
       name: 'Popover',
       anchor: 'popover',
@@ -28071,7 +28241,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols81: [
+  symbols82: [
     {
       name: 'ScrollArea',
       anchor: 'scroll-area',
@@ -28156,7 +28326,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols82: [
+  symbols83: [
     {
       name: 'Toast',
       anchor: 'toast',
@@ -28303,7 +28473,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols83: [
+  symbols84: [
     {
       name: 'Tooltip',
       anchor: 'tooltip',
@@ -28394,7 +28564,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols84: [
+  symbols85: [
     {
       name: 'askr',
       anchor: 'askr',
@@ -28421,7 +28591,7 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
   ],
-  symbols85: [
+  symbols86: [
     {
       name: 'ASKR_APP_MARKER',
       anchor: 'askr-app-marker',

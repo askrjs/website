@@ -8,7 +8,7 @@ import {
 } from './catalog';
 import { cliSnapshot } from './cli-snapshot';
 import { componentDemoFor } from './component-demos';
-import { maturityStatement, releaseNotes } from './release-notes';
+import { releaseNotes } from './release-notes';
 import type { DocsHeadingDefinition, DocsPageDefinition } from './types';
 import { buildUsageGuide, routeExampleFor } from './usage-guide';
 
@@ -190,12 +190,6 @@ export default function DocsPage() {
       ))}
       {page.route === '/docs' && (
         <>
-          <section aria-labelledby="maturity">
-            <h2 id="maturity" class="anchored-heading">
-              <a href="#maturity">Maturity</a>
-            </h2>
-            <p>{maturityStatement}</p>
-          </section>
           <section aria-labelledby="versions">
             <h2 id="versions" class="anchored-heading">
               <a href="#versions">Published versions</a>
