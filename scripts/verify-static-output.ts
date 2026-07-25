@@ -194,9 +194,9 @@ for (const expectation of expectations) {
         `${expectation.route} must include a directly adaptable code example`
       );
       assert(
-        html.includes('How to use') ||
+        html.includes('id="how-to-use"') ||
           expectation.route.endsWith('/lucide-gallery'),
-        `${expectation.route} must explain how to use the documented surface`
+        `${expectation.route} must show a worked example of the documented surface`
       );
     }
   }

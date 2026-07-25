@@ -7,74 +7,9 @@ import {
   resolveDocsRoute,
 } from './catalog';
 import { cliSnapshot } from './cli-snapshot';
+import { componentDemoFor } from './component-demos';
 import type { DocsHeadingDefinition, DocsPageDefinition } from './types';
-import { buildUsageGuide } from './usage-guide';
-
-const routeExamples: Readonly<Record<string, string>> = {
-  '/docs/getting-started/first-application': `import { state } from '@askrjs/askr';
-import { createRouteRegistry, route } from '@askrjs/askr/router';
-
-function HomePage() {
-  const [count, setCount] = state(0);
-  return <button onClick={() => setCount((value) => value + 1)}>Count: {count()}</button>;
-}
-
-export const registry = createRouteRegistry(() => route('/', HomePage));`,
-  '/docs/core-concepts/state-and-derived-values': `import { derive, state } from '@askrjs/askr';
-
-export function OrderTotal() {
-  const [quantity, setQuantity] = state(2);
-  const [unitPrice] = state(12);
-  const total = derive(() => quantity() * unitPrice());
-
-  return <button onClick={() => setQuantity((value) => value + 1)}>Total: {total()}</button>;
-}`,
-  '/docs/routing/definitions-and-layouts': `const registry = createRouteRegistry(() => {
-  group({ layout: AppLayout }, () => {
-    route('/', HomePage);
-    route('/projects/{projectId}', ProjectPage);
-  });
-});`,
-  '/docs/data/queries-and-consistency': `const project = defineQuery({
-  key: ({ id }: { id: string }) => 'project:' + id,
-  fetch: ({ id, signal }) => api.projects.get(id, { signal }),
-});
-
-const result = createQuery(project, { id: projectId });`,
-  '/docs/rendering/server-side-rendering': `const html = renderToString({
-  registry,
-  url: request.url,
-});`,
-  '/docs/server/request-binding': `router.post('/projects', async (context) => {
-  const input = await context.bind<CreateProjectInput>();
-  return created(await projects.create(input));
-});`,
-  '/docs/authentication/authorization': `route('/admin', AdminPage, {
-  auth: requireUser(),
-  policies: [({ auth }) =>
-    auth.permissions.includes('admin') ? allow() : forbidden()],
-});`,
-  '/docs/http-contracts/schemas': `const project = schema.object({
-  id: schema.string(),
-  name: schema.string(),
-});
-
-project.openapi;`,
-  '/docs/charts/cartesian-marks': `const Plot = createPlot<ProjectRow>();
-
-<Plot.Root data={rows} rowKey={(row) => row.id} label="Revenue by day">
-  <Plot.Axis axis="x" />
-  <Plot.Axis axis="y" />
-  <Plot.Line x="createdAt" y="revenue" />
-  <Plot.Point x="createdAt" y="revenue" />
-</Plot.Root>`,
-  '/docs/mcp/primitives': `const mcp = createMcpServer({ name: 'project-tools', version: '1.0.0' })
-  .tool('lookup-project', { input: projectInput }, async (context, input) => {
-    return { content: [{ type: 'text', text: await lookup(input.id) }] };
-  });`,
-  '/docs/tooling/create': `npx @askrjs/cli@0.0.5 create startkit my-app
-npx @askrjs/cli@0.0.5 create --prompt "Authenticated operations dashboard"`,
-};
+import { buildUsageGuide, routeExampleFor } from './usage-guide';
 
 function CodeBlock({ code }: { code: string }) {
   return (
@@ -115,20 +50,29 @@ function PackageBadges({ page }: { page: DocsPageDefinition }) {
 }
 
 function UsageGuide({ page }: { page: DocsPageDefinition }) {
-  const guide = buildUsageGuide(page, routeExamples[page.route]);
+  const guide = buildUsageGuide(page, routeExampleFor(page.route));
+  if (!guide) return null;
   return (
     <section class="docs-usage" aria-labelledby="how-to-use">
       <h2 id="how-to-use" class="anchored-heading">
-        <a href="#how-to-use">How to use {page.title.toLowerCase()}</a>
+        <a href="#how-to-use">Example</a>
       </h2>
-      <p>{guide.intro}</p>
-      <ol>
-        {guide.steps.map((step) => (
-          <li key={step}>{step}</li>
-        ))}
-      </ol>
+      {guide.intro && <p>{guide.intro}</p>}
       <CodeBlock code={guide.code} />
     </section>
+  );
+}
+
+function ComponentDemo({ page }: { page: DocsPageDefinition }) {
+  const demo = componentDemoFor(page.title);
+  if (!demo) return null;
+  const Demo = demo.component;
+  return (
+    <div class="component-demo" data-component-demo>
+      <strong>{demo.title}</strong>
+      <p>{demo.description}</p>
+      <Demo />
+    </div>
   );
 }
 
@@ -239,6 +183,7 @@ export default function DocsPage() {
         </aside>
       )}
       <UsageGuide page={page} />
+      <ComponentDemo page={page} />
       {page.headings.map((item) => (
         <HeadingContent item={item} page={page} />
       ))}

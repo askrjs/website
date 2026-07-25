@@ -1,5 +1,7 @@
 import {
+  EditorialCTA,
   EditorialHero,
+  FlowMap,
   MarketingPageNavigation,
   RepositoryLink,
   RuledSection,
@@ -16,30 +18,32 @@ export function RenderingPage() {
         <div class="editorial-section__heading">
           <h2>Same routes and components, three ways to serve them</h2>
         </div>
-        <div class="rendering-map" aria-label="Shared route model outputs">
-          <div class="rendering-map__source">
-            <span>Shared input</span>
-            <h3>Routes + components</h3>
-            <p>One authored application model.</p>
-          </div>
-          <ol>
-            <li>
-              <span>Browser</span>
-              <h3>Single Page Application</h3>
-              <small>SPA</small>
-            </li>
-            <li>
-              <span>Server, then browser</span>
-              <h3>Server Side Rendering</h3>
-              <small>SSR + hydration</small>
-            </li>
-            <li>
-              <span>Build</span>
-              <h3>Static Site Generation</h3>
-              <small>SSG</small>
-            </li>
-          </ol>
-        </div>
+        <FlowMap
+          label="Shared route model outputs"
+          direction="fan-out"
+          hub={{
+            label: 'Shared input',
+            title: 'Routes + components',
+            description: 'One authored application model.',
+          }}
+          nodes={[
+            {
+              label: 'Browser',
+              title: 'Single Page Application',
+              meta: 'SPA',
+            },
+            {
+              label: 'Server, then browser',
+              title: 'Server Side Rendering',
+              meta: 'SSR + hydration',
+            },
+            {
+              label: 'Build',
+              title: 'Static Site Generation',
+              meta: 'SSG',
+            },
+          ]}
+        />
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
@@ -58,10 +62,17 @@ export function RenderingPage() {
             rather than the framework guessing.
           </p>
           <RepositoryLink href="https://github.com/askrjs/askr-examples">
-            Compare the rendering examples
+            View the rendering examples
           </RepositoryLink>
         </div>
       </RuledSection>
+      <EditorialCTA
+        title="Pick a rendering mode when you deploy, not when you start."
+        primaryHref="/docs/rendering"
+        primaryLabel="Read the rendering docs"
+        secondaryHref="/docs/getting-started"
+        secondaryLabel="Create an app"
+      />
       <MarketingPageNavigation current="/rendering" />
     </>
   );

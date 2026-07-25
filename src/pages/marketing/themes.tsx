@@ -1,9 +1,27 @@
 import {
+  EditorialCTA,
   EditorialHero,
   MarketingPageNavigation,
   RepositoryLink,
   RuledSection,
+  SequenceList,
+  type SequenceItem,
 } from './components';
+
+const layers: readonly SequenceItem[] = [
+  {
+    title: 'Headless components',
+    description:
+      'Keyboard behavior, focus relationships, labels, state, and composition without a mandatory visual identity.',
+    meta: '@askrjs/ui',
+  },
+  {
+    title: 'Themes',
+    description:
+      'Styled components and named tokens for color, type, space, radius, and motion. Replace them without rewriting behavior.',
+    meta: '@askrjs/themes',
+  },
+];
 
 export function ThemesPage() {
   return (
@@ -21,29 +39,7 @@ export function ThemesPage() {
             touch the other.
           </p>
         </div>
-        <ol
-          class="theme-relationship"
-          aria-label="Headless components to themes"
-        >
-          <li>
-            <span>01</span>
-            <h3>Headless components</h3>
-            <p>
-              Keyboard behavior, focus relationships, labels, state, and
-              composition without a mandatory visual identity.
-            </p>
-            <small>@askrjs/ui</small>
-          </li>
-          <li>
-            <span>02</span>
-            <h3>Themes</h3>
-            <p>
-              Styled components and named tokens for color, type, space, radius,
-              and motion. Replace them without rewriting behavior.
-            </p>
-            <small>@askrjs/themes</small>
-          </li>
-        </ol>
+        <SequenceList label="Headless components to themes" items={layers} />
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
@@ -63,10 +59,17 @@ export function ThemesPage() {
             of building focus management from scratch.
           </p>
           <RepositoryLink href="https://github.com/askrjs/askr-themes">
-            Explore the theme system
+            View the theme system
           </RepositoryLink>
         </div>
       </RuledSection>
+      <EditorialCTA
+        title="Ship the default theme, or make it yours."
+        primaryHref="/docs/components"
+        primaryLabel="Read the component docs"
+        secondaryHref="/docs/getting-started"
+        secondaryLabel="Create an app"
+      />
       <MarketingPageNavigation current="/themes" />
     </>
   );

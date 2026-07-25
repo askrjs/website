@@ -1,7 +1,12 @@
 import { apiManifest } from './api-manifest';
-import { headingOverrides } from './content-overrides';
+import {
+  descriptionOverrides,
+  headingOverrides,
+  lateHeadingOverrides,
+} from './content-overrides';
 import { docsPrimarySections } from './primary-sections';
 import { packageVersions } from './package-versions';
+import { buildUsageGuide, routeExampleFor } from './usage-guide';
 import type {
   DocsHeadingDefinition,
   DocsPageDefinition,
@@ -76,6 +81,36 @@ function guidance(group: string, title: string, heading: string): string {
   return `Implement ${heading.toLowerCase()} at the ${subject} boundary: make inputs visible at the call site, keep cleanup with the work that created it, and render the success, unavailable, and failure states where a user can act on them.`;
 }
 
+/**
+ * Per-section meta description for pages without a hand-written one in
+ * descriptionOverrides. Each section gets copy describing what that kind of
+ * page actually covers, rather than one template stretched across all of them.
+ */
+function sectionDescription(group: string, title: string): string {
+  switch (group) {
+    case 'UI & Components':
+      return `${title}: anatomy, keyboard behavior, state, and theming in Askr.`;
+    case 'Server & APIs':
+      return `${title} at the Askr server boundary, with validated input and explicit failure states.`;
+    case 'Guides':
+      return `${title}: a worked guide from route registry through to a production build.`;
+    case 'Reference':
+      return `${title}: published entrypoints, signatures, and the constraints around them.`;
+    case 'Routing & Data':
+      return `${title} in the Askr router: typed routes, lifecycle-bound data, and cancellation.`;
+    case 'Fundamentals':
+      return `${title} in the Askr runtime: what owns it, when it runs, and how it renders deterministically.`;
+    case 'Rendering':
+      return `${title}: how and when Askr turns a route tree into HTML.`;
+    case 'Tooling':
+      return `${title} with the Askr CLI — generated files you review, and checks that catch drift.`;
+    case 'Getting Started':
+      return `${title}: install Askr, scaffold a project, and get a first route rendering.`;
+    default:
+      return `${title}, built on the current published Askr packages.`;
+  }
+}
+
 function heading(
   group: string,
   pageTitle: string,
@@ -84,7 +119,9 @@ function heading(
 ) {
   if (typeof value !== 'string') return value;
   const id = slug(value);
-  const override = route ? headingOverrides[route]?.[id] : undefined;
+  const override = route
+    ? (headingOverrides[route]?.[id] ?? lateHeadingOverrides[route]?.[id])
+    : undefined;
   return {
     id,
     title: value,
@@ -111,7 +148,8 @@ function definePage(
     title: input.title,
     description:
       input.description ??
-      `Use ${input.title.toLowerCase()} with the current published Askr packages.`,
+      descriptionOverrides[route] ??
+      sectionDescription(group, input.title),
     navGroup: group,
     navSection: section,
     status: input.status ?? 'stable',
@@ -1568,11 +1606,12 @@ export function docsTableOfContents(
     return page.headings;
   }
 
+  // The example section only renders when there is a page-specific example,
+  // so the table of contents has to agree.
   const headings: Pick<DocsHeadingDefinition, 'id' | 'title'>[] = [
-    {
-      id: 'how-to-use',
-      title: `How to use ${page.title.toLowerCase()}`,
-    },
+    ...(buildUsageGuide(page, routeExampleFor(page.route))
+      ? [{ id: 'how-to-use', title: 'Example' }]
+      : []),
     ...page.headings,
   ];
   if (page.route === '/docs') {

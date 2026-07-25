@@ -1,5 +1,7 @@
 import {
+  EditorialCTA,
   EditorialHero,
+  FlowMap,
   MarketingPageNavigation,
   RepositoryLink,
   RuledSection,
@@ -16,25 +18,28 @@ export function ProductionPage() {
         <div class="editorial-section__heading">
           <h2>Two outputs, one build</h2>
         </div>
-        <div class="production-map" aria-label="Askr production outputs">
-          <div class="production-map__source">
-            <span>Application-owned</span>
-            <h3>Document + routes</h3>
-            <p>HTML shell, metadata, and asset placement stay visible.</p>
-          </div>
-          <ol>
-            <li>
-              <span>Static output</span>
-              <h3>Documents + hashed assets</h3>
-              <p>No required server runtime.</p>
-            </li>
-            <li>
-              <span>Node output</span>
-              <h3>Adapter + HTTP handlers</h3>
-              <p>A thin runtime boundary.</p>
-            </li>
-          </ol>
-        </div>
+        <FlowMap
+          label="Askr production outputs"
+          direction="fan-out"
+          hub={{
+            label: 'Application-owned',
+            title: 'Document + routes',
+            description:
+              'HTML shell, metadata, and asset placement stay visible.',
+          }}
+          nodes={[
+            {
+              label: 'Static output',
+              title: 'Documents + hashed assets',
+              description: 'No required server runtime.',
+            },
+            {
+              label: 'Node output',
+              title: 'Adapter + HTTP handlers',
+              description: 'A thin runtime boundary.',
+            },
+          ]}
+        />
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
@@ -59,6 +64,13 @@ export function ProductionPage() {
           </RepositoryLink>
         </div>
       </RuledSection>
+      <EditorialCTA
+        title="Ship it as static files or a Node process."
+        primaryHref="/docs/getting-started"
+        primaryLabel="Create an app"
+        secondaryHref="/docs/guides"
+        secondaryLabel="Read the guides"
+      />
       <MarketingPageNavigation current="/production" />
     </>
   );
