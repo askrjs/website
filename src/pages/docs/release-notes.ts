@@ -1,6 +1,3 @@
-export const maturityStatement =
-  'Askr is pre-1.0: the core runtime and published packages are usable, while APIs and package boundaries can still change between releases. Treat experimental surfaces as moving and pin versions in production.';
-
 export const releaseNotes = [
   {
     version: '0.0.x current line',
