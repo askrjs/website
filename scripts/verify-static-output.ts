@@ -281,6 +281,16 @@ assert(
   'static output is missing generated documents'
 );
 
+for (const output of [dist, resolve(root, '.askr/client')]) {
+  const sourceMaps = readdirSync(output, { recursive: true }).filter((file) =>
+    String(file).endsWith('.map')
+  );
+  assert(
+    sourceMaps.length === 0,
+    `${output} must not publish source maps: ${sourceMaps.join(', ')}`
+  );
+}
+
 if (errors.length) {
   console.error(
     `Static output verification failed:\n${errors.map((error) => `- ${error}`).join('\n')}`
