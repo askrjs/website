@@ -21,7 +21,7 @@ export default function config(): UserConfig {
     build: {
       outDir: '.askr/client',
       emptyOutDir: true,
-      sourcemap: true,
+      sourcemap: false,
     },
   };
 }
