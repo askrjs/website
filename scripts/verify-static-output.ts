@@ -282,6 +282,10 @@ assert(
 );
 
 for (const output of [dist, resolve(root, '.askr/client')]) {
+  if (!existsSync(output)) {
+    errors.push(`${output} is missing`);
+    continue;
+  }
   const sourceMaps = readdirSync(output, { recursive: true }).filter((file) =>
     String(file).endsWith('.map')
   );
