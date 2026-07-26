@@ -1,6 +1,7 @@
 import type { Props } from '@askrjs/askr';
 import { Link, currentRoute } from '@askrjs/askr/router';
 import {
+  Container,
   SidebarInset,
   Sidebar,
   SidebarContent,
@@ -90,7 +91,7 @@ function TableOfContents() {
 export function DocsLayout({ children }: Props) {
   return (
     <SiteLayout variant="docs">
-      <div class="docs-channel">
+      <Container size="xl" class="docs-channel">
         <SidebarScope class="docs-scope">
           <Sidebar collapsible="offcanvas">
             <DocsNavigation />
@@ -106,7 +107,7 @@ export function DocsLayout({ children }: Props) {
             </div>
           </SidebarInset>
         </SidebarScope>
-      </div>
+      </Container>
     </SiteLayout>
   );
 }

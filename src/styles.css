@@ -23,6 +23,13 @@ body {
 }
 
 .site-shell {
+  --ak-font-family-quote: 'Domine Variable', serif;
+  --docs-color-text-secondary: color-mix(
+    in oklch,
+    var(--ak-color-text-muted) 76%,
+    var(--ak-color-text)
+  );
+
   display: flex;
   min-height: 100vh;
   flex-direction: column;
@@ -51,12 +58,7 @@ body {
 
 .site-header .docs-search {
   width: min(18rem, 38vw);
-}
-
-.site-shell[data-layout='marketing'] {
-  --ak-font-family-quote: 'Domine Variable', serif;
-  min-height: 100vh;
-  background: var(--ak-color-bg);
+  margin: 0;
 }
 
 .site-brand__mark {
@@ -853,9 +855,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .docs-channel {
-  width: min(100%, 80rem);
-  margin-inline: auto;
-  padding-inline: var(--ak-space-lg);
+  padding-inline: 0;
 }
 
 .docs-scope {
@@ -1274,36 +1274,24 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .docs-search {
-  flex: none;
-  margin-top: 1rem;
+  min-width: 0;
 }
 
 .docs-search__trigger {
-  display: flex;
-  width: 100%;
-  min-height: 2.45rem;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.45rem 0.65rem;
-  border: 1px solid var(--ak-color-border);
-  border-radius: 0.6rem;
-  background: var(--ak-color-bg);
-  color: var(--docs-color-text-secondary);
-  cursor: pointer;
-  font: inherit;
-  font-size: 0.78rem;
+  min-width: 0;
+  justify-content: flex-start;
 }
 
 .docs-search__trigger span {
+  min-width: 0;
   flex: 1;
+  overflow: hidden;
   text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .docs-search__trigger kbd {
-  padding: 0.16rem 0.32rem;
-  border: 1px solid var(--ak-color-border);
-  border-radius: 0.3rem;
-  font-family: var(--ak-font-family-mono);
   font-size: 0.65rem;
 }
 
@@ -1317,6 +1305,10 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   justify-items: center;
   padding: min(15vh, 8rem) 1rem 1rem;
   background: color-mix(in srgb, #000 48%, transparent);
+}
+
+.docs-search__backdrop--closed {
+  display: none;
 }
 
 .docs-search__dialog {
@@ -1344,15 +1336,6 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   background: transparent;
   color: var(--ak-color-text);
   font: inherit;
-}
-
-.docs-search__input button {
-  display: grid;
-  padding: 0.3rem;
-  border: 0;
-  background: transparent;
-  color: var(--docs-color-text-secondary);
-  cursor: pointer;
 }
 
 .docs-search__results {
