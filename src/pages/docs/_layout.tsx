@@ -1,54 +1,39 @@
-import { state, type Props } from '@askrjs/askr';
+import type { Props } from '@askrjs/askr';
 import { Link, currentRoute } from '@askrjs/askr/router';
+import {
+  SidebarInset,
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarScope,
+  SidebarTrigger,
+} from '@askrjs/themes/components';
 import {
   BookOpenIcon,
   CompassIcon,
   Layers3Icon,
   LibraryIcon,
-  MenuIcon,
   MonitorIcon,
-  PanelLeftCloseIcon,
-  PanelLeftOpenIcon,
   PanelsTopLeftIcon,
   RocketIcon,
   RouteIcon,
   ServerIcon,
   WrenchIcon,
-  XIcon,
 } from '@askrjs/lucide';
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarTrigger,
-} from '@askrjs/themes/components';
-import { ThemeScope } from '@askrjs/themes/theme';
-import { AskrBrand, GitHubMark, SiteThemeToggle } from '../marketing/_layout';
+import { SiteLayout } from '../site-layout';
 import {
   docsByRoute,
   docsSections,
   docsTableOfContents,
   resolveDocsRoute,
 } from './catalog';
-import { DocsSearch } from './search';
 
-const STORAGE_KEY = 'askr-docs-sidebar-collapsed';
-const adoptedShells = new WeakSet<HTMLElement>();
-
-function DocsNavigation({
-  collapsed = false,
-  close,
-}: {
-  collapsed?: boolean;
-  close?: () => void;
-}) {
+function DocsNavigation({ close }: { close?: () => void }) {
   const activePath = resolveDocsRoute(currentRoute());
   const sectionIcons = [
     BookOpenIcon,
@@ -62,12 +47,9 @@ function DocsNavigation({
     CompassIcon,
     LibraryIcon,
   ] as const;
+
   return (
-    <SidebarContent
-      as="nav"
-      class="docs-sidebar-nav"
-      aria-label="Documentation navigation"
-    >
+    <SidebarContent as="nav" aria-label="Documentation navigation">
       {docsSections.map((section, sectionIndex) => {
         const active = section.pages.some((page) => page.route === activePath);
         const SectionIcon = sectionIcons[sectionIndex] ?? BookOpenIcon;
@@ -78,66 +60,60 @@ function DocsNavigation({
           groups.set(label, pages);
           return groups;
         }, new Map<string, (typeof section.pages)[number][]>());
+
         return (
-          <div key={section.id}>
-            <SidebarGroup>
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton
-                    asChild
-                    active={active}
-                    tooltip={collapsed ? section.label : undefined}
-                    tooltipSide="right"
-                  >
-                    <Link href={section.landingRoute} onClick={close}>
-                      <SectionIcon size={18} aria-hidden="true" />
-                      <span>{section.label}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              </SidebarMenu>
-              {active && !collapsed && (
-                <SidebarGroupContent>
-                  {Array.from(subsections).map(([label, pages]) => (
-                    <div key={label}>
-                      {label !== section.label && (
-                        <SidebarGroupLabel>{label}</SidebarGroupLabel>
-                      )}
-                      <SidebarMenu>
-                        {pages.map((page) => (
-                          <SidebarMenuItem key={page.route}>
-                            <SidebarMenuButton
-                              asChild
-                              active={page.route === activePath}
-                              size="sm"
+          <SidebarGroup data-nav-section={section.id}>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild active={active}>
+                  <Link href={section.landingRoute} onClick={close}>
+                    <SectionIcon size={18} aria-hidden="true" />
+                    <span>{section.label}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+            {active && (
+              <SidebarGroupContent>
+                {Array.from(subsections).map(([label, pages]) => (
+                  <div>
+                    {label !== section.label && (
+                      <SidebarGroupLabel>{label}</SidebarGroupLabel>
+                    )}
+                    <SidebarMenu>
+                      {pages.map((page) => (
+                        <SidebarMenuItem>
+                          <SidebarMenuButton
+                            asChild
+                            active={page.route === activePath}
+                            size="sm"
+                          >
+                            <Link
+                              href={page.route}
+                              aria-current={
+                                page.route === activePath ? 'page' : undefined
+                              }
+                              onClick={close}
                             >
-                              <Link
-                                href={page.route}
-                                aria-current={
-                                  page.route === activePath ? 'page' : undefined
-                                }
-                                onClick={close}
-                              >
-                                <span>{page.title}</span>
-                                {page.status !== 'stable' && (
-                                  <span
-                                    class="docs-sidebar-nav__status"
-                                    title={page.status}
-                                  >
-                                    •
-                                  </span>
-                                )}
-                              </Link>
-                            </SidebarMenuButton>
-                          </SidebarMenuItem>
-                        ))}
-                      </SidebarMenu>
-                    </div>
-                  ))}
-                </SidebarGroupContent>
-              )}
-            </SidebarGroup>
-          </div>
+                              <span>{page.title}</span>
+                              {page.status !== 'stable' && (
+                                <span
+                                  class="docs-sidebar-nav__status"
+                                  title={page.status}
+                                >
+                                  •
+                                </span>
+                              )}
+                            </Link>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      ))}
+                    </SidebarMenu>
+                  </div>
+                ))}
+              </SidebarGroupContent>
+            )}
+          </SidebarGroup>
         );
       })}
     </SidebarContent>
@@ -147,12 +123,14 @@ function DocsNavigation({
 function TableOfContents() {
   const page = docsByRoute.get(resolveDocsRoute(currentRoute()));
   const headings = page ? docsTableOfContents(page) : [];
+  if (!headings.length) return null;
+
   return (
     <aside class="docs-toc" aria-label="On this page">
       <p>On this page</p>
       <ul>
         {headings.map((heading) => (
-          <li key={heading.id}>
+          <li>
             <a href={`#${heading.id}`}>{heading.title}</a>
           </li>
         ))}
@@ -162,118 +140,25 @@ function TableOfContents() {
 }
 
 export function DocsLayout({ children }: Props) {
-  const [collapsed, writeCollapsed] = state(false);
-  const [drawerOpen, setDrawerOpen] = state(false);
-  const setCollapsed = (value: boolean) => {
-    writeCollapsed(value);
-    try {
-      window.localStorage.setItem(STORAGE_KEY, String(value));
-    } catch {}
-  };
   return (
-    <ThemeScope defaultTheme="light" storageKey="askr-theme">
-      <div
-        class="docs-shell"
-        data-layout="docs"
-        data-sidebar-collapsed={collapsed() ? 'true' : 'false'}
-        ref={(element: HTMLElement | null) => {
-          if (!element || adoptedShells.has(element)) return;
-          adoptedShells.add(element);
-          try {
-            writeCollapsed(window.localStorage.getItem(STORAGE_KEY) === 'true');
-          } catch {}
-          window.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') setDrawerOpen(false);
-          });
-        }}
-      >
-        <Sidebar
-          class="docs-sidebar-shell"
-          collapsible={collapsed() ? 'icon' : 'none'}
-        >
-          <SidebarHeader class="docs-sidebar-shell__header">
-            <AskrBrand compact={collapsed()} />
-            <SidebarTrigger
-              aria-label={
-                collapsed()
-                  ? 'Expand docs navigation'
-                  : 'Collapse docs navigation'
-              }
-              aria-pressed={collapsed()}
-              onClick={() => setCollapsed(!collapsed())}
-            >
-              {collapsed() ? (
-                <PanelLeftOpenIcon size={18} aria-hidden="true" />
-              ) : (
-                <PanelLeftCloseIcon size={18} aria-hidden="true" />
-              )}
-            </SidebarTrigger>
-          </SidebarHeader>
-          {!collapsed() && <DocsSearch />}
-          <DocsNavigation collapsed={collapsed()} />
-          <SidebarFooter>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  tooltip={collapsed() ? 'GitHub' : undefined}
-                  tooltipSide="right"
-                >
-                  <a href="https://github.com/askrjs">
-                    <GitHubMark />
-                    <span>GitHub</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-            <SiteThemeToggle />
-          </SidebarFooter>
-        </Sidebar>
-        <header class="docs-mobile-header">
-          <button
-            class="icon-button"
-            type="button"
-            aria-label="Open documentation navigation"
-            aria-expanded={drawerOpen()}
-            onClick={() => setDrawerOpen(true)}
-          >
-            <MenuIcon size={20} aria-hidden="true" />
-          </button>
-          <AskrBrand />
-          <DocsSearch />
-          <SiteThemeToggle />
-        </header>
-        {drawerOpen() && (
-          <div
-            class="docs-drawer-backdrop"
-            role="presentation"
-            onClick={(event: Event) => {
-              if (event.target === event.currentTarget) setDrawerOpen(false);
-            }}
-          >
-            <Sidebar
-              class="docs-drawer"
-              collapsible="none"
-              aria-label="Documentation navigation"
-            >
-              <SidebarHeader class="docs-sidebar-shell__header">
-                <AskrBrand />
-                <SidebarTrigger
-                  aria-label="Close documentation navigation"
-                  onClick={() => setDrawerOpen(false)}
-                >
-                  <XIcon size={20} aria-hidden="true" />
-                </SidebarTrigger>
-              </SidebarHeader>
-              <DocsNavigation close={() => setDrawerOpen(false)} />
-            </Sidebar>
-          </div>
-        )}
-        <main class="docs-main">
-          <div class="docs-content">{children}</div>
-        </main>
-        <TableOfContents />
+    <SiteLayout variant="docs">
+      <div class="docs-channel">
+        <SidebarScope class="docs-scope">
+          <Sidebar collapsible="offcanvas">
+            <DocsNavigation />
+          </Sidebar>
+          <SidebarInset class="docs-main">
+            <div class="docs-mobile-bar">
+              <SidebarTrigger aria-label="Toggle documentation navigation" />
+              <span>Askr documentation</span>
+            </div>
+            <div class="docs-body">
+              <div class="docs-content">{children}</div>
+              <TableOfContents />
+            </div>
+          </SidebarInset>
+        </SidebarScope>
       </div>
-    </ThemeScope>
+    </SiteLayout>
   );
 }
