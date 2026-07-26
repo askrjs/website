@@ -83,6 +83,7 @@ function HeadingContent({
 }: {
   item: DocsHeadingDefinition;
   page: DocsPageDefinition;
+  key?: string;
 }) {
   return (
     <section aria-labelledby={item.id}>
@@ -186,7 +187,7 @@ export default function DocsPage() {
       <UsageGuide page={page} />
       <ComponentDemo page={page} />
       {page.headings.map((item) => (
-        <HeadingContent item={item} page={page} />
+        <HeadingContent key={item.id} item={item} page={page} />
       ))}
       {page.route === '/docs' && (
         <>

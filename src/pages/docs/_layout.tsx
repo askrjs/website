@@ -62,7 +62,7 @@ function DocsNavigation({ close }: { close?: () => void }) {
         }, new Map<string, (typeof section.pages)[number][]>());
 
         return (
-          <SidebarGroup data-nav-section={section.id}>
+          <SidebarGroup key={section.id} data-nav-section={section.id}>
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild active={active}>
@@ -76,13 +76,13 @@ function DocsNavigation({ close }: { close?: () => void }) {
             {active && (
               <SidebarGroupContent>
                 {Array.from(subsections).map(([label, pages]) => (
-                  <div>
+                  <div key={label}>
                     {label !== section.label && (
                       <SidebarGroupLabel>{label}</SidebarGroupLabel>
                     )}
                     <SidebarMenu>
                       {pages.map((page) => (
-                        <SidebarMenuItem>
+                        <SidebarMenuItem key={page.route}>
                           <SidebarMenuButton
                             asChild
                             active={page.route === activePath}
@@ -130,7 +130,7 @@ function TableOfContents() {
       <p>On this page</p>
       <ul>
         {headings.map((heading) => (
-          <li>
+          <li key={heading.id}>
             <a href={`#${heading.id}`}>{heading.title}</a>
           </li>
         ))}
