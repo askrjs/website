@@ -22,9 +22,6 @@ const apiSymbolsByRoute = new Map(
     apiSymbolSets[entrypoint.symbolSet as keyof typeof apiSymbolSets],
   ])
 );
-const docsHome = docsCatalog.find((page) => page.route === '/docs');
-if (!docsHome) throw new Error('Missing /docs catalog entry');
-
 const marketing = [
   { route: '/', ...marketingRouteMetadata['/'] },
   ...marketingPages.map((page) => ({
@@ -32,26 +29,19 @@ const marketing = [
     title: page.title,
     description: page.description,
   })),
-  {
-    route: '/docs',
-    title: `${docsHome.title} | Askr`,
-    description: docsHome.description,
-  },
   { route: '/404', ...marketingRouteMetadata['/404'] },
 ].map((page) => ({ ...page, layout: 'marketing' }));
 
-const docs = docsCatalog
-  .filter((page) => page.route !== '/docs')
-  .map((page) => ({
-    route: page.route,
-    title: `${page.title} | Askr`,
-    description: page.description,
-    headings: page.headings.map(({ id }) => ({ id })),
-    apiSymbols: apiSymbolsByRoute
-      .get(page.route)
-      ?.map(({ anchor }) => ({ anchor })),
-    layout: 'docs',
-  }));
+const docs = docsCatalog.map((page) => ({
+  route: page.route,
+  title: `${page.title} | Askr`,
+  description: page.description,
+  headings: page.headings.map(({ id }) => ({ id })),
+  apiSymbols: apiSymbolsByRoute
+    .get(page.route)
+    ?.map(({ anchor }) => ({ anchor })),
+  layout: 'docs',
+}));
 
 const expectations = [...marketing, ...docs];
 const expectedRoutes = new Set(expectations.map(({ route }) => route));
