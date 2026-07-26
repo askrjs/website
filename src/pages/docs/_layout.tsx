@@ -13,18 +13,6 @@ import {
   SidebarScope,
   SidebarTrigger,
 } from '@askrjs/themes/components';
-import {
-  BookOpenIcon,
-  CompassIcon,
-  Layers3Icon,
-  LibraryIcon,
-  MonitorIcon,
-  PanelsTopLeftIcon,
-  RocketIcon,
-  RouteIcon,
-  ServerIcon,
-  WrenchIcon,
-} from '@askrjs/lucide';
 import { SiteLayout } from '../site-layout';
 import {
   docsByRoute,
@@ -35,84 +23,44 @@ import {
 
 function DocsNavigation({ close }: { close?: () => void }) {
   const activePath = resolveDocsRoute(currentRoute());
-  const sectionIcons = [
-    BookOpenIcon,
-    RocketIcon,
-    Layers3Icon,
-    RouteIcon,
-    MonitorIcon,
-    ServerIcon,
-    PanelsTopLeftIcon,
-    WrenchIcon,
-    CompassIcon,
-    LibraryIcon,
-  ] as const;
 
   return (
     <SidebarContent as="nav" aria-label="Documentation navigation">
-      {docsSections.map((section, sectionIndex) => {
-        const active = section.pages.some((page) => page.route === activePath);
-        const SectionIcon = sectionIcons[sectionIndex] ?? BookOpenIcon;
-        const subsections = section.pages.reduce((groups, page) => {
-          const label = page.navSection ?? section.label;
-          const pages = groups.get(label) ?? [];
-          pages.push(page);
-          groups.set(label, pages);
-          return groups;
-        }, new Map<string, (typeof section.pages)[number][]>());
-
+      {docsSections.map((section) => {
         return (
-          <SidebarGroup data-nav-section={section.id}>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild active={active}>
-                  <Link href={section.landingRoute} onClick={close}>
-                    <SectionIcon size={18} aria-hidden="true" />
-                    <span>{section.label}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-            {active && (
-              <SidebarGroupContent>
-                {Array.from(subsections).map(([label, pages]) => (
-                  <div>
-                    {label !== section.label && (
-                      <SidebarGroupLabel>{label}</SidebarGroupLabel>
-                    )}
-                    <SidebarMenu>
-                      {pages.map((page) => (
-                        <SidebarMenuItem>
-                          <SidebarMenuButton
-                            asChild
-                            active={page.route === activePath}
-                            size="sm"
+          <SidebarGroup key={section.id} data-nav-section={section.id}>
+            <SidebarGroupLabel>{section.label}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {section.pages.map((page) => (
+                  <SidebarMenuItem key={page.route}>
+                    <SidebarMenuButton
+                      asChild
+                      active={page.route === activePath}
+                      size="sm"
+                    >
+                      <Link
+                        href={page.route}
+                        aria-current={
+                          page.route === activePath ? 'page' : undefined
+                        }
+                        onClick={close}
+                      >
+                        <span>{page.title}</span>
+                        {page.status !== 'stable' && (
+                          <span
+                            class="docs-sidebar-nav__status"
+                            title={page.status}
                           >
-                            <Link
-                              href={page.route}
-                              aria-current={
-                                page.route === activePath ? 'page' : undefined
-                              }
-                              onClick={close}
-                            >
-                              <span>{page.title}</span>
-                              {page.status !== 'stable' && (
-                                <span
-                                  class="docs-sidebar-nav__status"
-                                  title={page.status}
-                                >
-                                  •
-                                </span>
-                              )}
-                            </Link>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      ))}
-                    </SidebarMenu>
-                  </div>
+                            •
+                          </span>
+                        )}
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
                 ))}
-              </SidebarGroupContent>
-            )}
+              </SidebarMenu>
+            </SidebarGroupContent>
           </SidebarGroup>
         );
       })}
@@ -130,7 +78,7 @@ function TableOfContents() {
       <p>On this page</p>
       <ul>
         {headings.map((heading) => (
-          <li>
+          <li key={heading.id}>
             <a href={`#${heading.id}`}>{heading.title}</a>
           </li>
         ))}
