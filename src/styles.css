@@ -22,7 +22,38 @@ body {
   color: var(--ak-color-text);
 }
 
-.marketing-shell {
+.site-shell {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  background: var(--ak-color-bg);
+}
+
+.site-main {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.site-shell[data-layout='docs'] .docs-channel {
+  flex: 1;
+}
+
+.site-header {
+  z-index: 40;
+  box-shadow: none;
+}
+
+.site-header [data-slot='navbar'] {
+  min-height: 3.5rem;
+}
+
+.site-header .docs-search {
+  width: min(18rem, 38vw);
+}
+
+.site-shell[data-layout='marketing'] {
   --ak-font-family-quote: 'Domine Variable', serif;
   min-height: 100vh;
   background: var(--ak-color-bg);
@@ -748,7 +779,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   text-underline-offset: 0.2em;
 }
 
-.marketing-shell section[id] {
+.site-shell[data-layout='marketing'] section[id] {
   scroll-margin-top: calc(var(--ak-layout-navbar-height) + var(--ak-space-xl));
 }
 
@@ -780,7 +811,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   font-size: var(--ak-font-size-xs);
 }
 
-.marketing-shell [data-slot='footer-link'] {
+.site-shell [data-slot='footer-link'] {
   color: color-mix(
     in oklab,
     var(--ak-color-text-muted) 90%,
@@ -819,6 +850,108 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 .icon-button:hover {
   background: var(--ak-color-primary-soft);
   color: var(--ak-color-text);
+}
+
+.docs-channel {
+  width: min(100%, 80rem);
+  margin-inline: auto;
+  padding-inline: var(--ak-space-lg);
+}
+
+.docs-scope {
+  --docs-header-height: 3.5rem;
+  min-height: calc(100vh - var(--docs-header-height));
+  background: transparent;
+}
+
+.docs-scope [data-slot='sidebar-container'],
+.docs-scope [data-slot='sidebar'] {
+  top: var(--docs-header-height);
+  height: calc(100vh - var(--docs-header-height));
+  border: 0;
+  background: transparent;
+}
+
+.docs-scope [data-slot='sidebar-inset'] {
+  background: transparent;
+}
+
+.docs-scope [data-slot='sidebar-content'] {
+  padding-block: var(--ak-space-lg);
+  padding-inline-end: var(--ak-space-lg);
+}
+
+.docs-scope [data-slot='sidebar-group'] + [data-slot='sidebar-group'] {
+  margin-top: var(--ak-space-xl);
+}
+
+.docs-scope [data-slot='sidebar-group-label'] {
+  height: auto;
+  margin-bottom: var(--ak-space-xs);
+  padding-inline: var(--ak-space-sm);
+  color: var(--ak-color-text);
+  font-size: var(--ak-font-size-sm);
+  font-weight: var(--ak-font-weight-bold);
+}
+
+.docs-scope [data-slot='sidebar-menu'] {
+  gap: 0;
+  margin-inline-start: var(--ak-space-sm);
+  padding-inline-start: var(--ak-space-sm);
+  border-inline-start: 1px solid var(--ak-color-border);
+}
+
+.docs-scope [data-slot='sidebar-menu-button'] {
+  height: auto;
+  min-height: 1.7rem;
+  padding-block: 0.28rem;
+  border-radius: var(--ak-radius-sm);
+  color: var(--ak-color-text-muted);
+  font-size: var(--ak-font-size-sm);
+  font-weight: var(--ak-font-weight-normal);
+  line-height: 1.4;
+  text-align: left;
+  white-space: normal;
+  transition:
+    color 120ms ease,
+    background 120ms ease;
+}
+
+.docs-scope [data-slot='sidebar-menu-button']:hover {
+  color: var(--ak-color-text);
+}
+
+.docs-scope [data-slot='sidebar-menu-button'][data-active='true'] {
+  position: relative;
+  background: transparent;
+  color: var(--ak-color-primary);
+  font-weight: var(--ak-font-weight-semibold);
+}
+
+.docs-scope [data-slot='sidebar-menu-button'][data-active='true']::before {
+  position: absolute;
+  content: '';
+  inset-block: 0.15rem;
+  inset-inline-start: calc(var(--ak-space-sm) * -1 - 1px);
+  width: 2px;
+  border-radius: 1px;
+  background: var(--ak-color-primary);
+}
+
+.docs-mobile-bar {
+  display: none;
+  align-items: center;
+  gap: var(--ak-space-sm);
+  padding-block: var(--ak-space-sm);
+  color: var(--ak-color-text-muted);
+  font-size: var(--ak-font-size-sm);
+}
+
+.docs-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 14rem;
+  align-items: start;
+  gap: clamp(1.5rem, 3vw, 3rem);
 }
 
 .docs-main {
@@ -1593,6 +1726,14 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 @media (max-width: 72rem) {
+  .docs-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .docs-toc {
+    display: none;
+  }
+
   .docs-shell,
   .docs-shell[data-sidebar-collapsed='true'] {
     grid-template-columns: 17.5rem minmax(0, 1fr);
@@ -1604,6 +1745,24 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 @media (max-width: 48rem) {
+  .site-header .docs-search {
+    width: auto;
+  }
+
+  .docs-channel {
+    padding-inline: 0;
+  }
+
+  .docs-scope [data-slot='sidebar-container'],
+  .docs-scope [data-slot='sidebar'] {
+    top: 3.5rem;
+    height: calc(100vh - 3.5rem);
+  }
+
+  .docs-mobile-bar {
+    display: flex;
+  }
+
   .docs-shell,
   .docs-shell[data-sidebar-collapsed='true'] {
     display: block;
