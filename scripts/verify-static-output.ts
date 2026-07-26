@@ -119,6 +119,14 @@ for (const expectation of expectations) {
     `${expectation.route} references source files`
   );
   assert(
+    !/<script\b[^>]*\bsrc=["'](?:https?:)?\/\//i.test(html),
+    `${expectation.route} loads an executable third-party script`
+  );
+  assert(
+    !html.includes('googletagmanager.com') && !html.includes('dataLayer'),
+    `${expectation.route} contains removed analytics code`
+  );
+  assert(
     html.includes('/assets/askr-logo-64.avif'),
     `${expectation.route} is missing the Askr mark`
   );
