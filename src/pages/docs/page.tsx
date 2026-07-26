@@ -83,7 +83,7 @@ function HeadingContent({
 }: {
   item: DocsHeadingDefinition;
   page: DocsPageDefinition;
-  key?: string;
+  [prop: string]: unknown;
 }) {
   return (
     <section aria-labelledby={item.id}>
