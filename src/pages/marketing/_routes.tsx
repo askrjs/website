@@ -1,9 +1,4 @@
-import {
-  createRouteRegistry,
-  fallback,
-  group,
-  route,
-} from '@askrjs/askr/router';
+import { fallback, group, route } from '@askrjs/askr/router';
 import { MarketingLayout } from './_layout';
 import { marketingPages, type MarketingPath } from './catalog';
 import { ApplicationModelPage } from './application-model';
@@ -60,7 +55,3 @@ export function registerMarketingRoutes() {
     fallback(NotFoundPage);
   });
 }
-
-export const marketingRouteRegistry = createRouteRegistry(() => {
-  registerMarketingRoutes();
-});

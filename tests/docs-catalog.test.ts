@@ -16,12 +16,29 @@ import { searchDocs } from '../src/pages/docs/search-index';
 import { buildUsageGuide } from '../src/pages/docs/usage-guide';
 import { releaseNotes } from '../src/pages/docs/release-notes';
 import { headingOverrides } from '../src/pages/docs/content-overrides';
+import { routeRegistry } from '../src/pages/_routes';
+import { registry as staticRegistry } from '../ssg.config';
 import {
   componentDemoFor,
   componentDemoTitles,
 } from '../src/pages/docs/component-demos';
 
 describe('documentation catalog', () => {
+  it('uses one browser registry for marketing and documentation routes', () => {
+    const paths = new Set(
+      routeRegistry.manifest.records.map((record) => record.path)
+    );
+
+    expect(paths.has('/')).toBe(true);
+    expect(paths.has('/platform')).toBe(true);
+    expect(paths.has('/docs')).toBe(true);
+    expect(paths.has('/docs/getting-started')).toBe(true);
+  });
+
+  it('reuses the browser registry for static generation', () => {
+    expect(staticRegistry).toBe(routeRegistry);
+  });
+
   it('derives documented versions from installed package metadata', () => {
     expect(cliSnapshot.version).toBe(packageVersions.cli);
 

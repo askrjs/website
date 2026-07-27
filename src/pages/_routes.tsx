@@ -30,31 +30,3 @@ export const routeRegistry = createRouteRegistry(() => {
     }
   });
 });
-
-// The current CLI renders registry handlers directly, so static generation
-// explicitly settles the lazy route families before handing it the registry.
-export async function createStaticRouteRegistry() {
-  const components = new Map<
-    (typeof docsCatalog)[number]['loader'],
-    ReturnType<typeof lazy>
-  >();
-  const registry = createRouteRegistry(() => {
-    registerMarketingRoutes();
-
-    group({ layout: DocsLayout }, () => {
-      for (const page of docsCatalog) {
-        let component = components.get(page.loader);
-        if (!component) {
-          component = lazy(page.loader);
-          components.set(page.loader, component);
-        }
-        route(page.route, component, { meta: routeMetadata[page.route] });
-      }
-    });
-  });
-
-  await Promise.all(
-    [...components.values()].map((component) => component.preload())
-  );
-  return registry;
-}

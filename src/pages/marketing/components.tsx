@@ -4,13 +4,6 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@askrjs/lucide';
 import { Button, Container } from '@askrjs/themes/components';
 import { marketingPages, type MarketingPath } from './catalog';
 
-// The browser boots one of two registries depending on the entry path
-// (see src/main.tsx), so the marketing registry has no /docs routes in it.
-// Client-side navigating to one would land on the marketing fallback.
-function isMarketingRoute(href: string) {
-  return href.startsWith('/') && !href.startsWith('/docs');
-}
-
 type HeroProps = {
   title: string;
   lede: string;
@@ -73,25 +66,14 @@ export function EditorialCTA({
         <h2>{title}</h2>
         <div class="editorial-cta__actions">
           <Button asChild>
-            {isMarketingRoute(primaryHref) ? (
-              <Link href={primaryHref}>
-                {primaryLabel}
-                <ArrowRightIcon size={18} aria-hidden="true" />
-              </Link>
-            ) : (
-              <a href={primaryHref}>
-                {primaryLabel}
-                <ArrowRightIcon size={18} aria-hidden="true" />
-              </a>
-            )}
+            <Link href={primaryHref}>
+              {primaryLabel}
+              <ArrowRightIcon size={18} aria-hidden="true" />
+            </Link>
           </Button>
           {secondaryHref && secondaryLabel ? (
             <Button asChild variant="outline">
-              {isMarketingRoute(secondaryHref) ? (
-                <Link href={secondaryHref}>{secondaryLabel}</Link>
-              ) : (
-                <a href={secondaryHref}>{secondaryLabel}</a>
-              )}
+              <Link href={secondaryHref}>{secondaryLabel}</Link>
             </Button>
           ) : null}
         </div>
