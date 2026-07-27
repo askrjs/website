@@ -7,7 +7,46 @@
 
 html {
   min-height: 100%;
-  scroll-behavior: smooth;
+  /* Askr resets the scroll position after committing a route. Keep that
+     reset atomic; smooth scrolling makes the new page visibly glide from the
+     old page's position. */
+  scroll-behavior: auto;
+}
+
+/* Direct document navigations and reloads can still occur outside the SPA.
+   Where the browser supports the View Transitions API, keep the old document
+   on screen while the new one is ready instead of flashing through a blank
+   paint. SPA navigations remain governed by Askr's atomic route commit. */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: site-page-exit 120ms ease-out both;
+}
+
+::view-transition-new(root) {
+  animation: site-page-enter 180ms ease-out both;
+}
+
+@keyframes site-page-exit {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes site-page-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 body,
@@ -942,9 +981,40 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   display: none;
   align-items: center;
   gap: var(--ak-space-sm);
+  padding-inline: var(--ak-space-md);
   padding-block: var(--ak-space-sm);
   color: var(--ak-color-text-muted);
   font-size: var(--ak-font-size-sm);
+}
+
+.docs-mobile-sheet {
+  gap: 0;
+  padding: 0;
+}
+
+.docs-mobile-sheet__header {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  padding: var(--ak-space-md);
+  border-bottom: 1px solid var(--ak-color-border);
+}
+
+.docs-mobile-sheet__header [data-slot='sheet-title'] {
+  margin: 0;
+  font-size: var(--ak-font-size-md);
+}
+
+.docs-mobile-sheet__header [data-slot='dialog-close'] {
+  display: inline-flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--ak-radius-md);
+  background: transparent;
+  color: var(--ak-color-text-muted);
+  cursor: pointer;
 }
 
 .docs-body {
@@ -1235,6 +1305,10 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  @view-transition {
+    navigation: none;
   }
 
   .docs-shell {
@@ -1740,6 +1814,10 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   .docs-scope [data-slot='sidebar'] {
     top: 3.5rem;
     height: calc(100vh - 3.5rem);
+  }
+
+  .docs-desktop-sidebar {
+    display: none;
   }
 
   .docs-mobile-bar {

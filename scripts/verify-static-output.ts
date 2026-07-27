@@ -150,7 +150,7 @@ for (const expectation of expectations) {
     for (const marker of [
       'Documentation navigation',
       'Search docs',
-      'Toggle documentation navigation',
+      'Open documentation navigation',
       'On this page',
       'Breadcrumb',
       'docs-pagination',

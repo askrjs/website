@@ -35,10 +35,10 @@ export function HomePage() {
           </p>
           <div class="hero__actions">
             <Button asChild>
-              <a href="/docs/getting-started">
+              <Link href="/docs/getting-started">
                 Get started
                 <ArrowRightIcon size={18} aria-hidden="true" />
-              </a>
+              </Link>
             </Button>
             <Button asChild variant="outline">
               <Link href="/platform">Explore the platform</Link>
@@ -171,10 +171,10 @@ export function HomePage() {
             </p>
           </div>
           <Button asChild>
-            <a href="/docs/getting-started">
+            <Link href="/docs/getting-started">
               Create an app
               <ArrowRightIcon size={18} aria-hidden="true" />
-            </a>
+            </Link>
           </Button>
         </Container>
       </section>

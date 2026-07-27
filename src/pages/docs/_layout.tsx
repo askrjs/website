@@ -1,7 +1,16 @@
-import type { Props } from '@askrjs/askr';
+import { state, type Props } from '@askrjs/askr';
 import { Link, currentRoute } from '@askrjs/askr/router';
+import { MenuIcon, XIcon } from '@askrjs/lucide';
 import {
   Container,
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetOverlay,
+  SheetPortal,
+  SheetTitle,
+  SheetTrigger,
   SidebarInset,
   Sidebar,
   SidebarContent,
@@ -89,16 +98,41 @@ function TableOfContents() {
 }
 
 export function DocsLayout({ children }: Props) {
+  const mobileNavigationOpen = state(false);
+
   return (
     <SiteLayout variant="docs">
       <Container size="xl" class="docs-channel">
         <SidebarScope class="docs-scope">
-          <Sidebar collapsible="offcanvas">
+          <Sidebar class="docs-desktop-sidebar">
             <DocsNavigation />
           </Sidebar>
           <SidebarInset class="docs-main">
             <div class="docs-mobile-bar">
-              <SidebarTrigger aria-label="Toggle documentation navigation" />
+              <Sheet
+                open={mobileNavigationOpen()}
+                onOpenChange={mobileNavigationOpen.set}
+              >
+                <SheetTrigger asChild>
+                  <SidebarTrigger aria-label="Open documentation navigation">
+                    <MenuIcon size={18} aria-hidden="true" />
+                  </SidebarTrigger>
+                </SheetTrigger>
+                <SheetPortal>
+                  <SheetOverlay />
+                  <SheetContent side="left" class="docs-mobile-sheet">
+                    <SheetHeader class="docs-mobile-sheet__header">
+                      <SheetTitle>Documentation</SheetTitle>
+                      <SheetClose aria-label="Close documentation navigation">
+                        <XIcon size={18} aria-hidden="true" />
+                      </SheetClose>
+                    </SheetHeader>
+                    <DocsNavigation
+                      close={() => mobileNavigationOpen.set(false)}
+                    />
+                  </SheetContent>
+                </SheetPortal>
+              </Sheet>
               <span>Askr documentation</span>
             </div>
             <div class="docs-body">
