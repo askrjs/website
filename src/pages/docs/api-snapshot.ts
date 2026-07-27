@@ -33,6 +33,12 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'createRef',
+      anchor: 'create-ref',
+      signature: 'createRef: <T extends Element = Element>() => Ref<T>',
+      typeOnly: true,
+    },
+    {
       name: 'createRuntime',
       anchor: 'create-runtime',
       signature: 'createRuntime: (options?: AskrRuntimeOptions) => AskrRuntime',
@@ -189,6 +195,12 @@ export const apiSymbolSets = {
       name: 'readScope',
       anchor: 'read-scope',
       signature: 'readScope: <T>(context: Scope<T>) => T',
+      typeOnly: true,
+    },
+    {
+      name: 'Ref',
+      anchor: 'ref',
+      signature: 'Ref: any',
       typeOnly: true,
     },
     {
@@ -951,10 +963,23 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'ListenerTarget',
+      anchor: 'listener-target',
+      signature: 'ListenerTarget: any',
+      typeOnly: true,
+    },
+    {
       name: 'on',
       anchor: 'on',
       signature:
-        'on: (target: EventTarget, event: string, handler: EventListener, options?: ListenerOptions) => void',
+        'on: (target: ListenerTarget, event: string, handler: EventListener, options?: ListenerOptions) => void',
+      typeOnly: true,
+    },
+    {
+      name: 'onRouteChange',
+      anchor: 'on-route-change',
+      signature:
+        'onRouteChange: (fn: (current: RouteSnapshot, previous: RouteSnapshot | null) => RouteChangeCleanup, options?: RouteChangeOptions) => void',
       typeOnly: true,
     },
     {
@@ -978,10 +1003,40 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'RouteChangeCleanup',
+      anchor: 'route-change-cleanup',
+      signature: 'RouteChangeCleanup: any',
+      typeOnly: true,
+    },
+    {
+      name: 'RouteChangeOptions',
+      anchor: 'route-change-options',
+      signature: 'RouteChangeOptions: any',
+      typeOnly: true,
+    },
+    {
       name: 'stream',
       anchor: 'stream',
       signature:
-        'stream: <T>(_source: unknown, _options?: Record<string, unknown>) => { value: T | null; pending: boolean; error: Error | null; }',
+        'stream: <T>(source: StreamSource<T>, options?: StreamOptions<T>) => StreamResult<T>',
+      typeOnly: true,
+    },
+    {
+      name: 'StreamOptions',
+      anchor: 'stream-options',
+      signature: 'StreamOptions: any',
+      typeOnly: true,
+    },
+    {
+      name: 'StreamResult',
+      anchor: 'stream-result',
+      signature: 'StreamResult: any',
+      typeOnly: true,
+    },
+    {
+      name: 'StreamStatus',
+      anchor: 'stream-status',
+      signature: 'StreamStatus: any',
       typeOnly: true,
     },
     {
@@ -1201,9 +1256,28 @@ export const apiSymbolSets = {
   ],
   symbols12: [
     {
+      name: 'cleanup',
+      anchor: 'cleanup',
+      signature: 'cleanup: (target: RenderResult | HTMLElement) => void',
+      typeOnly: true,
+    },
+    {
       name: 'createInvalidationRecorder',
       anchor: 'create-invalidation-recorder',
       signature: 'createInvalidationRecorder: () => InvalidationRecorder',
+      typeOnly: true,
+    },
+    {
+      name: 'dispatch',
+      anchor: 'dispatch',
+      signature:
+        'dispatch: (target: EventTarget, event: Event | string, init?: DispatchEventInit) => boolean',
+      typeOnly: true,
+    },
+    {
+      name: 'flush',
+      anchor: 'flush',
+      signature: 'flush: () => void',
       typeOnly: true,
     },
     {
@@ -1252,6 +1326,13 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'mount',
+      anchor: 'mount',
+      signature:
+        'mount: (component: ComponentFunction, options?: RenderOptions) => RenderResult',
+      typeOnly: true,
+    },
+    {
       name: 'queryState',
       anchor: 'query-state',
       signature:
@@ -1259,9 +1340,41 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'render',
+      anchor: 'render',
+      signature:
+        'render: (component: ComponentFunction, options?: RenderOptions) => RenderResult',
+      typeOnly: true,
+    },
+    {
+      name: 'RenderOptions',
+      anchor: 'render-options',
+      signature: 'RenderOptions: any',
+      typeOnly: true,
+    },
+    {
+      name: 'RenderResult',
+      anchor: 'render-result',
+      signature: 'RenderResult: any',
+      typeOnly: true,
+    },
+    {
+      name: 'renderRoute',
+      anchor: 'render-route',
+      signature:
+        'renderRoute: (options: RouteRenderOptions) => Promise<RenderResult>',
+      typeOnly: true,
+    },
+    {
       name: 'RoutePatternWarning',
       anchor: 'route-pattern-warning',
       signature: 'RoutePatternWarning: any',
+      typeOnly: true,
+    },
+    {
+      name: 'RouteRenderOptions',
+      anchor: 'route-render-options',
+      signature: 'RouteRenderOptions: any',
       typeOnly: true,
     },
   ],
@@ -1534,7 +1647,7 @@ export const apiSymbolSets = {
       name: 'Link',
       anchor: 'link',
       signature:
-        'Link: ({ href: suppliedHref, to, class: className, children, rel, target, "aria-current": ariaCurrent, "aria-label": ariaLabel, ...rest }: LinkProps) => JSXElement',
+        'Link: ({ href: suppliedHref, to, class: className, children, rel, target, "aria-current": ariaCurrent, "aria-label": ariaLabel, onPress, onClick, ...rest }: LinkProps) => JSXElement',
       typeOnly: true,
     },
     {
@@ -1565,6 +1678,13 @@ export const apiSymbolSets = {
       name: 'notFound',
       anchor: 'not-found',
       signature: 'notFound: () => AccessDenyDecision',
+      typeOnly: true,
+    },
+    {
+      name: 'onRouteChange',
+      anchor: 'on-route-change',
+      signature:
+        'onRouteChange: (fn: (current: RouteSnapshot, previous: RouteSnapshot | null) => RouteChangeCleanup, options?: RouteChangeOptions) => void',
       typeOnly: true,
     },
     {
@@ -1668,6 +1788,18 @@ export const apiSymbolSets = {
       name: 'RouteAuthResolver',
       anchor: 'route-auth-resolver',
       signature: 'RouteAuthResolver: any',
+      typeOnly: true,
+    },
+    {
+      name: 'RouteChangeCleanup',
+      anchor: 'route-change-cleanup',
+      signature: 'RouteChangeCleanup: any',
+      typeOnly: true,
+    },
+    {
+      name: 'RouteChangeOptions',
+      anchor: 'route-change-options',
+      signature: 'RouteChangeOptions: any',
       typeOnly: true,
     },
     {
@@ -3835,6 +3967,18 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'LogoAttribute',
+      anchor: 'logo-attribute',
+      signature: 'LogoAttribute: any',
+      typeOnly: true,
+    },
+    {
+      name: 'LogoAttributes',
+      anchor: 'logo-attributes',
+      signature: 'LogoAttributes: any',
+      typeOnly: true,
+    },
+    {
       name: 'LogoNode',
       anchor: 'logo-node',
       signature: 'LogoNode: any',
@@ -3844,6 +3988,12 @@ export const apiSymbolSets = {
       name: 'LogoProps',
       anchor: 'logo-props',
       signature: 'LogoProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'LogoTag',
+      anchor: 'logo-tag',
+      signature: 'LogoTag: any',
       typeOnly: true,
     },
     {
@@ -3888,6 +4038,13 @@ export const apiSymbolSets = {
       anchor: 'activity-square-icon',
       signature:
         'ActivitySquareIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'AdIcon',
+      anchor: 'ad-icon',
+      signature:
+        'AdIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -5053,6 +5210,13 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'BanknoteCheckIcon',
+      anchor: 'banknote-check-icon',
+      signature:
+        'BanknoteCheckIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'BanknoteIcon',
       anchor: 'banknote-icon',
       signature:
@@ -5491,6 +5655,13 @@ export const apiSymbolSets = {
       anchor: 'bomb-icon',
       signature:
         'BombIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'BoneFractureIcon',
+      anchor: 'bone-fracture-icon',
+      signature:
+        'BoneFractureIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -6929,6 +7100,13 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'CircleEuroIcon',
+      anchor: 'circle-euro-icon',
+      signature:
+        'CircleEuroIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'CircleFadingArrowUpIcon',
       anchor: 'circle-fading-arrow-up-icon',
       signature:
@@ -7325,6 +7503,20 @@ export const apiSymbolSets = {
       anchor: 'clock-arrow-down-icon',
       signature:
         'ClockArrowDownIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ClockArrowLeftIcon',
+      anchor: 'clock-arrow-left-icon',
+      signature:
+        'ClockArrowLeftIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ClockArrowRightIcon',
+      anchor: 'clock-arrow-right-icon',
+      signature:
+        'ClockArrowRightIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -7944,10 +8136,31 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'DatabaseArrowDownIcon',
+      anchor: 'database-arrow-down-icon',
+      signature:
+        'DatabaseArrowDownIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'DatabaseArrowUpIcon',
+      anchor: 'database-arrow-up-icon',
+      signature:
+        'DatabaseArrowUpIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'DatabaseBackupIcon',
       anchor: 'database-backup-icon',
       signature:
         'DatabaseBackupIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'DatabaseCheckIcon',
+      anchor: 'database-check-icon',
+      signature:
+        'DatabaseCheckIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -7958,10 +8171,31 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'DatabaseMinusIcon',
+      anchor: 'database-minus-icon',
+      signature:
+        'DatabaseMinusIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'DatabasePlusIcon',
+      anchor: 'database-plus-icon',
+      signature:
+        'DatabasePlusIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'DatabaseSearchIcon',
       anchor: 'database-search-icon',
       signature:
         'DatabaseSearchIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'DatabaseXIcon',
+      anchor: 'database-xicon',
+      signature:
+        'DatabaseXIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -8473,6 +8707,13 @@ export const apiSymbolSets = {
       anchor: 'eye-closed-icon',
       signature:
         'EyeClosedIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'EyeDashedIcon',
+      anchor: 'eye-dashed-icon',
+      signature:
+        'EyeDashedIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -11280,6 +11521,20 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'ListSortAscendingIcon',
+      anchor: 'list-sort-ascending-icon',
+      signature:
+        'ListSortAscendingIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ListSortDescendingIcon',
+      anchor: 'list-sort-descending-icon',
+      signature:
+        'ListSortDescendingIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'ListStartIcon',
       anchor: 'list-start-icon',
       signature:
@@ -12918,6 +13173,13 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'PaperBagIcon',
+      anchor: 'paper-bag-icon',
+      signature:
+        'PaperBagIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'PaperclipIcon',
       anchor: 'paperclip-icon',
       signature:
@@ -13051,6 +13313,13 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'PencilSparklesIcon',
+      anchor: 'pencil-sparkles-icon',
+      signature:
+        'PencilSparklesIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'PenIcon',
       anchor: 'pen-icon',
       signature:
@@ -13125,6 +13394,13 @@ export const apiSymbolSets = {
       anchor: 'person-standing-icon',
       signature:
         'PersonStandingIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'PhiIcon',
+      anchor: 'phi-icon',
+      signature:
+        'PhiIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -13345,6 +13621,13 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'PlayOffIcon',
+      anchor: 'play-off-icon',
+      signature:
+        'PlayOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'PlaySquareIcon',
       anchor: 'play-square-icon',
       signature:
@@ -13412,6 +13695,13 @@ export const apiSymbolSets = {
       anchor: 'podcast-icon',
       signature:
         'PodcastIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'PodiumIcon',
+      anchor: 'podium-icon',
+      signature:
+        'PodiumIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -14094,6 +14384,13 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'SaveCheckIcon',
+      anchor: 'save-check-icon',
+      signature:
+        'SaveCheckIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'SaveIcon',
       anchor: 'save-icon',
       signature:
@@ -14105,6 +14402,20 @@ export const apiSymbolSets = {
       anchor: 'save-off-icon',
       signature:
         'SaveOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SavePenIcon',
+      anchor: 'save-pen-icon',
+      signature:
+        'SavePenIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SavePlusIcon',
+      anchor: 'save-plus-icon',
+      signature:
+        'SavePlusIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -14140,6 +14451,13 @@ export const apiSymbolSets = {
       anchor: 'scan-barcode-icon',
       signature:
         'ScanBarcodeIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ScanBoxIcon',
+      anchor: 'scan-box-icon',
+      signature:
+        'ScanBoxIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -14399,6 +14717,13 @@ export const apiSymbolSets = {
       anchor: 'server-off-icon',
       signature:
         'ServerOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ServerPlusIcon',
+      anchor: 'server-plus-icon',
+      signature:
+        'ServerPlusIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -15592,6 +15917,13 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'StarCheckIcon',
+      anchor: 'star-check-icon',
+      signature:
+        'StarCheckIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'StarHalfIcon',
       anchor: 'star-half-icon',
       signature:
@@ -15606,6 +15938,13 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'StarMinusIcon',
+      anchor: 'star-minus-icon',
+      signature:
+        'StarMinusIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'StarOffIcon',
       anchor: 'star-off-icon',
       signature:
@@ -15613,10 +15952,24 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'StarPlusIcon',
+      anchor: 'star-plus-icon',
+      signature:
+        'StarPlusIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'StarsIcon',
       anchor: 'stars-icon',
       signature:
         'StarsIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'StarXIcon',
+      anchor: 'star-xicon',
+      signature:
+        'StarXIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -15750,6 +16103,13 @@ export const apiSymbolSets = {
       anchor: 'subtitles-icon',
       signature:
         'SubtitlesIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SummaryIcon',
+      anchor: 'summary-icon',
+      signature:
+        'SummaryIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -15942,10 +16302,24 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'TagPlusIcon',
+      anchor: 'tag-plus-icon',
+      signature:
+        'TagPlusIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'TagsIcon',
       anchor: 'tags-icon',
       signature:
         'TagsIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'TagXIcon',
+      anchor: 'tag-xicon',
+      signature:
+        'TagXIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -16831,6 +17205,13 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'UserRoundArrowLeftIcon',
+      anchor: 'user-round-arrow-left-icon',
+      signature:
+        'UserRoundArrowLeftIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'UserRoundCheckIcon',
       anchor: 'user-round-check-icon',
       signature:
@@ -17272,6 +17653,13 @@ export const apiSymbolSets = {
       typeOnly: true,
     },
     {
+      name: 'WebcamOffIcon',
+      anchor: 'webcam-off-icon',
+      signature:
+        'WebcamOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'WebhookIcon',
       anchor: 'webhook-icon',
       signature:
@@ -17430,6 +17818,13 @@ export const apiSymbolSets = {
       anchor: 'wrench-icon',
       signature:
         'WrenchIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'WrenchOffIcon',
+      anchor: 'wrench-off-icon',
+      signature:
+        'WrenchOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {

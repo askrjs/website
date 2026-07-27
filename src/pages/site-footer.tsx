@@ -27,11 +27,18 @@ export function SiteFooter() {
               </span>
             </FooterTitle>
             <FooterLinks aria-label="Marketing links">
-              <FooterLink href="/">Overview</FooterLink>
+              <Link class="footer-link" data-slot="footer-link" href="/">
+                Overview
+              </Link>
               {marketingPages.map((page) => (
-                <FooterLink key={page.path} href={page.path}>
+                <Link
+                  key={page.path}
+                  class="footer-link"
+                  data-slot="footer-link"
+                  href={page.path}
+                >
                   {page.label}
-                </FooterLink>
+                </Link>
               ))}
             </FooterLinks>
           </FooterSection>
