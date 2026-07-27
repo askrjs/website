@@ -15,6 +15,7 @@
     "docs:cli": "tsx ./scripts/generate-cli-reference.ts",
     "docs:cli:check": "tsx ./scripts/generate-cli-reference.ts --check",
     "docs:drift": "npm run docs:api:check && npm run docs:cli:check",
+    "analyze": "askr analyze --check",
     "lint": "vp lint src scripts ssg.config.ts vite.config.ts",
     "fmt": "vp fmt .",
     "fmt:check": "vp fmt . --check",

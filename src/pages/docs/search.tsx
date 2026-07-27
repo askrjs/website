@@ -1,4 +1,4 @@
-import { state } from '@askrjs/askr';
+import { For, state } from '@askrjs/askr';
 import { Link } from '@askrjs/askr/router';
 import { on } from '@askrjs/askr/resources';
 import { SearchIcon, XIcon } from '@askrjs/lucide';
@@ -13,7 +13,7 @@ export function DocsSearch() {
   const [open, setOpen] = state(false);
   const [query, setQuery] = state('');
   const [loading, setLoading] = state(false);
-  const [results, setResults] = state<readonly DocsSearchRecord[]>([]);
+  const [results, setResults] = state<DocsSearchRecord[]>([]);
   const [error, setError] = state(false);
 
   const openSearch = () => {
@@ -55,8 +55,10 @@ export function DocsSearch() {
 
   // The resource listener follows the component lifecycle, unlike a raw
   // window listener installed from a ref callback.
-  if (typeof window !== 'undefined') {
-    on(window, 'keydown', (rawEvent: Event) => {
+  on(
+    () => (typeof window === 'undefined' ? null : window),
+    'keydown',
+    (rawEvent: Event) => {
       const event = rawEvent as KeyboardEvent;
       const target = event.target;
       const typing =
@@ -70,8 +72,8 @@ export function DocsSearch() {
         openSearch();
       }
       if (event.key === 'Escape' && open()) close();
-    });
-  }
+    }
+  );
 
   return (
     <div class="docs-search">
@@ -137,20 +139,25 @@ export function DocsSearch() {
               <p>Search is temporarily unavailable. Please try again.</p>
             ) : results().length ? (
               <ul>
-                {results().map((result) => (
-                  <li key={`${result.route}#${result.anchor ?? ''}`}>
-                    <Link
-                      href={`${result.route}${result.anchor ? `#${result.anchor}` : ''}`}
-                      onPress={close}
-                    >
-                      <span>
-                        <strong>{result.title}</strong>
-                        <small>{result.description}</small>
-                      </span>
-                      <em>{result.group}</em>
-                    </Link>
-                  </li>
-                ))}
+                <For
+                  each={results}
+                  by={(result) => `${result.route}#${result.anchor ?? ''}`}
+                >
+                  {(result) => (
+                    <li>
+                      <Link
+                        href={`${result.route}${result.anchor ? `#${result.anchor}` : ''}`}
+                        onPress={close}
+                      >
+                        <span>
+                          <strong>{result.title}</strong>
+                          <small>{result.description}</small>
+                        </span>
+                        <em>{result.group}</em>
+                      </Link>
+                    </li>
+                  )}
+                </For>
               </ul>
             ) : (
               <p>No results for “{queryValue}”.</p>
