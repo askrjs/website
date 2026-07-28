@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { apiManifest } from '../src/pages/docs/api-manifest';
 import { apiSymbolSets } from '../src/pages/docs/api-snapshot';
@@ -14,7 +15,7 @@ import { cliSnapshot } from '../src/pages/docs/cli-snapshot';
 import { packageVersions } from '../src/pages/docs/package-versions';
 import { searchDocs } from '../src/pages/docs/search-index';
 import { buildUsageGuide } from '../src/pages/docs/usage-guide';
-import { releaseNotes } from '../src/pages/docs/release-notes';
+import { upgradeGuidance } from '../src/pages/docs/release-notes';
 import { headingOverrides } from '../src/pages/docs/content-overrides';
 import { routeRegistry } from '../src/pages/_routes';
 import { registry as staticRegistry } from '../ssg.config';
@@ -78,7 +79,71 @@ describe('documentation catalog', () => {
       expect(code, `${page.route}: routes use {name} parameters`).not.toMatch(
         /['"]\/[^'"]*:[A-Za-z_$]/
       );
+      expect(code, `${page.route}: schemas expose jsonSchema`).not.toMatch(
+        /\.openapi\b/
+      );
+      expect(
+        code,
+        `${page.route}: query values use RouteQuery.get()`
+      ).not.toMatch(/route\.query\.(?!get\()/);
+      expect(code, `${page.route}: Alert uses a published variant`).not.toMatch(
+        /<Alert\b[^>]*variant=["']destructive["']/
+      );
+      expect(code, `${page.route}: Toggle uses onPress`).not.toContain(
+        'onPressedChange'
+      );
+      expect(code, `${page.route}: Slider accepts a scalar value`).not.toMatch(
+        /<Slider\b[^>]*value=\{\[/
+      );
+      expect(code, `${page.route}: JSX labels use htmlFor`).not.toMatch(
+        /<(?:label|FieldLabel)\b[^>]*\sfor=/
+      );
+      expect(code, `${page.route}: multipart forms use FormData`).not.toMatch(
+        /\s(?:encType|enctype)=/
+      );
+      expect(code, `${page.route}: Case owns the fallback branch`).not.toMatch(
+        /<Match\b[^>]*\svalue=|<Case\b[^>]*\swhen=/
+      );
+      expect(
+        code,
+        `${page.route}: dynamic collections use keyed For`
+      ).not.toMatch(/\b(?:statuses|people|events|projects)\.map\(/);
     }
+  });
+
+  it('keeps specialized component and chart examples page-specific', () => {
+    const expectedByRoute = {
+      '/docs/components/alert-dialog': 'AlertDialog',
+      '/docs/components/drawer-and-sheet': 'Sheet',
+      '/docs/components/hover-card': 'HoverCard',
+      '/docs/components/menubar': 'Menubar',
+      '/docs/components/data-table': 'DataTable',
+      '/docs/components/virtual-list': 'VirtualList',
+      '/docs/components/virtual-table': 'VirtualTable',
+      '/docs/components/application-chrome': 'Sidebar',
+      '/docs/components/avatar-and-item': 'Avatar',
+      '/docs/components/application-layout': 'PageHeader',
+      '/docs/components/advanced-layout': 'Grid',
+    } as const;
+
+    for (const [route, symbol] of Object.entries(expectedByRoute)) {
+      const page = docsByRoute.get(route as `/docs${string}`);
+      expect(page, route).toBeTruthy();
+      expect(buildUsageGuide(page!)?.code, route).toContain(symbol);
+    }
+
+    const chartExamples = docsCatalog
+      .filter((page) => page.navSection === 'Charts')
+      .map((page) => buildUsageGuide(page)?.code);
+    expect(new Set(chartExamples).size).toBe(chartExamples.length);
+    expect(
+      buildUsageGuide(docsByRoute.get('/docs/charts/channels-and-transforms')!)
+        ?.code
+    ).toContain(`y={movingAverage('requests', { window: 7 })}`);
+    expect(
+      buildUsageGuide(docsByRoute.get('/docs/components/application-layout')!)
+        ?.code
+    ).toContain('<PageHeader title=');
   });
 
   it('has unique routes, valid groups, anchors, and complete ordering', () => {
@@ -164,10 +229,10 @@ describe('documentation catalog', () => {
     }
   });
 
-  it('keeps release-note content present for the docs landing page', () => {
-    expect(releaseNotes.length).toBeGreaterThanOrEqual(2);
+  it('keeps upgrade guidance present for the docs landing page', () => {
+    expect(upgradeGuidance.length).toBeGreaterThanOrEqual(2);
     expect(
-      releaseNotes.every((note) => note.version && note.date && note.summary)
+      upgradeGuidance.every((note) => note.title && note.when && note.summary)
     ).toBe(true);
   });
 
@@ -179,6 +244,47 @@ describe('documentation catalog', () => {
       'ServerAppOptions also accepts a standalone routes array'
     );
     expect(prose).not.toContain('manifest-only');
+  });
+
+  it('keeps hand-written CLI guidance aligned with generated behavior', () => {
+    const prose = JSON.stringify(headingOverrides);
+    expect(prose).not.toContain('nine subcommands');
+    expect(prose).not.toContain('CLI still reports success');
+    expect(prose).not.toContain('upgrade never bypasses');
+    expect(prose).toContain('--force/-f');
+    expect(cliSnapshot.commands).toEqual(
+      expect.arrayContaining([
+        'analyze',
+        'check',
+        'doctor',
+        'repair',
+        'verify-hydration',
+      ])
+    );
+  });
+
+  it('keeps audited marketing claims within shipped boundaries', () => {
+    const source = [
+      'home.tsx',
+      'platform.tsx',
+      'full-stack.tsx',
+      'themes.tsx',
+      'production.tsx',
+    ]
+      .map((file) =>
+        readFileSync(
+          new URL(`../src/pages/marketing/${file}`, import.meta.url),
+          'utf8'
+        )
+      )
+      .join('\n');
+
+    expect(source).not.toContain('Only <code>@askrjs/askr</code>');
+    expect(source).not.toContain('register on the same router');
+    expect(source).not.toContain('none of that has to be re-verified');
+    expect(source).not.toContain('Two outputs, one build');
+    expect(source).toContain('one application composition root');
+    expect(source).toContain('two deployment paths');
   });
 });
 
