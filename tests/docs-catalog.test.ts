@@ -314,6 +314,12 @@ describe('documentation catalog', () => {
     expect(styles).toMatch(
       /\.component-demo__surface\s*\{[^}]*overflow-x: auto;/s
     );
+    expect(styles).toMatch(
+      /\.sequence\[data-columns\]\s*\{[^}]*grid-template-columns: minmax\(0, 1fr\);/s
+    );
+    expect(styles).toMatch(
+      /\.flow-map__nodes\[data-count\]\s*\{[^}]*grid-template-columns: minmax\(0, 1fr\);/s
+    );
     expect(styles).toContain('overflow-x: clip');
     expect(styles).not.toContain('.docs-mobile-header');
     expect(styles).not.toContain('.docs-shell');
