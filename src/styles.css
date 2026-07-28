@@ -1218,8 +1218,8 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
     padding-block: var(--ak-space-3xl);
   }
 
-  .sequence {
-    grid-template-columns: 1fr;
+  .sequence[data-columns] {
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--ak-space-2xl);
   }
 
@@ -1239,8 +1239,8 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
     padding-top: 0;
   }
 
-  .flow-map__nodes {
-    grid-template-columns: 1fr;
+  .flow-map__nodes[data-count] {
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--ak-space-2xl);
     text-align: left;
   }
