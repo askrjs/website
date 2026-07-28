@@ -1,21 +1,21 @@
 // Generated from installed @askrjs package manifests. Do not edit.
 export const packageVersions = {
-  askr: '0.0.73',
+  askr: '0.0.77',
   auth: '0.0.7',
   charts: '0.1.4',
-  cli: '0.0.11',
+  cli: '0.0.15',
   fetch: '0.0.2',
   i18n: '0.0.2',
   logos: '0.0.5',
   lucide: '0.0.5',
-  monaco: '0.0.5',
+  monaco: '0.0.6',
   node: '0.0.7',
   otel: '0.0.3',
   schema: '0.0.4',
   server: '0.0.10',
   testing: '0.0.2',
   themes: '0.0.16',
-  ui: '0.0.18',
+  ui: '0.0.20',
   vite: '0.0.8',
 } as const;
 
