@@ -55,9 +55,10 @@ export function ProductionPage() {
           <p>
             Message keys for localization are typed, so a missing translation
             fails at build time, not in front of a user. OpenTelemetry
-            attributes are redaction-aware by default, but you still choose the
-            exporter and the sensitive-data policy — Askr doesn't phone data
-            anywhere on its own.
+            attributes are allowlisted by default — request bodies, submitted
+            values, cookies, and tokens are never forwarded — but you still
+            choose the exporter and the sensitive-data policy. Askr doesn't
+            phone data anywhere on its own.
           </p>
           <RepositoryLink href="https://github.com/askrjs/askr-node">
             View the Node adapter
