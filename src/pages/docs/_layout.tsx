@@ -54,7 +54,7 @@ function DocsNavigation({ close }: { close?: () => void }) {
                         aria-current={
                           page.route === activePath ? 'page' : undefined
                         }
-                        onClick={close}
+                        onClickCapture={close}
                       >
                         <span>{page.title}</span>
                         {page.status !== 'stable' && (
