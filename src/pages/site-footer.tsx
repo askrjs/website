@@ -8,6 +8,7 @@ import {
   FooterTitle,
   Text,
 } from '@askrjs/themes/components';
+import { For } from '@askrjs/askr';
 import { Link } from '@askrjs/askr/router';
 import { BookOpenIcon, CompassIcon } from '@askrjs/lucide';
 import { marketingPages } from './marketing/catalog';
@@ -30,16 +31,18 @@ export function SiteFooter() {
               <Link class="footer-link" data-slot="footer-link" href="/">
                 Overview
               </Link>
-              {marketingPages.map((page) => (
-                <Link
-                  key={page.path}
-                  class="footer-link"
-                  data-slot="footer-link"
-                  href={page.path}
-                >
-                  {page.label}
-                </Link>
-              ))}
+              <For each={marketingPages} by={(page) => page.path}>
+                {(page) => (
+                  <Link
+                    key={page.path}
+                    class="footer-link"
+                    data-slot="footer-link"
+                    href={page.path}
+                  >
+                    {page.label}
+                  </Link>
+                )}
+              </For>
             </FooterLinks>
           </FooterSection>
 
@@ -51,16 +54,18 @@ export function SiteFooter() {
               </Link>
             </FooterTitle>
             <FooterLinks aria-label="Documentation links">
-              {docsPrimarySections.map((section) => (
-                <Link
-                  key={section.route}
-                  class="footer-link"
-                  data-slot="footer-link"
-                  href={section.route}
-                >
-                  {section.label}
-                </Link>
-              ))}
+              <For each={docsPrimarySections} by={(section) => section.route}>
+                {(section) => (
+                  <Link
+                    key={section.route}
+                    class="footer-link"
+                    data-slot="footer-link"
+                    href={section.route}
+                  >
+                    {section.label}
+                  </Link>
+                )}
+              </For>
             </FooterLinks>
           </FooterSection>
 

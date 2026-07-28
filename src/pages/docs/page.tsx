@@ -1,3 +1,4 @@
+import { For } from '@askrjs/askr';
 import { Link, currentRoute } from '@askrjs/askr/router';
 import { ArrowLeftIcon, ArrowRightIcon, CopyIcon } from '@askrjs/lucide';
 import {
@@ -40,13 +41,124 @@ function CodeBlock({ code }: { code: string }) {
 function PackageBadges({ page }: { page: DocsPageDefinition }) {
   return (
     <ul class="package-badges" aria-label="Published package versions">
-      {page.packages.map((pkg) => (
-        <li key={`${pkg.name}:${pkg.importPath}`}>
-          <code>{pkg.importPath ?? pkg.name}</code>
-          <span>{pkg.version}</span>
-        </li>
-      ))}
+      <For
+        each={page.packages}
+        by={(pkg) => `${pkg.name}:${pkg.importPath ?? ''}`}
+      >
+        {(pkg) => (
+          <li key={`${pkg.name}:${pkg.importPath}`}>
+            <code>{pkg.importPath ?? pkg.name}</code>
+            <span>{pkg.version}</span>
+          </li>
+        )}
+      </For>
     </ul>
+  );
+}
+
+function HeadingContentList({
+  headings,
+  page,
+}: {
+  headings: readonly DocsHeadingDefinition[];
+  page: DocsPageDefinition;
+}) {
+  return (
+    <For each={headings} by={(item) => item.id}>
+      {(item) => <HeadingContent key={item.id} item={item} page={page} />}
+    </For>
+  );
+}
+
+function DocsLandingDetails() {
+  return (
+    <>
+      <section aria-labelledby="versions">
+        <h2 id="versions" class="anchored-heading">
+          <a href="#versions">Published versions</a>
+        </h2>
+        <div class="api-table-wrap">
+          <table class="api-table">
+            <thead>
+              <tr>
+                <th scope="col">Package</th>
+                <th scope="col">Version</th>
+              </tr>
+            </thead>
+            <tbody>
+              <For
+                each={() => Object.entries(publishedVersions)}
+                by={([name]) => name}
+              >
+                {([name, version]) => (
+                  <tr key={name}>
+                    <td>
+                      <code>@askrjs/{name}</code>
+                    </td>
+                    <td>{version}</td>
+                  </tr>
+                )}
+              </For>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section aria-labelledby="release-notes">
+        <h2 id="release-notes" class="anchored-heading">
+          <a href="#release-notes">Release notes</a>
+        </h2>
+        <For each={releaseNotes} by={(note) => note.version}>
+          {(note) => (
+            <article key={note.version} class="docs-release-note">
+              <h3>{note.version}</h3>
+              <p>
+                <small>{note.date}</small>
+              </p>
+              <p>{note.summary}</p>
+            </article>
+          )}
+        </For>
+      </section>
+    </>
+  );
+}
+
+function CliReferenceSection() {
+  return (
+    <section aria-labelledby="published-commands">
+      <h2 id="published-commands" class="anchored-heading">
+        <a href="#published-commands">Published commands</a>
+      </h2>
+      <p>
+        These commands come from <code>@askrjs/cli</code> {cliSnapshot.version}.
+        Planned generators such as <code>route</code>, <code>crud</code>,{' '}
+        <code>table</code>, and <code>form</code> are not available commands.
+      </p>
+      <div class="api-table-wrap">
+        <table class="api-table">
+          <thead>
+            <tr>
+              <th>Command</th>
+              <th>Run</th>
+            </tr>
+          </thead>
+          <tbody>
+            <For each={cliSnapshot.commands} by={(command) => command}>
+              {(command) => (
+                <tr key={command}>
+                  <td>
+                    <code>{command}</code>
+                  </td>
+                  <td>
+                    <code>askr {command} --help</code>
+                  </td>
+                </tr>
+              )}
+            </For>
+          </tbody>
+        </table>
+      </div>
+    </section>
   );
 }
 
@@ -186,87 +298,9 @@ export default function DocsPage() {
       )}
       <UsageGuide page={page} />
       <ComponentDemo page={page} />
-      {page.headings.map((item) => (
-        <HeadingContent key={item.id} item={item} page={page} />
-      ))}
-      {page.route === '/docs' && (
-        <>
-          <section aria-labelledby="versions">
-            <h2 id="versions" class="anchored-heading">
-              <a href="#versions">Published versions</a>
-            </h2>
-            <div class="api-table-wrap">
-              <table class="api-table">
-                <thead>
-                  <tr>
-                    <th scope="col">Package</th>
-                    <th scope="col">Version</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Object.entries(publishedVersions).map(([name, version]) => (
-                    <tr key={name}>
-                      <td>
-                        <code>@askrjs/{name}</code>
-                      </td>
-                      <td>{version}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-          <section aria-labelledby="release-notes">
-            <h2 id="release-notes" class="anchored-heading">
-              <a href="#release-notes">Release notes</a>
-            </h2>
-            {releaseNotes.map((note) => (
-              <article key={note.version} class="docs-release-note">
-                <h3>{note.version}</h3>
-                <p>
-                  <small>{note.date}</small>
-                </p>
-                <p>{note.summary}</p>
-              </article>
-            ))}
-          </section>
-        </>
-      )}
-      {page.route === '/docs/tooling/cli-overview' && (
-        <section aria-labelledby="published-commands">
-          <h2 id="published-commands" class="anchored-heading">
-            <a href="#published-commands">Published commands</a>
-          </h2>
-          <p>
-            These commands come from <code>@askrjs/cli</code>{' '}
-            {cliSnapshot.version}. Planned generators such as <code>route</code>
-            , <code>crud</code>, <code>table</code>, and <code>form</code> are
-            not available commands.
-          </p>
-          <div class="api-table-wrap">
-            <table class="api-table">
-              <thead>
-                <tr>
-                  <th>Command</th>
-                  <th>Run</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cliSnapshot.commands.map((command) => (
-                  <tr key={command}>
-                    <td>
-                      <code>{command}</code>
-                    </td>
-                    <td>
-                      <code>askr {command} --help</code>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      )}
+      <HeadingContentList headings={page.headings} page={page} />
+      {page.route === '/docs' && <DocsLandingDetails />}
+      {page.route === '/docs/tooling/cli-overview' && <CliReferenceSection />}
       <PreviousNext page={page} />
     </article>
   );

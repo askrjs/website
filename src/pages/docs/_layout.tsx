@@ -1,4 +1,4 @@
-import { state, type Props } from '@askrjs/askr';
+import { For, state, type Props } from '@askrjs/askr';
 import { Link, currentRoute } from '@askrjs/askr/router';
 import { MenuIcon, XIcon } from '@askrjs/lucide';
 import {
@@ -36,44 +36,46 @@ function DocsNavigation({ close }: { close?: () => void }) {
 
   return (
     <SidebarContent as="nav" aria-label="Documentation navigation">
-      {docsSections.map((section) => {
-        return (
+      <For each={docsSections} by={(section) => section.id}>
+        {(section) => (
           <SidebarGroup key={section.id} data-nav-section={section.id}>
             <SidebarGroupLabel>{section.label}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {section.pages.map((page) => (
-                  <SidebarMenuItem key={page.route}>
-                    <SidebarMenuButton
-                      asChild
-                      active={page.route === activePath}
-                      size="sm"
-                    >
-                      <Link
-                        href={page.route}
-                        aria-current={
-                          page.route === activePath ? 'page' : undefined
-                        }
-                        onClickCapture={close}
+                <For each={section.pages} by={(page) => page.route}>
+                  {(page) => (
+                    <SidebarMenuItem key={page.route}>
+                      <SidebarMenuButton
+                        asChild
+                        active={page.route === activePath}
+                        size="sm"
                       >
-                        <span>{page.title}</span>
-                        {page.status !== 'stable' && (
-                          <span
-                            class="docs-sidebar-nav__status"
-                            title={page.status}
-                          >
-                            •
-                          </span>
-                        )}
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                        <Link
+                          href={page.route}
+                          aria-current={
+                            page.route === activePath ? 'page' : undefined
+                          }
+                          onClickCapture={close}
+                        >
+                          <span>{page.title}</span>
+                          {page.status !== 'stable' && (
+                            <span
+                              class="docs-sidebar-nav__status"
+                              title={page.status}
+                            >
+                              •
+                            </span>
+                          )}
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  )}
+                </For>
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
-        );
-      })}
+        )}
+      </For>
     </SidebarContent>
   );
 }
@@ -83,15 +85,25 @@ function TableOfContents() {
   const headings = page ? docsTableOfContents(page) : [];
   if (!headings.length) return null;
 
+  return <TableOfContentsLinks headings={headings} />;
+}
+
+function TableOfContentsLinks({
+  headings,
+}: {
+  headings: ReturnType<typeof docsTableOfContents>;
+}) {
   return (
     <aside class="docs-toc" aria-label="On this page">
       <p>On this page</p>
       <ul>
-        {headings.map((heading) => (
-          <li key={heading.id}>
-            <a href={`#${heading.id}`}>{heading.title}</a>
-          </li>
-        ))}
+        <For each={headings} by={(heading) => heading.id}>
+          {(heading) => (
+            <li key={heading.id}>
+              <a href={`#${heading.id}`}>{heading.title}</a>
+            </li>
+          )}
+        </For>
       </ul>
     </aside>
   );

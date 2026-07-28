@@ -1,8 +1,31 @@
+import { For } from '@askrjs/askr';
 import { Link, currentRoute } from '@askrjs/askr/router';
 import { ArrowLeftIcon } from '@askrjs/lucide';
 import { apiManifest } from './api-manifest';
 import { apiSymbolSets } from './api-snapshot';
 import { resolveDocsRoute } from './catalog';
+
+type ApiSymbol = (typeof apiSymbolSets)[keyof typeof apiSymbolSets][number];
+
+function ApiSymbolList({ symbols }: { symbols: readonly ApiSymbol[] }) {
+  return (
+    <For each={symbols} by={(symbol) => symbol.name}>
+      {(symbol) => (
+        <article id={symbol.anchor} class="api-symbol" key={symbol.name}>
+          <h3>
+            <a href={`#${symbol.anchor}`}>
+              <code>{symbol.name}</code>
+            </a>
+            {symbol.typeOnly && <span>type</span>}
+          </h3>
+          <pre>
+            <code>{symbol.signature}</code>
+          </pre>
+        </article>
+      )}
+    </For>
+  );
+}
 
 export default function ApiPage() {
   const route = resolveDocsRoute(currentRoute());
@@ -56,19 +79,7 @@ export default function ApiPage() {
           from runtime values.
         </p>
         <div class="api-symbols">
-          {symbols.map((symbol) => (
-            <article id={symbol.anchor} class="api-symbol" key={symbol.name}>
-              <h3>
-                <a href={`#${symbol.anchor}`}>
-                  <code>{symbol.name}</code>
-                </a>
-                {symbol.typeOnly && <span>type</span>}
-              </h3>
-              <pre>
-                <code>{symbol.signature}</code>
-              </pre>
-            </article>
-          ))}
+          <ApiSymbolList symbols={symbols} />
         </div>
       </section>
       <nav class="docs-pagination" aria-label="Documentation pagination">
