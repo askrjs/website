@@ -9,7 +9,7 @@ import {
 } from './catalog';
 import { cliSnapshot } from './cli-snapshot';
 import { componentDemoFor } from './component-demos';
-import { releaseNotes } from './release-notes';
+import { upgradeGuidance } from './release-notes';
 import type { DocsHeadingDefinition, DocsPageDefinition } from './types';
 import { buildUsageGuide, routeExampleFor } from './usage-guide';
 
@@ -103,16 +103,16 @@ function DocsLandingDetails() {
           </table>
         </div>
       </section>
-      <section aria-labelledby="release-notes">
-        <h2 id="release-notes" class="anchored-heading">
-          <a href="#release-notes">Release notes</a>
+      <section aria-labelledby="upgrade-guidance">
+        <h2 id="upgrade-guidance" class="anchored-heading">
+          <a href="#upgrade-guidance">Upgrade guidance</a>
         </h2>
-        <For each={releaseNotes} by={(note) => note.version}>
+        <For each={upgradeGuidance} by={(note) => note.title}>
           {(note) => (
-            <article key={note.version} class="docs-release-note">
-              <h3>{note.version}</h3>
+            <article key={note.title} class="docs-release-note">
+              <h3>{note.title}</h3>
               <p>
-                <small>{note.date}</small>
+                <small>{note.when}</small>
               </p>
               <p>{note.summary}</p>
             </article>

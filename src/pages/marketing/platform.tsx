@@ -104,7 +104,7 @@ export function PlatformPage() {
       />
       <RuledSection stacked>
         <div class="editorial-section__heading">
-          <h2>Four packages you'll actually reach for, in order</h2>
+          <h2>Four stages from component to production</h2>
           <p>
             Each one builds on the last — adding a server later doesn't mean
             rewriting the routes and components you already have.
@@ -135,13 +135,14 @@ export function PlatformPage() {
       </RuledSection>
       <RuledSection stacked>
         <div class="editorial-section__heading">
-          <h2>{packageCount} packages, one of them required</h2>
+          <h2>{packageCount} packages with explicit peer boundaries</h2>
           <p>
-            Only <code>@askrjs/askr</code> is a prerequisite for anything else,
-            and {standaloneCount} of the rest don&rsquo;t need even that. The
-            &ldquo;requires&rdquo; column is read from each package&rsquo;s
-            published peer dependencies, so this table cannot drift from what
-            npm actually installs.
+            {standaloneCount} packages beyond the runtime have no Askr peer
+            requirement. Packages that compose with the runtime declare it
+            explicitly, and <code>@askrjs/themes</code> also declares its
+            headless <code>@askrjs/ui</code> layer. The &ldquo;requires&rdquo;
+            column is generated from each installed package&rsquo;s published
+            peer dependencies.
           </p>
         </div>
         <PackageTable label="Published Askr packages" rows={packageRows} />

@@ -27,8 +27,8 @@ export function ThemesPage() {
   return (
     <>
       <EditorialHero
-        title="Restyle the whole app without re-testing every keyboard interaction."
-        lede="Focus order, ARIA, and dismissal behavior live in the headless layer. Rip out the visual theme and none of that has to be re-verified."
+        title="Restyle the app without rebuilding its interaction model."
+        lede="Focus management, ARIA, and dismissal behavior live in the headless layer. A visual theme can change independently, while the finished composition still receives keyboard, screen-reader, contrast, and focus-visibility testing."
       />
       <RuledSection stacked>
         <div class="editorial-section__heading">

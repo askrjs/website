@@ -92,7 +92,7 @@ const result = createQuery(project, { id: projectId });`,
   name: schema.string(),
 });
 
-project.openapi;`,
+project.jsonSchema;`,
   '/docs/charts/cartesian-marks': `const Plot = createPlot<ProjectRow>();
 
 <Plot.Root data={rows} rowKey={(row) => row.id} label="Revenue by day">
@@ -144,32 +144,43 @@ function componentGuide(page: DocsPageDefinition): UsageGuideDefinition {
     ],
     [
       /Collections|Controlled State/,
-      `import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@askrjs/themes/components';
+      `import { For, state } from '@askrjs/askr';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@askrjs/themes/components';
 
-<Select value={status()} onValueChange={setStatus}>
-  <SelectTrigger aria-label="Project status"><SelectValue /></SelectTrigger>
-  <SelectContent>
-    {statuses.map((item) => <SelectItem value={item.id}>{item.label}</SelectItem>)}
-  </SelectContent>
-</Select>`,
+function ProjectStatusSelect() {
+  const [status, setStatus] = state('active');
+  return <Select value={status()} onValueChange={setStatus}>
+    <SelectTrigger aria-label="Project status"><SelectValue /></SelectTrigger>
+    <SelectContent>
+      <For each={statuses} by={(item) => item.id}>
+        {(item) => <SelectItem value={item.id}>{item.label}</SelectItem>}
+      </For>
+    </SelectContent>
+  </Select>;
+}`,
     ],
     [
       /ARIA and Ref Utilities|Icon Contract/,
       `import { Button, Input } from '@askrjs/themes/components';
 import { SearchIcon } from '@askrjs/lucide';
 
-<label for="project-search">Search projects</label>
-<Input id="project-search" name="query" />
-<Button aria-label="Run search"><SearchIcon aria-hidden="true" /></Button>`,
+<>
+  <label htmlFor="project-search">Search projects</label>
+  <Input id="project-search" name="query" />
+  <Button aria-label="Run search"><SearchIcon aria-hidden="true" /></Button>
+</>`,
     ],
     [
       /Combobox and Command/,
-      `import { Combobox, ComboboxInput, ComboboxList, ComboboxOption } from '@askrjs/themes/components';
+      `import { For } from '@askrjs/askr';
+import { Combobox, ComboboxInput, ComboboxList, ComboboxOption } from '@askrjs/themes/components';
 
 <Combobox value={owner()} onValueChange={setOwner}>
   <ComboboxInput aria-label="Project owner" />
   <ComboboxList>
-    {people.map((person) => <ComboboxOption value={person.id}>{person.name}</ComboboxOption>)}
+    <For each={people} by={(person) => person.id}>
+      {(person) => <ComboboxOption value={person.id}>{person.name}</ComboboxOption>}
+    </For>
   </ComboboxList>
 </Combobox>`,
     ],
@@ -185,12 +196,14 @@ import { SearchIcon } from '@askrjs/lucide';
       /Native Select and Input OTP/,
       `import { InputOTP, InputOTPGroup, InputOTPSlot, NativeSelect } from '@askrjs/themes/components';
 
-<NativeSelect name="timezone" aria-label="Timezone">
-  <option value="America/New_York">Eastern time</option>
-</NativeSelect>
-<InputOTP maxLength={6} value={code()} onValueChange={setCode}>
-  <InputOTPGroup>{[0, 1, 2, 3, 4, 5].map((index) => <InputOTPSlot index={index} />)}</InputOTPGroup>
-</InputOTP>`,
+<>
+  <NativeSelect name="timezone" aria-label="Timezone">
+    <option value="America/New_York">Eastern time</option>
+  </NativeSelect>
+  <InputOTP maxLength={6} value={code()} onValueChange={setCode}>
+    <InputOTPGroup>{[0, 1, 2, 3, 4, 5].map((index) => <InputOTPSlot index={index} />)}</InputOTPGroup>
+  </InputOTP>
+</>`,
     ],
     [
       /^Tooltip$/,
@@ -238,10 +251,15 @@ import { SearchIcon } from '@askrjs/lucide';
     ],
     [
       /Scroll Area/,
-      `import { ScrollArea, ScrollAreaScrollbar, ScrollAreaThumb, ScrollAreaViewport } from '@askrjs/themes/components';
+      `import { For } from '@askrjs/askr';
+import { ScrollArea, ScrollAreaScrollbar, ScrollAreaThumb, ScrollAreaViewport } from '@askrjs/themes/components';
 
-<ScrollArea class="activity-log">
-  <ScrollAreaViewport>{events.map((event) => <ActivityRow event={event} />)}</ScrollAreaViewport>
+<ScrollArea>
+  <ScrollAreaViewport class="activity-log">
+    <For each={events} by={(event) => event.id}>
+      {(event) => <ActivityRow event={event} />}
+    </For>
+  </ScrollAreaViewport>
   <ScrollAreaScrollbar orientation="vertical"><ScrollAreaThumb /></ScrollAreaScrollbar>
 </ScrollArea>`,
     ],
@@ -250,7 +268,7 @@ import { SearchIcon } from '@askrjs/lucide';
       `import { Alert, AlertDescription, AlertTitle, Badge, Empty, EmptyDescription, EmptyTitle, Spinner } from '@askrjs/themes/components';
 
 {query.pending ? <Spinner aria-label="Loading projects" /> :
- query.error ? <Alert variant="destructive"><AlertTitle>Could not load projects</AlertTitle><AlertDescription>{query.error.message}</AlertDescription></Alert> :
+ query.error ? <Alert variant="danger"><AlertTitle>Could not load projects</AlertTitle><AlertDescription>{query.error.message}</AlertDescription></Alert> :
  query.data.length === 0 ? <Empty><EmptyTitle>No projects</EmptyTitle><EmptyDescription>Create a project to get started.</EmptyDescription></Empty> :
  <Badge>{query.data.length} active</Badge>}`,
     ],
@@ -270,8 +288,10 @@ import { SearchIcon } from '@askrjs/lucide';
       `import { GitHubLogo } from '@askrjs/logos';
 import { SearchIcon } from '@askrjs/lucide';
 
-<SearchIcon size={18} aria-hidden="true" />
-<a href={repositoryUrl}><GitHubLogo aria-label="GitHub repository" /></a>`,
+<>
+  <SearchIcon size={18} aria-hidden="true" />
+  <a href={repositoryUrl}><GitHubLogo aria-label="GitHub repository" /></a>
+</>`,
     ],
     [
       /^Integrations$/,
@@ -297,7 +317,7 @@ const Editor = await loadEditor();`,
       `import { Button, Field, FieldHint, FieldLabel, Input } from '@askrjs/themes/components';
 
 <Field>
-  <FieldLabel for="project-name">Project name</FieldLabel>
+  <FieldLabel htmlFor="project-name">Project name</FieldLabel>
   <Input id="project-name" name="name" required />
   <FieldHint>Shown to everyone in the workspace.</FieldHint>
   <Button type="submit">Save project</Button>
@@ -309,7 +329,7 @@ const Editor = await loadEditor();`,
 
 <Field>
   <Checkbox id="email-updates" checked={enabled()} onCheckedChange={setEnabled} />
-  <FieldLabel for="email-updates">Email project updates</FieldLabel>
+  <FieldLabel htmlFor="email-updates">Email project updates</FieldLabel>
 </Field>`,
     ],
     [
@@ -323,23 +343,27 @@ const Editor = await loadEditor();`,
     ],
     [
       /Select/,
-      `import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@askrjs/themes/components';
+      `import { state } from '@askrjs/askr';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@askrjs/themes/components';
 
-<Select value={status()} onValueChange={setStatus}>
-  <SelectTrigger aria-label="Project status"><SelectValue /></SelectTrigger>
-  <SelectContent>
-    <SelectItem value="active">Active</SelectItem>
-    <SelectItem value="paused">Paused</SelectItem>
-  </SelectContent>
-</Select>`,
+function ProjectStatusSelect() {
+  const [status, setStatus] = state('active');
+  return <Select value={status()} onValueChange={setStatus}>
+    <SelectTrigger aria-label="Project status"><SelectValue /></SelectTrigger>
+    <SelectContent>
+      <SelectItem value="active">Active</SelectItem>
+      <SelectItem value="paused">Paused</SelectItem>
+    </SelectContent>
+  </Select>;
+}`,
     ],
     [
       /Slider/,
       `import { Field, FieldLabel, Slider } from '@askrjs/themes/components';
 
 <Field>
-  <FieldLabel for="capacity">Capacity: {capacity()}</FieldLabel>
-  <Slider id="capacity" min={1} max={100} value={[capacity()]} />
+  <FieldLabel htmlFor="capacity">Capacity: {capacity()}</FieldLabel>
+  <Slider id="capacity" min={1} max={100} value={capacity()} onValueChange={setCapacity} />
 </Field>`,
     ],
     [
@@ -348,21 +372,51 @@ const Editor = await loadEditor();`,
 
 <Field>
   <Switch id="public" checked={isPublic()} onCheckedChange={setIsPublic} />
-  <FieldLabel for="public">Public project</FieldLabel>
+  <FieldLabel htmlFor="public">Public project</FieldLabel>
 </Field>`,
     ],
     [
       /Toggle/,
       `import { Toggle, ToggleGroup, ToggleGroupItem } from '@askrjs/themes/components';
 
-<Toggle pressed={bold()} onPressedChange={setBold}>Bold</Toggle>
-<ToggleGroup type="single" value={alignment()} onValueChange={setAlignment}>
-  <ToggleGroupItem value="left">Left</ToggleGroupItem>
-  <ToggleGroupItem value="center">Center</ToggleGroupItem>
-</ToggleGroup>`,
+<>
+  <Toggle pressed={bold()} onPress={() => setBold((value) => !value)}>Bold</Toggle>
+  <ToggleGroup type="single" value={alignment()} onValueChange={setAlignment}>
+    <ToggleGroupItem value="left">Left</ToggleGroupItem>
+    <ToggleGroupItem value="center">Center</ToggleGroupItem>
+  </ToggleGroup>
+</>`,
     ],
     [
-      /Dialog|Drawer|Sheet/,
+      /^Alert Dialog$/,
+      `import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogTitle, AlertDialogTrigger, Button } from '@askrjs/themes/components';
+
+<AlertDialog>
+  <AlertDialogTrigger asChild><Button variant="destructive">Delete project</Button></AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogTitle>Delete project?</AlertDialogTitle>
+    <AlertDialogDescription>This action cannot be undone.</AlertDialogDescription>
+    <AlertDialogCancel>Cancel</AlertDialogCancel>
+    <AlertDialogAction>Delete</AlertDialogAction>
+  </AlertDialogContent>
+</AlertDialog>`,
+    ],
+    [
+      /^Drawer and Sheet$/,
+      `import { Button, Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@askrjs/themes/components';
+
+<Sheet>
+  <SheetTrigger asChild><Button variant="outline">Open filters</Button></SheetTrigger>
+  <SheetContent>
+    <SheetTitle>Project filters</SheetTitle>
+    <SheetDescription>Narrow the project list without leaving the page.</SheetDescription>
+    <ProjectFilters />
+    <SheetClose>Apply filters</SheetClose>
+  </SheetContent>
+</Sheet>`,
+    ],
+    [
+      /^Dialog$/,
       `import { Button, Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@askrjs/themes/components';
 
 <Dialog>
@@ -375,7 +429,19 @@ const Editor = await loadEditor();`,
 </Dialog>`,
     ],
     [
-      /Popover|Hover Card|Tooltip/,
+      /^Hover Card$/,
+      `import { HoverCard, HoverCardContent, HoverCardTrigger } from '@askrjs/themes/components';
+
+<HoverCard>
+  <HoverCardTrigger asChild><a href={ownerUrl}>{owner.name}</a></HoverCardTrigger>
+  <HoverCardContent>
+    <strong>{owner.name}</strong>
+    <p>{owner.projectCount} active projects</p>
+  </HoverCardContent>
+</HoverCard>`,
+    ],
+    [
+      /^Popover$/,
       `import { Button, Popover, PopoverContent, PopoverTrigger } from '@askrjs/themes/components';
 
 <Popover>
@@ -384,16 +450,33 @@ const Editor = await loadEditor();`,
 </Popover>`,
     ],
     [
-      /Menu|Menubar/,
-      `import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from '@askrjs/themes/components';
+      /^Menubar$/,
+      `import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from '@askrjs/themes/components';
 
-<Dropdown>
-  <DropdownTrigger aria-label="Project actions">Actions</DropdownTrigger>
-  <DropdownContent>
-    <DropdownItem onSelect={archive}>Archive</DropdownItem>
-    <DropdownItem onSelect={duplicate}>Duplicate</DropdownItem>
-  </DropdownContent>
-</Dropdown>`,
+<Menubar>
+  <MenubarMenu>
+    <MenubarTrigger>Project</MenubarTrigger>
+    <MenubarContent>
+      <MenubarItem onPress={rename}>Rename</MenubarItem>
+      <MenubarItem onPress={archive}>Archive</MenubarItem>
+    </MenubarContent>
+  </MenubarMenu>
+</Menubar>`,
+    ],
+    [
+      /^Menu, Dropdown, and Context Menu$/,
+      `import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger, Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from '@askrjs/themes/components';
+
+<>
+  <Dropdown>
+    <DropdownTrigger aria-label="Project actions">Actions</DropdownTrigger>
+    <DropdownContent><DropdownItem onSelect={archive}>Archive</DropdownItem></DropdownContent>
+  </Dropdown>
+  <ContextMenu>
+    <ContextMenuTrigger><ProjectCard /></ContextMenuTrigger>
+    <ContextMenuContent><ContextMenuItem onSelect={duplicate}>Duplicate</ContextMenuItem></ContextMenuContent>
+  </ContextMenu>
+</>`,
     ],
     [
       /Tabs/,
@@ -409,26 +492,79 @@ const Editor = await loadEditor();`,
 </Tabs>`,
     ],
     [
-      /Table|Data Table|Virtual/,
-      `import { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from '@askrjs/themes/components';
+      /^Table$/,
+      `import { For } from '@askrjs/askr';
+import { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from '@askrjs/themes/components';
 
 <Table>
   <TableHead><TableRow><TableHeaderCell>Name</TableHeaderCell><TableHeaderCell>Status</TableHeaderCell></TableRow></TableHead>
-  <TableBody>{projects.map((project) => (
-    <TableRow key={project.id}><TableCell>{project.name}</TableCell><TableCell>{project.status}</TableCell></TableRow>
-  ))}</TableBody>
+  <TableBody>
+    <For each={projects} by={(project) => project.id}>
+      {(project) => <TableRow><TableCell>{project.name}</TableCell><TableCell>{project.status}</TableCell></TableRow>}
+    </For>
+  </TableBody>
 </Table>`,
     ],
     [
-      /Accordion|Collapsible/,
-      `import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@askrjs/themes/components';
+      /^Data Table$/,
+      `import { For } from '@askrjs/askr';
+import { DataTable, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from '@askrjs/themes/components';
 
-<Accordion type="single" collapsible>
-  <AccordionItem value="billing">
-    <AccordionTrigger>How billing works</AccordionTrigger>
-    <AccordionContent>Usage is calculated per workspace.</AccordionContent>
-  </AccordionItem>
-</Accordion>`,
+<DataTable>
+  <Table>
+    <TableHead><TableRow><TableHeaderCell>Name</TableHeaderCell><TableHeaderCell>Status</TableHeaderCell></TableRow></TableHead>
+    <TableBody>
+      <For each={projects} by={(project) => project.id}>
+        {(project) => <TableRow><TableCell>{project.name}</TableCell><TableCell>{project.status}</TableCell></TableRow>}
+      </For>
+    </TableBody>
+  </Table>
+</DataTable>`,
+    ],
+    [
+      /^Virtual List$/,
+      `import { VirtualList } from '@askrjs/themes/components';
+
+<VirtualList
+  items={projects}
+  rowHeight={48}
+  getKey={(project) => project.id}
+  rowComponent={({ item }) => <ProjectRow project={item} />}
+/>`,
+    ],
+    [
+      /^Virtual Table$/,
+      `import { VirtualTable, type VirtualTableColumn } from '@askrjs/themes/components';
+
+const columns: readonly VirtualTableColumn<Project>[] = [
+  { id: 'name', header: 'Name', cellComponent: ({ row }) => <span>{row.name}</span> },
+  { id: 'status', header: 'Status', cellComponent: ({ row }) => <span>{row.status}</span> },
+];
+
+<VirtualTable
+  rows={projects}
+  rowHeight={48}
+  headerHeight={44}
+  getKey={(project) => project.id}
+  columns={columns}
+/>`,
+    ],
+    [
+      /^Accordion and Collapsible$/,
+      `import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Collapsible, CollapsibleContent, CollapsibleTrigger } from '@askrjs/themes/components';
+
+<>
+  <Accordion type="single" collapsible>
+    <AccordionItem value="billing">
+      <AccordionTrigger>How billing works</AccordionTrigger>
+      <AccordionContent>Usage is calculated per workspace.</AccordionContent>
+    </AccordionItem>
+  </Accordion>
+  <Collapsible open={detailsOpen()} onOpenChange={setDetailsOpen}>
+    <CollapsibleTrigger>Project details</CollapsibleTrigger>
+    <CollapsibleContent><ProjectDetails /></CollapsibleContent>
+  </Collapsible>
+</>`,
     ],
     [
       /Progress/,
@@ -448,7 +584,54 @@ const Editor = await loadEditor();`,
 </ToastHost>`,
     ],
     [
-      /Card|Avatar|Item|Typography|Display|Layout|Chrome/,
+      /^Application Chrome$/,
+      `import { Header, Main, Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel } from '@askrjs/themes/components';
+
+<>
+  <Header>Workspace</Header>
+  <Sidebar><SidebarContent><SidebarGroup><SidebarGroupLabel>Projects</SidebarGroupLabel></SidebarGroup></SidebarContent></Sidebar>
+  <Main><ProjectRoutes /></Main>
+</>`,
+    ],
+    [
+      /^Avatar and Item$/,
+      `import { Avatar, AvatarFallback, AvatarImage, Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@askrjs/themes/components';
+
+<Item>
+  <ItemMedia><Avatar><AvatarImage src={owner.avatarUrl} alt="" /><AvatarFallback>{owner.initials}</AvatarFallback></Avatar></ItemMedia>
+  <ItemContent><ItemTitle>{owner.name}</ItemTitle><ItemDescription>{owner.role}</ItemDescription></ItemContent>
+</Item>`,
+    ],
+    [
+      /^Typography and Display Primitives$/,
+      `import { TypographyH1, TypographyLead, TypographyP } from '@askrjs/themes/components';
+
+<>
+  <TypographyH1>Project activity</TypographyH1>
+  <TypographyLead>Changes across the current workspace.</TypographyLead>
+  <TypographyP>Filter the timeline by actor, action, or date.</TypographyP>
+</>`,
+    ],
+    [
+      /^Application Layout$/,
+      `import { Container, Main, Page, PageHeader, Section } from '@askrjs/themes/components';
+
+<Page>
+  <PageHeader title="Projects" description="Active work in this workspace." />
+  <Main><Container><Section><ProjectList /></Section></Container></Main>
+</Page>`,
+    ],
+    [
+      /^Advanced Layout$/,
+      `import { Block, Grid } from '@askrjs/themes/components';
+
+<Grid columns={{ base: 1, md: 3 }} gap="lg">
+  <Block style={{ gridColumn: 'span 2' }}><ProjectTimeline /></Block>
+  <Block><ProjectSummary /></Block>
+</Grid>`,
+    ],
+    [
+      /^Card$/,
       `import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@askrjs/themes/components';
 
 <Card>
@@ -472,6 +655,120 @@ import { ThemeScope } from '@askrjs/themes/theme';
   }
   // The example itself is page-specific and does the explaining; the intro
   // here was title substitution, so there isn't one.
+  return { code };
+}
+
+function chartGuide(page: DocsPageDefinition): UsageGuideDefinition {
+  const sharedStart = `import { createPlot } from '@askrjs/charts';
+
+const Plot = createPlot<ProjectRow>();
+`;
+  const examples: Readonly<Record<string, string>> = {
+    Charts: `${sharedStart}
+<Plot.Root data={rows} rowKey="id" label="Revenue by day">
+  <Plot.Bar x="createdAt" y="revenue" />
+  <Plot.Line x="createdAt" y="target" />
+</Plot.Root>`,
+    'Channels and Transforms': `import { createPlot, movingAverage } from '@askrjs/charts';
+
+const Plot = createPlot<ProjectRow>();
+
+<Plot.Root data={rows} rowKey="id" label="Smoothed request rate">
+  <Plot.Line x="timestamp" y={movingAverage('requests', { window: 7 })} />
+</Plot.Root>`,
+    Scales: `${sharedStart}
+<Plot.Root data={rows} rowKey="id" label="Latency by service">
+  <Plot.Scale name="latency" channel="y" type="log" nice />
+  <Plot.Axis scale="latency" axis="y" label="Latency (ms)" />
+  <Plot.Line x="timestamp" y="latencyMs" yScale="latency" />
+</Plot.Root>`,
+    'Cartesian Marks': `${sharedStart}
+<Plot.Root data={rows} rowKey="id" label="Revenue by day">
+  <Plot.Axis axis="x" />
+  <Plot.Axis axis="y" />
+  <Plot.Bar x="createdAt" y="revenue" />
+  <Plot.Line x="createdAt" y="target" />
+  <Plot.Point x="createdAt" y="target" />
+</Plot.Root>`,
+    'Radial Marks': `${sharedStart}
+<Plot.Root data={rows} rowKey="id" label="Requests by service">
+  <Plot.Arc value="requests" category="service" innerRadius={48} />
+  <Plot.Legend label="Service" position="bottom" />
+  <Plot.Tooltip channels={['service', 'requests']} />
+</Plot.Root>`,
+    'Grid and Annotation Marks': `${sharedStart}
+<Plot.Root data={rows} rowKey="id" label="Deploy duration">
+  <Plot.Grid axis="y" tickCount={5} />
+  <Plot.Rule y={300} stroke="status" dash={[4, 4]} />
+  <Plot.Text x="timestamp" y="durationMs" text="label" />
+</Plot.Root>`,
+    Interactions: `${sharedStart}
+<Plot.Root data={rows} rowKey="id" label="Interactive latency">
+  <Plot.Line x="timestamp" y="latencyMs" />
+  <Plot.Tooltip mode="x" channels={['timestamp', 'latencyMs']} />
+  <Plot.Crosshair axes="xy" />
+  <Plot.Select mode="toggle" />
+  <Plot.Zoom axes="x" wheel pinch pan />
+</Plot.Root>`,
+    'Live Data and View State': `import { state } from '@askrjs/askr';
+import { createPlot, type PlotView } from '@askrjs/charts';
+
+const Plot = createPlot<MetricRow>();
+
+function LiveLatency() {
+  const [view, setView] = state<PlotView>({});
+  return <Plot.Root
+    data={rows()}
+    rowKey="id"
+    label="Live latency"
+    view={view()}
+    onViewChange={setView}
+    followLatest={{ durationMs: 300_000, field: 'timestamp' }}
+  ><Plot.Line x="timestamp" y="latencyMs" /></Plot.Root>;
+}`,
+    Export: `import { state } from '@askrjs/askr';
+import { createPlot, type PlotApi } from '@askrjs/charts';
+
+const Plot = createPlot<ProjectRow>();
+
+function ExportableRevenue() {
+  const [api, setApi] = state<PlotApi<ProjectRow> | null>(null);
+  return <>
+    <Plot.Root data={rows} rowKey="id" label="Revenue" onApiChange={setApi}>
+      <Plot.Line x="createdAt" y="revenue" />
+    </Plot.Root>
+    <button type="button" onClick={() => download(api()?.exportSvg() ?? '', 'revenue.svg')}>Export SVG</button>
+  </>;
+}`,
+    Recipes: `${sharedStart}
+<Plot.Root data={rows} rowKey="id" label="Revenue and target">
+  <Plot.Bar x="createdAt" y="revenue" fill="team" />
+  <Plot.Line x="createdAt" y="target" />
+  <Plot.Point x="createdAt" y="target" />
+  <Plot.Legend interactive />
+</Plot.Root>`,
+    'Accessibility and SSR': `${sharedStart}
+<Plot.Root
+  data={rows}
+  rowKey="id"
+  label="Daily revenue"
+  title="Revenue"
+  description="Actual revenue for the current week."
+  summary={({ visibleRowCount }) => visibleRowCount + ' days shown'}
+  width={720}
+>
+  <Plot.Line x="createdAt" y="revenue" />
+</Plot.Root>`,
+    'Migration from Charts 0.1': `${sharedStart}
+// Compose the 0.1 primitives directly; removed chart-specific wrappers
+// such as LineChart and DonutChart have no compatibility aliases.
+<Plot.Root data={rows} rowKey="id" label="Revenue by team">
+  <Plot.Line x="createdAt" y="revenue" />
+  <Plot.Arc value="revenue" category="team" innerRadius={48} />
+</Plot.Root>`,
+  };
+  const code = examples[page.title];
+  if (!code) throw new Error(`Missing chart usage guide for ${page.route}`);
   return { code };
 }
 
@@ -560,8 +857,8 @@ export const mcp = createMcpServer({ name: 'project-tools', version: '1.0.0' })
 
 const route = currentRoute();
 const filters = () => ({
-  status: route.query.status ?? 'active',
-  page: Number(route.query.page ?? 1),
+  status: route.query.get('status') ?? 'active',
+  page: Number(route.query.get('page') ?? 1),
 });
 
 function setStatus(status: string) {
@@ -620,8 +917,13 @@ return <ProjectDetails project={result.data} />;`,
     [
       /File Uploads and Artifacts/,
       'Stream multipart uploads at the server boundary, enforce size and content constraints before storage, and return an opaque artifact identifier.',
-      `<form method="post" action="/artifacts" enctype="multipart/form-data">
-  <label for="artifact">Build artifact</label>
+      `<form onSubmit={async (event) => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  if (!(form instanceof HTMLFormElement)) return;
+  await fetch('/artifacts', { method: 'POST', body: new FormData(form) });
+}}>
+  <label htmlFor="artifact">Build artifact</label>
   <input id="artifact" name="artifact" type="file" required />
   <button type="submit">Upload</button>
 </form>
@@ -656,12 +958,8 @@ const app = createApplication({ config });`,
     [
       /Testing Deterministic Applications/,
       'Control clocks, requests, and route input in tests; assert rendered behavior and cleanup instead of implementation call counts.',
-      `import { state } from '@askrjs/askr';
-
-it('should show the new quantity given increment when clicked', () => {
-  const [quantity, setQuantity] = state(1);
-  setQuantity((value) => value + 1);
-  expect(quantity()).toBe(2);
+      `it('should increment the quantity', () => {
+  expect(incrementQuantity(1)).toBe(2);
 });`,
     ],
     [
@@ -701,14 +999,20 @@ function ProjectPage({ initialProjectId }: { initialProjectId: string }) {
       'Use Show for a boolean branch and Match/Case when one value selects several mutually exclusive views.',
       `import { Case, Match, Show } from '@askrjs/askr';
 
-<Show when={project()} fallback={<ProjectSkeleton />}>
-  {(project) => <ProjectDetails project={project} />}
-</Show>
-
-<Match value={status()}>
-  <Case when="ready"><ReadyState /></Case>
-  <Case when="failed"><FailureState /></Case>
-</Match>`,
+function ProjectState(props: {
+  project: Project | null;
+  status: 'ready' | 'failed' | 'unknown';
+}) {
+  return <>
+    <Show when={props.project} fallback={<ProjectSkeleton />}>
+      {(project) => <ProjectDetails project={project} />}
+    </Show>
+    <Case fallback={<UnknownState />}>
+      <Match when={props.status === 'ready'}><ReadyState /></Match>
+      <Match when={props.status === 'failed'}><FailureState /></Match>
+    </Case>
+  </>;
+}`,
     ],
     [
       /Scopes/,
@@ -717,11 +1021,14 @@ function ProjectPage({ initialProjectId }: { initialProjectId: string }) {
 
 const ProjectsScope = defineScope<ProjectsService>(defaultProjects);
 
-<ProjectsScope value={projects}>
-  <ProjectRoutes />
-</ProjectsScope>
+function ProjectRoutes() {
+  const projects = readScope(ProjectsScope);
+  return <ProjectList projects={projects.list()} />;
+}
 
-const projects = readScope(ProjectsScope);`,
+function Application() {
+  return <ProjectsScope value={projectService}><ProjectRoutes /></ProjectsScope>;
+}`,
     ],
     [
       /Lifecycle Work|Resources/,
@@ -761,7 +1068,7 @@ const destination = to(projectRoute, { projectId: project.id });`,
       `import { currentRoute, updateRouteQuery } from '@askrjs/askr/router';
 
 const route = currentRoute();
-const status = () => route.query.status ?? 'active';
+const status = () => route.query.get('status') ?? 'active';
 
 updateRouteQuery({ status: 'paused', page: 1 });`,
     ],
@@ -800,13 +1107,18 @@ route('/projects/{projectId}', ProjectPage, {
       'Describe the write, the cache prefixes it affects, and whether successful writes invalidate those prefixes.',
       `import { createMutation } from '@askrjs/askr/data';
 
-const renameProject = createMutation({
+const renameProject = createMutation<
+  { id: string; name: string },
+  Project
+>({
   action: ({ id, name }, { signal }) => api.projects.rename(id, name, { signal }),
   affects: ({ id }) => ['project:' + id, 'projects'],
   afterSuccess: 'invalidate',
 });
 
-await renameProject.execute({ id, name });`,
+async function rename(id: string, name: string) {
+  return renameProject.execute({ id, name });
+}`,
     ],
     [
       /Server Queries and Preloading/,
@@ -823,7 +1135,7 @@ export const queries = defineServerQueries(
       /Page Actions and Forms|Forms, Actions, and CRUD/,
       'Bind form input in the server action, return field-aware failures without navigation, and redirect only after a successful write.',
       `<form method="post" action="/projects/new">
-  <Field><FieldLabel for="name">Name</FieldLabel><Input id="name" name="name" required /></Field>
+  <Field><FieldLabel htmlFor="name">Name</FieldLabel><Input id="name" name="name" required /></Field>
   <Button type="submit">Create project</Button>
 </form>`,
     ],
@@ -1025,9 +1337,10 @@ export default defineConfig({
       'Use DOM property names and typed event handlers directly; pass components values and callbacks instead of mutating rendered nodes.',
       `<form onSubmit={(event) => {
   event.preventDefault();
-  save(new FormData(event.currentTarget));
+  const form = event.currentTarget;
+  if (form instanceof HTMLFormElement) save(new FormData(form));
 }}>
-  <label for="name">Project name</label>
+  <label htmlFor="name">Project name</label>
   <input id="name" name="name" required />
   <button type="submit">Save</button>
 </form>`,
@@ -1206,7 +1519,7 @@ export const manageProjects = [
   if (page.navSection === 'HTTP Contracts') {
     return {
       intro:
-        'Define an executable schema once and reuse its OpenAPI representation in the HTTP contract and generated-client workflow.',
+        'Define an executable schema once and reuse its JSON Schema representation in the HTTP contract and generated-client workflow.',
       code: `import { schema } from '@askrjs/schema';
 
 export const projectInput = schema.object({
@@ -1215,7 +1528,7 @@ export const projectInput = schema.object({
 });
 
 const parsed = projectInput.safeParse(await request.json());
-const openapiSchema = projectInput.openapi;`,
+const jsonSchema = projectInput.jsonSchema;`,
     };
   }
 
@@ -1271,19 +1584,7 @@ export const router = createRouter().post('/projects', async (context) => {
   }
 
   if (page.navSection === 'Charts') {
-    return {
-      intro:
-        'Create a typed plot factory once, give the root stable row data, and compose only the scales, marks, and interactions the chart needs.',
-      code: `import { createPlot } from '@askrjs/charts';
-
-const Plot = createPlot<ProjectRow>();
-
-<Plot.Root data={rows} rowKey={(row) => row.id} label="Revenue by day">
-  <Plot.Axis axis="x" />
-  <Plot.Axis axis="y" />
-  <Plot.Line x="createdAt" y="revenue" />
-</Plot.Root>`,
-    };
+    return chartGuide(page);
   }
 
   if (page.navGroup === 'UI & Components') {
