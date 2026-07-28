@@ -7,6 +7,7 @@
 
 html {
   min-height: 100%;
+  overflow-x: clip;
   /* Askr resets the scroll position after committing a route. Keep that
      reset atomic; smooth scrolling makes the new page visibly glide from the
      old page's position. */
@@ -57,8 +58,17 @@ body,
 }
 
 body {
+  min-width: 0;
+  overflow-wrap: break-word;
   background: var(--ak-color-bg);
   color: var(--ak-color-text);
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
 }
 
 .site-shell {
@@ -792,6 +802,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .page-navigation__link {
   display: inline-flex;
+  min-width: 0;
   align-items: center;
   gap: var(--ak-space-sm);
   color: var(--ak-color-text);
@@ -805,7 +816,9 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .page-navigation__link span {
   display: grid;
+  min-width: 0;
   gap: 0.2rem;
+  overflow-wrap: anywhere;
 }
 
 .page-navigation__link small {
@@ -899,6 +912,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .docs-scope {
   --docs-header-height: 3.5rem;
+  min-width: 0;
   min-height: calc(100vh - var(--docs-header-height));
   background: transparent;
 }
@@ -1019,6 +1033,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .docs-body {
   display: grid;
+  min-width: 0;
   grid-template-columns: minmax(0, 1fr) 14rem;
   align-items: start;
   gap: clamp(1.5rem, 3vw, 3rem);
@@ -1030,11 +1045,17 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .docs-content {
   width: min(calc(100% - 4rem), 52rem);
+  min-width: 0;
   margin: 0 auto;
   padding: clamp(3.5rem, 7vw, 6rem) 0 6rem;
 }
 
+.docs-article {
+  min-width: 0;
+}
+
 .docs-article__header {
+  min-width: 0;
   padding-bottom: 3rem;
   border-bottom: 1px solid var(--ak-color-border);
 }
@@ -1046,6 +1067,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   font-weight: var(--ak-font-weight-regular);
   letter-spacing: -0.055em;
   line-height: 1;
+  overflow-wrap: anywhere;
 }
 
 .docs-article__header > p:last-child {
@@ -1092,6 +1114,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .code-block {
+  max-width: 100%;
   margin: 1.3rem 0;
   padding: 1.2rem 1.35rem;
   overflow-x: auto;
@@ -1236,6 +1259,15 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
     justify-content: flex-start;
   }
 
+  .page-navigation__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .page-navigation__link--next {
+    justify-self: start;
+    text-align: left;
+  }
+
   .final-cta__inner {
     display: flex;
     align-items: flex-start;
@@ -1247,33 +1279,6 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   }
 }
 
-/* The docs navigation intentionally delegates color, density, and interaction
-   states to the published Askr Sidebar primitives. */
-.docs-sidebar-shell {
-  position: sticky;
-  top: 0;
-  inline-size: 100%;
-  height: 100vh;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.docs-sidebar-shell__header {
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.docs-sidebar-shell[data-collapsible='icon'] .docs-sidebar-shell__header {
-  flex-direction: column;
-  align-items: center;
-}
-
-.docs-sidebar-shell > .docs-search {
-  margin: 0;
-  padding-inline: var(--ak-space-sm);
-}
-
 .docs-sidebar-nav {
   overscroll-behavior: contain;
 }
@@ -1283,25 +1288,6 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   color: var(--ak-color-text-muted);
 }
 
-.docs-sidebar-shell [data-slot='sidebar-footer'] > [data-slot='theme-toggle'] {
-  align-self: flex-start;
-}
-
-@media (max-width: 48rem) {
-  .docs-sidebar-shell {
-    display: none;
-  }
-
-  .docs-drawer.docs-sidebar-shell,
-  .docs-drawer[data-slot='sidebar'] {
-    position: static;
-    display: flex;
-    inline-size: min(22rem, calc(100% - 2rem));
-    height: 100%;
-    min-height: 100%;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1309,10 +1295,6 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
   @view-transition {
     navigation: none;
-  }
-
-  .docs-shell {
-    transition: none;
   }
 }
 
@@ -1326,25 +1308,6 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
-}
-
-.docs-shell,
-.docs-shell[data-sidebar-collapsed='true'] {
-  --ak-font-family-quote: 'Domine Variable', serif;
-  --docs-color-text-secondary: color-mix(
-    in oklch,
-    var(--ak-color-text-muted) 76%,
-    var(--ak-color-text)
-  );
-
-  display: grid;
-  min-height: 100vh;
-  grid-template-columns: 18.5rem minmax(0, 1fr) 14rem;
-  transition: grid-template-columns 180ms ease;
-}
-
-.docs-shell[data-sidebar-collapsed='true'] {
-  grid-template-columns: 4.75rem minmax(0, 1fr) 14rem;
 }
 
 .docs-search {
@@ -1369,8 +1332,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   font-size: 0.65rem;
 }
 
-.docs-search__backdrop,
-.docs-drawer-backdrop {
+.docs-search__backdrop {
   position: fixed;
   z-index: 100;
   inset: 0;
@@ -1387,6 +1349,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .docs-search__dialog {
   width: min(42rem, 100%);
+  min-width: 0;
   overflow: hidden;
   border: 1px solid var(--ak-color-border);
   border-radius: 0.9rem;
@@ -1453,6 +1416,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   display: grid;
   min-width: 0;
   gap: 0.18rem;
+  overflow-wrap: anywhere;
 }
 
 .docs-search__results small,
@@ -1506,6 +1470,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   margin-bottom: 1.8rem;
   color: var(--docs-color-text-secondary);
   font-size: 0.76rem;
+  overflow-wrap: anywhere;
 }
 
 .docs-breadcrumbs a {
@@ -1538,6 +1503,8 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .package-badges li {
   display: inline-flex;
+  max-width: 100%;
+  min-width: 0;
   align-items: center;
   overflow: hidden;
   border: 1px solid var(--ak-color-border);
@@ -1547,7 +1514,9 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .package-badges code,
 .package-badges span {
+  min-width: 0;
   padding: 0.28rem 0.55rem;
+  overflow-wrap: anywhere;
 }
 
 .package-badges span {
@@ -1643,6 +1612,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .docs-pagination a {
   display: flex;
+  min-width: 0;
   align-items: center;
   gap: 0.6rem;
   color: inherit;
@@ -1656,7 +1626,9 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .docs-pagination a span {
   display: grid;
+  min-width: 0;
   gap: 0.1rem;
+  overflow-wrap: anywhere;
 }
 
 .docs-pagination small {
@@ -1667,6 +1639,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .api-table-wrap {
+  max-width: 100%;
   margin-top: 1rem;
   overflow-x: auto;
   border: 1px solid var(--ak-color-border);
@@ -1675,6 +1648,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .api-table {
   width: 100%;
+  min-width: max-content;
   border-collapse: collapse;
   font-size: 0.82rem;
 }
@@ -1694,6 +1668,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .api-symbol {
   scroll-margin-top: 1rem;
+  min-width: 0;
   padding: 0.9rem;
   border: 1px solid var(--ak-color-border);
   border-radius: 0.6rem;
@@ -1701,14 +1676,18 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .api-symbol h3 {
   display: flex;
+  min-width: 0;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.55rem;
   margin: 0;
   font-size: 0.9rem;
 }
 
 .api-symbol h3 a {
+  min-width: 0;
   color: inherit;
+  overflow-wrap: anywhere;
 }
 
 .api-symbol h3 span {
@@ -1722,10 +1701,30 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .api-symbol pre {
   margin: 0.75rem 0 0;
+  max-width: 100%;
   overflow-x: auto;
   color: var(--docs-color-text-secondary);
   font-size: 0.72rem;
   line-height: 1.55;
+}
+
+.component-demo {
+  min-width: 0;
+  margin-top: 1.5rem;
+}
+
+.component-demo > p {
+  color: var(--docs-color-text-secondary);
+}
+
+.component-demo__surface {
+  max-width: 100%;
+  min-width: 0;
+  margin-top: 1rem;
+  padding: 1rem;
+  overflow-x: auto;
+  border: 1px solid var(--ak-color-border);
+  border-radius: 0.7rem;
 }
 
 .gallery-search {
@@ -1777,23 +1776,9 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   white-space: nowrap;
 }
 
-.docs-mobile-header,
-.docs-drawer-backdrop {
-  display: none;
-}
-
 @media (max-width: 72rem) {
   .docs-body {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .docs-toc {
-    display: none;
-  }
-
-  .docs-shell,
-  .docs-shell[data-sidebar-collapsed='true'] {
-    grid-template-columns: 17.5rem minmax(0, 1fr);
   }
 
   .docs-toc {
@@ -1803,7 +1788,55 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 @media (max-width: 48rem) {
   .site-header .docs-search {
-    width: auto;
+    width: 2.5rem;
+    flex: 0 0 2.5rem;
+    margin: 0;
+  }
+
+  .site-header [data-slot='navbar'] {
+    gap: 0.375rem;
+  }
+
+  .site-header [data-slot='nav-brand'] {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .site-header [data-slot='nav-group'] {
+    flex: 0 0 auto;
+    gap: 0.125rem;
+  }
+
+  .site-header .docs-search__trigger {
+    width: 2.5rem;
+    min-width: 2.5rem;
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  .site-header .docs-search__trigger span,
+  .site-header .docs-search__trigger kbd {
+    display: none;
+  }
+
+  .docs-search__backdrop {
+    align-items: stretch;
+    padding: max(0.5rem, env(safe-area-inset-top))
+      max(0.5rem, env(safe-area-inset-right))
+      max(0.5rem, env(safe-area-inset-bottom))
+      max(0.5rem, env(safe-area-inset-left));
+  }
+
+  .docs-search__dialog {
+    display: flex;
+    width: 100%;
+    max-height: calc(100dvh - 1rem);
+    flex-direction: column;
+  }
+
+  .docs-search__results {
+    max-height: none;
+    flex: 1;
   }
 
   .docs-channel {
@@ -1824,61 +1857,6 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
     display: flex;
   }
 
-  .docs-shell,
-  .docs-shell[data-sidebar-collapsed='true'] {
-    display: block;
-    padding-top: 3.7rem;
-  }
-
-  .docs-mobile-header {
-    position: fixed;
-    z-index: 60;
-    top: 0;
-    right: 0;
-    left: 0;
-    display: flex;
-    height: 3.7rem;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0.75rem;
-    border-bottom: 1px solid var(--ak-color-border);
-    background: color-mix(in srgb, var(--ak-color-bg) 94%, transparent);
-    backdrop-filter: blur(12px);
-  }
-
-  .docs-mobile-header > .brand {
-    flex: 1;
-  }
-
-  .docs-mobile-header .docs-search {
-    margin: 0;
-  }
-
-  .docs-mobile-header .docs-search__trigger {
-    width: 2.5rem;
-    border: 0;
-  }
-
-  .docs-mobile-header .docs-search__trigger span,
-  .docs-mobile-header .docs-search__trigger kbd {
-    display: none;
-  }
-
-  .docs-drawer-backdrop {
-    display: block;
-    padding: 0;
-  }
-
-  .docs-drawer {
-    display: flex;
-    width: min(22rem, calc(100% - 2rem));
-    height: 100%;
-    flex-direction: column;
-    padding: 1rem;
-    overflow-y: auto;
-    background: var(--ak-color-bg);
-  }
-
   .docs-content {
     width: min(calc(100% - 2rem), 52rem);
     padding: 2.5rem 0 4rem;
@@ -1895,5 +1873,37 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   .docs-pagination a:last-child {
     justify-self: start;
     text-align: left;
+  }
+
+  .package-table {
+    min-width: 36rem;
+  }
+
+  .docs-eyebrow {
+    flex-wrap: wrap;
+  }
+
+  .component-demo__surface {
+    padding: var(--ak-space-md);
+  }
+}
+
+@media (max-width: 23rem) {
+  .site-header [data-slot='brand-label'] {
+    display: none;
+  }
+
+  .hero__actions,
+  .not-found__actions,
+  .editorial-cta__actions {
+    width: 100%;
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .hero__actions > *,
+  .not-found__actions > *,
+  .editorial-cta__actions > * {
+    width: 100%;
   }
 }
