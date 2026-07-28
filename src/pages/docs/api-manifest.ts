@@ -2,7 +2,7 @@
 export const apiManifest = [
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: '.',
     importName: '@askrjs/askr',
     slug: 'root',
@@ -10,7 +10,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: './boot',
     importName: '@askrjs/askr/boot',
     slug: 'boot',
@@ -18,7 +18,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: './components',
     importName: '@askrjs/askr/components',
     slug: 'components',
@@ -26,7 +26,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: './control',
     importName: '@askrjs/askr/control',
     slug: 'control',
@@ -34,7 +34,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: './foundations',
     importName: '@askrjs/askr/foundations',
     slug: 'foundations',
@@ -42,7 +42,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: './foundations/utilities',
     importName: '@askrjs/askr/foundations/utilities',
     slug: 'foundations--utilities',
@@ -50,7 +50,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: './foundations/interactions',
     importName: '@askrjs/askr/foundations/interactions',
     slug: 'foundations--interactions',
@@ -58,7 +58,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: './foundations/state',
     importName: '@askrjs/askr/foundations/state',
     slug: 'foundations--state',
@@ -66,7 +66,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: './foundations/structures',
     importName: '@askrjs/askr/foundations/structures',
     slug: 'foundations--structures',
@@ -74,7 +74,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: './foundations/icon',
     importName: '@askrjs/askr/foundations/icon',
     slug: 'foundations--icon',
@@ -82,7 +82,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: './resources',
     importName: '@askrjs/askr/resources',
     slug: 'resources',
@@ -90,7 +90,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: './data',
     importName: '@askrjs/askr/data',
     slug: 'data',
@@ -98,7 +98,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: './testing',
     importName: '@askrjs/askr/testing',
     slug: 'testing',
@@ -106,7 +106,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: './fx',
     importName: '@askrjs/askr/fx',
     slug: 'fx',
@@ -114,7 +114,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: './router',
     importName: '@askrjs/askr/router',
     slug: 'router',
@@ -122,7 +122,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: './actions',
     importName: '@askrjs/askr/actions',
     slug: 'actions',
@@ -130,7 +130,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: './ssr',
     importName: '@askrjs/askr/ssr',
     slug: 'ssr',
@@ -138,7 +138,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: './ssg',
     importName: '@askrjs/askr/ssg',
     slug: 'ssg',
@@ -146,7 +146,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: './jsx-runtime',
     importName: '@askrjs/askr/jsx-runtime',
     slug: 'jsx-runtime',
@@ -154,7 +154,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.73',
+    version: '0.0.77',
     subpath: './jsx-dev-runtime',
     importName: '@askrjs/askr/jsx-dev-runtime',
     slug: 'jsx-dev-runtime',
@@ -266,7 +266,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/monaco',
-    version: '0.0.5',
+    version: '0.0.6',
     subpath: '.',
     importName: '@askrjs/monaco',
     slug: 'root',
@@ -274,7 +274,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/monaco',
-    version: '0.0.5',
+    version: '0.0.6',
     subpath: './monaco-editor',
     importName: '@askrjs/monaco/monaco-editor',
     slug: 'monaco-editor',
@@ -906,7 +906,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: '.',
     importName: '@askrjs/ui',
     slug: 'root',
@@ -914,7 +914,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './avatar',
     importName: '@askrjs/ui/avatar',
     slug: 'avatar',
@@ -922,7 +922,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './button',
     importName: '@askrjs/ui/button',
     slug: 'button',
@@ -930,7 +930,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './checkbox',
     importName: '@askrjs/ui/checkbox',
     slug: 'checkbox',
@@ -938,7 +938,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './input',
     importName: '@askrjs/ui/input',
     slug: 'input',
@@ -946,7 +946,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './form',
     importName: '@askrjs/ui/form',
     slug: 'form',
@@ -954,7 +954,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './label',
     importName: '@askrjs/ui/label',
     slug: 'label',
@@ -962,7 +962,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './progress',
     importName: '@askrjs/ui/progress',
     slug: 'progress',
@@ -970,7 +970,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './progress-circle',
     importName: '@askrjs/ui/progress-circle',
     slug: 'progress-circle',
@@ -978,7 +978,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './radio-group',
     importName: '@askrjs/ui/radio-group',
     slug: 'radio-group',
@@ -986,7 +986,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './select',
     importName: '@askrjs/ui/select',
     slug: 'select',
@@ -994,7 +994,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './slider',
     importName: '@askrjs/ui/slider',
     slug: 'slider',
@@ -1002,7 +1002,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './switch',
     importName: '@askrjs/ui/switch',
     slug: 'switch',
@@ -1010,7 +1010,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './table',
     importName: '@askrjs/ui/table',
     slug: 'table',
@@ -1018,7 +1018,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './virtual-list',
     importName: '@askrjs/ui/virtual-list',
     slug: 'virtual-list',
@@ -1026,7 +1026,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './virtual-table',
     importName: '@askrjs/ui/virtual-table',
     slug: 'virtual-table',
@@ -1034,7 +1034,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './textarea',
     importName: '@askrjs/ui/textarea',
     slug: 'textarea',
@@ -1042,7 +1042,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './toggle',
     importName: '@askrjs/ui/toggle',
     slug: 'toggle',
@@ -1050,7 +1050,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './toggle-group',
     importName: '@askrjs/ui/toggle-group',
     slug: 'toggle-group',
@@ -1058,7 +1058,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './visually-hidden',
     importName: '@askrjs/ui/visually-hidden',
     slug: 'visually-hidden',
@@ -1066,7 +1066,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './accordion',
     importName: '@askrjs/ui/accordion',
     slug: 'accordion',
@@ -1074,7 +1074,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './alert-dialog',
     importName: '@askrjs/ui/alert-dialog',
     slug: 'alert-dialog',
@@ -1082,7 +1082,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './collapsible',
     importName: '@askrjs/ui/collapsible',
     slug: 'collapsible',
@@ -1090,7 +1090,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './dialog',
     importName: '@askrjs/ui/dialog',
     slug: 'dialog',
@@ -1098,7 +1098,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './dismissable-layer',
     importName: '@askrjs/ui/dismissable-layer',
     slug: 'dismissable-layer',
@@ -1106,7 +1106,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './dropdown',
     importName: '@askrjs/ui/dropdown',
     slug: 'dropdown',
@@ -1114,7 +1114,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './focus-scope',
     importName: '@askrjs/ui/focus-scope',
     slug: 'focus-scope',
@@ -1122,7 +1122,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './hover-card',
     importName: '@askrjs/ui/hover-card',
     slug: 'hover-card',
@@ -1130,7 +1130,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './menu',
     importName: '@askrjs/ui/menu',
     slug: 'menu',
@@ -1138,7 +1138,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './menubar',
     importName: '@askrjs/ui/menubar',
     slug: 'menubar',
@@ -1146,7 +1146,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './popover',
     importName: '@askrjs/ui/popover',
     slug: 'popover',
@@ -1154,7 +1154,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './scroll-area',
     importName: '@askrjs/ui/scroll-area',
     slug: 'scroll-area',
@@ -1162,7 +1162,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './toast',
     importName: '@askrjs/ui/toast',
     slug: 'toast',
@@ -1170,7 +1170,7 @@ export const apiManifest = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.18',
+    version: '0.0.20',
     subpath: './tooltip',
     importName: '@askrjs/ui/tooltip',
     slug: 'tooltip',
