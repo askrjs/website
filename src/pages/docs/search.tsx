@@ -84,6 +84,7 @@ export function DocsSearch() {
         width="full"
         onPress={openSearch}
         aria-haspopup="dialog"
+        aria-expanded={open()}
         aria-label="Search docs"
         title="Search docs (⌘ K)"
       >

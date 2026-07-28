@@ -286,6 +286,30 @@ describe('documentation catalog', () => {
     expect(source).toContain('one application composition root');
     expect(source).toContain('two deployment paths');
   });
+
+  it('keeps the live shared layout mobile-safe', () => {
+    const styles = readFileSync(
+      new URL('../src/styles.css', import.meta.url),
+      'utf8'
+    );
+    const search = readFileSync(
+      new URL('../src/pages/docs/search.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toContain(`.site-header .docs-search__trigger span`);
+    expect(styles).toContain(`.site-header .docs-search__trigger kbd`);
+    expect(styles).toContain('max-height: calc(100dvh - 1rem)');
+    expect(styles).toContain('.page-navigation__inner');
+    expect(styles).toContain('.component-demo__surface');
+    expect(styles).toContain('overflow-wrap: anywhere');
+    expect(styles).toContain('overflow-x: clip');
+    expect(styles).not.toContain('.docs-mobile-header');
+    expect(styles).not.toContain('.docs-shell');
+    expect(styles).not.toContain('.docs-sidebar-shell');
+    expect(styles).not.toContain('.docs-drawer');
+    expect(search).toContain('aria-expanded={open()}');
+  });
 });
 
 describe('generated API reference', () => {
