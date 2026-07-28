@@ -1,4 +1,4 @@
-import { state } from '@askrjs/askr';
+import { For, state } from '@askrjs/askr';
 import { Link } from '@askrjs/askr/router';
 import * as iconExports from '@askrjs/lucide';
 import { ArrowLeftIcon, CircleIcon, SearchIcon } from '@askrjs/lucide';
@@ -66,12 +66,14 @@ export default function LucideGalleryPage() {
         </label>
         <p class="gallery-count">{visible().length} icons</p>
         <div class="icon-gallery">
-          {visible().map(({ name, Icon }) => (
-            <div class="icon-gallery__item" key={name} title={name}>
-              <Icon size={22} aria-hidden="true" />
-              <code>{name}</code>
-            </div>
-          ))}
+          <For each={visible} by={(icon) => icon.name}>
+            {({ name, Icon }) => (
+              <div class="icon-gallery__item" key={name} title={name}>
+                <Icon size={22} aria-hidden="true" />
+                <code>{name}</code>
+              </div>
+            )}
+          </For>
         </div>
       </section>
       <section aria-labelledby="direct-icon-imports">
