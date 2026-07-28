@@ -1759,6 +1759,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .icon-gallery__item {
+  scroll-margin-top: 4.5rem;
   display: grid;
   min-width: 0;
   justify-items: center;
@@ -1768,12 +1769,32 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   border-radius: 0.55rem;
 }
 
+.icon-gallery__item:target {
+  border-color: var(--ak-color-primary);
+  box-shadow: 0 0 0 2px
+    color-mix(in srgb, var(--ak-color-primary) 22%, transparent);
+}
+
+.icon-gallery__anchor {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  justify-items: center;
+  gap: 0.55rem;
+  color: inherit;
+  text-decoration: none;
+}
+
 .icon-gallery__item code {
   max-width: 100%;
   overflow: hidden;
   font-size: 0.62rem;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.api-symbols--types {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
 }
 
 @media (max-width: 72rem) {
@@ -1820,7 +1841,8 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   }
 
   .docs-search__backdrop {
-    align-items: stretch;
+    align-items: start;
+    overflow: hidden;
     padding: max(0.5rem, env(safe-area-inset-top))
       max(0.5rem, env(safe-area-inset-right))
       max(0.5rem, env(safe-area-inset-bottom))
@@ -1835,8 +1857,8 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   }
 
   .docs-search__results {
-    max-height: none;
-    flex: 1;
+    max-height: calc(100dvh - 5.25rem);
+    flex: none;
   }
 
   .docs-channel {

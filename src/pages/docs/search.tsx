@@ -1,4 +1,5 @@
 import { For, Show, state } from '@askrjs/askr';
+import { Portal } from '@askrjs/askr/foundations';
 import { Link } from '@askrjs/askr/router';
 import { on } from '@askrjs/askr/resources';
 import { SearchIcon, XIcon } from '@askrjs/lucide';
@@ -92,102 +93,104 @@ export function DocsSearch() {
         <span>Search docs</span>
         <kbd>⌘ K</kbd>
       </Button>
-      <div
-        class={`docs-search__backdrop${open() ? '' : ' docs-search__backdrop--closed'}`}
-        role="presentation"
-        aria-hidden={!open()}
-        onClick={(event: Event) => {
-          const target = event.target as HTMLElement | null;
-          if (target?.classList.contains('docs-search__backdrop')) close();
-        }}
-      >
-        <section
-          class="docs-search__dialog"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Search documentation"
+      <Portal>
+        <div
+          class={`docs-search__backdrop${open() ? '' : ' docs-search__backdrop--closed'}`}
+          role="presentation"
+          aria-hidden={!open()}
+          onClick={(event: Event) => {
+            const target = event.target as HTMLElement | null;
+            if (target?.classList.contains('docs-search__backdrop')) close();
+          }}
         >
-          <div class="docs-search__input">
-            <SearchIcon size={18} aria-hidden="true" />
-            <input
-              data-docs-search-input
-              type="search"
-              value={queryValue}
-              placeholder="Search concepts, imports, and API symbols"
-              // Askr delegates DOM events, so currentTarget is the delegation
-              // root. The input itself is available through event.target.
-              onInput={(event: Event) =>
-                void runSearch((event.target as HTMLInputElement).value)
-              }
-            />
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-sm"
-              onPress={close}
-              aria-label="Close search"
-            >
-              <XIcon size={18} aria-hidden="true" />
-            </Button>
-          </div>
-          <div class="docs-search__results" aria-live="polite">
-            <Show
-              when={loading}
-              fallback={
-                <Show
-                  when={() => !query().trim()}
-                  fallback={
-                    <Show
-                      when={error}
-                      fallback={
-                        <Show
-                          when={() => results().length > 0}
-                          fallback={<p>No results for “{queryValue}”.</p>}
-                        >
-                          <ul>
-                            <For
-                              each={results}
-                              by={(result) =>
-                                `${result.route}#${result.anchor ?? ''}`
-                              }
-                            >
-                              {(result) => (
-                                <li>
-                                  <Link
-                                    href={`${result.route}${result.anchor ? `#${result.anchor}` : ''}`}
-                                    onClickCapture={close}
-                                  >
-                                    <span>
-                                      <strong>{result.title}</strong>
-                                      <small>{result.description}</small>
-                                    </span>
-                                    <em>{result.group}</em>
-                                  </Link>
-                                </li>
-                              )}
-                            </For>
-                          </ul>
-                        </Show>
-                      }
-                    >
-                      <p>
-                        Search is temporarily unavailable. Please try again.
-                      </p>
-                    </Show>
-                  }
-                >
-                  <p>
-                    Search page titles, component aliases, package imports, CLI
-                    commands, and every published API symbol.
-                  </p>
-                </Show>
-              }
-            >
-              <p>Loading the API index…</p>
-            </Show>
-          </div>
-        </section>
-      </div>
+          <section
+            class="docs-search__dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Search documentation"
+          >
+            <div class="docs-search__input">
+              <SearchIcon size={18} aria-hidden="true" />
+              <input
+                data-docs-search-input
+                type="search"
+                value={queryValue}
+                placeholder="Search concepts, imports, and API symbols"
+                // Askr delegates DOM events, so currentTarget is the delegation
+                // root. The input itself is available through event.target.
+                onInput={(event: Event) =>
+                  void runSearch((event.target as HTMLInputElement).value)
+                }
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon-sm"
+                onPress={close}
+                aria-label="Close search"
+              >
+                <XIcon size={18} aria-hidden="true" />
+              </Button>
+            </div>
+            <div class="docs-search__results" aria-live="polite">
+              <Show
+                when={loading}
+                fallback={
+                  <Show
+                    when={() => !query().trim()}
+                    fallback={
+                      <Show
+                        when={error}
+                        fallback={
+                          <Show
+                            when={() => results().length > 0}
+                            fallback={<p>No results for “{queryValue}”.</p>}
+                          >
+                            <ul>
+                              <For
+                                each={results}
+                                by={(result) =>
+                                  `${result.route}#${result.anchor ?? ''}`
+                                }
+                              >
+                                {(result) => (
+                                  <li>
+                                    <Link
+                                      href={`${result.route}${result.anchor ? `#${result.anchor}` : ''}`}
+                                      onClickCapture={close}
+                                    >
+                                      <span>
+                                        <strong>{result.title}</strong>
+                                        <small>{result.description}</small>
+                                      </span>
+                                      <em>{result.group}</em>
+                                    </Link>
+                                  </li>
+                                )}
+                              </For>
+                            </ul>
+                          </Show>
+                        }
+                      >
+                        <p>
+                          Search is temporarily unavailable. Please try again.
+                        </p>
+                      </Show>
+                    }
+                  >
+                    <p>
+                      Search page titles, component aliases, package imports,
+                      CLI commands, and every published API symbol.
+                    </p>
+                  </Show>
+                }
+              >
+                <p>Loading the API index…</p>
+              </Show>
+            </div>
+          </section>
+        </div>
+      </Portal>
     </div>
   );
 }

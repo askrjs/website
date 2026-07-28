@@ -1,23 +1,23 @@
 import { For, state } from '@askrjs/askr';
 import { Link } from '@askrjs/askr/router';
-import * as iconExports from '@askrjs/lucide';
-import { ArrowLeftIcon, CircleIcon, SearchIcon } from '@askrjs/lucide';
+import { ArrowLeftIcon, SearchIcon } from '@askrjs/lucide';
+import { apiManifest } from './api-manifest';
+import { lucideIcons } from './lucide-icons';
 
-type IconComponent = typeof CircleIcon;
-const icons = Object.entries(iconExports)
-  .filter(
-    ([name, value]) => name.endsWith('Icon') && typeof value === 'function'
-  )
-  .map(([name, value]) => ({ name, Icon: value as IconComponent }))
-  .sort((left, right) => left.name.localeCompare(right.name));
+const lucideVersion = apiManifest.find(
+  (entrypoint) =>
+    entrypoint.packageName === '@askrjs/lucide' && entrypoint.subpath === '.'
+)!.version;
 
 export default function LucideGalleryPage() {
   const [query, setQuery] = state('');
   const visible = () => {
     const normalized = query().trim().toLowerCase();
     return normalized
-      ? icons.filter((icon) => icon.name.toLowerCase().includes(normalized))
-      : icons;
+      ? lucideIcons.filter((icon) =>
+          icon.name.toLowerCase().includes(normalized)
+        )
+      : lucideIcons;
   };
   return (
     <article
@@ -37,14 +37,18 @@ export default function LucideGalleryPage() {
         </div>
         <h1>Lucide Gallery</h1>
         <p>
-          Search every icon exported by @askrjs/lucide 0.0.4. Import the
-          selected component by name and give icon-only controls an accessible
-          label.
+          Search every icon exported by @askrjs/lucide {lucideVersion}. The icon
+          artwork comes from the{' '}
+          <a href="https://lucide.dev/" rel="external">
+            Lucide icon project
+          </a>
+          . Import the selected component by name and give icon-only controls an
+          accessible label.
         </p>
         <ul class="package-badges">
           <li>
             <code>@askrjs/lucide</code>
-            <span>0.0.4</span>
+            <span>{lucideVersion}</span>
           </li>
         </ul>
       </header>
@@ -58,7 +62,7 @@ export default function LucideGalleryPage() {
           <input
             type="search"
             value={query()}
-            placeholder={`Filter ${icons.length} icons`}
+            placeholder={`Filter ${lucideIcons.length} icons`}
             onInput={(event: Event) =>
               setQuery((event.currentTarget as HTMLInputElement).value)
             }

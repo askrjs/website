@@ -300,6 +300,13 @@ describe('documentation catalog', () => {
     expect(styles).toContain(`.site-header .docs-search__trigger span`);
     expect(styles).toContain(`.site-header .docs-search__trigger kbd`);
     expect(styles).toContain('max-height: calc(100dvh - 1rem)');
+    expect(styles).toContain('max-height: calc(100dvh - 5.25rem)');
+    expect(styles).toMatch(
+      /\.docs-search__backdrop\s*\{[^}]*align-items: start;[^}]*overflow: hidden;/s
+    );
+    expect(styles).not.toMatch(
+      /\.docs-search__backdrop\s*\{[^}]*align-items: stretch;/s
+    );
     expect(styles).toContain('.page-navigation__inner');
     expect(styles).toContain('.component-demo__surface');
     expect(styles).toMatch(
@@ -330,6 +337,20 @@ describe('documentation catalog', () => {
 });
 
 describe('generated API reference', () => {
+  it('uses a visual, attributed page for the Lucide root API', async () => {
+    const page = docsByRoute.get('/docs/reference/api/lucide/root');
+    expect(page).toBeTruthy();
+    const source = readFileSync(
+      new URL('../src/pages/docs/lucide-api-page.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(source).toContain('lucideIconsByName');
+    expect(source).toContain('https://lucide.dev/');
+    expect(source).toContain('id={symbol.anchor}');
+    expect(source).toContain('element.scrollIntoView()');
+    expect((await page!.loader()).default.name).toBe('LucideApiPage');
+  });
+
   it('represents every entrypoint and gives every symbol an anchor', () => {
     for (const entrypoint of apiManifest) {
       const route =

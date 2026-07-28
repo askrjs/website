@@ -38,6 +38,7 @@ function packageReference(
 
 const pageLoader = () => import('./page');
 const apiLoader = () => import('./api-page');
+const lucideApiLoader = () => import('./lucide-api-page');
 
 type PageInput = {
   title: string;
@@ -1560,7 +1561,10 @@ const apiPages: DocsPageDefinition[] = apiManifest.map((entrypoint) => ({
     },
   ],
   keywords: [entrypoint.importName, entrypoint.packageName],
-  loader: apiLoader,
+  loader:
+    entrypoint.packageName === '@askrjs/lucide' && entrypoint.subpath === '.'
+      ? lucideApiLoader
+      : apiLoader,
 }));
 
 const orderedPages = [...authoredPages, ...apiPages];
