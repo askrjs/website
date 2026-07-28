@@ -84,6 +84,8 @@ export function DocsSearch() {
         width="full"
         onPress={openSearch}
         aria-haspopup="dialog"
+        aria-label="Search docs"
+        title="Search docs (⌘ K)"
       >
         <SearchIcon size={16} aria-hidden="true" />
         <span>Search docs</span>
@@ -147,7 +149,7 @@ export function DocsSearch() {
                     <li>
                       <Link
                         href={`${result.route}${result.anchor ? `#${result.anchor}` : ''}`}
-                        onPress={close}
+                        onClickCapture={close}
                       >
                         <span>
                           <strong>{result.title}</strong>
