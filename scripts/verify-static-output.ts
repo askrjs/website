@@ -252,6 +252,18 @@ for (const [route, html] of documents) {
   }
 }
 
+const lucideRoot = documents.get('/docs/reference/api/lucide/root') ?? '';
+assert(
+  /id="fullscreen-icon"[\s\S]*?<svg[^>]*data-icon="FullscreenIcon"/.test(
+    lucideRoot
+  ),
+  '/docs/reference/api/lucide/root must render the FullscreenIcon tile'
+);
+assert(
+  lucideRoot.includes('href="https://lucide.dev/"'),
+  '/docs/reference/api/lucide/root must attribute the upstream Lucide project'
+);
+
 for (const asset of [
   'assets/askr-logo-64.avif',
   'assets/askr-logo-64.png',
