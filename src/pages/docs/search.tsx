@@ -1,4 +1,4 @@
-import { For, state } from '@askrjs/askr';
+import { For, Show, state } from '@askrjs/askr';
 import { Link } from '@askrjs/askr/router';
 import { on } from '@askrjs/askr/resources';
 import { SearchIcon, XIcon } from '@askrjs/lucide';
@@ -130,40 +130,60 @@ export function DocsSearch() {
             </Button>
           </div>
           <div class="docs-search__results" aria-live="polite">
-            {loading() ? (
-              <p>Loading the API index…</p>
-            ) : !queryValue.trim() ? (
-              <p>
-                Search page titles, component aliases, package imports, CLI
-                commands, and every published API symbol.
-              </p>
-            ) : error() ? (
-              <p>Search is temporarily unavailable. Please try again.</p>
-            ) : results().length ? (
-              <ul>
-                <For
-                  each={results}
-                  by={(result) => `${result.route}#${result.anchor ?? ''}`}
+            <Show
+              when={loading}
+              fallback={
+                <Show
+                  when={() => !query().trim()}
+                  fallback={
+                    <Show
+                      when={error}
+                      fallback={
+                        <Show
+                          when={() => results().length > 0}
+                          fallback={<p>No results for “{queryValue}”.</p>}
+                        >
+                          <ul>
+                            <For
+                              each={results}
+                              by={(result) =>
+                                `${result.route}#${result.anchor ?? ''}`
+                              }
+                            >
+                              {(result) => (
+                                <li>
+                                  <Link
+                                    href={`${result.route}${result.anchor ? `#${result.anchor}` : ''}`}
+                                    onClickCapture={close}
+                                  >
+                                    <span>
+                                      <strong>{result.title}</strong>
+                                      <small>{result.description}</small>
+                                    </span>
+                                    <em>{result.group}</em>
+                                  </Link>
+                                </li>
+                              )}
+                            </For>
+                          </ul>
+                        </Show>
+                      }
+                    >
+                      <p>
+                        Search is temporarily unavailable. Please try again.
+                      </p>
+                    </Show>
+                  }
                 >
-                  {(result) => (
-                    <li>
-                      <Link
-                        href={`${result.route}${result.anchor ? `#${result.anchor}` : ''}`}
-                        onClickCapture={close}
-                      >
-                        <span>
-                          <strong>{result.title}</strong>
-                          <small>{result.description}</small>
-                        </span>
-                        <em>{result.group}</em>
-                      </Link>
-                    </li>
-                  )}
-                </For>
-              </ul>
-            ) : (
-              <p>No results for “{queryValue}”.</p>
-            )}
+                  <p>
+                    Search page titles, component aliases, package imports, CLI
+                    commands, and every published API symbol.
+                  </p>
+                </Show>
+              }
+            >
+              <p>Loading the API index…</p>
+            </Show>
           </div>
         </section>
       </div>
