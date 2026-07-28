@@ -30,9 +30,10 @@ export function HomePage() {
             A full-stack TypeScript framework you can read top to bottom.
           </h1>
           <p class="hero__lede">
-            One route registry drives your components, your server, and your
-            build output — so you can trace a request from URL to response
-            without guessing what a file-based convention decided for you.
+            One explicit page registry drives browser navigation, server
+            rendering, and static generation — so you can trace a URL to its
+            component without guessing what a file-based convention decided for
+            you.
           </p>
           <div class="hero__actions">
             <Button asChild>

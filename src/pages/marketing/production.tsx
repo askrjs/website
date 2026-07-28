@@ -16,7 +16,12 @@ export function ProductionPage() {
       />
       <RuledSection stacked>
         <div class="editorial-section__heading">
-          <h2>Two outputs, one build</h2>
+          <h2>One application, two deployment paths</h2>
+          <p>
+            Keep the application source shared, then choose the SSG build for
+            static hosting or the server build and Node adapter for request-time
+            rendering.
+          </p>
         </div>
         <FlowMap
           label="Askr production outputs"

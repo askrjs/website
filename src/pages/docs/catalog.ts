@@ -1617,7 +1617,7 @@ export function docsTableOfContents(
   if (page.route === '/docs') {
     headings.push(
       { id: 'versions', title: 'Published versions' },
-      { id: 'release-notes', title: 'Release notes' }
+      { id: 'upgrade-guidance', title: 'Upgrade guidance' }
     );
   }
   if (page.route === '/docs/tooling/cli-overview') {

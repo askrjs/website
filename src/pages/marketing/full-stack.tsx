@@ -12,7 +12,7 @@ export function FullStackPage() {
     <>
       <EditorialHero
         title="Adding a server doesn't mean adding a second framework."
-        lede="Page actions, HTTP APIs, and auth policies register on the same router your routes use — no separate client SDK, no parallel backend project to keep in sync."
+        lede="Page routes, actions, HTTP APIs, and auth policies meet at one application composition root — no parallel backend project to keep in sync."
       />
       <RuledSection stacked>
         <div class="editorial-section__heading">

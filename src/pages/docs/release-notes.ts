@@ -1,14 +1,14 @@
-export const releaseNotes = [
+export const upgradeGuidance = [
   {
-    version: '0.0.x current line',
-    date: '2026',
+    title: 'Use the published version table',
+    when: 'Before changing dependencies',
     summary:
-      'The current line focuses on explicit route registries, SSR/SSG delivery, typed package boundaries, and CLI workflows that keep generated artifacts reviewable.',
+      'The version table above is generated from the installed package manifests. Treat those versions as the exact package set used to build and validate this documentation.',
   },
   {
-    version: 'Before upgrading',
-    date: 'Every release',
+    title: 'Review and validate the proposed set',
+    when: 'For every update',
     summary:
-      'Run askr outdated first, review the proposed package set, then use askr update for range-safe changes or askr upgrade when you are deliberately accepting breaking 0.x movement.',
+      'Run askr outdated first, use askr update for range-safe changes, and reserve askr upgrade for deliberately accepting breaking 0.x movement. Install, test, and build before committing the result.',
   },
 ] as const;
