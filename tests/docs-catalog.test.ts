@@ -302,7 +302,18 @@ describe('documentation catalog', () => {
     expect(styles).toContain('max-height: calc(100dvh - 1rem)');
     expect(styles).toContain('.page-navigation__inner');
     expect(styles).toContain('.component-demo__surface');
-    expect(styles).toContain('overflow-wrap: anywhere');
+    expect(styles).toMatch(
+      /\.page-navigation__link span\s*\{[^}]*overflow-wrap: anywhere;/s
+    );
+    expect(styles).toMatch(
+      /\.docs-article h1\s*\{[^}]*overflow-wrap: anywhere;/s
+    );
+    expect(styles).toMatch(
+      /\.api-symbol h3 a\s*\{[^}]*overflow-wrap: anywhere;/s
+    );
+    expect(styles).toMatch(
+      /\.component-demo__surface\s*\{[^}]*overflow-x: auto;/s
+    );
     expect(styles).toContain('overflow-x: clip');
     expect(styles).not.toContain('.docs-mobile-header');
     expect(styles).not.toContain('.docs-shell');
