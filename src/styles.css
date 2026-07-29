@@ -562,6 +562,11 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   gap: clamp(4rem, 10vw, 9rem);
 }
 
+.sequence[data-columns='3'] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(2rem, 5vw, 4.5rem);
+}
+
 .sequence[data-columns='4'] {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
@@ -790,6 +795,19 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: var(--ak-space-sm);
+}
+
+.contribute-repositories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ak-space-lg) var(--ak-space-2xl);
+}
+
+.contribute-cta__copy {
+  max-width: 42rem;
+  margin: var(--ak-space-lg) 0 0;
+  color: var(--ak-color-text-muted);
+  line-height: var(--ak-line-height-relaxed);
 }
 
 .page-navigation__inner {

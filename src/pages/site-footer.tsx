@@ -31,18 +31,23 @@ export function SiteFooter() {
               <Link class="footer-link" data-slot="footer-link" href="/">
                 Overview
               </Link>
-              <For each={marketingPages} by={(page) => page.path}>
-                {(page) => (
-                  <Link
-                    key={page.path}
-                    class="footer-link"
-                    data-slot="footer-link"
-                    href={page.path}
-                  >
-                    {page.label}
-                  </Link>
-                )}
-              </For>
+              <Link
+                class="footer-link"
+                data-slot="footer-link"
+                href="/contribute"
+              >
+                Early contributors
+              </Link>
+              {marketingPages.map((page) => (
+                <Link
+                  key={page.path}
+                  class="footer-link"
+                  data-slot="footer-link"
+                  href={page.path}
+                >
+                  {page.label}
+                </Link>
+              ))}
             </FooterLinks>
           </FooterSection>
 
