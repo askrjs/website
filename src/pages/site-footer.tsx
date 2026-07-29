@@ -38,16 +38,17 @@ export function SiteFooter() {
               >
                 Early contributors
               </Link>
-              {marketingPages.map((page) => (
-                <Link
-                  key={page.path}
-                  class="footer-link"
-                  data-slot="footer-link"
-                  href={page.path}
-                >
-                  {page.label}
-                </Link>
-              ))}
+              <For each={marketingPages} by={(page) => page.path}>
+                {(page) => (
+                  <Link
+                    class="footer-link"
+                    data-slot="footer-link"
+                    href={page.path}
+                  >
+                    {page.label}
+                  </Link>
+                )}
+              </For>
             </FooterLinks>
           </FooterSection>
 
