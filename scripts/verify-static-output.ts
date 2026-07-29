@@ -24,6 +24,7 @@ const apiSymbolsByRoute = new Map(
 );
 const marketing = [
   { route: '/', ...marketingRouteMetadata['/'] },
+  { route: '/contribute', ...marketingRouteMetadata['/contribute'] },
   ...marketingPages.map((page) => ({
     route: page.path,
     title: page.title,

@@ -2,6 +2,7 @@ import { fallback, group, route } from '@askrjs/askr/router';
 import { MarketingLayout } from './_layout';
 import { marketingPages, type MarketingPath } from './catalog';
 import { ApplicationModelPage } from './application-model';
+import { ContributePage } from './contribute';
 import { FullStackPage } from './full-stack';
 import { HomePage } from './home';
 import { NotFoundPage } from './not-found';
@@ -27,6 +28,11 @@ export const marketingRouteMetadata: Readonly<Record<string, RouteMetadata>> = {
     title: 'Page not found | Askr',
     description: 'The requested Askr page does not exist.',
   },
+  '/contribute': {
+    title: 'Become an early contributor | Askr',
+    description:
+      'Help shape Askr early through themes, CSS, accessibility, SSR, SSG, technical SEO, documentation, and developer experience.',
+  },
   ...Object.fromEntries(
     marketingPages.map(({ path, title, description }) => [
       path,
@@ -48,6 +54,9 @@ const marketingRouteComponents: Record<MarketingPath, typeof PlatformPage> = {
 export function registerMarketingRoutes() {
   group({ layout: MarketingLayout }, () => {
     route('/', HomePage, { meta: marketingRouteMetadata['/'] });
+    route('/contribute', ContributePage, {
+      meta: marketingRouteMetadata['/contribute'],
+    });
     for (const page of marketingPages) {
       route(page.path, marketingRouteComponents[page.path], { meta: page });
     }
