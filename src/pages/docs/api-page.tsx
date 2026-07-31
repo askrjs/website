@@ -1,16 +1,17 @@
-import { For } from '@askrjs/askr';
 import { Link, currentRoute } from '@askrjs/askr/router';
 import { ArrowLeftIcon } from '@askrjs/lucide';
 import { apiManifest } from './api-manifest';
-import { apiSymbolSets } from './api-snapshot';
+import { apiSymbolSets, type ApiSymbolDefinition } from './api-snapshot';
 import { resolveDocsRoute } from './catalog';
 
-type ApiSymbol = (typeof apiSymbolSets)[keyof typeof apiSymbolSets][number];
-
-function ApiSymbolList({ symbols }: { symbols: readonly ApiSymbol[] }) {
+function ApiSymbolList({
+  symbols,
+}: {
+  symbols: readonly ApiSymbolDefinition[];
+}) {
   return (
-    <For each={symbols} by={(symbol) => symbol.name}>
-      {(symbol) => (
+    <>
+      {symbols.map((symbol) => (
         <article id={symbol.anchor} class="api-symbol" key={symbol.name}>
           <h3>
             <a href={`#${symbol.anchor}`}>
@@ -22,8 +23,8 @@ function ApiSymbolList({ symbols }: { symbols: readonly ApiSymbol[] }) {
             <code>{symbol.signature}</code>
           </pre>
         </article>
-      )}
-    </For>
+      ))}
+    </>
   );
 }
 
@@ -40,7 +41,7 @@ export default function ApiPage() {
         <h1>API entrypoint not found</h1>
       </article>
     );
-  const symbols = apiSymbolSets[entrypoint.symbolSet];
+  const symbols = apiSymbolSets[entrypoint.symbolSet] ?? [];
   return (
     <article class="docs-article docs-api-page" data-docs-route={route}>
       <nav class="docs-breadcrumbs" aria-label="Breadcrumb">

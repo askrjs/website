@@ -25,12 +25,9 @@ function slug(value: string): string {
     .toLowerCase();
 }
 
-function packageReference(
-  name: keyof typeof packageVersions,
-  importPath?: string
-): PackageReference {
+function packageReference(name: string, importPath?: string): PackageReference {
   return {
-    name: `@askrjs/${name}`,
+    name: `@askrjs/${name}` as `@askrjs/${string}`,
     version: packageVersions[name],
     importPath: importPath ?? `@askrjs/${name}`,
   };
@@ -1548,7 +1545,7 @@ const apiPages: DocsPageDefinition[] = apiManifest.map((entrypoint) => ({
   status: 'stable',
   packages: [
     {
-      name: entrypoint.packageName,
+      name: entrypoint.packageName as `@askrjs/${string}`,
       version: entrypoint.version,
       importPath: entrypoint.importName,
     },

@@ -1,4 +1,4 @@
-import { For, type Props } from '@askrjs/askr';
+import { type Props } from '@askrjs/askr';
 import { Link } from '@askrjs/askr/router';
 import { ArrowLeftIcon, ArrowRightIcon } from '@askrjs/lucide';
 import { Button, Container } from '@askrjs/themes/components';
@@ -149,19 +149,17 @@ export function SequenceList({
 }) {
   return (
     <ol class="sequence" aria-label={label} data-columns={items.length}>
-      <For each={items} by={(item) => item.title}>
-        {(item, index) => (
-          <li key={item.title} class="sequence__item">
-            <span class="sequence__number">
-              {String(index() + 1).padStart(2, '0')}
-            </span>
-            {item.label && <span class="sequence__label">{item.label}</span>}
-            <h3>{item.title}</h3>
-            <p>{item.description}</p>
-            {item.meta && <small>{item.meta}</small>}
-          </li>
-        )}
-      </For>
+      {items.map((item, index) => (
+        <li key={item.title} class="sequence__item">
+          <span class="sequence__number">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          {item.label && <span class="sequence__label">{item.label}</span>}
+          <h3>{item.title}</h3>
+          <p>{item.description}</p>
+          {item.meta && <small>{item.meta}</small>}
+        </li>
+      ))}
     </ol>
   );
 }
@@ -176,14 +174,14 @@ export type PackageRow = {
 
 function PeerList({ peers }: { peers: readonly string[] }) {
   return (
-    <For each={peers} by={(peer) => peer}>
-      {(peer, index) => (
+    <>
+      {peers.map((peer, index) => (
         <>
-          {index() > 0 && ' '}
+          {index > 0 && ' '}
           <code>@askrjs/{peer}</code>
         </>
-      )}
-    </For>
+      ))}
+    </>
   );
 }
 
@@ -211,26 +209,24 @@ export function PackageTable({
           </tr>
         </thead>
         <tbody>
-          <For each={rows} by={(row) => row.name}>
-            {(row) => (
-              <tr key={row.name}>
-                <th scope="row">
-                  <code>@askrjs/{row.name}</code>
-                </th>
-                <td>{row.purpose}</td>
-                <td>
-                  {row.peers.length === 0 ? (
-                    <span class="package-table__standalone">Nothing</span>
-                  ) : (
-                    <PeerList peers={row.peers} />
-                  )}
-                </td>
-                <td>
-                  <span class="package-table__version">{row.version}</span>
-                </td>
-              </tr>
-            )}
-          </For>
+          {rows.map((row) => (
+            <tr key={row.name}>
+              <th scope="row">
+                <code>@askrjs/{row.name}</code>
+              </th>
+              <td>{row.purpose}</td>
+              <td>
+                {row.peers.length === 0 ? (
+                  <span class="package-table__standalone">Nothing</span>
+                ) : (
+                  <PeerList peers={row.peers} />
+                )}
+              </td>
+              <td>
+                <span class="package-table__version">{row.version}</span>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
@@ -277,16 +273,14 @@ export function FlowMap({
     >
       {direction === 'fan-out' && hubBlock}
       <ol class="flow-map__nodes" data-count={nodes.length}>
-        <For each={nodes} by={(node) => node.title}>
-          {(node) => (
-            <li key={node.title}>
-              {node.label && <span>{node.label}</span>}
-              <h3>{node.title}</h3>
-              {node.description && <p>{node.description}</p>}
-              {node.meta && <small>{node.meta}</small>}
-            </li>
-          )}
-        </For>
+        {nodes.map((node) => (
+          <li key={node.title}>
+            {node.label && <span>{node.label}</span>}
+            <h3>{node.title}</h3>
+            {node.description && <p>{node.description}</p>}
+            {node.meta && <small>{node.meta}</small>}
+          </li>
+        ))}
       </ol>
       {direction === 'converge' && hubBlock}
     </div>

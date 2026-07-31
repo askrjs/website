@@ -1,25 +1,25 @@
 // Generated from installed @askrjs package manifests. Do not edit.
-export const packageVersions = {
-  askr: '0.0.77',
+export const packageVersions: Readonly<Record<string, string>> = {
+  askr: '0.0.84',
   auth: '0.0.7',
   charts: '0.1.4',
-  cli: '0.0.15',
+  cli: '0.0.17',
   fetch: '0.0.2',
   i18n: '0.0.2',
   logos: '0.0.5',
-  lucide: '0.0.5',
+  lucide: '0.0.6',
   monaco: '0.0.6',
   node: '0.0.7',
   otel: '0.0.3',
   schema: '0.0.4',
   server: '0.0.10',
-  testing: '0.0.2',
-  themes: '0.0.16',
-  ui: '0.0.20',
-  vite: '0.0.8',
-} as const;
+  testing: '0.0.3',
+  themes: '0.0.19',
+  ui: '0.0.23',
+  vite: '0.0.10',
+};
 
-export const packagePeers = {
+export const packagePeers: Readonly<Record<string, readonly string[]>> = {
   askr: [],
   auth: [],
   charts: ['askr'],
@@ -37,4 +37,4 @@ export const packagePeers = {
   themes: ['askr', 'ui'],
   ui: ['askr'],
   vite: ['askr'],
-} as const;
+};

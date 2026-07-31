@@ -10,12 +10,13 @@ const entrypoint = apiManifest.find(
   (candidate) =>
     candidate.packageName === '@askrjs/lucide' && candidate.subpath === '.'
 )!;
-const symbols = apiSymbolSets[entrypoint.symbolSet];
+const symbols = apiSymbolSets[entrypoint.symbolSet] ?? [];
 const iconSymbols = symbols.filter((symbol) =>
   lucideIconsByName.has(symbol.name)
 );
 const typeSymbols = symbols.filter(
-  (symbol) => !lucideIconsByName.has(symbol.name)
+  (symbol) =>
+    symbol.name !== 'createIcon' && !lucideIconsByName.has(symbol.name)
 );
 
 function revealRequestedIcon(element: HTMLElement, anchor: string) {
@@ -82,7 +83,7 @@ export default function LucideApiPage() {
             value={query()}
             placeholder={`Filter ${iconSymbols.length} icons`}
             onInput={(event: Event) =>
-              setQuery((event.target as HTMLInputElement).value)
+              setQuery((event.currentTarget as HTMLInputElement).value)
             }
           />
         </label>
@@ -115,21 +116,19 @@ export default function LucideApiPage() {
           </For>
         </div>
         <div class="api-symbols api-symbols--types">
-          <For each={typeSymbols} by={(symbol) => symbol.name}>
-            {(symbol) => (
-              <article id={symbol.anchor} class="api-symbol" key={symbol.name}>
-                <h3>
-                  <a href={`#${symbol.anchor}`}>
-                    <code>{symbol.name}</code>
-                  </a>
-                  <span>type</span>
-                </h3>
-                <pre>
-                  <code>{symbol.signature}</code>
-                </pre>
-              </article>
-            )}
-          </For>
+          {typeSymbols.map((symbol) => (
+            <article id={symbol.anchor} class="api-symbol" key={symbol.name}>
+              <h3>
+                <a href={`#${symbol.anchor}`}>
+                  <code>{symbol.name}</code>
+                </a>
+                <span>type</span>
+              </h3>
+              <pre>
+                <code>{symbol.signature}</code>
+              </pre>
+            </article>
+          ))}
         </div>
       </section>
       <nav class="docs-pagination" aria-label="Documentation pagination">
