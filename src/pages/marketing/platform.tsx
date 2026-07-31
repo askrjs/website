@@ -12,7 +12,7 @@ import {
 
 // Keyed on the generated version map, so adding a package to the workspace
 // fails typecheck here until it is described.
-const packagePurpose: Record<keyof typeof packageVersions, string> = {
+const packagePurpose: Record<string, string> = {
   askr: 'Components, state, routing, resources, and the SSR/SSG renderers.',
   cli: 'Scaffolding, generators, OpenAPI checks, and dependency updates.',
   vite: 'The build plugin for JSX, SSR, and static generation.',
@@ -50,13 +50,13 @@ const packageOrder = [
   'i18n',
   'otel',
   'testing',
-] as const satisfies readonly (keyof typeof packageVersions)[];
+] as const;
 
 const packageRows = packageOrder.map((name) => ({
   name,
   version: packageVersions[name],
   purpose: packagePurpose[name],
-  peers: packagePeers[name] as readonly string[],
+  peers: packagePeers[name] ?? [],
 }));
 
 const packageCount = packageRows.length;

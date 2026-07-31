@@ -5,7 +5,10 @@ export type LucideIconComponent = typeof CircleIcon;
 
 export const lucideIcons = Object.entries(iconExports)
   .filter(
-    ([name, value]) => name.endsWith('Icon') && typeof value === 'function'
+    ([name, value]) =>
+      name.endsWith('Icon') &&
+      typeof value === 'function' &&
+      (value as { displayName?: unknown }).displayName === name
   )
   .map(([name, value]) => ({
     name,
