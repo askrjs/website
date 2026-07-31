@@ -116,10 +116,10 @@ export function DocsSearch() {
                 type="search"
                 value={queryValue}
                 placeholder="Search concepts, imports, and API symbols"
-                // Askr delegates DOM events, so currentTarget is the delegation
-                // root. The input itself is available through event.target.
                 onInput={(event: Event) =>
-                  void runSearch((event.target as HTMLInputElement).value)
+                  void runSearch(
+                    (event.currentTarget as HTMLInputElement).value
+                  )
                 }
               />
               <Button
@@ -157,7 +157,7 @@ export function DocsSearch() {
                                   <li>
                                     <Link
                                       href={`${result.route}${result.anchor ? `#${result.anchor}` : ''}`}
-                                      onClickCapture={close}
+                                      onPress={close}
                                     >
                                       <span>
                                         <strong>{result.title}</strong>

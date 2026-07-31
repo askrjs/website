@@ -19,7 +19,14 @@ const routeFile = (route: string) =>
 const apiSymbolsByRoute = new Map(
   apiManifest.map((entrypoint) => [
     `/docs/reference/api/${entrypoint.packageName.slice('@askrjs/'.length)}/${entrypoint.slug}`,
-    apiSymbolSets[entrypoint.symbolSet as keyof typeof apiSymbolSets],
+    (apiSymbolSets[entrypoint.symbolSet] ?? []).filter(
+      (symbol) =>
+        !(
+          entrypoint.packageName === '@askrjs/lucide' &&
+          entrypoint.subpath === '.' &&
+          symbol.name === 'createIcon'
+        )
+    ),
   ])
 );
 const marketing = [
@@ -263,6 +270,10 @@ assert(
 assert(
   lucideRoot.includes('href="https://lucide.dev/"'),
   '/docs/reference/api/lucide/root must attribute the upstream Lucide project'
+);
+assert(
+  !lucideRoot.includes('id="create-icon"'),
+  '/docs/reference/api/lucide/root must not expose the createIcon factory'
 );
 
 for (const asset of [

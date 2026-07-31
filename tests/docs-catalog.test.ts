@@ -13,6 +13,7 @@ import {
 import { componentGuideRoute } from '../src/pages/docs/component-coverage';
 import { cliSnapshot } from '../src/pages/docs/cli-snapshot';
 import { packageVersions } from '../src/pages/docs/package-versions';
+import { lucideIcons } from '../src/pages/docs/lucide-icons';
 import { searchDocs } from '../src/pages/docs/search-index';
 import { buildUsageGuide } from '../src/pages/docs/usage-guide';
 import { upgradeGuidance } from '../src/pages/docs/release-notes';
@@ -256,11 +257,33 @@ describe('documentation catalog', () => {
       expect.arrayContaining([
         'analyze',
         'check',
+        'database',
         'doctor',
         'repair',
-        'verify-hydration',
       ])
     );
+    expect(cliSnapshot.commands).not.toContain('verify-hydration');
+    expect(prose).toContain('database');
+    expect(prose).not.toContain('verify-hydration');
+  });
+
+  it('renders immutable collections with ordinary map expressions', () => {
+    const staticCollectionFiles = [
+      'site-footer.tsx',
+      'docs/_layout.tsx',
+      'docs/api-page.tsx',
+      'docs/page.tsx',
+      'marketing/components.tsx',
+      'marketing/home.tsx',
+    ];
+    for (const file of staticCollectionFiles) {
+      const source = readFileSync(
+        new URL(`../src/pages/${file}`, import.meta.url),
+        'utf8'
+      );
+      expect(source, file).toContain('.map(');
+      expect(source, file).not.toContain('<For');
+    }
   });
 
   it('keeps audited marketing claims within shipped boundaries', () => {
@@ -337,6 +360,27 @@ describe('documentation catalog', () => {
 });
 
 describe('generated API reference', () => {
+  it('discovers real Lucide components and excludes its factory', () => {
+    const names = lucideIcons.map((icon) => icon.name);
+    expect(names).toEqual(
+      expect.arrayContaining(['CircleIcon', 'FullscreenIcon', 'SearchIcon'])
+    );
+    expect(names).not.toContain('createIcon');
+    const lucideEntrypoint = apiManifest.find(
+      (entrypoint) =>
+        entrypoint.packageName === '@askrjs/lucide' &&
+        entrypoint.subpath === '.'
+    );
+    const renderedNames = (apiSymbolSets[lucideEntrypoint!.symbolSet] ?? [])
+      .filter(
+        (symbol) =>
+          symbol.name !== 'createIcon' &&
+          (symbol.typeOnly || names.includes(symbol.name))
+      )
+      .map((symbol) => symbol.name);
+    expect(renderedNames).not.toContain('createIcon');
+  });
+
   it('uses a visual, attributed page for the Lucide root API', async () => {
     const page = docsByRoute.get('/docs/reference/api/lucide/root');
     expect(page).toBeTruthy();
@@ -356,7 +400,7 @@ describe('generated API reference', () => {
       const route =
         `/docs/reference/api/${entrypoint.packageName.slice('@askrjs/'.length)}/${entrypoint.slug}` as const;
       expect(docsByRoute.has(route)).toBe(true);
-      const symbols = apiSymbolSets[entrypoint.symbolSet];
+      const symbols = apiSymbolSets[entrypoint.symbolSet] ?? [];
       expect(new Set(symbols.map((symbol) => symbol.anchor)).size).toBe(
         symbols.length
       );
@@ -388,7 +432,9 @@ describe('generated API reference', () => {
       apiManifest.map((entrypoint) => [
         entrypoint.importName,
         new Set(
-          apiSymbolSets[entrypoint.symbolSet].map((symbol) => symbol.name)
+          (apiSymbolSets[entrypoint.symbolSet] ?? []).map(
+            (symbol) => symbol.name
+          )
         ),
       ])
     );
