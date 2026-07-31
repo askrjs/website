@@ -1,4 +1,3 @@
-import { For } from '@askrjs/askr';
 import { Link, currentRoute } from '@askrjs/askr/router';
 import { ArrowLeftIcon, ArrowRightIcon, CopyIcon } from '@askrjs/lucide';
 import {
@@ -41,17 +40,12 @@ function CodeBlock({ code }: { code: string }) {
 function PackageBadges({ page }: { page: DocsPageDefinition }) {
   return (
     <ul class="package-badges" aria-label="Published package versions">
-      <For
-        each={page.packages}
-        by={(pkg) => `${pkg.name}:${pkg.importPath ?? ''}`}
-      >
-        {(pkg) => (
-          <li key={`${pkg.name}:${pkg.importPath}`}>
-            <code>{pkg.importPath ?? pkg.name}</code>
-            <span>{pkg.version}</span>
-          </li>
-        )}
-      </For>
+      {page.packages.map((pkg) => (
+        <li key={`${pkg.name}:${pkg.importPath}`}>
+          <code>{pkg.importPath ?? pkg.name}</code>
+          <span>{pkg.version}</span>
+        </li>
+      ))}
     </ul>
   );
 }
@@ -64,9 +58,11 @@ function HeadingContentList({
   page: DocsPageDefinition;
 }) {
   return (
-    <For each={headings} by={(item) => item.id}>
-      {(item) => <HeadingContent key={item.id} item={item} page={page} />}
-    </For>
+    <>
+      {headings.map((item) => (
+        <HeadingContent key={item.id} item={item} page={page} />
+      ))}
+    </>
   );
 }
 
@@ -86,19 +82,14 @@ function DocsLandingDetails() {
               </tr>
             </thead>
             <tbody>
-              <For
-                each={() => Object.entries(publishedVersions)}
-                by={([name]) => name}
-              >
-                {([name, version]) => (
-                  <tr key={name}>
-                    <td>
-                      <code>@askrjs/{name}</code>
-                    </td>
-                    <td>{version}</td>
-                  </tr>
-                )}
-              </For>
+              {Object.entries(publishedVersions).map(([name, version]) => (
+                <tr key={name}>
+                  <td>
+                    <code>@askrjs/{name}</code>
+                  </td>
+                  <td>{version}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -107,17 +98,15 @@ function DocsLandingDetails() {
         <h2 id="upgrade-guidance" class="anchored-heading">
           <a href="#upgrade-guidance">Upgrade guidance</a>
         </h2>
-        <For each={upgradeGuidance} by={(note) => note.title}>
-          {(note) => (
-            <article key={note.title} class="docs-release-note">
-              <h3>{note.title}</h3>
-              <p>
-                <small>{note.when}</small>
-              </p>
-              <p>{note.summary}</p>
-            </article>
-          )}
-        </For>
+        {upgradeGuidance.map((note) => (
+          <article key={note.title} class="docs-release-note">
+            <h3>{note.title}</h3>
+            <p>
+              <small>{note.when}</small>
+            </p>
+            <p>{note.summary}</p>
+          </article>
+        ))}
       </section>
     </>
   );
@@ -143,18 +132,16 @@ function CliReferenceSection() {
             </tr>
           </thead>
           <tbody>
-            <For each={cliSnapshot.commands} by={(command) => command}>
-              {(command) => (
-                <tr key={command}>
-                  <td>
-                    <code>{command}</code>
-                  </td>
-                  <td>
-                    <code>askr {command} --help</code>
-                  </td>
-                </tr>
-              )}
-            </For>
+            {cliSnapshot.commands.map((command) => (
+              <tr key={command}>
+                <td>
+                  <code>{command}</code>
+                </td>
+                <td>
+                  <code>askr {command} --help</code>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

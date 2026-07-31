@@ -1,4 +1,3 @@
-import { For } from '@askrjs/askr';
 import { Link } from '@askrjs/askr/router';
 import { ArrowRightIcon } from '@askrjs/lucide';
 import { Button, Container } from '@askrjs/themes/components';
@@ -145,21 +144,19 @@ export function HomePage() {
             </Link>
           </div>
           <div class="capability-list">
-            <For each={capabilities} by={(capability) => capability.path}>
-              {(capability, index) => (
-                <Link
-                  key={capability.path}
-                  class="capability-item"
-                  href={capability.path}
-                >
-                  <span class="capability-item__number">
-                    {String(index() + 1).padStart(2, '0')}
-                  </span>
-                  <h3>{capability.label}</h3>
-                  <p>{capability.homepageSummary}</p>
-                </Link>
-              )}
-            </For>
+            {capabilities.map((capability, index) => (
+              <Link
+                key={capability.path}
+                class="capability-item"
+                href={capability.path}
+              >
+                <span class="capability-item__number">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <h3>{capability.label}</h3>
+                <p>{capability.homepageSummary}</p>
+              </Link>
+            ))}
           </div>
         </Container>
       </section>
