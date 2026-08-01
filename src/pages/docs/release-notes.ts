@@ -1,9 +1,9 @@
 export const upgradeGuidance = [
   {
-    title: 'Use the published version table',
+    title: 'Start from the installed package set',
     when: 'Before changing dependencies',
     summary:
-      'The version table above is generated from the installed package manifests. Treat those versions as the exact package set used to build and validate this documentation.',
+      'This documentation is checked against the package set installed by its lockfile. Compare the relevant API pages with your application before changing dependencies.',
   },
   {
     title: 'Review and validate the proposed set',

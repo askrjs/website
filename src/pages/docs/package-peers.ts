@@ -1,0 +1,20 @@
+// Internal package metadata snapshot. This is contract data, not page copy.
+export const packagePeers: Readonly<Record<string, readonly string[]>> = {
+  askr: [],
+  auth: [],
+  charts: ['askr'],
+  cli: ['askr'],
+  fetch: [],
+  i18n: ['askr'],
+  logos: ['askr'],
+  lucide: ['askr'],
+  monaco: ['askr'],
+  node: [],
+  otel: [],
+  schema: [],
+  server: ['askr'],
+  testing: [],
+  themes: ['askr', 'ui'],
+  ui: ['askr'],
+  vite: ['askr'],
+};

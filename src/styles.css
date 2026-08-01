@@ -775,12 +775,6 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   font-style: italic;
 }
 
-.package-table__version {
-  font-family: var(--ak-font-family-mono);
-  font-size: var(--ak-font-size-xs);
-  white-space: nowrap;
-}
-
 .editorial-cta__inner {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -1508,39 +1502,6 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .docs-eyebrow [data-status] {
   color: var(--ak-color-text);
-}
-
-.package-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 1.5rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.package-badges li {
-  display: inline-flex;
-  max-width: 100%;
-  min-width: 0;
-  align-items: center;
-  overflow: hidden;
-  border: 1px solid var(--ak-color-border);
-  border-radius: 999px;
-  font-size: 0.7rem;
-}
-
-.package-badges code,
-.package-badges span {
-  min-width: 0;
-  padding: 0.28rem 0.55rem;
-  overflow-wrap: anywhere;
-}
-
-.package-badges span {
-  border-left: 1px solid var(--ak-color-border);
-  background: var(--ak-color-surface-muted);
-  color: var(--docs-color-text-secondary);
 }
 
 .anchored-heading {

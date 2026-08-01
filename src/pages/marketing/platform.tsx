@@ -1,4 +1,4 @@
-import { packagePeers, packageVersions } from '../docs/package-versions';
+import { packagePeers } from '../docs/package-peers';
 import {
   EditorialCTA,
   EditorialHero,
@@ -10,8 +10,6 @@ import {
   type SequenceItem,
 } from './components';
 
-// Keyed on the generated version map, so adding a package to the workspace
-// fails typecheck here until it is described.
 const packagePurpose: Record<string, string> = {
   askr: 'Components, state, routing, resources, and the SSR/SSG renderers.',
   cli: 'Scaffolding, generators, OpenAPI checks, and dependency updates.',
@@ -54,7 +52,6 @@ const packageOrder = [
 
 const packageRows = packageOrder.map((name) => ({
   name,
-  version: packageVersions[name],
   purpose: packagePurpose[name],
   peers: packagePeers[name] ?? [],
 }));

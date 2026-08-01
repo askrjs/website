@@ -10,21 +10,19 @@ CI therefore validate the same package boundary used by GitHub Pages.
 
 - `npm run dev` starts the Vite development server.
 - `npm run build` builds the client and runs `askr ssg` into `dist/`.
-- `npm run docs:api` refreshes the published declaration snapshot.
-- `npm run docs:cli` refreshes the installed CLI command snapshot.
-- `npm run verify:static` validates the generated route, markup, and assets.
 - `npm run fmt:check` checks formatting without changing files.
-- `npm test` verifies the generated static output after a build.
+- `npm test` runs the unit and generated-output contract tests after a build.
 - `npm run preview` serves `dist/` with `vp preview --outDir dist`.
-- `npm run check` runs lint, typecheck, build, and static verification.
+- `npm run check` runs formatting, lint, typecheck, tests, and the production
+  build.
 
 ## Architecture
 
 - `src/pages/marketing/_layout.tsx` owns the marketing shell and shared Askr
   branding.
-- `src/pages/_routes.tsx` owns the complete docs and SSG route registry, while
-  `src/pages/marketing/_routes.tsx` owns the smaller browser registry used by
-  marketing pages.
+- `src/pages/_routes.tsx` owns the complete browser and SSG route registry plus
+  the persistent route-analytics layout, while
+  `src/pages/marketing/_routes.tsx` registers the marketing leaves.
 - `src/pages/marketing/home.tsx` renders the `/` page.
 - `src/pages/docs/catalog.ts` is the typed source of truth for docs routes,
   metadata, grouped navigation, breadcrumbs, page ordering, search, and SSG.
@@ -46,23 +44,16 @@ SSG. This package does not expose a public API.
 1. `npm run build:client` builds the browser entry and stylesheet into
    `.askr/client/` with hashed asset names.
 2. `npm run build:ssg` renders the marketing routes, authored docs catalog, and
-   generated API reference routes,
-   injects them into the built Vite document, and publishes the result to
-   `dist/`.
-3. `npm run verify:static` checks `dist/metadata.json`, pre-rendered content,
-   and every referenced asset.
+   API reference routes, injects them into the built Vite document, and
+   publishes the result to `dist/`.
 
-The build fails when the checked-in API or CLI snapshot drifts from the exact
-package versions in `package-lock.json`. Reference-only packages are kept as
+The API and CLI snapshots are checked-in documentation data. The unit suite
+derives installed package entrypoints, versions, exported signatures, peer
+metadata, and CLI help directly from `node_modules` and fails on drift before
+the production build starts. Package versions remain internal contract metadata
+and are not rendered on the site. Reference-only packages are kept as
 development dependencies; packages used by live browser examples remain
 runtime dependencies.
-
-`docs:api` also generates `src/pages/docs/package-versions.ts` from the
-installed package manifests. Guide badges and package references read from that
-map instead of repeating version literals. To refresh the site after releases,
-upgrade the relevant `@askrjs/*` dependencies, run `npm install`, then run
-`npm run docs:api` and `npm run docs:cli`. The aggregate check verifies that the
-catalog, CLI snapshot, and every generated API entrypoint agree on versions.
 
 `.github/workflows/ci.yml` runs format, lint/typecheck, build, and test on pull
 requests. Pushes to `main` and manual dispatches use
