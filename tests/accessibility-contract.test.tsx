@@ -10,8 +10,9 @@ describe('site accessibility contracts', () => {
       /<button[^>]*class="[^"]*docs-search__trigger[^"]*"[\s\S]*?<\/button>/
     )?.[0];
 
-    expect(trigger).toContain('aria-label="Search docs"');
-    expect(trigger).toContain('<kbd aria-hidden="true">⌘ K</kbd>');
+    expect(trigger).toBeDefined();
+    expect(trigger!).toContain('aria-label="Search docs"');
+    expect(trigger!).toContain('<kbd aria-hidden="true">⌘ K</kbd>');
   });
 
   it('should use a distinct accessible name for the footer home destination', () => {
