@@ -1,11 +1,6 @@
 import { Link, currentRoute } from '@askrjs/askr/router';
 import { ArrowLeftIcon, ArrowRightIcon, CopyIcon } from '@askrjs/lucide';
-import {
-  docsByRoute,
-  docsSections,
-  publishedVersions,
-  resolveDocsRoute,
-} from './catalog';
+import { docsByRoute, docsSections, resolveDocsRoute } from './catalog';
 import { cliSnapshot } from './cli-snapshot';
 import { componentDemoFor } from './component-demos';
 import { upgradeGuidance } from './release-notes';
@@ -37,19 +32,6 @@ function CodeBlock({ code }: { code: string }) {
   );
 }
 
-function PackageBadges({ page }: { page: DocsPageDefinition }) {
-  return (
-    <ul class="package-badges" aria-label="Published package versions">
-      {page.packages.map((pkg) => (
-        <li key={`${pkg.name}:${pkg.importPath}`}>
-          <code>{pkg.importPath ?? pkg.name}</code>
-          <span>{pkg.version}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 function HeadingContentList({
   headings,
   page,
@@ -68,47 +50,20 @@ function HeadingContentList({
 
 function DocsLandingDetails() {
   return (
-    <>
-      <section aria-labelledby="versions">
-        <h2 id="versions" class="anchored-heading">
-          <a href="#versions">Published versions</a>
-        </h2>
-        <div class="api-table-wrap">
-          <table class="api-table">
-            <thead>
-              <tr>
-                <th scope="col">Package</th>
-                <th scope="col">Version</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.entries(publishedVersions).map(([name, version]) => (
-                <tr key={name}>
-                  <td>
-                    <code>@askrjs/{name}</code>
-                  </td>
-                  <td>{version}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-      <section aria-labelledby="upgrade-guidance">
-        <h2 id="upgrade-guidance" class="anchored-heading">
-          <a href="#upgrade-guidance">Upgrade guidance</a>
-        </h2>
-        {upgradeGuidance.map((note) => (
-          <article key={note.title} class="docs-release-note">
-            <h3>{note.title}</h3>
-            <p>
-              <small>{note.when}</small>
-            </p>
-            <p>{note.summary}</p>
-          </article>
-        ))}
-      </section>
-    </>
+    <section aria-labelledby="upgrade-guidance">
+      <h2 id="upgrade-guidance" class="anchored-heading">
+        <a href="#upgrade-guidance">Upgrade guidance</a>
+      </h2>
+      {upgradeGuidance.map((note) => (
+        <article key={note.title} class="docs-release-note">
+          <h3>{note.title}</h3>
+          <p>
+            <small>{note.when}</small>
+          </p>
+          <p>{note.summary}</p>
+        </article>
+      ))}
+    </section>
   );
 }
 
@@ -119,9 +74,9 @@ function CliReferenceSection() {
         <a href="#published-commands">Published commands</a>
       </h2>
       <p>
-        These commands come from <code>@askrjs/cli</code> {cliSnapshot.version}.
-        Planned generators such as <code>route</code>, <code>crud</code>,{' '}
-        <code>table</code>, and <code>form</code> are not available commands.
+        These commands come from <code>@askrjs/cli</code>. Planned generators
+        such as <code>route</code>, <code>crud</code>, <code>table</code>, and{' '}
+        <code>form</code> are not available commands.
       </p>
       <div class="api-table-wrap">
         <table class="api-table">
@@ -267,7 +222,6 @@ export default function DocsPage() {
         </div>
         <h1>{page.title}</h1>
         <p>{page.description}</p>
-        <PackageBadges page={page} />
       </header>
       {page.status !== 'stable' && (
         <aside class="docs-callout" data-tone="warning">

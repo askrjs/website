@@ -53,19 +53,13 @@ export default function LucideApiPage() {
         </div>
         <h1>{entrypoint.importName}</h1>
         <p>
-          Browse the icon components published in {entrypoint.packageName}{' '}
-          {entrypoint.version}. The icon artwork comes from the{' '}
+          Browse the icon components published in {entrypoint.packageName}. The
+          icon artwork comes from the{' '}
           <a href="https://lucide.dev/" rel="external">
             Lucide icon project
           </a>
           .
         </p>
-        <ul class="package-badges">
-          <li>
-            <code>{entrypoint.importName}</code>
-            <span>{entrypoint.version}</span>
-          </li>
-        </ul>
       </header>
       <section aria-labelledby="exports">
         <h2 id="exports" class="anchored-heading">

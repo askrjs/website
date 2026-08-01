@@ -12,7 +12,7 @@ export const headingOverrides: Readonly<
     'choose-a-path':
       "If you're starting a new project, head to Getting Started and follow the installation and quick-start pages in order — they walk through installing @askrjs/askr and wiring up createSPA or createIsland. If you already have an app running and want to look something up, use the search bar or jump straight to the section that matches what you're doing: Fundamentals for state and reactivity, Routing for the router package, Data for resource() and query helpers, or Components for the UI library. The API Reference section is generated directly from each package's shipped .d.ts files, so it's the fastest place to check an exact export or type signature.",
     'published-package-set':
-      'Askr ships as a set of independently versioned packages under the @askrjs scope rather than one monolith — @askrjs/askr is the core runtime (state, derive, boot, router, resources, SSR/SSG), and adjacent packages like @askrjs/ui, @askrjs/auth, @askrjs/charts, @askrjs/server, @askrjs/schema, @askrjs/fetch, @askrjs/i18n, and @askrjs/cli cover UI components, authentication, charting, server integration, validation, HTTP, localization, and tooling respectively. Each package has its own version number and release cadence, which is why the docs track them separately instead of a single framework version. The full list with current published versions is at the bottom of this page.',
+      'Askr ships as a set of independently versioned packages under the @askrjs scope rather than one monolith — @askrjs/askr is the core runtime (state, derive, boot, router, resources, SSR/SSG), and adjacent packages like @askrjs/ui, @askrjs/auth, @askrjs/charts, @askrjs/server, @askrjs/schema, @askrjs/fetch, @askrjs/i18n, and @askrjs/cli cover UI components, authentication, charting, server integration, validation, HTTP, localization, and tooling respectively. Install only the packages your application uses and keep the set aligned through the lockfile.',
   },
   '/docs/authentication': {
     'browser-and-api-clients':
@@ -1479,7 +1479,7 @@ export const headingOverrides: Readonly<
   },
   '/docs/getting-started/overview': {
     'published-package-baseline':
-      "The framework itself is `@askrjs/askr`, currently at 0.0.84, with subpath exports for `/boot`, `/router`, `/resources`, `/data`, `/ssr`, `/ssg`, `/components`, and others — each maps to its own declaration entrypoint, so import from the subpath that owns the feature you're using rather than the root barrel. Scaffolding and static builds come from `@askrjs/cli`; component and theme packages (`@askrjs/ui`, `@askrjs/themes`) are separate, versioned independently.",
+      "The framework itself is `@askrjs/askr`, with subpath exports for `/boot`, `/router`, `/resources`, `/data`, `/ssr`, `/ssg`, `/components`, and others — each maps to its own declaration entrypoint, so import from the subpath that owns the feature you're using rather than the root barrel. Scaffolding and static builds come from `@askrjs/cli`; component and theme packages (`@askrjs/ui`, `@askrjs/themes`) are separate, versioned independently.",
     'what-askr-owns':
       'The runtime owns reactivity (`state()`, `derive()`, `selector()`), the JSX runtime, app startup (`createIsland`, `createSPA`, `hydrateSPA` from `@askrjs/askr/boot`), routing (`@askrjs/askr/router`), async resource loading with cancellation (`resource()` from `@askrjs/askr/resources`), and the server-side entrypoints for SSR and SSG. It also ships a scoped lifecycle model — `defineScope()` and `readScope()` — for values that need lexical ownership rather than component-local state.',
     'what-your-application-owns':
@@ -1959,7 +1959,7 @@ export const headingOverrides: Readonly<
     'clean-breaks':
       "Askr's public API favors one vocabulary per concept rather than keeping deprecated aliases around — for example, reactive scope is `defineScope()`/`readScope()` with no legacy `useContext`-style alias shipped alongside it. When a release renames or removes an export, expect it to be gone rather than soft-deprecated, so pin versions deliberately if you can't absorb that immediately.",
     'latest-published-scope':
-      'This site documents the exact @askrjs package versions installed by its lockfile. The version displayed on each guide and generated API page comes from generated package metadata, so upgrading the website dependencies and regenerating the snapshots updates the documentation baseline together. Review the generated package versions before upgrading an application.',
+      'This site documents the @askrjs package set installed by its lockfile. The checked-in API and CLI snapshots are verified against those installed artifacts, while package versions stay internal rather than being rendered into guide and API pages.',
     'migration-checklist':
       "Before upgrading, diff the exports on the relevant API Index pages against what your code currently imports — a missing symbol there means it moved or was removed, not that the docs are stale. Re-run your test suite with @askrjs/askr/testing's route-matching and query-mock helpers after any upgrade, since router and query-state shapes are exactly the kind of thing a minor bump can quietly change.",
     'package-alignment':

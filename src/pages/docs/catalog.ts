@@ -5,7 +5,6 @@ import {
   lateHeadingOverrides,
 } from './content-overrides';
 import { docsPrimarySections } from './primary-sections';
-import { packageVersions } from './package-versions';
 import { buildUsageGuide, routeExampleFor } from './usage-guide';
 import type {
   DocsHeadingDefinition,
@@ -28,7 +27,6 @@ function slug(value: string): string {
 function packageReference(name: string, importPath?: string): PackageReference {
   return {
     name: `@askrjs/${name}` as `@askrjs/${string}`,
-    version: packageVersions[name],
     importPath: importPath ?? `@askrjs/${name}`,
   };
 }
@@ -1539,14 +1537,13 @@ const authoredPages = [
 const apiPages: DocsPageDefinition[] = apiManifest.map((entrypoint) => ({
   route: `/docs/reference/api/${entrypoint.packageName.slice('@askrjs/'.length)}/${entrypoint.slug}`,
   title: entrypoint.importName,
-  description: `Published API exports for ${entrypoint.importName} ${entrypoint.version}.`,
+  description: `Published API exports for ${entrypoint.importName}.`,
   navGroup: 'Reference',
   navSection: 'Generated API',
   status: 'stable',
   packages: [
     {
       name: entrypoint.packageName as `@askrjs/${string}`,
-      version: entrypoint.version,
       importPath: entrypoint.importName,
     },
   ],
@@ -1616,10 +1613,7 @@ export function docsTableOfContents(
     ...page.headings,
   ];
   if (page.route === '/docs') {
-    headings.push(
-      { id: 'versions', title: 'Published versions' },
-      { id: 'upgrade-guidance', title: 'Upgrade guidance' }
-    );
+    headings.push({ id: 'upgrade-guidance', title: 'Upgrade guidance' });
   }
   if (page.route === '/docs/tooling/cli-overview') {
     headings.push({ id: 'published-commands', title: 'Published commands' });
@@ -1649,5 +1643,3 @@ export const docsSearchRecords: readonly DocsSearchRecord[] =
       terms: [page.title],
     })),
   ]);
-
-export { packageVersions as publishedVersions };

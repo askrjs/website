@@ -166,7 +166,6 @@ export function SequenceList({
 
 export type PackageRow = {
   name: string;
-  version: string;
   purpose: string;
   /** Other @askrjs packages this one requires, from its peerDependencies. */
   peers: readonly string[];
@@ -187,7 +186,7 @@ function PeerList({ peers }: { peers: readonly string[] }) {
 
 /**
  * The published package set, with what each one requires. Rows come from the
- * generated version map, so the table cannot drift from what is installed.
+ * package catalog.
  */
 export function PackageTable({
   label,
@@ -205,7 +204,6 @@ export function PackageTable({
             <th scope="col">Package</th>
             <th scope="col">What it gives you</th>
             <th scope="col">Requires</th>
-            <th scope="col">Version</th>
           </tr>
         </thead>
         <tbody>
@@ -221,9 +219,6 @@ export function PackageTable({
                 ) : (
                   <PeerList peers={row.peers} />
                 )}
-              </td>
-              <td>
-                <span class="package-table__version">{row.version}</span>
               </td>
             </tr>
           ))}

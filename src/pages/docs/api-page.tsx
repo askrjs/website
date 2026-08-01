@@ -59,16 +59,9 @@ export default function ApiPage() {
         </div>
         <h1>{entrypoint.importName}</h1>
         <p>
-          Exports from the declarations published in {entrypoint.packageName}{' '}
-          {entrypoint.version}. Signatures are generated from the installed
-          artifact.
+          Exports from the declarations published in {entrypoint.packageName}.
+          Signatures reflect the published artifact.
         </p>
-        <ul class="package-badges">
-          <li>
-            <code>{entrypoint.importName}</code>
-            <span>{entrypoint.version}</span>
-          </li>
-        </ul>
       </header>
       <section aria-labelledby="exports">
         <h2 id="exports" class="anchored-heading">

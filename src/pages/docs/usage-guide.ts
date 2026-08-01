@@ -1,8 +1,6 @@
-import { packageVersions } from './package-versions';
 import type { DocsPageDefinition } from './types';
 
-/** Pinned to the installed CLI so examples cannot drift from the snapshot. */
-const cli = `@askrjs/cli@${packageVersions.cli}`;
+const cli = '@askrjs/cli@latest';
 
 // Hand-written examples for routes where the generic topic example is not
 // specific enough. Read by both the page renderer and the table of contents.
@@ -968,8 +966,7 @@ const app = createApplication({ config });`,
       `npm ci
 npm run lint
 npm run test
-npm run build
-npm run verify:static`,
+npm run build`,
     ],
     [
       /Migration from React/,
