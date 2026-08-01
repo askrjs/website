@@ -91,7 +91,7 @@ export function DocsSearch() {
       >
         <SearchIcon size={16} aria-hidden="true" />
         <span>Search docs</span>
-        <kbd>⌘ K</kbd>
+        <kbd aria-hidden="true">⌘ K</kbd>
       </Button>
       <Portal>
         <div
