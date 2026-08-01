@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { generatedStyleRegistryErrors } from './generated-style-contract';
 import { apiManifest } from '../src/pages/docs/api-manifest';
 import { apiSymbolSets } from '../src/pages/docs/api-snapshot';
 import { docsCatalog } from '../src/pages/docs/catalog';
@@ -97,6 +98,9 @@ for (const expectation of expectations) {
   if (!existsSync(resolve(dist, file))) continue;
   const html = read(file);
   documents.set(expectation.route, html);
+  for (const error of generatedStyleRegistryErrors(html, expectation.route)) {
+    errors.push(error);
+  }
   const titles = [...html.matchAll(/<title([^>]*)>(.*?)<\/title>/g)];
   assert(titles.length === 1, `${expectation.route} must have one title`);
   assert(

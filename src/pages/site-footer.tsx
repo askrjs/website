@@ -28,7 +28,7 @@ export function SiteFooter() {
             </FooterTitle>
             <FooterLinks aria-label="Marketing links">
               <Link class="footer-link" data-slot="footer-link" href="/">
-                Overview
+                Home
               </Link>
               <Link
                 class="footer-link"
