@@ -97,6 +97,33 @@ for (const expectation of expectations) {
   if (!existsSync(resolve(dist, file))) continue;
   const html = read(file);
   documents.set(expectation.route, html);
+  const generatedStyleClasses = new Set(
+    [...html.matchAll(/\b(ak-style-[a-z0-9]+)\b/g)].map((match) => match[1]!)
+  );
+  const styleRegistries = [
+    ...html.matchAll(
+      /<style\b[^>]*\bdata-askr-style-registry(?:="true")?[^>]*>([\s\S]*?)<\/style>/gi
+    ),
+  ];
+  if (generatedStyleClasses.size > 0) {
+    assert(
+      styleRegistries.length === 1,
+      `${expectation.route} must contain exactly one initial generated-style registry`
+    );
+    const registeredCss = styleRegistries[0]?.[1] ?? '';
+    assert(
+      registeredCss.trim().length > 0,
+      `${expectation.route} generated-style registry must not be empty`
+    );
+    if (styleRegistries.length === 1 && registeredCss.trim().length > 0) {
+      for (const className of generatedStyleClasses) {
+        assert(
+          registeredCss.includes(`.${className}{`),
+          `${expectation.route} is missing the initial rule for .${className}`
+        );
+      }
+    }
+  }
   const titles = [...html.matchAll(/<title([^>]*)>(.*?)<\/title>/g)];
   assert(titles.length === 1, `${expectation.route} must have one title`);
   assert(

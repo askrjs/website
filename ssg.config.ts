@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { serializeRouteMeta } from '@askrjs/askr/router';
 import type { DocumentRenderArgs } from '@askrjs/askr/ssg';
+import { withThemeStyles } from '@askrjs/themes/ssr';
 import { routeMetadata, routeRegistry } from './src/pages/_routes';
 
 export const registry = routeRegistry;
@@ -33,7 +34,7 @@ function renderDocument({ appHtml, context }: DocumentRenderArgs) {
 export const staticConfig = {
   registry,
   outputDir,
-  document: renderDocument,
+  document: withThemeStyles(renderDocument),
   assets: [
     { from: resolve(process.cwd(), 'public'), to: '.' },
     { from: resolve(process.cwd(), '.askr/client/assets'), to: 'assets' },
