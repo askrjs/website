@@ -4,7 +4,6 @@ export type DocsStatus = 'stable' | 'experimental' | 'limited';
 
 export type PackageReference = {
   name: `@askrjs/${string}`;
-  version: string;
   importPath?: string;
 };
 

@@ -6,6 +6,7 @@ import {
 } from './marketing/_routes';
 import { DocsLayout } from './docs/_layout';
 import { docsCatalog } from './docs/catalog';
+import { RouteAnalyticsLayout } from './route-analytics';
 
 export type { RouteMetadata } from './marketing/_routes';
 
@@ -20,13 +21,15 @@ export const routeMetadata: Readonly<Record<string, RouteMetadata>> = {
 };
 
 export const routeRegistry = createRouteRegistry(() => {
-  registerMarketingRoutes();
+  group({ layout: RouteAnalyticsLayout }, () => {
+    registerMarketingRoutes();
 
-  group({ layout: DocsLayout }, () => {
-    for (const page of docsCatalog) {
-      route(page.route, lazy(page.loader), {
-        meta: routeMetadata[page.route],
-      });
-    }
+    group({ layout: DocsLayout }, () => {
+      for (const page of docsCatalog) {
+        route(page.route, lazy(page.loader), {
+          meta: routeMetadata[page.route],
+        });
+      }
+    });
   });
 });
