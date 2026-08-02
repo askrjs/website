@@ -1,4 +1,4 @@
-// Versioned snapshot of the published package API. Do not edit casually.
+// Generated package API contract. Do not edit.
 export interface ApiSymbolDefinition {
   readonly name: string;
   readonly anchor: string;
@@ -761,6 +761,13 @@ export const apiSymbolSets: Readonly<
   ],
   symbols8: [
     {
+      name: 'cloneElement',
+      anchor: 'clone-element',
+      signature:
+        'cloneElement: (element: JSXElement, props: Record<string, unknown>) => JSXElement',
+      typeOnly: true,
+    },
+    {
       name: 'Collection',
       anchor: 'collection',
       signature: 'Collection: any',
@@ -796,6 +803,12 @@ export const apiSymbolSets: Readonly<
       anchor: 'define-portal',
       signature:
         'definePortal: <T extends RenderableChild = RenderableChild>() => Portal<T>',
+      typeOnly: true,
+    },
+    {
+      name: 'isElement',
+      anchor: 'is-element',
+      signature: 'isElement: (value: unknown) => value is JSXElement',
       typeOnly: true,
     },
     {
@@ -1784,7 +1797,7 @@ export const apiSymbolSets: Readonly<
       name: 'route',
       anchor: 'route-2',
       signature:
-        'route: { <const TPath extends string, const TSearchSchema extends ObjectSchema<RouteSearch> | undefined = undefined>(path: TPath, Component: RouteComponent<RoutePathParams<TPath>>, options?: RouteOptions<RoutePathParams<TPath>, TSearchSchema>): RouteRef<RoutePathParams<TPath>, RouteRefSearch<TSearchSchema>>; <const TPath extends string, TComponent extends AnyRouteComponent, const TSearchSchema extends ObjectSchema<RouteSearch> | undefined = undefined>(path: TPath, Component: CompatibleRouteComponent<TPath, TComponent>, options?: RouteOptionsForComponent<TPath, TComponent, TSearchSchema>): RouteRef<RoutePathParams<TPath>, RouteRefSearch<TSearchSchema>>; }',
+        'route: { <const TPath extends string, const TSearchSchema extends ObjectSchema<RouteSearch> | undefined = undefined, TLoaderData = unknown, TDehydratedData = TLoaderData>(path: TPath, Component: RouteComponent<RoutePathParams<TPath>>, options?: RouteOptions<RoutePathParams<TPath>, TSearchSchema, TLoaderData, TDehydratedData>): RouteRef<RoutePathParams<TPath>, RouteRefSearch<TSearchSchema>>; <const TPath extends string, TComponent extends AnyRouteComponent, const TSearchSchema extends ObjectSchema<RouteSearch> | undefined = undefined, TLoaderData = unknown, TDehydratedData = TLoaderData>(path: TPath, Component: CompatibleRouteComponent<TPath, TComponent>, options?: RouteOptionsForComponent<TPath, TComponent, TSearchSchema, TLoaderData, TDehydratedData>): RouteRef<RoutePathParams<TPath>, RouteRefSearch<TSearchSchema>>; }',
       typeOnly: true,
     },
     {
@@ -2082,7 +2095,7 @@ export const apiSymbolSets: Readonly<
       name: 'createRenderContext',
       anchor: 'create-render-context',
       signature:
-        'createRenderContext: (seed?: number, opts?: { url?: string; data?: SSRData; params?: Record<string, string>; routes?: readonly Route[]; routeAuth?: RouteAuthOptions; signal?: AbortSignal; dataRuntime?: unknown; mode?: "ssr" | "spa"; queryPrefetch?: QueryPrefetchContext; framework?: Readonly<Record<string, unknown>>; envelope?: PageRenderEnvelope; cspNonce?: string; }) => RenderContext',
+        'createRenderContext: (seed?: number, opts?: { url?: string; data?: SSRData; params?: Record<string, string>; routes?: readonly Route[]; routeAuth?: RouteAuthOptions; basePath?: string; signal?: AbortSignal; dataRuntime?: unknown; mode?: "ssr" | "spa"; queryPrefetch?: QueryPrefetchContext; framework?: Readonly<Record<string, unknown>>; envelope?: PageRenderEnvelope; cspNonce?: string; }) => RenderContext',
       typeOnly: true,
     },
     {
@@ -2191,6 +2204,12 @@ export const apiSymbolSets: Readonly<
       name: 'SSRStyleRegistration',
       anchor: 'ssrstyle-registration',
       signature: 'SSRStyleRegistration: any',
+      typeOnly: true,
+    },
+    {
+      name: 'SSRStyleRegistrationValidation',
+      anchor: 'ssrstyle-registration-validation',
+      signature: 'SSRStyleRegistrationValidation: any',
       typeOnly: true,
     },
     {
@@ -2303,6 +2322,12 @@ export const apiSymbolSets: Readonly<
       name: 'SSGResult',
       anchor: 'ssgresult',
       signature: 'SSGResult: any',
+      typeOnly: true,
+    },
+    {
+      name: 'SSRStyleRegistrationValidation',
+      anchor: 'ssrstyle-registration-validation',
+      signature: 'SSRStyleRegistrationValidation: any',
       typeOnly: true,
     },
   ],
@@ -29099,6 +29124,12 @@ export const apiSymbolSets: Readonly<
       signature: 'AskrVitePluginOptions: any',
       typeOnly: true,
     },
+    {
+      name: 'ImagePipelineOptions',
+      anchor: 'image-pipeline-options',
+      signature: 'ImagePipelineOptions: any',
+      typeOnly: true,
+    },
   ],
   symbols87: [
     {
@@ -29175,6 +29206,69 @@ export const apiSymbolSets: Readonly<
       name: 'isAskrFragment',
       anchor: 'is-askr-fragment',
       signature: 'isAskrFragment: (response: Response) => boolean',
+      typeOnly: true,
+    },
+  ],
+  symbols88: [
+    {
+      name: 'image',
+      anchor: 'image-2',
+      signature:
+        'image: { (source: URL, options?: ImageOptions): ResponsiveImage; (source: ResponsiveImage): ResponsiveImage; }',
+      typeOnly: true,
+    },
+    {
+      name: 'Image',
+      anchor: 'image',
+      signature: 'Image: (props: ImageProps) => ReturnType<typeof jsxs>',
+      typeOnly: true,
+    },
+    {
+      name: 'ImageFit',
+      anchor: 'image-fit',
+      signature: 'ImageFit: any',
+      typeOnly: true,
+    },
+    {
+      name: 'ImageOptions',
+      anchor: 'image-options',
+      signature: 'ImageOptions: any',
+      typeOnly: true,
+    },
+    {
+      name: 'ImageOutputFormat',
+      anchor: 'image-output-format',
+      signature: 'ImageOutputFormat: any',
+      typeOnly: true,
+    },
+    {
+      name: 'ImagePipelineOptions',
+      anchor: 'image-pipeline-options',
+      signature: 'ImagePipelineOptions: any',
+      typeOnly: true,
+    },
+    {
+      name: 'ImageProps',
+      anchor: 'image-props',
+      signature: 'ImageProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'ImageQualityOptions',
+      anchor: 'image-quality-options',
+      signature: 'ImageQualityOptions: any',
+      typeOnly: true,
+    },
+    {
+      name: 'ResponsiveImage',
+      anchor: 'responsive-image',
+      signature: 'ResponsiveImage: any',
+      typeOnly: true,
+    },
+    {
+      name: 'ResponsiveImageSource',
+      anchor: 'responsive-image-source',
+      signature: 'ResponsiveImageSource: any',
       typeOnly: true,
     },
   ],

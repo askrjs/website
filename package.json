@@ -22,7 +22,7 @@
     "preview": "vp preview --outDir dist"
   },
   "dependencies": {
-    "@askrjs/askr": "0.0.84",
+    "@askrjs/askr": "0.0.85",
     "@askrjs/charts": "0.1.4",
     "@askrjs/fetch": "0.0.2",
     "@askrjs/i18n": "0.0.2",
@@ -30,21 +30,21 @@
     "@askrjs/lucide": "0.0.6",
     "@askrjs/monaco": "0.0.6",
     "@askrjs/otel": "0.0.3",
-    "@askrjs/themes": "0.0.19",
-    "@askrjs/ui": "0.0.23",
+    "@askrjs/themes": "0.0.20",
+    "@askrjs/ui": "0.0.24",
     "@fontsource-variable/domine": "^5.3.0"
   },
   "devDependencies": {
     "@askrjs/auth": "0.0.7",
-    "@askrjs/cli": "0.0.17",
+    "@askrjs/cli": "0.0.20",
     "@askrjs/node": "0.0.7",
     "@askrjs/schema": "0.0.4",
     "@askrjs/server": "0.0.10",
     "@askrjs/testing": "0.0.3",
-    "@askrjs/vite": "0.0.10",
+    "@askrjs/vite": "0.0.11",
     "@types/node": "^26.1.2",
     "typescript": "^6.0.3",
-    "vite-plus": "^0.2.6"
+    "vite-plus": "^0.2.7"
   },
   "overrides": {
     "dompurify": "3.4.12"
