@@ -96,7 +96,7 @@ function deriveInstalledContract(): MutableContract {
     readFileSync(resolve(root, 'package-lock.json'), 'utf8')
   ) as PackageLock;
   const installedPackageNames = Object.keys(packageLock.packages)
-    .filter((path) => path.startsWith('node_modules/@askrjs/'))
+    .filter((path) => /^node_modules\/@askrjs\/[^/]+$/.test(path))
     .map((path) => path.slice('node_modules/'.length))
     .sort();
   const installedManifests = new Map(
