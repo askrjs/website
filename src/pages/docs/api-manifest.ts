@@ -275,7 +275,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/monaco',
-    version: '0.0.6',
+    version: '0.0.7',
     subpath: '.',
     importName: '@askrjs/monaco',
     slug: 'root',
@@ -283,7 +283,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/monaco',
-    version: '0.0.6',
+    version: '0.0.7',
     subpath: './monaco-editor',
     importName: '@askrjs/monaco/monaco-editor',
     slug: 'monaco-editor',
