@@ -1290,9 +1290,21 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'click',
+      anchor: 'click',
+      signature: 'click: (element: Element) => boolean',
+      typeOnly: true,
+    },
+    {
       name: 'createInvalidationRecorder',
       anchor: 'create-invalidation-recorder',
       signature: 'createInvalidationRecorder: () => InvalidationRecorder',
+      typeOnly: true,
+    },
+    {
+      name: 'createQueryTestRegistry',
+      anchor: 'create-query-test-registry',
+      signature: 'createQueryTestRegistry: () => QueryTestRegistry',
       typeOnly: true,
     },
     {
@@ -1368,6 +1380,12 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'QueryTestRegistry',
+      anchor: 'query-test-registry',
+      signature: 'QueryTestRegistry: any',
+      typeOnly: true,
+    },
+    {
       name: 'render',
       anchor: 'render',
       signature:
@@ -1403,6 +1421,19 @@ export const apiSymbolSets: Readonly<
       name: 'RouteRenderOptions',
       anchor: 'route-render-options',
       signature: 'RouteRenderOptions: any',
+      typeOnly: true,
+    },
+    {
+      name: 'submit',
+      anchor: 'submit',
+      signature: 'submit: (form: HTMLFormElement) => boolean',
+      typeOnly: true,
+    },
+    {
+      name: 'type',
+      anchor: 'type',
+      signature:
+        'type: (element: HTMLInputElement | HTMLTextAreaElement, text: string) => void',
       typeOnly: true,
     },
   ],

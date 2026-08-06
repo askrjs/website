@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import ts from 'typescript';
 import { beforeAll, describe, expect, it } from 'vitest';
@@ -53,6 +53,8 @@ interface MutableContract {
   };
   packagePeers: Record<string, string[]>;
 }
+
+const updatePackageSnapshot = process.env.UPDATE_PACKAGE_SNAPSHOT === '1';
 
 const removedRouterSymbols = new Set([
   'registerRoutes',
@@ -270,6 +272,66 @@ function recordedContract(): MutableContract {
   ) as MutableContract;
 }
 
+function writeRecordedContract(contract: MutableContract): void {
+  const root = process.cwd();
+  const outputs = [
+    {
+      path: resolve(root, 'src/pages/docs/api-manifest.ts'),
+      source:
+        '// Generated package API contract. Do not edit.\n' +
+        'export interface ApiEntrypointDefinition {\n' +
+        '  readonly packageName: string;\n' +
+        '  readonly version: string;\n' +
+        '  readonly subpath: string;\n' +
+        '  readonly importName: string;\n' +
+        '  readonly slug: string;\n' +
+        '  readonly symbolSet: string;\n' +
+        '}\n\n' +
+        `export const apiManifest: readonly ApiEntrypointDefinition[] = ${JSON.stringify(contract.apiManifest, null, 2)};\n`,
+    },
+    {
+      path: resolve(root, 'src/pages/docs/api-snapshot.ts'),
+      source:
+        '// Generated package API contract. Do not edit.\n' +
+        'export interface ApiSymbolDefinition {\n' +
+        '  readonly name: string;\n' +
+        '  readonly anchor: string;\n' +
+        '  readonly signature: string;\n' +
+        '  readonly typeOnly: boolean;\n' +
+        '}\n\n' +
+        'export const apiSymbolSets: Readonly<Record<string, readonly ApiSymbolDefinition[]>> = ' +
+        `${JSON.stringify(contract.apiSymbolSets, null, 2)};\n`,
+    },
+    {
+      path: resolve(root, 'src/pages/docs/cli-snapshot.ts'),
+      source:
+        '// Generated from @askrjs/cli --help. Do not edit.\n' +
+        `export const cliSnapshot = ${JSON.stringify(contract.cli, null, 2)} as const;\n`,
+    },
+    {
+      path: resolve(root, 'src/pages/docs/package-peers.ts'),
+      source:
+        '// Internal package metadata snapshot. This is contract data, not page copy.\n' +
+        'export const packagePeers: Readonly<Record<string, readonly string[]>> = ' +
+        `${JSON.stringify(contract.packagePeers, null, 2)};\n`,
+    },
+  ];
+
+  for (const output of outputs) writeFileSync(output.path, output.source);
+  const formatted = spawnSync(
+    resolve(root, 'node_modules/.bin/vp'),
+    ['fmt', ...outputs.map((output) => output.path)],
+    { encoding: 'utf8' }
+  );
+  if (formatted.status !== 0) {
+    throw new Error(
+      formatted.stderr ||
+        formatted.stdout ||
+        'Unable to format package snapshots.'
+    );
+  }
+}
+
 function equal(left: unknown, right: unknown): boolean {
   return JSON.stringify(left) === JSON.stringify(right);
 }
@@ -329,9 +391,11 @@ describe('installed package snapshot contract', () => {
 
   beforeAll(() => {
     installed = deriveInstalledContract();
+    if (updatePackageSnapshot) writeRecordedContract(installed);
   }, 30_000);
 
   it('matches entrypoints, versions, exported signatures, peers, and CLI help', () => {
+    if (updatePackageSnapshot) return;
     expect(snapshotContractErrors(installed, recordedContract())).toEqual([]);
   });
 
