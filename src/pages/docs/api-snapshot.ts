@@ -35,6 +35,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'configureRenderDiagnostics',
+      anchor: 'configure-render-diagnostics',
+      signature:
+        'configureRenderDiagnostics: (options: RenderDiagnosticsOptions) => () => void',
+      typeOnly: true,
+    },
+    {
       name: 'createQuery',
       anchor: 'create-query',
       signature:
@@ -216,6 +223,12 @@ export const apiSymbolSets: Readonly<
       name: 'registerSSRStyle',
       anchor: 'register-ssrstyle',
       signature: 'registerSSRStyle: (id: string, cssText: string) => void',
+      typeOnly: true,
+    },
+    {
+      name: 'RenderDiagnosticsOptions',
+      anchor: 'render-diagnostics-options',
+      signature: 'RenderDiagnosticsOptions: any',
       typeOnly: true,
     },
     {
@@ -1202,6 +1215,12 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'MutationOptions',
+      anchor: 'mutation-options',
+      signature: 'MutationOptions: any',
+      typeOnly: true,
+    },
+    {
       name: 'prefetchQuery',
       anchor: 'prefetch-query',
       signature:
@@ -1302,6 +1321,12 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'createMutationTestRegistry',
+      anchor: 'create-mutation-test-registry',
+      signature: 'createMutationTestRegistry: () => MutationTestRegistry',
+      typeOnly: true,
+    },
+    {
       name: 'createQueryTestRegistry',
       anchor: 'create-query-test-registry',
       signature: 'createQueryTestRegistry: () => QueryTestRegistry',
@@ -1370,6 +1395,31 @@ export const apiSymbolSets: Readonly<
       anchor: 'mount',
       signature:
         'mount: (component: ComponentFunction, options?: RenderOptions) => RenderResult',
+      typeOnly: true,
+    },
+    {
+      name: 'MutationFixture',
+      anchor: 'mutation-fixture',
+      signature: 'MutationFixture: any',
+      typeOnly: true,
+    },
+    {
+      name: 'MutationFixtureInitial',
+      anchor: 'mutation-fixture-initial',
+      signature: 'MutationFixtureInitial: any',
+      typeOnly: true,
+    },
+    {
+      name: 'mutationState',
+      anchor: 'mutation-state',
+      signature:
+        'mutationState: (<TInput = unknown, TResult = unknown>(initial?: MutationFixtureInitial<TResult>) => MutationFixture<TInput, TResult>) & { idle<TInput = unknown, TResult = unknown>(): MutationFixture<TInput, TResult>; pending<TInput = unknown, TResult = unknown>(): MutationFixture<TInput, TResult>; success<TInput = unknown, TResult = unknown>(result: TResult): MutationFixture<TInput, TResult>; error<TInput = unknown, TResult = unknown>(error: {}): MutationFixture<TInput, TResult>; }',
+      typeOnly: true,
+    },
+    {
+      name: 'MutationTestRegistry',
+      anchor: 'mutation-test-registry',
+      signature: 'MutationTestRegistry: any',
       typeOnly: true,
     },
     {
@@ -1703,6 +1753,19 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'lazyRouteData',
+      anchor: 'lazy-route-data',
+      signature:
+        'lazyRouteData: <TModule, TData = TModule>(factory: () => PromiseLike<TModule>, select?: (module: TModule, context: RouteContext & { request?: Request; }) => TData | PromiseLike<TData>) => LazyRouteDataLoader<TModule, TData>',
+      typeOnly: true,
+    },
+    {
+      name: 'LazyRouteDataLoader',
+      anchor: 'lazy-route-data-loader',
+      signature: 'LazyRouteDataLoader: any',
+      typeOnly: true,
+    },
+    {
       name: 'Link',
       anchor: 'link',
       signature:
@@ -1877,6 +1940,18 @@ export const apiSymbolSets: Readonly<
       name: 'routeData',
       anchor: 'route-data',
       signature: 'routeData: <T>() => T',
+      typeOnly: true,
+    },
+    {
+      name: 'RouteDataLoadError',
+      anchor: 'route-data-load-error',
+      signature: 'RouteDataLoadError: typeof RouteDataLoadError',
+      typeOnly: true,
+    },
+    {
+      name: 'RouteDataLoadPhase',
+      anchor: 'route-data-load-phase',
+      signature: 'RouteDataLoadPhase: any',
       typeOnly: true,
     },
     {
@@ -5056,6 +5131,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'AudioLinesXIcon',
+      anchor: 'audio-lines-xicon',
+      signature:
+        'AudioLinesXIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'AudioWaveformIcon',
       anchor: 'audio-waveform-icon',
       signature:
@@ -6138,6 +6220,20 @@ export const apiSymbolSets: Readonly<
       anchor: 'broccoli-icon',
       signature:
         'BroccoliIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'BroomIcon',
+      anchor: 'broom-icon',
+      signature:
+        'BroomIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'BroomSparklesIcon',
+      anchor: 'broom-sparkles-icon',
+      signature:
+        'BroomSparklesIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -8808,6 +8904,55 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'FaceAngryIcon',
+      anchor: 'face-angry-icon',
+      signature:
+        'FaceAngryIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'FaceExpressionlessIcon',
+      anchor: 'face-expressionless-icon',
+      signature:
+        'FaceExpressionlessIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'FaceGrinningIcon',
+      anchor: 'face-grinning-icon',
+      signature:
+        'FaceGrinningIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'FaceNeutralIcon',
+      anchor: 'face-neutral-icon',
+      signature:
+        'FaceNeutralIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'FaceSlightlyFrowningIcon',
+      anchor: 'face-slightly-frowning-icon',
+      signature:
+        'FaceSlightlyFrowningIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'FaceSlightlySmilingIcon',
+      anchor: 'face-slightly-smiling-icon',
+      signature:
+        'FaceSlightlySmilingIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'FaceSlightlySmilingPlusIcon',
+      anchor: 'face-slightly-smiling-plus-icon',
+      signature:
+        'FaceSlightlySmilingPlusIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'FactoryIcon',
       anchor: 'factory-icon',
       signature:
@@ -11262,6 +11407,20 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'LayerArrowDownIcon',
+      anchor: 'layer-arrow-down-icon',
+      signature:
+        'LayerArrowDownIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LayerArrowUpIcon',
+      anchor: 'layer-arrow-up-icon',
+      signature:
+        'LayerArrowUpIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'Layers2Icon',
       anchor: 'layers2-icon',
       signature:
@@ -11273,6 +11432,20 @@ export const apiSymbolSets: Readonly<
       anchor: 'layers3-icon',
       signature:
         'Layers3Icon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LayersArrowDownIcon',
+      anchor: 'layers-arrow-down-icon',
+      signature:
+        'LayersArrowDownIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LayersArrowUpIcon',
+      anchor: 'layers-arrow-up-icon',
+      signature:
+        'LayersArrowUpIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -11301,6 +11474,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'layout-dashboard-icon',
       signature:
         'LayoutDashboardIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LayoutFreeformIcon',
+      anchor: 'layout-freeform-icon',
+      signature:
+        'LayoutFreeformIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -12298,6 +12478,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'MicAudioLinesIcon',
+      anchor: 'mic-audio-lines-icon',
+      signature:
+        'MicAudioLinesIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'MicIcon',
       anchor: 'mic-icon',
       signature:
@@ -12330,6 +12517,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'microwave-icon',
       signature:
         'MicrowaveIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'MicSignalIcon',
+      anchor: 'mic-signal-icon',
+      signature:
+        'MicSignalIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -12533,6 +12727,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'more-vertical-icon',
       signature:
         'MoreVerticalIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'MosqueIcon',
+      anchor: 'mosque-icon',
+      signature:
+        'MosqueIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -14300,6 +14501,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'RotateCcwClockIcon',
+      anchor: 'rotate-ccw-clock-icon',
+      signature:
+        'RotateCcwClockIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'RotateCcwIcon',
       anchor: 'rotate-ccw-icon',
       signature:
@@ -14318,6 +14526,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'rotate-ccw-square-icon',
       signature:
         'RotateCcwSquareIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'RotateCwFadingClockIcon',
+      anchor: 'rotate-cw-fading-clock-icon',
+      signature:
+        'RotateCwFadingClockIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -14584,6 +14799,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'scan-search-icon',
       signature:
         'ScanSearchIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ScanSquareIcon',
+      anchor: 'scan-square-icon',
+      signature:
+        'ScanSquareIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -14920,6 +15142,20 @@ export const apiSymbolSets: Readonly<
       anchor: 'shield-icon',
       signature:
         'ShieldIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ShieldKeyholeIcon',
+      anchor: 'shield-keyhole-icon',
+      signature:
+        'ShieldKeyholeIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ShieldLockIcon',
+      anchor: 'shield-lock-icon',
+      signature:
+        'ShieldLockIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -15760,6 +15996,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'square-mouse-pointer-icon',
       signature:
         'SquareMousePointerIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareOffIcon',
+      anchor: 'square-off-icon',
+      signature:
+        'SquareOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -17366,6 +17609,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'UserShieldIcon',
+      anchor: 'user-shield-icon',
+      signature:
+        'UserShieldIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'UsersIcon',
       anchor: 'users-icon',
       signature:
@@ -18197,6 +18447,21 @@ export const apiSymbolSets: Readonly<
   ],
   symbols35: [
     {
+      name: 'createMonacoEditorTestDriver',
+      anchor: 'create-monaco-editor-test-driver',
+      signature:
+        'createMonacoEditorTestDriver: (editor: MonacoEditorInstance) => MonacoEditorTestDriver',
+      typeOnly: true,
+    },
+    {
+      name: 'MonacoEditorTestDriver',
+      anchor: 'monaco-editor-test-driver',
+      signature: 'MonacoEditorTestDriver: any',
+      typeOnly: true,
+    },
+  ],
+  symbols36: [
+    {
       name: 'ConnectNext',
       anchor: 'connect-next',
       signature: 'ConnectNext: any',
@@ -18206,7 +18471,7 @@ export const apiSymbolSets: Readonly<
       name: 'createNodeHandler',
       anchor: 'create-node-handler',
       signature:
-        'createNodeHandler: (app: ServerApp, options?: NodeHandlerOptions) => NodeHandler',
+        'createNodeHandler: (app: ServerApp, options: NodeHandlerOptions) => NodeHandler',
       typeOnly: true,
     },
     {
@@ -18266,7 +18531,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols36: [
+  symbols37: [
     {
       name: 'connectMcpStdio',
       anchor: 'connect-mcp-stdio',
@@ -18287,7 +18552,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols37: [
+  symbols38: [
     {
       name: 'createTelemetry',
       anchor: 'create-telemetry',
@@ -18331,7 +18596,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols38: [
+  symbols39: [
     {
       name: 'InferSchema',
       anchor: 'infer-schema',
@@ -18388,7 +18653,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols39: [
+  symbols40: [
     {
       name: 'accepted',
       anchor: 'accepted',
@@ -18851,6 +19116,12 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'TokenIssuer',
+      anchor: 'token-issuer',
+      signature: 'TokenIssuer: any',
+      typeOnly: true,
+    },
+    {
       name: 'tooManyRequests',
       anchor: 'too-many-requests',
       signature:
@@ -18896,7 +19167,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols40: [
+  symbols41: [
     {
       name: 'ApiRoute',
       anchor: 'api-route',
@@ -18953,7 +19224,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols41: [
+  symbols42: [
     {
       name: 'accepted',
       anchor: 'accepted',
@@ -19153,7 +19424,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols42: [
+  symbols43: [
     {
       name: 'accessLog',
       anchor: 'access-log',
@@ -19264,7 +19535,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols43: [
+  symbols44: [
     {
       name: 'ActionCookieInstruction',
       anchor: 'action-cookie-instruction',
@@ -19305,6 +19576,12 @@ export const apiSymbolSets: Readonly<
       name: 'ActionOutcome',
       anchor: 'action-outcome',
       signature: 'ActionOutcome: any',
+      typeOnly: true,
+    },
+    {
+      name: 'ActionRegistration',
+      anchor: 'action-registration',
+      signature: 'ActionRegistration: any',
       typeOnly: true,
     },
     {
@@ -19373,7 +19650,7 @@ export const apiSymbolSets: Readonly<
       name: 'defineServerActions',
       anchor: 'define-server-actions',
       signature:
-        'defineServerActions: <Dependencies>(options: ServerActionsOptions<Dependencies>, ...entries: readonly ActionEntry<Dependencies, any, any>[]) => ActionRegistry<Dependencies>',
+        'defineServerActions: <Dependencies>(options: ServerActionsOptions<Dependencies>, ...entries: readonly ActionRegistration<Dependencies>[]) => ActionRegistry',
       typeOnly: true,
     },
     {
@@ -19390,7 +19667,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols44: [
+  symbols45: [
     {
       name: 'AuthCredentials',
       anchor: 'auth-credentials',
@@ -19429,8 +19706,14 @@ export const apiSymbolSets: Readonly<
       signature: 'SafeRedirectOptions: any',
       typeOnly: true,
     },
+    {
+      name: 'TokenIssuer',
+      anchor: 'token-issuer',
+      signature: 'TokenIssuer: any',
+      typeOnly: true,
+    },
   ],
-  symbols45: [
+  symbols46: [
     {
       name: 'ApiDefinition',
       anchor: 'api-definition',
@@ -19549,7 +19832,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols46: [
+  symbols47: [
     {
       name: 'createMcpServer',
       anchor: 'create-mcp-server',
@@ -19656,7 +19939,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols47: [
+  symbols48: [
     {
       name: 'BodyRequestOptions',
       anchor: 'body-request-options',
@@ -19769,8 +20052,8 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols48: [],
-  symbols49: [
+  symbols49: [],
+  symbols50: [
     {
       name: 'Accordion',
       anchor: 'accordion',
@@ -20601,6 +20884,76 @@ export const apiSymbolSets: Readonly<
       name: 'CommandList',
       anchor: 'command-list',
       signature: 'CommandList: (props: CatalogComponentProps) => JSX.Element',
+      typeOnly: true,
+    },
+    {
+      name: 'CommandPalette',
+      anchor: 'command-palette',
+      signature: 'CommandPalette: (props: CommandPaletteProps) => JSX.Element',
+      typeOnly: true,
+    },
+    {
+      name: 'CommandPaletteContent',
+      anchor: 'command-palette-content',
+      signature:
+        'CommandPaletteContent: (props: CommandPaletteContentProps) => JSX.Element',
+      typeOnly: true,
+    },
+    {
+      name: 'CommandPaletteContentProps',
+      anchor: 'command-palette-content-props',
+      signature: 'CommandPaletteContentProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'CommandPaletteLink',
+      anchor: 'command-palette-link',
+      signature:
+        'CommandPaletteLink: (props: CommandPaletteLinkProps) => JSX.Element',
+      typeOnly: true,
+    },
+    {
+      name: 'CommandPaletteLinkProps',
+      anchor: 'command-palette-link-props',
+      signature: 'CommandPaletteLinkProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'CommandPaletteList',
+      anchor: 'command-palette-list',
+      signature:
+        'CommandPaletteList: (props: CommandPaletteListProps) => JSX.Element',
+      typeOnly: true,
+    },
+    {
+      name: 'CommandPaletteListProps',
+      anchor: 'command-palette-list-props',
+      signature: 'CommandPaletteListProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'CommandPaletteProps',
+      anchor: 'command-palette-props',
+      signature: 'CommandPaletteProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'CommandPaletteTrigger',
+      anchor: 'command-palette-trigger',
+      signature:
+        'CommandPaletteTrigger: { (props: CommandPaletteTriggerProps): JSX.Element; (props: CommandPaletteTriggerAsChildProps): JSX.Element; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CommandPaletteTriggerAsChildProps',
+      anchor: 'command-palette-trigger-as-child-props',
+      signature: 'CommandPaletteTriggerAsChildProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'CommandPaletteTriggerProps',
+      anchor: 'command-palette-trigger-props',
+      signature: 'CommandPaletteTriggerProps: any',
       typeOnly: true,
     },
     {
@@ -22906,7 +23259,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols50: [
+  symbols51: [
     {
       name: 'CAT_THEME_NAMES',
       anchor: 'cat-theme-names',
@@ -22999,7 +23352,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols51: [
+  symbols52: [
     {
       name: 'withThemeStyles',
       anchor: 'with-theme-styles',
@@ -23008,7 +23361,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols52: [
+  symbols53: [
     {
       name: 'Accordion',
       anchor: 'accordion',
@@ -26002,100 +26355,100 @@ export const apiSymbolSets: Readonly<
       name: 'VisuallyHiddenSpanProps',
       anchor: 'visually-hidden-span-props',
       signature: 'VisuallyHiddenSpanProps: any',
-      typeOnly: true,
-    },
-  ],
-  symbols53: [
-    {
-      name: 'Avatar',
-      anchor: 'avatar',
-      signature:
-        'Avatar: { (props: AvatarProps): JSX.Element; (props: AvatarAsChildProps): JSX.Element; }',
-      typeOnly: true,
-    },
-    {
-      name: 'AVATAR_A11Y_CONTRACT',
-      anchor: 'avatar-a11-y-contract',
-      signature:
-        'AVATAR_A11Y_CONTRACT: { readonly ROOT: { readonly slot: "data-slot"; readonly marker: "data-avatar"; }; readonly IMAGE: { readonly slot: "data-slot"; readonly marker: "data-avatar-image"; readonly requiresAlt: true; }; readonly FALLBACK: { readonly slot: "data-slot"; readonly marker: "data-avatar-fallback"; readonly visibleBeforeImageLoad: true; }; }',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarA11yContract',
-      anchor: 'avatar-a11y-contract',
-      signature: 'AvatarA11yContract: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarAsChildProps',
-      anchor: 'avatar-as-child-props',
-      signature: 'AvatarAsChildProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarFallback',
-      anchor: 'avatar-fallback',
-      signature:
-        'AvatarFallback: { (props: AvatarFallbackProps): JSX.Element | null; (props: AvatarFallbackAsChildProps): JSX.Element | null; }',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarFallbackAsChildProps',
-      anchor: 'avatar-fallback-as-child-props',
-      signature: 'AvatarFallbackAsChildProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarFallbackOwnProps',
-      anchor: 'avatar-fallback-own-props',
-      signature: 'AvatarFallbackOwnProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarFallbackProps',
-      anchor: 'avatar-fallback-props',
-      signature: 'AvatarFallbackProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarImage',
-      anchor: 'avatar-image',
-      signature: 'AvatarImage: (props: AvatarImageProps) => JSX.Element',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarImageOwnProps',
-      anchor: 'avatar-image-own-props',
-      signature: 'AvatarImageOwnProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarImageProps',
-      anchor: 'avatar-image-props',
-      signature: 'AvatarImageProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarLoadingStatus',
-      anchor: 'avatar-loading-status',
-      signature: 'AvatarLoadingStatus: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarOwnProps',
-      anchor: 'avatar-own-props',
-      signature: 'AvatarOwnProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarProps',
-      anchor: 'avatar-props',
-      signature: 'AvatarProps: any',
       typeOnly: true,
     },
   ],
   symbols54: [
     {
+      name: 'Avatar',
+      anchor: 'avatar',
+      signature:
+        'Avatar: { (props: AvatarProps): JSX.Element; (props: AvatarAsChildProps): JSX.Element; }',
+      typeOnly: true,
+    },
+    {
+      name: 'AVATAR_A11Y_CONTRACT',
+      anchor: 'avatar-a11-y-contract',
+      signature:
+        'AVATAR_A11Y_CONTRACT: { readonly ROOT: { readonly slot: "data-slot"; readonly marker: "data-avatar"; }; readonly IMAGE: { readonly slot: "data-slot"; readonly marker: "data-avatar-image"; readonly requiresAlt: true; }; readonly FALLBACK: { readonly slot: "data-slot"; readonly marker: "data-avatar-fallback"; readonly visibleBeforeImageLoad: true; }; }',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarA11yContract',
+      anchor: 'avatar-a11y-contract',
+      signature: 'AvatarA11yContract: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarAsChildProps',
+      anchor: 'avatar-as-child-props',
+      signature: 'AvatarAsChildProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarFallback',
+      anchor: 'avatar-fallback',
+      signature:
+        'AvatarFallback: { (props: AvatarFallbackProps): JSX.Element | null; (props: AvatarFallbackAsChildProps): JSX.Element | null; }',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarFallbackAsChildProps',
+      anchor: 'avatar-fallback-as-child-props',
+      signature: 'AvatarFallbackAsChildProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarFallbackOwnProps',
+      anchor: 'avatar-fallback-own-props',
+      signature: 'AvatarFallbackOwnProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarFallbackProps',
+      anchor: 'avatar-fallback-props',
+      signature: 'AvatarFallbackProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarImage',
+      anchor: 'avatar-image',
+      signature: 'AvatarImage: (props: AvatarImageProps) => JSX.Element',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarImageOwnProps',
+      anchor: 'avatar-image-own-props',
+      signature: 'AvatarImageOwnProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarImageProps',
+      anchor: 'avatar-image-props',
+      signature: 'AvatarImageProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarLoadingStatus',
+      anchor: 'avatar-loading-status',
+      signature: 'AvatarLoadingStatus: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarOwnProps',
+      anchor: 'avatar-own-props',
+      signature: 'AvatarOwnProps: any',
+      typeOnly: true,
+    },
+    {
+      name: 'AvatarProps',
+      anchor: 'avatar-props',
+      signature: 'AvatarProps: any',
+      typeOnly: true,
+    },
+  ],
+  symbols55: [
+    {
       name: 'Button',
       anchor: 'button',
       signature:
@@ -26164,7 +26517,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols55: [
+  symbols56: [
     {
       name: 'Checkbox',
       anchor: 'checkbox',
@@ -26210,7 +26563,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols56: [
+  symbols57: [
     {
       name: 'DebouncedInput',
       anchor: 'debounced-input',
@@ -26274,7 +26627,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols57: [
+  symbols58: [
     {
       name: 'Form',
       anchor: 'form',
@@ -26295,7 +26648,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols58: [
+  symbols59: [
     {
       name: 'Label',
       anchor: 'label',
@@ -26341,7 +26694,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols59: [
+  symbols60: [
     {
       name: 'Progress',
       anchor: 'progress',
@@ -26393,7 +26746,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols60: [
+  symbols61: [
     {
       name: 'PROGRESS_CIRCLE_A11Y_CONTRACT',
       anchor: 'progress-circle-a11-y-contract',
@@ -26445,7 +26798,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols61: [
+  symbols62: [
     {
       name: 'RADIO_GROUP_A11Y_CONTRACT',
       anchor: 'radio-group-a11-y-contract',
@@ -26503,7 +26856,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols62: [
+  symbols63: [
     {
       name: 'Select',
       anchor: 'select',
@@ -26731,7 +27084,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols63: [
+  symbols64: [
     {
       name: 'Slider',
       anchor: 'slider',
@@ -26827,7 +27180,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols64: [
+  symbols65: [
     {
       name: 'Switch',
       anchor: 'switch',
@@ -26873,7 +27226,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols65: [
+  symbols66: [
     {
       name: 'Table',
       anchor: 'table',
@@ -27027,7 +27380,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols66: [
+  symbols67: [
     {
       name: 'VirtualList',
       anchor: 'virtual-list',
@@ -27084,7 +27437,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols67: [
+  symbols68: [
     {
       name: 'VirtualTable',
       anchor: 'virtual-table',
@@ -27153,7 +27506,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols68: [
+  symbols69: [
     {
       name: 'Textarea',
       anchor: 'textarea',
@@ -27199,7 +27552,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols69: [
+  symbols70: [
     {
       name: 'PressEvent',
       anchor: 'press-event',
@@ -27251,7 +27604,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols70: [
+  symbols71: [
     {
       name: 'TOGGLE_GROUP_A11Y_CONTRACT',
       anchor: 'toggle-group-a11-y-contract',
@@ -27321,7 +27674,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols71: [
+  symbols72: [
     {
       name: 'VISUALLY_HIDDEN_A11Y_CONTRACT',
       anchor: 'visually-hidden-a11-y-contract',
@@ -27367,7 +27720,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols72: [
+  symbols73: [
     {
       name: 'Accordion',
       anchor: 'accordion',
@@ -27493,7 +27846,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols73: [
+  symbols74: [
     {
       name: 'ALERT_DIALOG_A11Y_CONTRACT',
       anchor: 'alert-dialog-a11-y-contract',
@@ -27684,7 +28037,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols74: [
+  symbols75: [
     {
       name: 'Collapsible',
       anchor: 'collapsible',
@@ -27743,7 +28096,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols75: [
+  symbols76: [
     {
       name: 'Dialog',
       anchor: 'dialog',
@@ -27915,7 +28268,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols76: [
+  symbols77: [
     {
       name: 'DISMISSABLE_LAYER_A11Y_CONTRACT',
       anchor: 'dismissable-layer-a11-y-contract',
@@ -27955,7 +28308,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols77: [
+  symbols78: [
     {
       name: 'Dropdown',
       anchor: 'dropdown',
@@ -28151,7 +28504,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols78: [
+  symbols79: [
     {
       name: 'FOCUS_SCOPE_A11Y_CONTRACT',
       anchor: 'focus-scope-a11-y-contract',
@@ -28191,7 +28544,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols79: [
+  symbols80: [
     {
       name: 'HoverCard',
       anchor: 'hover-card',
@@ -28268,7 +28621,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols80: [
+  symbols81: [
     {
       name: 'Menu',
       anchor: 'menu',
@@ -28402,7 +28755,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols81: [
+  symbols82: [
     {
       name: 'Menubar',
       anchor: 'menubar',
@@ -28630,7 +28983,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols82: [
+  symbols83: [
     {
       name: 'Popover',
       anchor: 'popover',
@@ -28745,7 +29098,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols83: [
+  symbols84: [
     {
       name: 'ScrollArea',
       anchor: 'scroll-area',
@@ -28830,7 +29183,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols84: [
+  symbols85: [
     {
       name: 'Toast',
       anchor: 'toast',
@@ -28976,7 +29329,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols85: [
+  symbols86: [
     {
       name: 'Tooltip',
       anchor: 'tooltip',
@@ -29066,7 +29419,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols86: [
+  symbols87: [
     {
       name: 'askr',
       anchor: 'askr',
@@ -29099,7 +29452,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols87: [
+  symbols88: [
     {
       name: 'ASKR_APP_MARKER',
       anchor: 'askr-app-marker',
@@ -29177,7 +29530,7 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
   ],
-  symbols88: [
+  symbols89: [
     {
       name: 'image',
       anchor: 'image-2',
