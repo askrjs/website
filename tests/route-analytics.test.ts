@@ -103,7 +103,7 @@ describe('route analytics', () => {
     ).toBe(false);
   });
 
-  it('should subscribe immediately, tracks path and query commits, and ignores hashes', () => {
+  it('should subscribe immediately, track path and query commits, and ignore hashes', () => {
     let callback:
       | ((current: RouteSnapshot, previous: RouteSnapshot | null) => void)
       | undefined;

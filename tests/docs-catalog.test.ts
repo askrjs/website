@@ -339,7 +339,7 @@ describe('documentation catalog', () => {
 });
 
 describe('generated API reference', () => {
-  it('should discover real Lucide components and excludes its factory', () => {
+  it('should discover real Lucide components and exclude its factory', () => {
     const names = lucideIcons.map((icon) => icon.name);
     expect(names).toEqual(
       expect.arrayContaining(['CircleIcon', 'FullscreenIcon', 'SearchIcon'])
@@ -374,7 +374,7 @@ describe('generated API reference', () => {
     expect((await page!.loader()).default.name).toBe('LucideApiPage');
   });
 
-  it('should represent every entrypoint and gives every symbol an anchor', () => {
+  it('should represent every entrypoint and give every symbol an anchor', () => {
     for (const entrypoint of apiManifest) {
       const route =
         `/docs/reference/api/${entrypoint.packageName.slice('@askrjs/'.length)}/${entrypoint.slug}` as const;
