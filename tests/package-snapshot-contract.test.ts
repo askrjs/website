@@ -394,12 +394,12 @@ describe('installed package snapshot contract', () => {
     if (updatePackageSnapshot) writeRecordedContract(installed);
   }, 30_000);
 
-  it('matches entrypoints, versions, exported signatures, peers, and CLI help', () => {
+  it('should match entrypoints, versions, exported signatures, peers, and CLI help', () => {
     if (updatePackageSnapshot) return;
     expect(snapshotContractErrors(installed, recordedContract())).toEqual([]);
   });
 
-  it('detects an intentionally changed API signature', () => {
+  it('should detect an intentionally changed API signature', () => {
     const recorded = recordedContract();
     recorded.apiSymbolSets.symbols0![0]!.signature += ' drift';
     expect(snapshotContractErrors(installed, recorded)).toContain(
@@ -407,7 +407,7 @@ describe('installed package snapshot contract', () => {
     );
   });
 
-  it('detects an intentionally changed entrypoint', () => {
+  it('should detect an intentionally changed entrypoint', () => {
     const recorded = recordedContract();
     recorded.apiManifest[0]!.subpath = './drift';
     expect(snapshotContractErrors(installed, recorded)).toContain(
@@ -415,7 +415,7 @@ describe('installed package snapshot contract', () => {
     );
   });
 
-  it('detects an intentionally changed CLI command', () => {
+  it('should detect an intentionally changed CLI command', () => {
     const recorded = recordedContract();
     recorded.cli.commands.shift();
     expect(snapshotContractErrors(installed, recorded)).toContain(
@@ -423,7 +423,7 @@ describe('installed package snapshot contract', () => {
     );
   });
 
-  it('detects an intentionally changed recorded package version', () => {
+  it('should detect an intentionally changed recorded package version', () => {
     const recorded = recordedContract();
     recorded.apiManifest[0]!.version = '0.0.0-drift';
     expect(snapshotContractErrors(installed, recorded)).toContain(
