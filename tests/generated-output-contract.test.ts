@@ -14,7 +14,7 @@ const root = process.cwd();
 const dist = resolve(root, 'dist');
 
 describe('generated output', () => {
-  it('contains every route and the manual GA4 page-view configuration', () => {
+  it('should contain every route and the manual GA4 page-view configuration', () => {
     const metadata = JSON.parse(
       readFileSync(resolve(dist, 'metadata.json'), 'utf8')
     ) as StaticMetadata;

@@ -19774,8 +19774,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Accordion',
       anchor: 'accordion',
-      signature:
-        'Accordion: (props: AccordionProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Accordion: (props: AccordionProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -19821,8 +19820,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'AlertDialog',
       anchor: 'alert-dialog',
-      signature:
-        'AlertDialog: (props: AlertDialogProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'AlertDialog: (props: AlertDialogProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -19843,7 +19841,7 @@ export const apiSymbolSets: Readonly<
       name: 'AlertDialogContent',
       anchor: 'alert-dialog-content',
       signature:
-        'AlertDialogContent: (props: AlertDialogContentProps | AlertDialogContentAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'AlertDialogContent: (props: AlertDialogContentProps | AlertDialogContentAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -19878,7 +19876,7 @@ export const apiSymbolSets: Readonly<
       name: 'AlertDialogTrigger',
       anchor: 'alert-dialog-trigger',
       signature:
-        'AlertDialogTrigger: (props: AlertDialogTriggerProps | AlertDialogTriggerAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'AlertDialogTrigger: (props: AlertDialogTriggerProps | AlertDialogTriggerAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -20507,8 +20505,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Collapsible',
       anchor: 'collapsible',
-      signature:
-        'Collapsible: (props: CollapsibleProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Collapsible: (props: CollapsibleProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -20635,8 +20632,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'ContextMenu',
       anchor: 'context-menu',
-      signature:
-        'ContextMenu: (props: DropdownProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'ContextMenu: (props: DropdownProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -20650,7 +20646,7 @@ export const apiSymbolSets: Readonly<
       name: 'ContextMenuGroup',
       anchor: 'context-menu-group',
       signature:
-        'ContextMenuGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'ContextMenuGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -20664,7 +20660,7 @@ export const apiSymbolSets: Readonly<
       name: 'ContextMenuLabel',
       anchor: 'context-menu-label',
       signature:
-        'ContextMenuLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'ContextMenuLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -20678,7 +20674,7 @@ export const apiSymbolSets: Readonly<
       name: 'ContextMenuSeparator',
       anchor: 'context-menu-separator',
       signature:
-        'ContextMenuSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'ContextMenuSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -20710,8 +20706,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'DebouncedInput',
       anchor: 'debounced-input',
-      signature:
-        'DebouncedInput: (props: DebouncedInputProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'DebouncedInput: (props: DebouncedInputProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -20723,8 +20718,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Dialog',
       anchor: 'dialog',
-      signature:
-        'Dialog: (props: DialogProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Dialog: (props: DialogProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -20792,8 +20786,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Drawer',
       anchor: 'drawer',
-      signature:
-        'Drawer: (props: DialogProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Drawer: (props: DialogProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -20848,8 +20841,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Dropdown',
       anchor: 'dropdown',
-      signature:
-        'Dropdown: (props: DropdownProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Dropdown: (props: DropdownProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -20863,7 +20855,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownGroup',
       anchor: 'dropdown-group',
       signature:
-        'DropdownGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'DropdownGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -20883,14 +20875,13 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownLabel',
       anchor: 'dropdown-label',
       signature:
-        'DropdownLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'DropdownLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
       name: 'DropdownMenu',
       anchor: 'dropdown-menu',
-      signature:
-        'DropdownMenu: (props: DropdownProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'DropdownMenu: (props: DropdownProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -20904,7 +20895,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownMenuGroup',
       anchor: 'dropdown-menu-group',
       signature:
-        'DropdownMenuGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'DropdownMenuGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -20918,7 +20909,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownMenuLabel',
       anchor: 'dropdown-menu-label',
       signature:
-        'DropdownMenuLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'DropdownMenuLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -20932,7 +20923,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownMenuSeparator',
       anchor: 'dropdown-menu-separator',
       signature:
-        'DropdownMenuSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'DropdownMenuSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -20953,7 +20944,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownSeparator',
       anchor: 'dropdown-separator',
       signature:
-        'DropdownSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'DropdownSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -21254,8 +21245,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'HoverCard',
       anchor: 'hover-card',
-      signature:
-        'HoverCard: (props: HoverCardProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'HoverCard: (props: HoverCardProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -21438,8 +21428,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Menubar',
       anchor: 'menubar',
-      signature:
-        'Menubar: (props: MenubarProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Menubar: (props: MenubarProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -21453,7 +21442,7 @@ export const apiSymbolSets: Readonly<
       name: 'MenubarGroup',
       anchor: 'menubar-group',
       signature:
-        'MenubarGroup: (props: MenubarGroupProps | MenubarGroupAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'MenubarGroup: (props: MenubarGroupProps | MenubarGroupAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -21467,14 +21456,13 @@ export const apiSymbolSets: Readonly<
       name: 'MenubarLabel',
       anchor: 'menubar-label',
       signature:
-        'MenubarLabel: (props: MenubarLabelProps | MenubarLabelAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'MenubarLabel: (props: MenubarLabelProps | MenubarLabelAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
       name: 'MenubarMenu',
       anchor: 'menubar-menu',
-      signature:
-        'MenubarMenu: (props: MenubarMenuProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'MenubarMenu: (props: MenubarMenuProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -21488,14 +21476,13 @@ export const apiSymbolSets: Readonly<
       name: 'MenubarSeparator',
       anchor: 'menubar-separator',
       signature:
-        'MenubarSeparator: (props: MenubarSeparatorProps | MenubarSeparatorAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'MenubarSeparator: (props: MenubarSeparatorProps | MenubarSeparatorAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
       name: 'MenubarSub',
       anchor: 'menubar-sub',
-      signature:
-        'MenubarSub: (props: MenubarSubProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'MenubarSub: (props: MenubarSubProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -21778,8 +21765,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Popover',
       anchor: 'popover',
-      signature:
-        'Popover: (props: PopoverProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Popover: (props: PopoverProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -21819,15 +21805,13 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Progress',
       anchor: 'progress',
-      signature:
-        'Progress: (props: ProgressProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Progress: (props: ProgressProps) => JSX.Element',
       typeOnly: true,
     },
     {
       name: 'ProgressCircle',
       anchor: 'progress-circle',
-      signature:
-        'ProgressCircle: (props: ProgressCircleProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'ProgressCircle: (props: ProgressCircleProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -21847,8 +21831,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'RadioGroup',
       anchor: 'radio-group',
-      signature:
-        'RadioGroup: (props: RadioGroupProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'RadioGroup: (props: RadioGroupProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -21929,8 +21912,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Select',
       anchor: 'select',
-      signature:
-        'Select: (props: SelectProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Select: (props: SelectProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -22036,8 +22018,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Sheet',
       anchor: 'sheet',
-      signature:
-        'Sheet: (props: DialogProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Sheet: (props: DialogProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -22294,8 +22275,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Slider',
       anchor: 'slider',
-      signature:
-        'Slider: (props: SliderProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Slider: (props: SliderProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -22656,8 +22636,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'ToastHost',
       anchor: 'toast-host',
-      signature:
-        'ToastHost: (props: ToastHostProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'ToastHost: (props: ToastHostProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -22684,8 +22663,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'ToggleGroup',
       anchor: 'toggle-group',
-      signature:
-        'ToggleGroup: (props: ToggleGroupProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'ToggleGroup: (props: ToggleGroupProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -22710,8 +22688,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Tooltip',
       anchor: 'tooltip',
-      signature:
-        'Tooltip: (props: TooltipProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Tooltip: (props: TooltipProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -23035,8 +23012,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Accordion',
       anchor: 'accordion',
-      signature:
-        'Accordion: (props: AccordionProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Accordion: (props: AccordionProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -23167,8 +23143,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'AlertDialog',
       anchor: 'alert-dialog',
-      signature:
-        'AlertDialog: (props: AlertDialogProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'AlertDialog: (props: AlertDialogProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -23219,7 +23194,7 @@ export const apiSymbolSets: Readonly<
       name: 'AlertDialogContent',
       anchor: 'alert-dialog-content',
       signature:
-        'AlertDialogContent: (props: AlertDialogContentProps | AlertDialogContentAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'AlertDialogContent: (props: AlertDialogContentProps | AlertDialogContentAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -23332,7 +23307,7 @@ export const apiSymbolSets: Readonly<
       name: 'AlertDialogTrigger',
       anchor: 'alert-dialog-trigger',
       signature:
-        'AlertDialogTrigger: (props: AlertDialogTriggerProps | AlertDialogTriggerAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'AlertDialogTrigger: (props: AlertDialogTriggerProps | AlertDialogTriggerAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -23549,8 +23524,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Collapsible',
       anchor: 'collapsible',
-      signature:
-        'Collapsible: (props: CollapsibleProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Collapsible: (props: CollapsibleProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -23607,8 +23581,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'DebouncedInput',
       anchor: 'debounced-input',
-      signature:
-        'DebouncedInput: (props: DebouncedInputProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'DebouncedInput: (props: DebouncedInputProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -23620,8 +23593,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Dialog',
       anchor: 'dialog',
-      signature:
-        'Dialog: (props: DialogProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Dialog: (props: DialogProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -23829,8 +23801,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Dropdown',
       anchor: 'dropdown',
-      signature:
-        'Dropdown: (props: DropdownProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Dropdown: (props: DropdownProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -23875,7 +23846,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownGroup',
       anchor: 'dropdown-group',
       signature:
-        'DropdownGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'DropdownGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -23925,7 +23896,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownLabel',
       anchor: 'dropdown-label',
       signature:
-        'DropdownLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'DropdownLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -23969,7 +23940,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownSeparator',
       anchor: 'dropdown-separator',
       signature:
-        'DropdownSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'DropdownSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -24081,8 +24052,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'HoverCard',
       anchor: 'hover-card',
-      signature:
-        'HoverCard: (props: HoverCardProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'HoverCard: (props: HoverCardProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -24251,8 +24221,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Menu',
       anchor: 'menu',
-      signature:
-        'Menu: (props: MenuProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Menu: (props: MenuProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -24271,8 +24240,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Menubar',
       anchor: 'menubar',
-      signature:
-        'Menubar: (props: MenubarProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Menubar: (props: MenubarProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -24317,7 +24285,7 @@ export const apiSymbolSets: Readonly<
       name: 'MenubarGroup',
       anchor: 'menubar-group',
       signature:
-        'MenubarGroup: (props: MenubarGroupProps | MenubarGroupAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'MenubarGroup: (props: MenubarGroupProps | MenubarGroupAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -24355,7 +24323,7 @@ export const apiSymbolSets: Readonly<
       name: 'MenubarLabel',
       anchor: 'menubar-label',
       signature:
-        'MenubarLabel: (props: MenubarLabelProps | MenubarLabelAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'MenubarLabel: (props: MenubarLabelProps | MenubarLabelAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -24373,8 +24341,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'MenubarMenu',
       anchor: 'menubar-menu',
-      signature:
-        'MenubarMenu: (props: MenubarMenuProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'MenubarMenu: (props: MenubarMenuProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -24412,7 +24379,7 @@ export const apiSymbolSets: Readonly<
       name: 'MenubarSeparator',
       anchor: 'menubar-separator',
       signature:
-        'MenubarSeparator: (props: MenubarSeparatorProps | MenubarSeparatorAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'MenubarSeparator: (props: MenubarSeparatorProps | MenubarSeparatorAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -24430,8 +24397,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'MenubarSub',
       anchor: 'menubar-sub',
-      signature:
-        'MenubarSub: (props: MenubarSubProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'MenubarSub: (props: MenubarSubProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -24613,8 +24579,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Popover',
       anchor: 'popover',
-      signature:
-        'Popover: (props: PopoverProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Popover: (props: PopoverProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -24733,8 +24698,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Progress',
       anchor: 'progress',
-      signature:
-        'Progress: (props: ProgressProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Progress: (props: ProgressProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -24760,8 +24724,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'ProgressCircle',
       anchor: 'progress-circle',
-      signature:
-        'ProgressCircle: (props: ProgressCircleProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'ProgressCircle: (props: ProgressCircleProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -24842,8 +24805,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'RadioGroup',
       anchor: 'radio-group',
-      signature:
-        'RadioGroup: (props: RadioGroupProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'RadioGroup: (props: RadioGroupProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -24975,8 +24937,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Select',
       anchor: 'select',
-      signature:
-        'Select: (props: SelectProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Select: (props: SelectProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -25202,8 +25163,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Slider',
       anchor: 'slider',
-      signature:
-        'Slider: (props: SliderProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Slider: (props: SliderProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -25613,8 +25573,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'ToastHost',
       anchor: 'toast-host',
-      signature:
-        'ToastHost: (props: ToastHostProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'ToastHost: (props: ToastHostProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -25721,8 +25680,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'ToggleGroup',
       anchor: 'toggle-group',
-      signature:
-        'ToggleGroup: (props: ToggleGroupProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'ToggleGroup: (props: ToggleGroupProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -25795,8 +25753,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Tooltip',
       anchor: 'tooltip',
-      signature:
-        'Tooltip: (props: TooltipProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Tooltip: (props: TooltipProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -26257,8 +26214,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'DebouncedInput',
       anchor: 'debounced-input',
-      signature:
-        'DebouncedInput: (props: DebouncedInputProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'DebouncedInput: (props: DebouncedInputProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -26389,8 +26345,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Progress',
       anchor: 'progress',
-      signature:
-        'Progress: (props: ProgressProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Progress: (props: ProgressProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -26449,8 +26404,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'ProgressCircle',
       anchor: 'progress-circle',
-      signature:
-        'ProgressCircle: (props: ProgressCircleProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'ProgressCircle: (props: ProgressCircleProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -26502,8 +26456,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'RadioGroup',
       anchor: 'radio-group',
-      signature:
-        'RadioGroup: (props: RadioGroupProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'RadioGroup: (props: RadioGroupProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -26554,8 +26507,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Select',
       anchor: 'select',
-      signature:
-        'Select: (props: SelectProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Select: (props: SelectProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -26783,8 +26735,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Slider',
       anchor: 'slider',
-      signature:
-        'Slider: (props: SliderProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Slider: (props: SliderProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -27311,8 +27262,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'ToggleGroup',
       anchor: 'toggle-group',
-      signature:
-        'ToggleGroup: (props: ToggleGroupProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'ToggleGroup: (props: ToggleGroupProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -27421,8 +27371,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Accordion',
       anchor: 'accordion',
-      signature:
-        'Accordion: (props: AccordionProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Accordion: (props: AccordionProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -27555,8 +27504,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'AlertDialog',
       anchor: 'alert-dialog',
-      signature:
-        'AlertDialog: (props: AlertDialogProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'AlertDialog: (props: AlertDialogProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -27607,7 +27555,7 @@ export const apiSymbolSets: Readonly<
       name: 'AlertDialogContent',
       anchor: 'alert-dialog-content',
       signature:
-        'AlertDialogContent: (props: AlertDialogContentProps | AlertDialogContentAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'AlertDialogContent: (props: AlertDialogContentProps | AlertDialogContentAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -27720,7 +27668,7 @@ export const apiSymbolSets: Readonly<
       name: 'AlertDialogTrigger',
       anchor: 'alert-dialog-trigger',
       signature:
-        'AlertDialogTrigger: (props: AlertDialogTriggerProps | AlertDialogTriggerAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'AlertDialogTrigger: (props: AlertDialogTriggerProps | AlertDialogTriggerAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -27740,8 +27688,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Collapsible',
       anchor: 'collapsible',
-      signature:
-        'Collapsible: (props: CollapsibleProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Collapsible: (props: CollapsibleProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -27800,8 +27747,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Dialog',
       anchor: 'dialog',
-      signature:
-        'Dialog: (props: DialogProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Dialog: (props: DialogProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -28013,8 +27959,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Dropdown',
       anchor: 'dropdown',
-      signature:
-        'Dropdown: (props: DropdownProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Dropdown: (props: DropdownProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -28059,7 +28004,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownGroup',
       anchor: 'dropdown-group',
       signature:
-        'DropdownGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'DropdownGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -28109,7 +28054,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownLabel',
       anchor: 'dropdown-label',
       signature:
-        'DropdownLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'DropdownLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -28153,7 +28098,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownSeparator',
       anchor: 'dropdown-separator',
       signature:
-        'DropdownSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'DropdownSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -28250,8 +28195,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'HoverCard',
       anchor: 'hover-card',
-      signature:
-        'HoverCard: (props: HoverCardProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'HoverCard: (props: HoverCardProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -28328,8 +28272,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Menu',
       anchor: 'menu',
-      signature:
-        'Menu: (props: MenuProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Menu: (props: MenuProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -28463,8 +28406,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Menubar',
       anchor: 'menubar',
-      signature:
-        'Menubar: (props: MenubarProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Menubar: (props: MenubarProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -28509,7 +28451,7 @@ export const apiSymbolSets: Readonly<
       name: 'MenubarGroup',
       anchor: 'menubar-group',
       signature:
-        'MenubarGroup: (props: MenubarGroupProps | MenubarGroupAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'MenubarGroup: (props: MenubarGroupProps | MenubarGroupAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -28547,7 +28489,7 @@ export const apiSymbolSets: Readonly<
       name: 'MenubarLabel',
       anchor: 'menubar-label',
       signature:
-        'MenubarLabel: (props: MenubarLabelProps | MenubarLabelAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'MenubarLabel: (props: MenubarLabelProps | MenubarLabelAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -28565,8 +28507,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'MenubarMenu',
       anchor: 'menubar-menu',
-      signature:
-        'MenubarMenu: (props: MenubarMenuProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'MenubarMenu: (props: MenubarMenuProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -28604,7 +28545,7 @@ export const apiSymbolSets: Readonly<
       name: 'MenubarSeparator',
       anchor: 'menubar-separator',
       signature:
-        'MenubarSeparator: (props: MenubarSeparatorProps | MenubarSeparatorAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+        'MenubarSeparator: (props: MenubarSeparatorProps | MenubarSeparatorAsChildProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -28622,8 +28563,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'MenubarSub',
       anchor: 'menubar-sub',
-      signature:
-        'MenubarSub: (props: MenubarSubProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'MenubarSub: (props: MenubarSubProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -28694,8 +28634,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Popover',
       anchor: 'popover',
-      signature:
-        'Popover: (props: PopoverProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Popover: (props: PopoverProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -28971,8 +28910,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'ToastHost',
       anchor: 'toast-host',
-      signature:
-        'ToastHost: (props: ToastHostProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'ToastHost: (props: ToastHostProps) => JSX.Element',
       typeOnly: true,
     },
     {
@@ -29042,8 +28980,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Tooltip',
       anchor: 'tooltip',
-      signature:
-        'Tooltip: (props: TooltipProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
+      signature: 'Tooltip: (props: TooltipProps) => JSX.Element',
       typeOnly: true,
     },
     {

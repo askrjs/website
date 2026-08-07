@@ -11,7 +11,7 @@ export interface ApiEntrypointDefinition {
 export const apiManifest: readonly ApiEntrypointDefinition[] = [
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: '.',
     importName: '@askrjs/askr',
     slug: 'root',
@@ -19,7 +19,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: './boot',
     importName: '@askrjs/askr/boot',
     slug: 'boot',
@@ -27,7 +27,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: './components',
     importName: '@askrjs/askr/components',
     slug: 'components',
@@ -35,7 +35,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: './control',
     importName: '@askrjs/askr/control',
     slug: 'control',
@@ -43,7 +43,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: './foundations',
     importName: '@askrjs/askr/foundations',
     slug: 'foundations',
@@ -51,7 +51,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: './foundations/utilities',
     importName: '@askrjs/askr/foundations/utilities',
     slug: 'foundations--utilities',
@@ -59,7 +59,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: './foundations/interactions',
     importName: '@askrjs/askr/foundations/interactions',
     slug: 'foundations--interactions',
@@ -67,7 +67,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: './foundations/state',
     importName: '@askrjs/askr/foundations/state',
     slug: 'foundations--state',
@@ -75,7 +75,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: './foundations/structures',
     importName: '@askrjs/askr/foundations/structures',
     slug: 'foundations--structures',
@@ -83,7 +83,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: './foundations/icon',
     importName: '@askrjs/askr/foundations/icon',
     slug: 'foundations--icon',
@@ -91,7 +91,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: './resources',
     importName: '@askrjs/askr/resources',
     slug: 'resources',
@@ -99,7 +99,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: './data',
     importName: '@askrjs/askr/data',
     slug: 'data',
@@ -107,7 +107,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: './testing',
     importName: '@askrjs/askr/testing',
     slug: 'testing',
@@ -115,7 +115,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: './fx',
     importName: '@askrjs/askr/fx',
     slug: 'fx',
@@ -123,7 +123,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: './router',
     importName: '@askrjs/askr/router',
     slug: 'router',
@@ -131,7 +131,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: './actions',
     importName: '@askrjs/askr/actions',
     slug: 'actions',
@@ -139,7 +139,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: './ssr',
     importName: '@askrjs/askr/ssr',
     slug: 'ssr',
@@ -147,7 +147,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: './ssg',
     importName: '@askrjs/askr/ssg',
     slug: 'ssg',
@@ -155,7 +155,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: './jsx-runtime',
     importName: '@askrjs/askr/jsx-runtime',
     slug: 'jsx-runtime',
@@ -163,7 +163,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/askr',
-    version: '0.0.87',
+    version: '0.0.88',
     subpath: './jsx-dev-runtime',
     importName: '@askrjs/askr/jsx-dev-runtime',
     slug: 'jsx-dev-runtime',
@@ -395,7 +395,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/themes',
-    version: '0.0.22',
+    version: '0.0.23',
     subpath: '.',
     importName: '@askrjs/themes',
     slug: 'root',
@@ -403,7 +403,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/themes',
-    version: '0.0.22',
+    version: '0.0.23',
     subpath: './default',
     importName: '@askrjs/themes/default',
     slug: 'default',
@@ -411,7 +411,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/themes',
-    version: '0.0.22',
+    version: '0.0.23',
     subpath: './presets',
     importName: '@askrjs/themes/presets',
     slug: 'presets',
@@ -419,7 +419,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/themes',
-    version: '0.0.22',
+    version: '0.0.23',
     subpath: './components',
     importName: '@askrjs/themes/components',
     slug: 'components',
@@ -427,7 +427,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/themes',
-    version: '0.0.22',
+    version: '0.0.23',
     subpath: './theme',
     importName: '@askrjs/themes/theme',
     slug: 'theme',
@@ -435,7 +435,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/themes',
-    version: '0.0.22',
+    version: '0.0.23',
     subpath: './ssr',
     importName: '@askrjs/themes/ssr',
     slug: 'ssr',
@@ -443,7 +443,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/themes',
-    version: '0.0.22',
+    version: '0.0.23',
     subpath: './default/tokens.css',
     importName: '@askrjs/themes/default/tokens.css',
     slug: 'default--tokens.css',
@@ -451,7 +451,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/themes',
-    version: '0.0.22',
+    version: '0.0.23',
     subpath: './default/foundations.css',
     importName: '@askrjs/themes/default/foundations.css',
     slug: 'default--foundations.css',
@@ -459,7 +459,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/themes',
-    version: '0.0.22',
+    version: '0.0.23',
     subpath: './default/input.css',
     importName: '@askrjs/themes/default/input.css',
     slug: 'default--input.css',
@@ -467,7 +467,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/themes',
-    version: '0.0.22',
+    version: '0.0.23',
     subpath: './default/label.css',
     importName: '@askrjs/themes/default/label.css',
     slug: 'default--label.css',
@@ -475,7 +475,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: '.',
     importName: '@askrjs/ui',
     slug: 'root',
@@ -483,7 +483,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './avatar',
     importName: '@askrjs/ui/avatar',
     slug: 'avatar',
@@ -491,7 +491,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './button',
     importName: '@askrjs/ui/button',
     slug: 'button',
@@ -499,7 +499,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './checkbox',
     importName: '@askrjs/ui/checkbox',
     slug: 'checkbox',
@@ -507,7 +507,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './input',
     importName: '@askrjs/ui/input',
     slug: 'input',
@@ -515,7 +515,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './form',
     importName: '@askrjs/ui/form',
     slug: 'form',
@@ -523,7 +523,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './label',
     importName: '@askrjs/ui/label',
     slug: 'label',
@@ -531,7 +531,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './progress',
     importName: '@askrjs/ui/progress',
     slug: 'progress',
@@ -539,7 +539,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './progress-circle',
     importName: '@askrjs/ui/progress-circle',
     slug: 'progress-circle',
@@ -547,7 +547,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './radio-group',
     importName: '@askrjs/ui/radio-group',
     slug: 'radio-group',
@@ -555,7 +555,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './select',
     importName: '@askrjs/ui/select',
     slug: 'select',
@@ -563,7 +563,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './slider',
     importName: '@askrjs/ui/slider',
     slug: 'slider',
@@ -571,7 +571,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './switch',
     importName: '@askrjs/ui/switch',
     slug: 'switch',
@@ -579,7 +579,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './table',
     importName: '@askrjs/ui/table',
     slug: 'table',
@@ -587,7 +587,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './virtual-list',
     importName: '@askrjs/ui/virtual-list',
     slug: 'virtual-list',
@@ -595,7 +595,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './virtual-table',
     importName: '@askrjs/ui/virtual-table',
     slug: 'virtual-table',
@@ -603,7 +603,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './textarea',
     importName: '@askrjs/ui/textarea',
     slug: 'textarea',
@@ -611,7 +611,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './toggle',
     importName: '@askrjs/ui/toggle',
     slug: 'toggle',
@@ -619,7 +619,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './toggle-group',
     importName: '@askrjs/ui/toggle-group',
     slug: 'toggle-group',
@@ -627,7 +627,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './visually-hidden',
     importName: '@askrjs/ui/visually-hidden',
     slug: 'visually-hidden',
@@ -635,7 +635,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './accordion',
     importName: '@askrjs/ui/accordion',
     slug: 'accordion',
@@ -643,7 +643,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './alert-dialog',
     importName: '@askrjs/ui/alert-dialog',
     slug: 'alert-dialog',
@@ -651,7 +651,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './collapsible',
     importName: '@askrjs/ui/collapsible',
     slug: 'collapsible',
@@ -659,7 +659,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './dialog',
     importName: '@askrjs/ui/dialog',
     slug: 'dialog',
@@ -667,7 +667,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './dismissable-layer',
     importName: '@askrjs/ui/dismissable-layer',
     slug: 'dismissable-layer',
@@ -675,7 +675,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './dropdown',
     importName: '@askrjs/ui/dropdown',
     slug: 'dropdown',
@@ -683,7 +683,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './focus-scope',
     importName: '@askrjs/ui/focus-scope',
     slug: 'focus-scope',
@@ -691,7 +691,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './hover-card',
     importName: '@askrjs/ui/hover-card',
     slug: 'hover-card',
@@ -699,7 +699,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './menu',
     importName: '@askrjs/ui/menu',
     slug: 'menu',
@@ -707,7 +707,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './menubar',
     importName: '@askrjs/ui/menubar',
     slug: 'menubar',
@@ -715,7 +715,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './popover',
     importName: '@askrjs/ui/popover',
     slug: 'popover',
@@ -723,7 +723,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './scroll-area',
     importName: '@askrjs/ui/scroll-area',
     slug: 'scroll-area',
@@ -731,7 +731,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './toast',
     importName: '@askrjs/ui/toast',
     slug: 'toast',
@@ -739,7 +739,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/ui',
-    version: '0.0.25',
+    version: '0.0.26',
     subpath: './tooltip',
     importName: '@askrjs/ui/tooltip',
     slug: 'tooltip',

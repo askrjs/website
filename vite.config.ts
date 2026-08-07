@@ -22,6 +22,10 @@ export default function config(): UserConfig {
       outDir: '.askr/client',
       emptyOutDir: true,
       sourcemap: false,
+      // The two largest chunks are generated documentation datasets. They are
+      // route-loaded, highly compressible, and intentionally bounded below
+      // this limit rather than folded into the initial application entry.
+      chunkSizeWarningLimit: 800,
     },
   };
 }

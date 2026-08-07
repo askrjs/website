@@ -38,7 +38,7 @@ function route(
 }
 
 describe('route analytics', () => {
-  it('is the persistent outer layout for every registered route', () => {
+  it('should be the persistent outer layout for every registered route', () => {
     expect(routeRegistry.manifest.records.length).toBeGreaterThan(0);
     expect(
       routeRegistry.manifest.records.every(
@@ -47,7 +47,7 @@ describe('route analytics', () => {
     ).toBe(true);
   });
 
-  it('builds the GA4 page_view payload', () => {
+  it('should build the GA4 page_view payload', () => {
     expect(
       createPageViewPayload(
         'https://askrjs.com/docs?source=nav',
@@ -59,7 +59,7 @@ describe('route analytics', () => {
     });
   });
 
-  it('uses gtag when available and the dataLayer queue otherwise', () => {
+  it('should use gtag when available and the dataLayer queue otherwise', () => {
     const gtag = vi.fn();
     const dataLayer: unknown[] = [];
 
@@ -103,7 +103,7 @@ describe('route analytics', () => {
     ).toBe(false);
   });
 
-  it('subscribes immediately, tracks path and query commits, and ignores hashes', () => {
+  it('should subscribe immediately, tracks path and query commits, and ignores hashes', () => {
     let callback:
       | ((current: RouteSnapshot, previous: RouteSnapshot | null) => void)
       | undefined;
