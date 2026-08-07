@@ -25,7 +25,7 @@ import {
 } from '../src/pages/docs/component-demos';
 
 describe('documentation catalog', () => {
-  it('uses one browser registry for marketing and documentation routes', () => {
+  it('should use one browser registry for marketing and documentation routes', () => {
     const paths = new Set(
       routeRegistry.manifest.records.map((record) => record.path)
     );
@@ -36,11 +36,11 @@ describe('documentation catalog', () => {
     expect(paths.has('/docs/getting-started')).toBe(true);
   });
 
-  it('reuses the browser registry for static generation', () => {
+  it('should reuse the browser registry for static generation', () => {
     expect(staticRegistry).toBe(routeRegistry);
   });
 
-  it('teaches component-owned tuple state and current route syntax', () => {
+  it('should teach component-owned tuple state and current route syntax', () => {
     for (const page of docsCatalog.filter(
       (candidate) => candidate.navSection !== 'Generated API'
     )) {
@@ -91,7 +91,7 @@ describe('documentation catalog', () => {
     }
   });
 
-  it('keeps specialized component and chart examples page-specific', () => {
+  it('should keep specialized component and chart examples page-specific', () => {
     const expectedByRoute = {
       '/docs/components/alert-dialog': 'AlertDialog',
       '/docs/components/drawer-and-sheet': 'Sheet',
@@ -126,7 +126,7 @@ describe('documentation catalog', () => {
     ).toContain('<PageHeader title=');
   });
 
-  it('has unique routes, valid groups, anchors, and complete ordering', () => {
+  it('should have unique routes, valid groups, anchors, and complete ordering', () => {
     expect(new Set(docsCatalog.map((page) => page.route)).size).toBe(
       docsCatalog.length
     );
@@ -141,7 +141,7 @@ describe('documentation catalog', () => {
     }
   });
 
-  it('normalizes GitHub Pages trailing-slash document URLs', () => {
+  it('should normalize GitHub Pages trailing-slash document URLs', () => {
     for (const page of docsCatalog) {
       expect(normalizeDocsRoute(`${page.route}/`)).toBe(page.route);
       expect(docsByRoute.get(normalizeDocsRoute(`${page.route}/`))).toBe(page);
@@ -154,7 +154,7 @@ describe('documentation catalog', () => {
     }
   });
 
-  it('maps every published UI and theme code entrypoint to an authored guide', () => {
+  it('should map every published UI and theme code entrypoint to an authored guide', () => {
     for (const entrypoint of apiManifest.filter(
       (item) =>
         item.packageName === '@askrjs/ui' ||
@@ -169,7 +169,7 @@ describe('documentation catalog', () => {
     }
   });
 
-  it('provides interactive demos for behavior-heavy component pages', () => {
+  it('should provide interactive demos for behavior-heavy component pages', () => {
     const expected = [
       'Dialog',
       'Select',
@@ -190,7 +190,7 @@ describe('documentation catalog', () => {
     for (const title of expected) expect(componentDemoFor(title)).toBeTruthy();
   });
 
-  it('defines the exact visible section order for every page renderer', () => {
+  it('should define the exact visible section order for every page renderer', () => {
     for (const page of docsCatalog) {
       const toc = docsTableOfContents(page);
       expect(new Set(toc.map((item) => item.id)).size, page.route).toBe(
@@ -209,14 +209,14 @@ describe('documentation catalog', () => {
     }
   });
 
-  it('keeps upgrade guidance present for the docs landing page', () => {
+  it('should keep upgrade guidance present for the docs landing page', () => {
     expect(upgradeGuidance.length).toBeGreaterThanOrEqual(2);
     expect(
       upgradeGuidance.every((note) => note.title && note.when && note.summary)
     ).toBe(true);
   });
 
-  it('keeps route guidance registry-first and signature-accurate', () => {
+  it('should keep route guidance registry-first and signature-accurate', () => {
     const prose = JSON.stringify(headingOverrides);
     expect(prose).toContain('getRouteWarnings({ registry })');
     expect(prose).not.toContain('getRouteWarnings()');
@@ -226,7 +226,7 @@ describe('documentation catalog', () => {
     expect(prose).not.toContain('manifest-only');
   });
 
-  it('keeps hand-written CLI guidance aligned with generated behavior', () => {
+  it('should keep hand-written CLI guidance aligned with generated behavior', () => {
     const prose = JSON.stringify(headingOverrides);
     expect(prose).not.toContain('nine subcommands');
     expect(prose).not.toContain('CLI still reports success');
@@ -246,7 +246,7 @@ describe('documentation catalog', () => {
     expect(prose).not.toContain('verify-hydration');
   });
 
-  it('renders immutable collections with ordinary map expressions', () => {
+  it('should render immutable collections with ordinary map expressions', () => {
     const staticCollectionFiles = [
       'site-footer.tsx',
       'docs/_layout.tsx',
@@ -265,7 +265,7 @@ describe('documentation catalog', () => {
     }
   });
 
-  it('keeps audited marketing claims within shipped boundaries', () => {
+  it('should keep audited marketing claims within shipped boundaries', () => {
     const source = [
       'home.tsx',
       'platform.tsx',
@@ -289,7 +289,7 @@ describe('documentation catalog', () => {
     expect(source).toContain('two deployment paths');
   });
 
-  it('keeps the live shared layout mobile-safe', () => {
+  it('should keep the live shared layout mobile-safe', () => {
     const styles = readFileSync(
       new URL('../src/styles.css', import.meta.url),
       'utf8'
@@ -339,7 +339,7 @@ describe('documentation catalog', () => {
 });
 
 describe('generated API reference', () => {
-  it('discovers real Lucide components and excludes its factory', () => {
+  it('should discover real Lucide components and excludes its factory', () => {
     const names = lucideIcons.map((icon) => icon.name);
     expect(names).toEqual(
       expect.arrayContaining(['CircleIcon', 'FullscreenIcon', 'SearchIcon'])
@@ -360,7 +360,7 @@ describe('generated API reference', () => {
     expect(renderedNames).not.toContain('createIcon');
   });
 
-  it('uses a visual, attributed page for the Lucide root API', async () => {
+  it('should use a visual, attributed page for the Lucide root API', async () => {
     const page = docsByRoute.get('/docs/reference/api/lucide/root');
     expect(page).toBeTruthy();
     const source = readFileSync(
@@ -374,7 +374,7 @@ describe('generated API reference', () => {
     expect((await page!.loader()).default.name).toBe('LucideApiPage');
   });
 
-  it('represents every entrypoint and gives every symbol an anchor', () => {
+  it('should represent every entrypoint and gives every symbol an anchor', () => {
     for (const entrypoint of apiManifest) {
       const route =
         `/docs/reference/api/${entrypoint.packageName.slice('@askrjs/'.length)}/${entrypoint.slug}` as const;
@@ -391,7 +391,7 @@ describe('generated API reference', () => {
     }
   });
 
-  it('finds concepts, package imports, component names, and API symbols', () => {
+  it('should find concepts, package imports, component names, and API symbols', () => {
     expect(searchDocs('determinism')[0]?.route).toContain('/docs/');
     expect(
       searchDocs('@askrjs/askr/router').some((record) =>
@@ -406,7 +406,7 @@ describe('generated API reference', () => {
     ).toBe(true);
   });
 
-  it('uses only symbols exported by published package entrypoints', () => {
+  it('should use only symbols exported by published package entrypoints', () => {
     const exportsByImport = new Map(
       apiManifest.map((entrypoint) => [
         entrypoint.importName,
