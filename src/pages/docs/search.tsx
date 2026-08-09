@@ -13,18 +13,107 @@ import {
 } from '@askrjs/themes/command';
 import type { DocsSearchRecord } from './types';
 
-export function DocsSearch() {
-  const [open, setOpen] = state(false);
+type DocsSearchContentProps = {
+  close: () => void;
+  isOpen: () => boolean;
+};
+
+function DocsSearchInput(props: {
+  close: () => void;
+  runSearch: (value: string | undefined) => Promise<void>;
+}) {
+  return (
+    <CommandHeader class="docs-search__input">
+      <SearchIcon size={18} aria-hidden="true" />
+      <CommandInput
+        data-docs-search-input
+        placeholder="Search concepts, imports, and API symbols"
+        aria-label="Search documentation"
+        onInput={(event: Event) =>
+          void props.runSearch((event.currentTarget as HTMLInputElement).value)
+        }
+      />
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon-sm"
+        onPress={props.close}
+        aria-label="Close search"
+      >
+        <XIcon size={18} aria-hidden="true" />
+      </Button>
+    </CommandHeader>
+  );
+}
+
+function DocsSearchResults(props: {
+  error: () => boolean;
+  loading: () => boolean;
+  query: () => string;
+  results: () => DocsSearchRecord[];
+}) {
+  return (
+    <div class="docs-search__results" aria-live="polite">
+      <Show
+        when={props.loading}
+        fallback={
+          <Show
+            when={() => !props.query().trim()}
+            fallback={
+              <Show
+                when={props.error}
+                fallback={
+                  <Show
+                    when={() => props.results().length > 0}
+                    fallback={<p>No results for “{props.query}”.</p>}
+                  >
+                    <CommandPaletteList>
+                      <For
+                        each={props.results}
+                        by={(result) =>
+                          `${result.route}#${result.anchor ?? ''}`
+                        }
+                      >
+                        {(result) => (
+                          <CommandPaletteLink
+                            href={`${result.route}${result.anchor ? `#${result.anchor}` : ''}`}
+                          >
+                            <span>
+                              <strong>{result.title}</strong>
+                              <small>{result.description}</small>
+                            </span>
+                            <em>{result.group}</em>
+                          </CommandPaletteLink>
+                        )}
+                      </For>
+                    </CommandPaletteList>
+                  </Show>
+                }
+              >
+                <p>Search is temporarily unavailable. Please try again.</p>
+              </Show>
+            }
+          >
+            <p>
+              Search page titles, component aliases, package imports, CLI
+              commands, and every published API symbol.
+            </p>
+          </Show>
+        }
+      >
+        <p>Loading the API index…</p>
+      </Show>
+    </div>
+  );
+}
+
+function DocsSearchContent(props: DocsSearchContentProps) {
   const [query, setQuery] = state('');
   const [loading, setLoading] = state(false);
   const [results, setResults] = state<DocsSearchRecord[]>([]);
   const [error, setError] = state(false);
 
-  const openSearch = () => {
-    setOpen(true);
-  };
-
-  const runSearch = async (value: string | undefined) => {
+  const runSearch = async (value: string | undefined): Promise<void> => {
     const nextValue = value ?? '';
     setQuery(nextValue);
     setError(false);
@@ -36,23 +125,38 @@ export function DocsSearch() {
     setLoading(true);
     try {
       const { searchDocs } = await import('./search-index');
-      if ((query() ?? '') !== nextValue || !open()) return;
+      if ((query() ?? '') !== nextValue || !props.isOpen()) return;
       setResults(searchDocs(nextValue));
     } catch {
-      if ((query() ?? '') !== nextValue || !open()) return;
+      if ((query() ?? '') !== nextValue || !props.isOpen()) return;
       setResults([]);
       setError(true);
     } finally {
-      if ((query() ?? '') === nextValue) setLoading(false);
+      if ((query() ?? '') === nextValue && props.isOpen()) setLoading(false);
     }
+  };
+  return (
+    <>
+      <DocsSearchInput close={props.close} runSearch={runSearch} />
+      <DocsSearchResults
+        error={error}
+        loading={loading}
+        query={query}
+        results={results}
+      />
+    </>
+  );
+}
+
+export function DocsSearch() {
+  const [open, setOpen] = state(false);
+
+  const openSearch = () => {
+    setOpen(true);
   };
 
   const close = () => {
     setOpen(false);
-    setQuery('');
-    setResults([]);
-    setLoading(false);
-    setError(false);
   };
   const setSearchOpen = (nextOpen: boolean) => {
     if (nextOpen) {
@@ -61,7 +165,6 @@ export function DocsSearch() {
     }
     close();
   };
-  const queryValue = query() ?? '';
 
   // The resource listener follows the component lifecycle, unlike a raw
   // window listener installed from a ref callback.
@@ -89,7 +192,7 @@ export function DocsSearch() {
       <CommandPalette open={open()} onOpenChange={setSearchOpen}>
         <CommandPaletteTrigger asChild>
           <Button
-            class="docs-search__trigger"
+            class="docs-search__trigger btn btn-outline"
             type="button"
             variant="outline"
             width="full"
@@ -106,81 +209,7 @@ export function DocsSearch() {
           title="Search documentation"
           description="Search concepts, imports, and API symbols"
         >
-          <CommandHeader class="docs-search__input">
-            <SearchIcon size={18} aria-hidden="true" />
-            <CommandInput
-              data-docs-search-input
-              type="search"
-              value={queryValue}
-              placeholder="Search concepts, imports, and API symbols"
-              aria-label="Search documentation"
-              onInput={(event: Event) =>
-                void runSearch((event.currentTarget as HTMLInputElement).value)
-              }
-            />
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-sm"
-              onPress={close}
-              aria-label="Close search"
-            >
-              <XIcon size={18} aria-hidden="true" />
-            </Button>
-          </CommandHeader>
-          <div class="docs-search__results" aria-live="polite">
-            <Show
-              when={loading()}
-              fallback={
-                <Show
-                  when={() => !query().trim()}
-                  fallback={
-                    <Show
-                      when={error()}
-                      fallback={
-                        <Show
-                          when={() => results().length > 0}
-                          fallback={<p>No results for “{queryValue}”.</p>}
-                        >
-                          <CommandPaletteList>
-                            <For
-                              each={results()}
-                              by={(result) =>
-                                `${result.route}#${result.anchor ?? ''}`
-                              }
-                            >
-                              {(result) => (
-                                <CommandPaletteLink
-                                  href={`${result.route}${result.anchor ? `#${result.anchor}` : ''}`}
-                                >
-                                  <span>
-                                    <strong>{result.title}</strong>
-                                    <small>{result.description}</small>
-                                  </span>
-                                  <em>{result.group}</em>
-                                </CommandPaletteLink>
-                              )}
-                            </For>
-                          </CommandPaletteList>
-                        </Show>
-                      }
-                    >
-                      <p>
-                        Search is temporarily unavailable. Please try again.
-                      </p>
-                    </Show>
-                  }
-                >
-                  <p>
-                    Search page titles, component aliases, package imports, CLI
-                    commands, and every published API symbol.
-                  </p>
-                </Show>
-              }
-            >
-              <p>Loading the API index…</p>
-            </Show>
-          </div>
+          <DocsSearchContent close={close} isOpen={open} />
         </CommandPaletteContent>
       </CommandPalette>
     </div>
