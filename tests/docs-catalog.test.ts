@@ -306,12 +306,14 @@ describe('documentation catalog', () => {
     expect(search).toContain('<CommandPaletteContent');
     expect(search).toContain('<CommandPaletteLink');
     expect(search).toContain('<DocsSearchResults');
+    expect(search).toContain("aria-busy={props.loading() ? 'true' : 'false'}");
     expect(search).toContain('class="docs-search__trigger btn btn-outline"');
     expect(search).not.toContain('type="search"');
     expect(search).not.toContain('value={query}');
     expect(search).not.toContain('<Portal>');
     expect(search).not.toContain('role="dialog"');
     expect(styles).toContain('.page-navigation__inner');
+    expect(styles).toContain('block-size: min(20rem, calc(100dvh - 8rem));');
     expect(styles).toContain('.component-demo__surface');
     expect(styles).toMatch(
       /\.page-navigation__link span\s*\{[^}]*overflow-wrap: anywhere;/s
