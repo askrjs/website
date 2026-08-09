@@ -305,6 +305,10 @@ describe('documentation catalog', () => {
     expect(search).toContain("from '@askrjs/themes/command'");
     expect(search).toContain('<CommandPaletteContent');
     expect(search).toContain('<CommandPaletteLink');
+    expect(search).toContain('<DocsSearchResults');
+    expect(search).toContain('class="docs-search__trigger btn btn-outline"');
+    expect(search).not.toContain('type="search"');
+    expect(search).not.toContain('value={query}');
     expect(search).not.toContain('<Portal>');
     expect(search).not.toContain('role="dialog"');
     expect(styles).toContain('.page-navigation__inner');

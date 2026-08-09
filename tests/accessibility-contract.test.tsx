@@ -12,6 +12,7 @@ describe('site accessibility contracts', () => {
 
     expect(trigger).toBeDefined();
     expect(trigger!).toContain('aria-label="Search docs"');
+    expect(trigger!).toContain('class="docs-search__trigger btn btn-outline"');
     expect(trigger!).toContain('<kbd aria-hidden="true">⌘ K</kbd>');
   });
 
