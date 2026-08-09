@@ -18,6 +18,12 @@ type DocsSearchContentProps = {
   isOpen: () => boolean;
 };
 
+let searchIndexPromise: Promise<typeof import('./search-index')> | undefined;
+
+function loadSearchIndex(): Promise<typeof import('./search-index')> {
+  return (searchIndexPromise ??= import('./search-index'));
+}
+
 function DocsSearchInput(props: {
   close: () => void;
   runSearch: (value: string | undefined) => Promise<void>;
@@ -53,40 +59,25 @@ function DocsSearchResults(props: {
   results: () => DocsSearchRecord[];
 }) {
   return (
-    <div class="docs-search__results" aria-live="polite">
+    <div
+      class="docs-search__results"
+      aria-live="polite"
+      aria-busy={props.loading() ? 'true' : 'false'}
+    >
       <Show
-        when={props.loading}
+        when={() => !props.query().trim()}
         fallback={
           <Show
-            when={() => !props.query().trim()}
+            when={() => props.results().length > 0}
             fallback={
               <Show
                 when={props.error}
                 fallback={
                   <Show
-                    when={() => props.results().length > 0}
+                    when={props.loading}
                     fallback={<p>No results for “{props.query}”.</p>}
                   >
-                    <CommandPaletteList>
-                      <For
-                        each={props.results}
-                        by={(result) =>
-                          `${result.route}#${result.anchor ?? ''}`
-                        }
-                      >
-                        {(result) => (
-                          <CommandPaletteLink
-                            href={`${result.route}${result.anchor ? `#${result.anchor}` : ''}`}
-                          >
-                            <span>
-                              <strong>{result.title}</strong>
-                              <small>{result.description}</small>
-                            </span>
-                            <em>{result.group}</em>
-                          </CommandPaletteLink>
-                        )}
-                      </For>
-                    </CommandPaletteList>
+                    <p>Searching…</p>
                   </Show>
                 }
               >
@@ -94,14 +85,31 @@ function DocsSearchResults(props: {
               </Show>
             }
           >
-            <p>
-              Search page titles, component aliases, package imports, CLI
-              commands, and every published API symbol.
-            </p>
+            <CommandPaletteList>
+              <For
+                each={props.results}
+                by={(result) => `${result.route}#${result.anchor ?? ''}`}
+              >
+                {(result) => (
+                  <CommandPaletteLink
+                    href={`${result.route}${result.anchor ? `#${result.anchor}` : ''}`}
+                  >
+                    <span>
+                      <strong>{result.title}</strong>
+                      <small>{result.description}</small>
+                    </span>
+                    <em>{result.group}</em>
+                  </CommandPaletteLink>
+                )}
+              </For>
+            </CommandPaletteList>
           </Show>
         }
       >
-        <p>Loading the API index…</p>
+        <p>
+          Search page titles, component aliases, package imports, CLI commands,
+          and every published API symbol.
+        </p>
       </Show>
     </div>
   );
@@ -124,7 +132,7 @@ function DocsSearchContent(props: DocsSearchContentProps) {
     }
     setLoading(true);
     try {
-      const { searchDocs } = await import('./search-index');
+      const { searchDocs } = await loadSearchIndex();
       if ((query() ?? '') !== nextValue || !props.isOpen()) return;
       setResults(searchDocs(nextValue));
     } catch {

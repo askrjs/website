@@ -1350,6 +1350,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .docs-search__results {
+  block-size: min(20rem, calc(100dvh - 8rem));
   max-height: min(60vh, 32rem);
   padding: 0.65rem;
   overflow-y: auto;
