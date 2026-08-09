@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "vp dev",
     "build": "npm run build:client && npm run build:ssg",
+    "postbuild": "npm run test:static",
     "build:client": "vp build --outDir .askr/client",
     "build:ssg": "askr ssg --config ./ssg.config.ts --output ./dist && cp ./dist/404/index.html ./dist/404.html",
     "analyze": "askr analyze --check",
@@ -17,13 +18,13 @@
     "fmt:check": "vp fmt . --check",
     "test:unit": "vp test run --exclude tests/generated-output-contract.test.ts",
     "test:static": "vp test run tests/generated-output-contract.test.ts",
-    "test": "npm run test:unit && npm run test:static",
+    "test": "npm run test:unit",
     "typecheck": "tsc --noEmit",
-    "check": "npm run fmt:check && npm run lint && npm run typecheck && npm run test:unit && npm run build && npm run test:static",
+    "check": "npm run fmt:check && npm run lint && npm run typecheck && npm test && npm run build",
     "preview": "vp preview --outDir dist"
   },
   "dependencies": {
-    "@askrjs/askr": "0.0.89",
+    "@askrjs/askr": "0.0.91",
     "@askrjs/charts": "0.1.6",
     "@askrjs/fetch": "0.0.5",
     "@askrjs/i18n": "0.0.4",
@@ -31,13 +32,13 @@
     "@askrjs/lucide": "0.0.9",
     "@askrjs/monaco": "0.0.8",
     "@askrjs/otel": "0.0.5",
-    "@askrjs/themes": "0.0.24",
+    "@askrjs/themes": "0.0.25",
     "@askrjs/ui": "0.0.27",
     "@fontsource-variable/domine": "^5.3.0"
   },
   "devDependencies": {
     "@askrjs/auth": "0.0.9",
-    "@askrjs/cli": "0.0.22",
+    "@askrjs/cli": "0.0.23",
     "@askrjs/node": "0.0.9",
     "@askrjs/schema": "0.0.6",
     "@askrjs/server": "0.0.13",

@@ -1,14 +1,17 @@
 import { For, Show, state } from '@askrjs/askr';
-import { Portal } from '@askrjs/askr/foundations';
-import { Link } from '@askrjs/askr/router';
 import { on } from '@askrjs/askr/resources';
 import { SearchIcon, XIcon } from '@askrjs/lucide';
 import { Button } from '@askrjs/themes/components';
+import {
+  CommandHeader,
+  CommandInput,
+  CommandPalette,
+  CommandPaletteContent,
+  CommandPaletteLink,
+  CommandPaletteList,
+  CommandPaletteTrigger,
+} from '@askrjs/themes/command';
 import type { DocsSearchRecord } from './types';
-
-function focusSearchInput() {
-  document.querySelector<HTMLInputElement>('[data-docs-search-input]')?.focus();
-}
 
 export function DocsSearch() {
   const [open, setOpen] = state(false);
@@ -19,7 +22,6 @@ export function DocsSearch() {
 
   const openSearch = () => {
     setOpen(true);
-    window.setTimeout(focusSearchInput, 0);
   };
 
   const runSearch = async (value: string | undefined) => {
@@ -52,6 +54,13 @@ export function DocsSearch() {
     setLoading(false);
     setError(false);
   };
+  const setSearchOpen = (nextOpen: boolean) => {
+    if (nextOpen) {
+      setOpen(true);
+      return;
+    }
+    close();
+  };
   const queryValue = query() ?? '';
 
   // The resource listener follows the component lifecycle, unlike a raw
@@ -72,125 +81,108 @@ export function DocsSearch() {
         event.preventDefault();
         openSearch();
       }
-      if (event.key === 'Escape' && open()) close();
     }
   );
 
   return (
     <div class="docs-search">
-      <Button
-        class="docs-search__trigger"
-        type="button"
-        variant="outline"
-        width="full"
-        onPress={openSearch}
-        aria-haspopup="dialog"
-        aria-expanded={open()}
-        aria-label="Search docs"
-        title="Search docs (⌘ K)"
-      >
-        <SearchIcon size={16} aria-hidden="true" />
-        <span>Search docs</span>
-        <kbd aria-hidden="true">⌘ K</kbd>
-      </Button>
-      <Portal>
-        <div
-          class={`docs-search__backdrop${open() ? '' : ' docs-search__backdrop--closed'}`}
-          role="presentation"
-          aria-hidden={!open()}
-          onClick={(event: Event) => {
-            const target = event.target as HTMLElement | null;
-            if (target?.classList.contains('docs-search__backdrop')) close();
-          }}
-        >
-          <section
-            class="docs-search__dialog"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Search documentation"
+      <CommandPalette open={open()} onOpenChange={setSearchOpen}>
+        <CommandPaletteTrigger asChild>
+          <Button
+            class="docs-search__trigger"
+            type="button"
+            variant="outline"
+            width="full"
+            aria-label="Search docs"
+            title="Search docs (⌘ K)"
           >
-            <div class="docs-search__input">
-              <SearchIcon size={18} aria-hidden="true" />
-              <input
-                data-docs-search-input
-                type="search"
-                value={queryValue}
-                placeholder="Search concepts, imports, and API symbols"
-                onInput={(event: Event) =>
-                  void runSearch(
-                    (event.currentTarget as HTMLInputElement).value
-                  )
-                }
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-sm"
-                onPress={close}
-                aria-label="Close search"
-              >
-                <XIcon size={18} aria-hidden="true" />
-              </Button>
-            </div>
-            <div class="docs-search__results" aria-live="polite">
-              <Show
-                when={loading}
-                fallback={
-                  <Show
-                    when={() => !query().trim()}
-                    fallback={
-                      <Show
-                        when={error}
-                        fallback={
-                          <Show
-                            when={() => results().length > 0}
-                            fallback={<p>No results for “{queryValue}”.</p>}
-                          >
-                            <ul>
-                              <For
-                                each={results}
-                                by={(result) =>
-                                  `${result.route}#${result.anchor ?? ''}`
-                                }
-                              >
-                                {(result) => (
-                                  <li>
-                                    <Link
-                                      href={`${result.route}${result.anchor ? `#${result.anchor}` : ''}`}
-                                      onPress={close}
-                                    >
-                                      <span>
-                                        <strong>{result.title}</strong>
-                                        <small>{result.description}</small>
-                                      </span>
-                                      <em>{result.group}</em>
-                                    </Link>
-                                  </li>
-                                )}
-                              </For>
-                            </ul>
-                          </Show>
-                        }
-                      >
-                        <p>
-                          Search is temporarily unavailable. Please try again.
-                        </p>
-                      </Show>
-                    }
-                  >
-                    <p>
-                      Search page titles, component aliases, package imports,
-                      CLI commands, and every published API symbol.
-                    </p>
-                  </Show>
-                }
-              >
-                <p>Loading the API index…</p>
-              </Show>
-            </div>
-          </section>
-        </div>
-      </Portal>
+            <SearchIcon size={16} aria-hidden="true" />
+            <span>Search docs</span>
+            <kbd aria-hidden="true">⌘ K</kbd>
+          </Button>
+        </CommandPaletteTrigger>
+        <CommandPaletteContent
+          class="docs-search__dialog"
+          title="Search documentation"
+          description="Search concepts, imports, and API symbols"
+        >
+          <CommandHeader class="docs-search__input">
+            <SearchIcon size={18} aria-hidden="true" />
+            <CommandInput
+              data-docs-search-input
+              type="search"
+              value={queryValue}
+              placeholder="Search concepts, imports, and API symbols"
+              aria-label="Search documentation"
+              onInput={(event: Event) =>
+                void runSearch((event.currentTarget as HTMLInputElement).value)
+              }
+            />
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              onPress={close}
+              aria-label="Close search"
+            >
+              <XIcon size={18} aria-hidden="true" />
+            </Button>
+          </CommandHeader>
+          <div class="docs-search__results" aria-live="polite">
+            <Show
+              when={loading()}
+              fallback={
+                <Show
+                  when={() => !query().trim()}
+                  fallback={
+                    <Show
+                      when={error()}
+                      fallback={
+                        <Show
+                          when={() => results().length > 0}
+                          fallback={<p>No results for “{queryValue}”.</p>}
+                        >
+                          <CommandPaletteList>
+                            <For
+                              each={results()}
+                              by={(result) =>
+                                `${result.route}#${result.anchor ?? ''}`
+                              }
+                            >
+                              {(result) => (
+                                <CommandPaletteLink
+                                  href={`${result.route}${result.anchor ? `#${result.anchor}` : ''}`}
+                                >
+                                  <span>
+                                    <strong>{result.title}</strong>
+                                    <small>{result.description}</small>
+                                  </span>
+                                  <em>{result.group}</em>
+                                </CommandPaletteLink>
+                              )}
+                            </For>
+                          </CommandPaletteList>
+                        </Show>
+                      }
+                    >
+                      <p>
+                        Search is temporarily unavailable. Please try again.
+                      </p>
+                    </Show>
+                  }
+                >
+                  <p>
+                    Search page titles, component aliases, package imports, CLI
+                    commands, and every published API symbol.
+                  </p>
+                </Show>
+              }
+            >
+              <p>Loading the API index…</p>
+            </Show>
+          </div>
+        </CommandPaletteContent>
+      </CommandPalette>
     </div>
   );
 }

@@ -9,10 +9,13 @@ CI therefore validate the same package boundary used by GitHub Pages.
 ## Commands
 
 - `npm run dev` starts the Vite development server.
-- `npm run build` builds the client and runs `askr ssg` into `dist/`.
+- `npm run build` builds the client, runs `askr ssg` into `dist/`, and validates
+  the generated output.
 - `npm run fmt:check` checks formatting without changing files.
-- `npm test` runs the unit and generated-output contract tests after a build.
+- `npm test` runs the unit tests; generated-output contracts run automatically
+  after `npm run build`.
 - `npm run preview` serves `dist/` with `vp preview --outDir dist`.
+- `npm run analyze` runs Askr's framework-specific correctness analysis.
 - `npm run check` runs formatting, lint, typecheck, tests, and the production
   build.
 

@@ -301,14 +301,12 @@ describe('documentation catalog', () => {
 
     expect(styles).toContain(`.site-header .docs-search__trigger span`);
     expect(styles).toContain(`.site-header .docs-search__trigger kbd`);
-    expect(styles).toContain('max-height: calc(100dvh - 1rem)');
-    expect(styles).toContain('max-height: calc(100dvh - 5.25rem)');
-    expect(styles).toMatch(
-      /\.docs-search__backdrop\s*\{[^}]*align-items: start;[^}]*overflow: hidden;/s
-    );
-    expect(styles).not.toMatch(
-      /\.docs-search__backdrop\s*\{[^}]*align-items: stretch;/s
-    );
+    expect(styles).toContain('max-height: calc(100dvh - 5rem)');
+    expect(search).toContain("from '@askrjs/themes/command'");
+    expect(search).toContain('<CommandPaletteContent');
+    expect(search).toContain('<CommandPaletteLink');
+    expect(search).not.toContain('<Portal>');
+    expect(search).not.toContain('role="dialog"');
     expect(styles).toContain('.page-navigation__inner');
     expect(styles).toContain('.component-demo__surface');
     expect(styles).toMatch(
@@ -334,7 +332,9 @@ describe('documentation catalog', () => {
     expect(styles).not.toContain('.docs-shell');
     expect(styles).not.toContain('.docs-sidebar-shell');
     expect(styles).not.toContain('.docs-drawer');
-    expect(search).toContain('aria-expanded={open()}');
+    expect(search).toContain(
+      '<CommandPalette open={open()} onOpenChange={setSearchOpen}>'
+    );
   });
 });
 
