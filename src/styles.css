@@ -1344,37 +1344,8 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   font-size: 0.65rem;
 }
 
-.docs-search__backdrop {
-  position: fixed;
-  z-index: 100;
-  inset: 0;
-  display: grid;
-  align-items: start;
-  justify-items: center;
-  padding: min(15vh, 8rem) 1rem 1rem;
-  background: color-mix(in srgb, #000 48%, transparent);
-}
-
-.docs-search__backdrop--closed {
-  display: none;
-}
-
-.docs-search__dialog {
-  width: min(42rem, 100%);
-  min-width: 0;
-  overflow: hidden;
-  border: 1px solid var(--ak-color-border);
-  border-radius: 0.9rem;
-  background: var(--ak-color-bg);
-  box-shadow: 0 1.25rem 4rem color-mix(in srgb, #000 30%, transparent);
-}
-
 .docs-search__input {
-  display: flex;
-  align-items: center;
   gap: 0.65rem;
-  padding: 0.8rem 1rem;
-  border-bottom: 1px solid var(--ak-color-border);
 }
 
 .docs-search__input input {
@@ -1819,25 +1790,8 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
     display: none;
   }
 
-  .docs-search__backdrop {
-    align-items: start;
-    overflow: hidden;
-    padding: max(0.5rem, env(safe-area-inset-top))
-      max(0.5rem, env(safe-area-inset-right))
-      max(0.5rem, env(safe-area-inset-bottom))
-      max(0.5rem, env(safe-area-inset-left));
-  }
-
-  .docs-search__dialog {
-    display: flex;
-    width: 100%;
-    max-height: calc(100dvh - 1rem);
-    flex-direction: column;
-  }
-
   .docs-search__results {
-    max-height: calc(100dvh - 5.25rem);
-    flex: none;
+    max-height: calc(100dvh - 5rem);
   }
 
   .docs-channel {
