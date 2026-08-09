@@ -1327,6 +1327,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .docs-search__trigger {
+  width: 100%;
   min-width: 0;
   justify-content: flex-start;
 }
@@ -1346,16 +1347,6 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .docs-search__input {
   gap: 0.65rem;
-}
-
-.docs-search__input input {
-  min-width: 0;
-  flex: 1;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  color: var(--ak-color-text);
-  font: inherit;
 }
 
 .docs-search__results {
