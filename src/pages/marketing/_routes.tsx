@@ -15,6 +15,11 @@ import { ToolingPage } from './tooling';
 export type RouteMetadata = {
   title: string;
   description: string;
+  links?: readonly {
+    rel: string;
+    href: string;
+    [key: string]: string;
+  }[];
 };
 
 export const marketingRouteMetadata: Readonly<Record<string, RouteMetadata>> = {
