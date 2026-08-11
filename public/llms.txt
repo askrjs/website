@@ -1,0 +1,34 @@
+# Askr
+
+> Askr is a full-stack TypeScript framework with explicit route registries, reactive state, accessible UI, server APIs, and shared SPA, SSR, hydration, and static-generation primitives.
+
+Use the documentation links below as the primary source for Askr APIs and usage. Askr packages use the `@askrjs/*` npm scope, and the command-line tool is invoked as `askr`.
+
+## Start here
+
+- [Documentation](https://askrjs.com/docs): Documentation overview and navigation for the Askr platform.
+- [Getting started](https://askrjs.com/docs/getting-started): Install Askr, choose a starter, and build a first route.
+- [Core concepts](https://askrjs.com/docs/core-concepts): Components, state, scopes, lifecycle work, and deterministic rendering.
+- [Guides](https://askrjs.com/docs/guides): Task-oriented guides for building and shipping Askr applications.
+
+## Framework
+
+- [Routing and data](https://askrjs.com/docs/routing): Explicit route registries, loaders, navigation, parameters, and data flow.
+- [Rendering](https://askrjs.com/docs/rendering): Client rendering, SSR, streaming, hydration, islands, and static generation.
+- [Server and APIs](https://askrjs.com/docs/server): Server applications, actions, typed APIs, authentication, middleware, and MCP.
+- [UI and components](https://askrjs.com/docs/components): Headless accessible primitives, themed components, icons, charts, and editor integrations.
+- [Tooling](https://askrjs.com/docs/tooling): CLI workflows for creating, analyzing, generating, checking, and upgrading projects.
+- [API reference](https://askrjs.com/docs/reference): Package entry points, exported APIs, CLI reference, and release notes.
+
+## Platform overview
+
+- [Platform](https://askrjs.com/platform): How the runtime, router, UI, server, rendering, and tooling fit together.
+- [Application model](https://askrjs.com/application-model): Ownership and cleanup of state, routes, and asynchronous work.
+- [Full-stack applications](https://askrjs.com/full-stack): Forms, validated APIs, OpenAPI, and authorization policies in one route tree.
+- [Production](https://askrjs.com/production): Static and Node deployment paths, probes, middleware, localization, and telemetry.
+
+## Optional
+
+- [Askr source](https://github.com/askrjs/askr): Framework runtime and public package source.
+- [Example applications](https://github.com/askrjs/askr-examples): Complete applications demonstrating Askr patterns.
+- [Website source](https://github.com/askrjs/website): Source for this documentation website.
