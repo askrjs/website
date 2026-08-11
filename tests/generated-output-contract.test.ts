@@ -14,6 +14,15 @@ const root = process.cwd();
 const dist = resolve(root, 'dist');
 
 describe('generated output', () => {
+  it('should publish the LLM documentation index at the site root', () => {
+    const llms = readFileSync(resolve(dist, 'llms.txt'), 'utf8');
+
+    expect(llms).toMatch(/^# Askr\n\n> /);
+    expect(llms).toContain('https://askrjs.com/docs/getting-started');
+    expect(llms).toContain('https://askrjs.com/docs/reference');
+    expect(llms).toContain('https://github.com/askrjs/askr');
+  });
+
   it('should contain every route and the manual GA4 page-view configuration', () => {
     const metadata = JSON.parse(
       readFileSync(resolve(dist, 'metadata.json'), 'utf8')
