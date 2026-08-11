@@ -1,7 +1,12 @@
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { docsCatalog } from '../src/pages/docs/catalog';
+import {
+  docsMarkdownPath,
+  renderDocsPageMarkdown,
+  renderLlmsFull,
+} from '../src/pages/docs/markdown';
 import { marketingRouteMetadata } from '../src/pages/marketing/_routes';
 
 interface StaticMetadata {
@@ -18,9 +23,55 @@ describe('generated output', () => {
     const llms = readFileSync(resolve(dist, 'llms.txt'), 'utf8');
 
     expect(llms).toMatch(/^# Askr\n\n> /);
-    expect(llms).toContain('https://askrjs.com/docs/getting-started');
-    expect(llms).toContain('https://askrjs.com/docs/reference');
+    expect(llms).toContain('https://askrjs.com/docs/getting-started/index.md');
+    expect(llms).toContain('https://askrjs.com/docs/reference/index.md');
+    expect(llms).toContain('https://askrjs.com/llms-full.txt');
     expect(llms).toContain('https://github.com/askrjs/askr');
+
+    const full = readFileSync(resolve(dist, 'llms-full.txt'), 'utf8');
+    expect(full).toMatch(/^# Askr Documentation Corpus\n\n> /);
+    expect(full).toBe(renderLlmsFull());
+    const markdownFiles = readdirSync(resolve(dist, 'docs'), {
+      recursive: true,
+    })
+      .map(String)
+      .filter((file) => file.endsWith('index.md'));
+    expect(markdownFiles).toHaveLength(docsCatalog.length);
+
+    for (const match of llms.matchAll(
+      /\]\(https:\/\/askrjs\.com\/([^)]+)\)/g
+    )) {
+      const path = match[1]!;
+      const outputPath = /\.[a-z0-9]+$/i.test(path)
+        ? resolve(dist, path)
+        : resolve(dist, path, 'index.html');
+      expect(existsSync(outputPath), path).toBe(true);
+    }
+
+    for (const page of docsCatalog) {
+      const markdown = readFileSync(
+        resolve(dist, docsMarkdownPath(page.route)),
+        'utf8'
+      );
+      expect(markdown, page.route).toContain(
+        `Source: [https://askrjs.com${page.route}](https://askrjs.com${page.route})`
+      );
+      expect(markdown, page.route).toBe(renderDocsPageMarkdown(page));
+      expect(full, page.route).toContain(
+        `Source: [https://askrjs.com${page.route}](https://askrjs.com${page.route})`
+      );
+
+      const html = readFileSync(
+        resolve(dist, page.route.slice(1), 'index.html'),
+        'utf8'
+      );
+      expect(html, page.route).toContain(
+        `<link data-askr-head="" rel="alternate" href="${page.route}/index.md" type="text/markdown">`
+      );
+      expect(html, page.route).toContain(
+        '<link data-askr-head="" rel="describedby" href="/llms.txt" type="text/plain">'
+      );
+    }
   });
 
   it('should contain every route and the manual GA4 page-view configuration', () => {
