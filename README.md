@@ -9,8 +9,8 @@ CI therefore validate the same package boundary used by GitHub Pages.
 ## Commands
 
 - `npm run dev` starts the Vite development server.
-- `npm run build` builds the client, runs `askr ssg` into `dist/`, and validates
-  the generated output.
+- `npm run build` builds the client, generates the AI-readable documentation,
+  runs `askr ssg` into `dist/`, and validates the generated output.
 - `npm run fmt:check` checks formatting without changing files.
 - `npm test` runs the unit tests; generated-output contracts run automatically
   after `npm run build`.
@@ -32,6 +32,9 @@ CI therefore validate the same package boundary used by GitHub Pages.
 - `src/pages/docs/` also owns the shared content primitives, responsive shell,
   generated API entrypoint pages, exhaustive Lucide gallery, and lazy search
   index.
+- `src/pages/docs/markdown.ts` renders that same catalog into clean per-page
+  Markdown and the complete `llms-full.txt` corpus; `public/llms.txt` remains a
+  concise, curated entry point.
 - `src/main.tsx` hydrates generated markup and starts the SPA in development.
 - `public/assets/askr-logo-64.avif` provides the in-page mark, with PNG favicon
   and touch-icon variants; the GitHub mark variants come from the official
@@ -46,9 +49,11 @@ SSG. This package does not expose a public API.
 
 1. `npm run build:client` builds the browser entry and stylesheet into
    `.askr/client/` with hashed asset names.
-2. `npm run build:ssg` renders the marketing routes, authored docs catalog, and
+2. `npm run build:llms` generates one `index.md` alternate per documentation
+   route plus `llms-full.txt` into the ignored `.askr/` build tree.
+3. `npm run build:ssg` renders the marketing routes, authored docs catalog, and
    API reference routes, injects them into the built Vite document, and
-   publishes the result to `dist/`.
+   publishes the HTML, Markdown, and hashed assets to `dist/`.
 
 The API and CLI snapshots are checked-in documentation data. The unit suite
 derives installed package entrypoints, versions, exported signatures, peer

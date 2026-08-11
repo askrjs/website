@@ -2,23 +2,23 @@
 
 > Askr is a full-stack TypeScript framework with explicit route registries, reactive state, accessible UI, server APIs, and shared SPA, SSR, hydration, and static-generation primitives.
 
-Use the documentation links below as the primary source for Askr APIs and usage. Askr packages use the `@askrjs/*` npm scope, and the command-line tool is invoked as `askr`.
+Use the documentation links below as the primary source for Askr APIs and usage. Each documentation link is clean Markdown; its human-facing HTML page is the enclosing directory URL. Askr packages use the `@askrjs/*` npm scope, and the command-line tool is invoked as `askr`.
 
 ## Start here
 
-- [Documentation](https://askrjs.com/docs): Documentation overview and navigation for the Askr platform.
-- [Getting started](https://askrjs.com/docs/getting-started): Install Askr, choose a starter, and build a first route.
-- [Core concepts](https://askrjs.com/docs/core-concepts): Components, state, scopes, lifecycle work, and deterministic rendering.
-- [Guides](https://askrjs.com/docs/guides): Task-oriented guides for building and shipping Askr applications.
+- [Documentation](https://askrjs.com/docs/index.md): Documentation overview and navigation for the Askr platform.
+- [Getting started](https://askrjs.com/docs/getting-started/index.md): Install Askr, choose a starter, and build a first route.
+- [Core concepts](https://askrjs.com/docs/core-concepts/index.md): Components, state, scopes, lifecycle work, and deterministic rendering.
+- [Guides](https://askrjs.com/docs/guides/index.md): Task-oriented guides for building and shipping Askr applications.
 
 ## Framework
 
-- [Routing and data](https://askrjs.com/docs/routing): Explicit route registries, loaders, navigation, parameters, and data flow.
-- [Rendering](https://askrjs.com/docs/rendering): Client rendering, SSR, streaming, hydration, islands, and static generation.
-- [Server and APIs](https://askrjs.com/docs/server): Server applications, actions, typed APIs, authentication, middleware, and MCP.
-- [UI and components](https://askrjs.com/docs/components): Headless accessible primitives, themed components, icons, charts, and editor integrations.
-- [Tooling](https://askrjs.com/docs/tooling): CLI workflows for creating, analyzing, generating, checking, and upgrading projects.
-- [API reference](https://askrjs.com/docs/reference): Package entry points, exported APIs, CLI reference, and release notes.
+- [Routing and data](https://askrjs.com/docs/routing/index.md): Explicit route registries, loaders, navigation, parameters, and data flow.
+- [Rendering](https://askrjs.com/docs/rendering/index.md): Client rendering, SSR, streaming, hydration, islands, and static generation.
+- [Server and APIs](https://askrjs.com/docs/server/index.md): Server applications, actions, typed APIs, authentication, middleware, and MCP.
+- [UI and components](https://askrjs.com/docs/components/index.md): Headless accessible primitives, themed components, icons, charts, and editor integrations.
+- [Tooling](https://askrjs.com/docs/tooling/index.md): CLI workflows for creating, analyzing, generating, checking, and upgrading projects.
+- [API reference](https://askrjs.com/docs/reference/index.md): Package entry points, exported APIs, CLI reference, and release notes.
 
 ## Platform overview
 
@@ -29,6 +29,7 @@ Use the documentation links below as the primary source for Askr APIs and usage.
 
 ## Optional
 
+- [Complete documentation corpus](https://askrjs.com/llms-full.txt): All documentation pages and generated API signatures combined into one Markdown document.
 - [Askr source](https://github.com/askrjs/askr): Framework runtime and public package source.
 - [Example applications](https://github.com/askrjs/askr-examples): Complete applications demonstrating Askr patterns.
 - [Website source](https://github.com/askrjs/website): Source for this documentation website.
