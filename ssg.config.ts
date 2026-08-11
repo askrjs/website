@@ -37,6 +37,7 @@ export const staticConfig = {
   document: withThemeStyles(renderDocument),
   assets: [
     { from: resolve(process.cwd(), 'public'), to: '.' },
+    { from: resolve(process.cwd(), '.askr/llms'), to: '.' },
     { from: resolve(process.cwd(), '.askr/client/assets'), to: 'assets' },
   ],
   siteUrl: 'https://askrjs.com',

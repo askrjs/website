@@ -15,7 +15,22 @@ export const routeMetadata: Readonly<Record<string, RouteMetadata>> = {
   ...Object.fromEntries(
     docsCatalog.map((page) => [
       page.route,
-      { title: `${page.title} | Askr`, description: page.description },
+      {
+        title: `${page.title} | Askr`,
+        description: page.description,
+        links: [
+          {
+            rel: 'alternate',
+            href: `${page.route}/index.md`,
+            type: 'text/markdown',
+          },
+          {
+            rel: 'describedby',
+            href: '/llms.txt',
+            type: 'text/plain',
+          },
+        ],
+      },
     ])
   ),
 };
