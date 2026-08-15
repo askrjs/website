@@ -47,10 +47,10 @@
     "@askrjs/testing": "0.0.6",
     "@askrjs/vite": "0.0.13",
     "@types/node": "^26.2.0",
-    "@vitest/browser-playwright": "4.1.10",
-    "playwright": "^1.62.1",
     "@typescript/native": "npm:typescript@^7.0.2",
+    "@vitest/browser-playwright": "4.1.10",
     "monaco-editor": "^0.56.0",
+    "playwright": "^1.62.1",
     "tsx": "4.23.11",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "vite-plus": "^0.2.8"

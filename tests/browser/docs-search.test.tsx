@@ -14,7 +14,9 @@ if (!destination) {
 
 const registry = createRouteRegistry(() => {
   route('/search-test', DocsSearch);
-  route(destination.route, () => <p data-search-destination>Destination reached</p>);
+  route(destination.route, () => (
+    <p data-search-destination>Destination reached</p>
+  ));
 });
 
 async function settle(): Promise<void> {
@@ -23,7 +25,9 @@ async function settle(): Promise<void> {
   await new Promise((resolve) => requestAnimationFrame(resolve));
 }
 
-async function waitForElement<T extends Element>(read: () => T | null): Promise<T> {
+async function waitForElement<T extends Element>(
+  read: () => T | null
+): Promise<T> {
   const deadline = performance.now() + 5_000;
   do {
     const element = read();
@@ -57,12 +61,22 @@ describe('documentation command-palette search', () => {
     await userEvent.click(container!.querySelector('button')!);
 
     const input = await waitForElement(
-      () => document.querySelector('[data-docs-search-input]') as HTMLInputElement | null
+      () =>
+        document.querySelector(
+          '[data-docs-search-input]'
+        ) as HTMLInputElement | null
     );
     await userEvent.fill(input, query);
     const firstResult = await waitForElement(
-      () => document.querySelector('[data-slot="command-item"]') as HTMLAnchorElement | null
+      () =>
+        document.querySelector(
+          '[data-slot="command-item"]'
+        ) as HTMLAnchorElement | null
     );
+    const resultLinks = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>('[data-slot="command-item"]')
+    );
+    const lastResult = resultLinks.at(-1)!;
 
     expect(document.activeElement).toBe(input);
     expect(input.getAttribute('aria-activedescendant')).toBeNull();
@@ -73,8 +87,17 @@ describe('documentation command-palette search', () => {
     expect(input.getAttribute('aria-activedescendant')).toBe(firstResult.id);
     expect(firstResult.getAttribute('data-active')).toBe('true');
 
+    await userEvent.keyboard('{ArrowUp}');
+    expect(input.getAttribute('aria-activedescendant')).toBe(lastResult.id);
+    expect(lastResult.getAttribute('data-active')).toBe('true');
+
+    await userEvent.keyboard('{ArrowDown}');
+    expect(input.getAttribute('aria-activedescendant')).toBe(firstResult.id);
+
     await userEvent.keyboard('{Enter}');
-    await waitForElement(() => document.querySelector('[data-search-destination]'));
+    await waitForElement(() =>
+      document.querySelector('[data-search-destination]')
+    );
 
     expect(window.location.pathname).toBe(destination.route);
   });
