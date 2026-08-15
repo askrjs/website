@@ -1,5 +1,6 @@
 import { page, userEvent } from '@vitest/browser/context';
 import { cleanupApp, createSPA } from '@askrjs/askr/boot';
+import { jsx as createElement } from '@askrjs/askr/jsx-runtime';
 import { createRouteRegistry, route } from '@askrjs/askr/router';
 import { afterEach, beforeEach, describe, expect, it } from 'vite-plus/test';
 import { DocsSearch } from '../../src/pages/docs/search';
@@ -14,9 +15,12 @@ if (!destination) {
 
 const registry = createRouteRegistry(() => {
   route('/search-test', DocsSearch);
-  route(destination.route, () => (
-    <p data-search-destination>Destination reached</p>
-  ));
+  route(destination.route, () =>
+    createElement('p', {
+      'data-search-destination': '',
+      children: 'Destination reached',
+    })
+  );
 });
 
 async function settle(): Promise<void> {
