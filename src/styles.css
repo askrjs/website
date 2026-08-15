@@ -1383,7 +1383,8 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   text-decoration: none;
 }
 
-.docs-search__results a:hover {
+.docs-search__results a:hover,
+.docs-search__results a[data-active='true'] {
   background: var(--ak-color-primary-soft);
 }
 

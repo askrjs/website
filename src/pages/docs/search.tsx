@@ -25,7 +25,9 @@ function loadSearchIndex(): Promise<typeof import('./search-index')> {
 }
 
 function DocsSearchInput(props: {
+  activeResultId: () => string | undefined;
   close: () => void;
+  onKeyDown: (event: KeyboardEvent) => void;
   runSearch: (value: string | undefined) => Promise<void>;
 }) {
   return (
@@ -33,8 +35,14 @@ function DocsSearchInput(props: {
       <SearchIcon size={18} aria-hidden="true" />
       <CommandInput
         data-docs-search-input
+        role="combobox"
+        aria-autocomplete="list"
+        aria-controls="docs-search-results"
+        aria-expanded="true"
+        aria-activedescendant={props.activeResultId()}
         placeholder="Search concepts, imports, and API symbols"
         aria-label="Search documentation"
+        onKeyDown={props.onKeyDown}
         onInput={(event: Event) =>
           void props.runSearch((event.currentTarget as HTMLInputElement).value)
         }
@@ -52,11 +60,44 @@ function DocsSearchInput(props: {
   );
 }
 
+function searchResultId(index: number): string {
+  return `docs-search-result-${index}`;
+}
+
+function DocsSearchResult(props: {
+  activeIndex: () => number;
+  index: () => number;
+  result: DocsSearchRecord;
+  setActiveIndex: (index: number) => void;
+}) {
+  const index = props.index();
+  const active = props.activeIndex() === index;
+  return (
+    <CommandPaletteLink
+      id={searchResultId(index)}
+      href={`${props.result.route}${props.result.anchor ? `#${props.result.anchor}` : ''}`}
+      role="option"
+      aria-selected={active ? 'true' : 'false'}
+      data-active={active ? 'true' : undefined}
+      data-docs-search-result
+      onPointerEnter={() => props.setActiveIndex(props.index())}
+    >
+      <span>
+        <strong>{props.result.title}</strong>
+        <small>{props.result.description}</small>
+      </span>
+      <em>{props.result.group}</em>
+    </CommandPaletteLink>
+  );
+}
+
 function DocsSearchResults(props: {
+  activeIndex: () => number;
   error: () => boolean;
   loading: () => boolean;
   query: () => string;
   results: () => DocsSearchRecord[];
+  setActiveIndex: (index: number) => void;
 }) {
   return (
     <div
@@ -85,21 +126,18 @@ function DocsSearchResults(props: {
               </Show>
             }
           >
-            <CommandPaletteList>
+            <CommandPaletteList id="docs-search-results" role="listbox">
               <For
                 each={props.results}
                 by={(result) => `${result.route}#${result.anchor ?? ''}`}
               >
-                {(result) => (
-                  <CommandPaletteLink
-                    href={`${result.route}${result.anchor ? `#${result.anchor}` : ''}`}
-                  >
-                    <span>
-                      <strong>{result.title}</strong>
-                      <small>{result.description}</small>
-                    </span>
-                    <em>{result.group}</em>
-                  </CommandPaletteLink>
+                {(result, index) => (
+                  <DocsSearchResult
+                    activeIndex={props.activeIndex}
+                    index={index}
+                    result={result}
+                    setActiveIndex={props.setActiveIndex}
+                  />
                 )}
               </For>
             </CommandPaletteList>
@@ -116,6 +154,7 @@ function DocsSearchResults(props: {
 }
 
 function DocsSearchContent(props: DocsSearchContentProps) {
+  const [activeIndex, setActiveIndex] = state(-1);
   const [query, setQuery] = state('');
   const [loading, setLoading] = state(false);
   const [results, setResults] = state<DocsSearchRecord[]>([]);
@@ -123,6 +162,7 @@ function DocsSearchContent(props: DocsSearchContentProps) {
 
   const runSearch = async (value: string | undefined): Promise<void> => {
     const nextValue = value ?? '';
+    setActiveIndex(-1);
     setQuery(nextValue);
     setError(false);
     if (!nextValue.trim()) {
@@ -143,14 +183,50 @@ function DocsSearchContent(props: DocsSearchContentProps) {
       if ((query() ?? '') === nextValue && props.isOpen()) setLoading(false);
     }
   };
+  const activeResultId = (): string | undefined => {
+    const index = activeIndex();
+    return index >= 0 && index < results().length
+      ? searchResultId(index)
+      : undefined;
+  };
+  const onSearchKeyDown = (event: KeyboardEvent): void => {
+    const count = results().length;
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      if (count === 0) return;
+      event.preventDefault();
+      const current = activeIndex();
+      setActiveIndex(
+        event.key === 'ArrowDown'
+          ? current < 0 || current >= count - 1
+            ? 0
+            : current + 1
+          : current <= 0
+            ? count - 1
+            : current - 1
+      );
+      return;
+    }
+    if (event.key !== 'Enter') return;
+    const id = activeResultId();
+    if (!id) return;
+    event.preventDefault();
+    document.getElementById(id)?.click();
+  };
   return (
     <>
-      <DocsSearchInput close={props.close} runSearch={runSearch} />
+      <DocsSearchInput
+        activeResultId={activeResultId}
+        close={props.close}
+        onKeyDown={onSearchKeyDown}
+        runSearch={runSearch}
+      />
       <DocsSearchResults
+        activeIndex={activeIndex}
         error={error}
         loading={loading}
         query={query}
         results={results}
+        setActiveIndex={setActiveIndex}
       />
     </>
   );

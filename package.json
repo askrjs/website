@@ -1,6 +1,6 @@
 {
   "name": "@askrjs/website",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "description": "Askr marketing and documentation site",
   "license": "Apache-2.0",
@@ -17,9 +17,10 @@
     "lint": "vp lint src tests scripts ssg.config.ts vite.config.ts",
     "fmt": "vp fmt .",
     "fmt:check": "vp fmt . --check",
-    "test:unit": "vp test run --exclude tests/generated-output-contract.test.ts",
+    "test:unit": "vp test run --exclude tests/generated-output-contract.test.ts --exclude \"tests/browser/**\"",
     "test:static": "vp test run tests/generated-output-contract.test.ts",
-    "test": "npm run test:unit",
+    "test": "npm run test:unit && npm run test:browser",
+    "test:browser": "vp test run -c vitest.test.browser.config.ts --mode production",
     "typecheck": "tsc --noEmit",
     "check": "npm run fmt:check && npm run lint && npm run typecheck && npm test && npm run build",
     "preview": "vp preview --outDir dist"
@@ -47,7 +48,9 @@
     "@askrjs/vite": "0.0.13",
     "@types/node": "^26.2.0",
     "@typescript/native": "npm:typescript@^7.0.2",
+    "@vitest/browser-playwright": "4.1.10",
     "monaco-editor": "^0.56.0",
+    "playwright": "^1.62.1",
     "tsx": "4.23.11",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "vite-plus": "^0.2.8"
