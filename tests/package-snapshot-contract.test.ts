@@ -42,6 +42,15 @@ interface MutableContract {
       anchor: string;
       signature: string;
       typeOnly: boolean;
+      summary?: string;
+      remarks?: string;
+      tags?: Record<string, string[]>;
+      members?: Array<{
+        name: string;
+        summary: string;
+        signature: string;
+        tags?: Record<string, string[]>;
+      }>;
     }>
   >;
   cli: {
@@ -166,6 +175,77 @@ function deriveInstalledContract(): MutableContract {
     }
   }
 
+  function documentationFor(symbol: ts.Symbol): {
+    summary?: string;
+    remarks?: string;
+    tags?: Record<string, string[]>;
+    members?: Array<{
+      name: string;
+      summary: string;
+      signature: string;
+      tags?: Record<string, string[]>;
+    }>;
+  } {
+    const resolved =
+      symbol.flags & ts.SymbolFlags.Alias
+        ? checker.getAliasedSymbol(symbol)
+        : symbol;
+    const summary = ts
+      .displayPartsToString(resolved.getDocumentationComment(checker))
+      .trim();
+    const tags: Record<string, string[]> = {};
+    for (const tag of resolved.getJsDocTags(checker)) {
+      const value =
+        typeof tag.text === 'string'
+          ? tag.text
+          : ts.displayPartsToString([...(tag.text ?? [])]);
+      (tags[tag.name] ??= []).push(value.trim());
+    }
+    const declaration = resolved.declarations?.[0];
+    const memberDeclaration =
+      declaration &&
+      (ts.isInterfaceDeclaration(declaration) ||
+        ts.isClassDeclaration(declaration) ||
+        ts.isEnumDeclaration(declaration) ||
+        ts.isTypeLiteralNode(declaration))
+        ? declaration
+        : undefined;
+    const members = memberDeclaration
+      ? memberDeclaration.members.flatMap((member) => {
+          const memberName = member.name;
+          if (!memberName || !ts.isIdentifier(memberName)) return [];
+          const name = memberName.text;
+          const memberSymbol = checker.getSymbolAtLocation(memberName);
+          if (!memberSymbol) return [];
+          const memberSummary = ts
+            .displayPartsToString(memberSymbol.getDocumentationComment(checker))
+            .trim();
+          const memberTags: Record<string, string[]> = {};
+          for (const tag of memberSymbol.getJsDocTags(checker)) {
+            const value =
+              typeof tag.text === 'string'
+                ? tag.text
+                : ts.displayPartsToString([...(tag.text ?? [])]);
+            (memberTags[tag.name] ??= []).push(value.trim());
+          }
+          return [
+            {
+              name,
+              summary: memberSummary,
+              signature: member.getText(member.getSourceFile()),
+              ...(Object.keys(memberTags).length ? { tags: memberTags } : {}),
+            },
+          ];
+        })
+      : undefined;
+    return {
+      ...(summary ? { summary } : {}),
+      ...(tags.remarks?.length ? { remarks: tags.remarks.join('\n') } : {}),
+      ...(Object.keys(tags).length ? { tags } : {}),
+      ...(members?.length ? { members } : {}),
+    };
+  }
+
   const installedApiManifest = entrypoints.map((entrypoint) => {
     let symbolSet = symbolSetNames.get(entrypoint.declarationPath);
     if (!symbolSet) {
@@ -202,6 +282,7 @@ function deriveInstalledContract(): MutableContract {
                     )
                   : signature,
                 typeOnly: !symbol.valueDeclaration,
+                ...documentationFor(symbol),
               };
             })
             .sort((left, right) => left.name.localeCompare(right.name))
@@ -298,6 +379,16 @@ function writeRecordedContract(contract: MutableContract): void {
         '  readonly anchor: string;\n' +
         '  readonly signature: string;\n' +
         '  readonly typeOnly: boolean;\n' +
+        '  readonly summary?: string;\n' +
+        '  readonly remarks?: string;\n' +
+        '  readonly tags?: Readonly<Record<string, readonly string[]>>;\n' +
+        '  readonly members?: readonly ApiMemberDefinition[];\n' +
+        '}\n\n' +
+        'export interface ApiMemberDefinition {\n' +
+        '  readonly name: string;\n' +
+        '  readonly summary: string;\n' +
+        '  readonly signature: string;\n' +
+        '  readonly tags?: Readonly<Record<string, readonly string[]>>;\n' +
         '}\n\n' +
         'export const apiSymbolSets: Readonly<Record<string, readonly ApiSymbolDefinition[]>> = ' +
         `${JSON.stringify(contract.apiSymbolSets, null, 2)};\n`,

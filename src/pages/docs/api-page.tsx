@@ -22,6 +22,29 @@ function ApiSymbolList({
           <pre>
             <code>{symbol.signature}</code>
           </pre>
+          {symbol.summary && (
+            <p class="api-symbol__summary">{symbol.summary}</p>
+          )}
+          {symbol.remarks && (
+            <p class="api-symbol__remarks">{symbol.remarks}</p>
+          )}
+          {symbol.tags?.example?.map((example) => (
+            <pre>
+              <code>{example}</code>
+            </pre>
+          ))}
+          {symbol.members && symbol.members.length > 0 && (
+            <dl class="api-symbol__members">
+              {symbol.members.map((member) => (
+                <div>
+                  <dt>
+                    <code>{member.name}</code>
+                  </dt>
+                  <dd>{member.summary || member.signature}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
         </article>
       ))}
     </>

@@ -4,6 +4,17 @@ export interface ApiSymbolDefinition {
   readonly anchor: string;
   readonly signature: string;
   readonly typeOnly: boolean;
+  readonly summary?: string;
+  readonly remarks?: string;
+  readonly tags?: Readonly<Record<string, readonly string[]>>;
+  readonly members?: readonly ApiMemberDefinition[];
+}
+
+export interface ApiMemberDefinition {
+  readonly name: string;
+  readonly summary: string;
+  readonly signature: string;
+  readonly tags?: Readonly<Record<string, readonly string[]>>;
 }
 
 export const apiSymbolSets: Readonly<
@@ -15,12 +26,46 @@ export const apiSymbolSets: Readonly<
       anchor: 'askr-runtime',
       signature: 'AskrRuntime: typeof AskrRuntime',
       typeOnly: true,
+      members: [
+        {
+          name: 'scheduler',
+          summary: '',
+          signature: 'readonly scheduler: Scheduler;',
+        },
+        {
+          name: 'rendererHost',
+          summary: '',
+          signature: 'private rendererHost;',
+        },
+        {
+          name: 'renderer',
+          summary: '',
+          signature: 'get renderer(): RuntimeRendererHost;',
+        },
+        {
+          name: 'configureRenderer',
+          summary: '',
+          signature: 'configureRenderer(renderer: RuntimeRendererHost): void;',
+        },
+      ],
     },
     {
       name: 'AskrRuntimeOptions',
       anchor: 'askr-runtime-options',
       signature: 'AskrRuntimeOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'scheduler',
+          summary: '',
+          signature: 'scheduler?: Scheduler;',
+        },
+        {
+          name: 'renderer',
+          summary: '',
+          signature: 'renderer?: RuntimeRendererHost;',
+        },
+      ],
     },
     {
       name: 'Case',
@@ -40,6 +85,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'configureRenderDiagnostics: (options: RenderDiagnosticsOptions) => () => void',
       typeOnly: true,
+      summary:
+        'Configure development render diagnostics and return a function that restores\nthe previous configuration. Component counters and timing remain enabled\nwhen warning output is disabled.',
     },
     {
       name: 'createQuery',
@@ -77,6 +124,30 @@ export const apiSymbolSets: Readonly<
       anchor: 'data-runtime',
       signature: 'DataRuntime: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'queryCache',
+          summary: '',
+          signature: 'readonly queryCache: Map<string, unknown>;',
+        },
+        {
+          name: 'queryData',
+          summary: '',
+          signature: 'readonly queryData: Map<string, unknown>;',
+        },
+        {
+          name: 'queryTestOverrides',
+          summary:
+            'Test-only query overrides keyed by the canonical query key.',
+          signature: 'readonly queryTestOverrides: Map<string, unknown>;',
+        },
+        {
+          name: 'mutationTestOverrides',
+          summary:
+            'Test-only mutation overrides keyed by the canonical mutation key.',
+          signature: 'readonly mutationTestOverrides: Map<string, unknown>;',
+        },
+      ],
     },
     {
       name: 'defineQuery',
@@ -111,6 +182,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'derive: { <TOut>(fn: () => TOut): Derived<TOut>; <TIn, TOut>(source: SnapshotSource<TIn> | TIn | (() => TIn), map: (value: TIn) => TOut): Derived<TOut | null>; }',
       typeOnly: true,
+      summary:
+        'Creates a render-scoped derived value; must be called during component render.',
     },
     {
       name: 'Derived',
@@ -148,6 +221,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'get-signal',
       signature: 'getSignal: () => AbortSignal',
       typeOnly: true,
+      summary:
+        'Get the abort signal for the current component.\n\nThe signal is guaranteed to be aborted when:\n- Component unmounts\n- Navigation occurs (different route)\n- Parent is destroyed',
     },
     {
       name: 'hydrateDataRuntime',
@@ -194,18 +269,85 @@ export const apiSymbolSets: Readonly<
       anchor: 'props',
       signature: 'Props: any',
       typeOnly: true,
+      summary:
+        'Props accepted by components and elements.\nIntentionally permissive but provides a single named type.',
+      members: [
+        {
+          name: 'key',
+          summary:
+            'Optional key for keyed lists (string | number | symbol for internal frames)',
+          signature: 'key?: string | number | symbol;',
+        },
+        {
+          name: 'children',
+          summary: 'Optional children slot',
+          signature: 'children?: unknown;',
+        },
+      ],
     },
     {
       name: 'QueryDefinition',
       anchor: 'query-definition',
       signature: 'QueryDefinition: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'key',
+          summary: '',
+          signature: 'readonly key: (input: TInput) => string;',
+        },
+        {
+          name: 'fetch',
+          summary: '',
+          signature:
+            'readonly fetch: (context: TInput & {\n    signal: AbortSignal;\n  }) => Promise<TResult>;',
+        },
+        {
+          name: 'isConsistent',
+          summary: '',
+          signature: 'readonly isConsistent?: (data: TResult) => boolean;',
+        },
+        {
+          name: 'reconcile',
+          summary: '',
+          signature:
+            'readonly reconcile?: (data: TResult, context: {\n    key: string;\n  }) => Promise<boolean> | boolean;',
+        },
+      ],
     },
     {
       name: 'QueryPrefetchContext',
       anchor: 'query-prefetch-context',
       signature: 'QueryPrefetchContext: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'runtime',
+          summary: '',
+          signature: 'readonly runtime: DataRuntime;',
+        },
+        {
+          name: 'request',
+          summary: '',
+          signature: 'readonly request?: Request;',
+        },
+        {
+          name: 'signal',
+          summary: '',
+          signature: 'readonly signal: AbortSignal;',
+        },
+        {
+          name: 'mode',
+          summary: '',
+          signature: "readonly mode: 'ssr' | 'spa';",
+        },
+        {
+          name: 'prefetch',
+          summary: '',
+          signature:
+            'prefetch<TInput, TResult extends {}>(query: QueryDefinition<TInput, TResult>, input: TInput): Promise<boolean>;',
+        },
+      ],
     },
     {
       name: 'readScope',
@@ -218,36 +360,167 @@ export const apiSymbolSets: Readonly<
       anchor: 'ref',
       signature: 'Ref: any',
       typeOnly: true,
+      summary:
+        'Creates a stable holder for an intrinsic element ref.\n\nThe renderer mutates `current` during commit and clears it during cleanup.\nUpdating the holder never schedules a render.',
+      members: [
+        {
+          name: 'current',
+          summary: '',
+          signature: 'current: T | null;',
+        },
+      ],
     },
     {
       name: 'registerSSRStyle',
       anchor: 'register-ssrstyle',
       signature: 'registerSSRStyle: (id: string, cssText: string) => void',
       typeOnly: true,
+      summary:
+        'Register request-local CSS produced during SSR without importing the SSR renderer in clients.',
     },
     {
       name: 'RenderDiagnosticsOptions',
       anchor: 'render-diagnostics-options',
       signature: 'RenderDiagnosticsOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'slowRenderWarnings',
+          summary:
+            'Emit one warning per component instance when a render exceeds the threshold.',
+          signature: 'slowRenderWarnings?: boolean;',
+        },
+        {
+          name: 'slowRenderThresholdMs',
+          summary: 'Slow-render threshold in milliseconds. The default is 5.',
+          signature: 'slowRenderThresholdMs?: number;',
+        },
+      ],
     },
     {
       name: 'RuntimeKeyedReorderDecision',
       anchor: 'runtime-keyed-reorder-decision',
       signature: 'RuntimeKeyedReorderDecision: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'useFastPath',
+          summary: '',
+          signature: 'useFastPath: boolean;',
+        },
+        {
+          name: 'totalKeyed',
+          summary: '',
+          signature: 'totalKeyed: number;',
+        },
+        {
+          name: 'totalChildren',
+          summary: '',
+          signature: 'totalChildren: number;',
+        },
+        {
+          name: 'currentKeyCount',
+          summary: '',
+          signature: 'currentKeyCount: number;',
+        },
+        {
+          name: 'moveCount',
+          summary: '',
+          signature: 'moveCount: number;',
+        },
+        {
+          name: 'lisLen',
+          summary: '',
+          signature: 'lisLen: number;',
+        },
+        {
+          name: 'hasPropChanges',
+          summary: '',
+          signature: 'hasPropChanges: boolean;',
+        },
+        {
+          name: 'isWholeKeyedList',
+          summary: '',
+          signature: 'isWholeKeyedList: boolean;',
+        },
+      ],
     },
     {
       name: 'RuntimeRendererHost',
       anchor: 'runtime-renderer-host',
       signature: 'RuntimeRendererHost: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'evaluate',
+          summary: '',
+          signature:
+            'evaluate(node: unknown, target: Element | null, context?: object, retainedOwner?: ComponentInstance): void;',
+        },
+        {
+          name: 'cleanupInstancesUnder',
+          summary: '',
+          signature: 'cleanupInstancesUnder(node: Node): void;',
+        },
+        {
+          name: 'replaceComponentRange',
+          summary: '',
+          signature:
+            'replaceComponentRange(instance: ComponentInstance, result: unknown, host: Element | Comment): Node | null;',
+        },
+        {
+          name: 'resolveChildScopeRange',
+          summary: '',
+          signature:
+            'resolveChildScopeRange?(scope: ChildScope): DOMRange | null;',
+        },
+        {
+          name: 'teardownNodeSubtree',
+          summary: '',
+          signature: 'teardownNodeSubtree(root: Node): void;',
+        },
+        {
+          name: 'populateKeyMapForElement',
+          summary: '',
+          signature: 'populateKeyMapForElement(parent: Element): void;',
+        },
+        {
+          name: 'getKeyMapForElement',
+          summary: '',
+          signature:
+            'getKeyMapForElement(parent: Element): Map<string | number, Element> | undefined;',
+        },
+        {
+          name: 'isKeyedReorderFastPathEligible',
+          summary: '',
+          signature:
+            'isKeyedReorderFastPathEligible(parent: Element, children: unknown[], oldKeyMap: Map<string | number, Element> | undefined): RuntimeKeyedReorderDecision;',
+        },
+        {
+          name: 'markReactivePropsDirtySource',
+          summary: '',
+          signature:
+            'markReactivePropsDirtySource(source: ReadableSource<unknown>): void;',
+        },
+      ],
     },
     {
       name: 'Scope',
       anchor: 'scope',
       signature: 'Scope: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'key',
+          summary: '',
+          signature: 'readonly key: ContextKey;',
+        },
+        {
+          name: 'defaultValue',
+          summary: '',
+          signature: 'readonly defaultValue: T;',
+        },
+      ],
     },
     {
       name: 'selector',
@@ -255,6 +528,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'selector: <T>(source: () => T, equals?: (a: T, b: T) => boolean) => Selector<T>',
       typeOnly: true,
+      summary:
+        'Creates a render-scoped predicate for keyed membership in reactive list rows.\n\nUse this when a `<For>` child needs to compare each stable item with a\nchanging selected value. Unlike a plain closure capture, the predicate\nsubscribes the affected rows and updates them without rebuilding the list.\nMust be called during component render.',
     },
     {
       name: 'Selector',
@@ -292,24 +567,47 @@ export const apiSymbolSets: Readonly<
       anchor: 'state-2',
       signature: 'state: <T>(initialValue: T) => StateTuple<T>',
       typeOnly: true,
+      summary:
+        'Creates a local state value for a component\nOptimized for:\n- O(1) read performance\n- Minimal allocation per state\n- Fast scheduler integration\n\nIMPORTANT: state() must be called during component render execution.\nIt captures the current component instance from context.\nCalling outside a component function will throw an error.',
+      tags: {
+        example: [
+          "```ts\n// ✅ Correct: called during render\nexport function Counter() {\n  const [count, setCount] = state(0);\n  return { type: 'button', children: [count()] };\n}\n\n// ❌ Wrong: called outside component\nconst count = state(0);\nexport function BadComponent() {\n  return { type: 'div' };\n}\n```",
+        ],
+      },
     },
     {
       name: 'State',
       anchor: 'state',
       signature: 'State: any',
       typeOnly: true,
+      summary:
+        'State value holder - callable to read, has set method to update',
+      tags: {
+        example: [
+          'const count = state(0);\ncount();           // read: 0\ncount.set(1);      // write: triggers re-render',
+        ],
+      },
+      members: [
+        {
+          name: 'set',
+          summary: '',
+          signature: 'set(...args: StateSetterArgs<T>): void;',
+        },
+      ],
     },
     {
       name: 'StateSetter',
       anchor: 'state-setter',
       signature: 'StateSetter: any',
       typeOnly: true,
+      summary: 'Public setter type for state cells.',
     },
     {
       name: 'StateTuple',
       anchor: 'state-tuple',
       signature: 'StateTuple: any',
       typeOnly: true,
+      summary: 'Tuple-first state handle returned by `state()`.',
     },
   ],
   symbols1: [
@@ -324,18 +622,23 @@ export const apiSymbolSets: Readonly<
       anchor: 'create-island',
       signature: 'createIsland: (config: IslandConfig) => void',
       typeOnly: true,
+      summary: 'createIsland: Enhances existing DOM (no router, mounts once)',
     },
     {
       name: 'createIslands',
       anchor: 'create-islands',
       signature: 'createIslands: (config: IslandsConfig) => void',
       typeOnly: true,
+      summary:
+        'createIslands: Enhances one or more existing DOM roots (no router).\nThe only public islands constructor.',
     },
     {
       name: 'createSPA',
       anchor: 'create-spa',
       signature: 'createSPA: (config: SPAConfig) => Promise<void>',
       typeOnly: true,
+      summary:
+        "createSPA: Initializes the router and mounts the app with an explicit route registry.\n```ts\nimport { createRouteRegistry } from '@askrjs/askr/router';\nconst registry = createRouteRegistry(() => { ... });\nawait createSPA({ root: '#app', registry });\n```",
     },
     {
       name: 'hasApp',
@@ -348,6 +651,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'hydrate-spa',
       signature: 'hydrateSPA: (config: HydrateSPAConfig) => Promise<void>',
       typeOnly: true,
+      summary:
+        'hydrateSPA: Hydrate server-rendered HTML with an explicit route registry.',
     },
     {
       name: 'HydrateSPAConfig',
@@ -380,6 +685,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'error-boundary',
       signature: 'ErrorBoundary: (props: ErrorBoundaryProps) => JSXElement',
       typeOnly: true,
+      summary:
+        'Creates a render-time boundary whose fallback handles descendant render/commit errors.',
     },
     {
       name: 'ErrorBoundaryFallbackRender',
@@ -392,6 +699,29 @@ export const apiSymbolSets: Readonly<
       anchor: 'error-boundary-props',
       signature: 'ErrorBoundaryProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'children',
+          summary: 'Optional children slot',
+          signature: 'children?: ErrorBoundaryContent;',
+        },
+        {
+          name: 'fallback',
+          summary: '',
+          signature:
+            'fallback?: ErrorBoundaryFallbackValue | ErrorBoundaryFallbackRender;',
+        },
+        {
+          name: 'onError',
+          summary: '',
+          signature: 'onError?: (error: unknown) => void;',
+        },
+        {
+          name: 'resetKey',
+          summary: '',
+          signature: 'resetKey?: unknown;',
+        },
+      ],
     },
   ],
   symbols3: [
@@ -464,6 +794,28 @@ export const apiSymbolSets: Readonly<
       anchor: 'jsxelement',
       signature: 'JSXElement: any',
       typeOnly: true,
+      members: [
+        {
+          name: '$$typeof',
+          summary: 'Internal element marker',
+          signature: '$$typeof: symbol;',
+        },
+        {
+          name: 'type',
+          summary: 'Element type: string, component, Fragment, etc',
+          signature: 'type: JSXElementType;',
+        },
+        {
+          name: 'props',
+          summary: 'Props bag',
+          signature: 'props: Props;',
+        },
+        {
+          name: 'key',
+          summary: 'Optional key (normalized by runtime)',
+          signature: 'key?: string | number | null;',
+        },
+      ],
     },
     {
       name: 'layout',
@@ -477,6 +829,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'layout-component',
       signature: 'LayoutComponent: any',
       typeOnly: true,
+      summary:
+        'Layout helper.\n\nA layout is just a normal component that wraps children.\nPersistence and reuse are handled by the runtime via component identity.\n\nThis helper exists purely for readability and convention.\n\nPOLICY DECISIONS (LOCKED):\n\n1. Return Type is Opaque (unknown)\n   Layout components return `unknown` to remain runtime-agnostic.\n   The runtime owns concrete JSX element types.\n\n2. Children Positioning\n   Layout receives children as first argument (router-friendly).\n   Props come second. This matches route layout conventions where\n   children represent the nested route content.\n\n3. Props Spreading\n   Props are spread into the layout component. This is intentional\n   and deterministic — no merging or composition.',
     },
     {
       name: 'Portal',
@@ -489,6 +843,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'portal-props',
       signature: 'PortalProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'children',
+          summary: '',
+          signature: 'children?: RenderableChild;',
+        },
+      ],
     },
     {
       name: 'Presence',
@@ -496,18 +857,34 @@ export const apiSymbolSets: Readonly<
       signature:
         'Presence: ({ present, children }: PresenceProps) => JSXElement | null',
       typeOnly: true,
+      summary:
+        'Presence\n\nStructural policy primitive for conditional mount/unmount.\n- No timers\n- No animation coupling\n- No DOM side-effects\n\nPOLICY DECISIONS (LOCKED):\n\n1. Present as Function\n   Accepts boolean OR function to support lazy evaluation patterns.\n   Function is called once per render. Use boolean form for static values.\n\n2. Children Type\n   Presence forwards normal renderable child content only.\n   Imperative DOM nodes are not part of the public contract.\n\n3. Immediate Mount/Unmount\n   No exit animations or transitions. When `present` becomes false,\n   children are removed immediately. Animation must be layered above\n   this primitive.',
     },
     {
       name: 'PresenceProps',
       anchor: 'presence-props',
       signature: 'PresenceProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'present',
+          summary: '',
+          signature: 'present: boolean | (() => boolean);',
+        },
+        {
+          name: 'children',
+          summary: '',
+          signature: 'children?: RenderableChild;',
+        },
+      ],
     },
     {
       name: 'Slot',
       anchor: 'slot',
       signature: 'Slot: (props: SlotProps) => JSXElement | null',
       typeOnly: true,
+      summary:
+        'Slot\n\nStructural primitive for prop forwarding patterns.\n\nPOLICY DECISIONS (LOCKED):\n\n1. asChild Pattern\n   When asChild=true, merges props into the single child element.\n   Child must be a valid JSXElement; non-element children return null.\n   **Slot props override child props** (injection pattern).\n\n2. Fallback Behavior\n   When asChild=false, returns a Fragment (structural no-op).\n   No DOM element is introduced.\n\n3. Type Safety\n   asChild=true requires exactly one JSXElement child (enforced by type).\n   Runtime validates with isElement() check.',
     },
     {
       name: 'SlotProps',
@@ -523,6 +900,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'ariaDisabled: (disabled?: boolean) => { "aria-disabled"?: "true"; }',
       typeOnly: true,
+      summary: 'Tiny aria helpers',
     },
     {
       name: 'ariaExpanded',
@@ -550,6 +928,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'compose-handlers-options',
       signature: 'ComposeHandlersOptions: any',
       typeOnly: true,
+      summary:
+        'composeHandlers\n\nCompose two event handlers into one. The first handler runs, and unless it\ncalls `event.preventDefault()` (or sets `defaultPrevented`), the second\nhandler runs. This prevents accidental clobbering of child handlers when\ninjecting props.\n\nPOLICY DECISIONS (LOCKED):\n\n1. Execution Order\n   First handler runs before second (injected before base).\n   This allows injected handlers to prevent default behavior.\n\n2. Default Prevention Check\n   By default, checks `defaultPrevented` on first argument.\n   Can be disabled via options.checkDefaultPrevented = false.\n\n3. Undefined Handler Support\n   Undefined handlers are skipped (no-op). This simplifies usage\n   where handlers are optional.\n\n4. Type Safety\n   Args are readonly to prevent mutation. Return type matches input.',
+      members: [
+        {
+          name: 'checkDefaultPrevented',
+          summary:
+            'When true (default), do not run the second handler if the first prevented default.\nWhen false, always run both handlers.',
+          signature: 'checkDefaultPrevented?: boolean;',
+        },
+      ],
     },
     {
       name: 'composeRefs',
@@ -563,30 +951,70 @@ export const apiSymbolSets: Readonly<
       anchor: 'default-preventable',
       signature: 'DefaultPreventable: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'defaultPrevented',
+          summary: '',
+          signature: 'defaultPrevented?: boolean;',
+        },
+        {
+          name: 'preventDefault',
+          summary: '',
+          signature: 'preventDefault?: () => void;',
+        },
+      ],
     },
     {
       name: 'FocusLikeEvent',
       anchor: 'focus-like-event',
       signature: 'FocusLikeEvent: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'relatedTarget',
+          summary: '',
+          signature: 'relatedTarget?: unknown;',
+        },
+      ],
     },
     {
       name: 'formatId',
       anchor: 'format-id',
       signature: 'formatId: (options: FormatIdOptions) => string',
       typeOnly: true,
+      summary:
+        'formatId\n\nFormats a stable ID from a caller-provided identity.\n- Pure and deterministic (no time/randomness/global counters)\n- SSR-safe\n\nPOLICY DECISIONS (LOCKED):\n\n1. No Auto-Generation\n   Caller must provide the `id`. No random/sequential generation.\n   This ensures determinism and SSR safety.\n\n2. Format Convention\n   IDs are formatted as `{prefix}-{id}`.\n   Default prefix is "askr".\n\n3. Type Coercion\n   Numbers are coerced to strings via String().\n   This is deterministic and consistent.',
     },
     {
       name: 'FormatIdOptions',
       anchor: 'format-id-options',
       signature: 'FormatIdOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'prefix',
+          summary: "Defaults to 'askr'",
+          signature: 'prefix?: string;',
+        },
+        {
+          name: 'id',
+          summary: 'Stable, caller-provided identity',
+          signature: 'id: string | number;',
+        },
+      ],
     },
     {
       name: 'KeyboardLikeEvent',
       anchor: 'keyboard-like-event',
       signature: 'KeyboardLikeEvent: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'key',
+          summary: '',
+          signature: 'key: string;',
+        },
+      ],
     },
     {
       name: 'mergeProps',
@@ -600,18 +1028,34 @@ export const apiSymbolSets: Readonly<
       anchor: 'pointer-like-event',
       signature: 'PointerLikeEvent: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'target',
+          summary: '',
+          signature: 'target?: unknown;',
+        },
+      ],
     },
     {
       name: 'PropagationStoppable',
       anchor: 'propagation-stoppable',
       signature: 'PropagationStoppable: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'stopPropagation',
+          summary: '',
+          signature: 'stopPropagation?: () => void;',
+        },
+      ],
     },
     {
       name: 'Ref',
       anchor: 'ref',
       signature: 'Ref: any',
       typeOnly: true,
+      summary:
+        'Ref composition utilities\n\nPOLICY DECISIONS (LOCKED):\n\n1. Ref Types Supported\n   - Callback refs: (value: T | null) => void\n   - Object refs: { current: T | null }\n   - null/undefined (no-op)\n\n2. Write Failure Handling\n   setRef catches write failures (readonly refs) and ignores them.\n   This is intentional — refs may be readonly in some contexts.\n\n3. Composition Order\n   composeRefs applies refs in array order (left to right).\n   All refs are called even if one fails.',
     },
     {
       name: 'setRef',
@@ -627,6 +1071,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'applyInteractionPolicy: ({ isNative, disabled, onPress, ref }: InteractionPolicyInput) => { disabled: true | undefined; onClick: (e: Event) => void; ref: Ref<unknown>; } | { tabIndex: number; ref: Ref<unknown>; "aria-disabled"?: "true"; onClick: (e: DefaultPreventable & PropagationStoppable) => void; disabled?: true; role?: "button"; onKeyDown?: (e: KeyboardLikeEvent) => void; onKeyUp?: (e: KeyboardLikeEvent) => void; }',
       typeOnly: true,
+      summary:
+        'THE interaction policy. Components MUST use this, NEVER implement\ninteraction logic directly.',
     },
     {
       name: 'dismissable',
@@ -640,6 +1086,26 @@ export const apiSymbolSets: Readonly<
       anchor: 'dismissable-options',
       signature: 'DismissableOptions: any',
       typeOnly: true,
+      summary:
+        "dismissable\n\nTHE dismissal primitive. Handles Escape key and outside interactions.\n\nINVARIANTS:\n1. Returns props that compose via mergeProps (no factories)\n2. Disabled state respected exactly once, here\n3. No side effects - pure props generation\n4. Outside detection requires explicit node reference\n5. This is the ONLY dismissal primitive - do not create alternatives\n\nDESIGN:\n- Returns standard event handler props (onKeyDown, onPointerDownCapture)\n- Composable via mergeProps with other foundations\n- Caller provides the protected node reference for outside detection\n- Returned capture props must be attached to a surface that can observe both\n  the protected subtree and the outside interaction path (for example, an\n  overlay or wrapper around the protected node)\n- Single onDismiss callback for all dismiss triggers\n\nPIT OF SUCCESS:\n✓ Can't accidentally bypass (only way to get dismiss behavior)\n✓ Can't duplicate (disabled checked once)\n✓ Composes via mergeProps (standard props)\n✓ Wrong usage is hard (no factories to misuse)\n\nUSAGE:\n  const props = dismissable({\n    node: elementRef,\n    disabled: false,\n    onDismiss: () => close()\n  });\n\n  <div {...props}>\n    <div ref={elementRef}>Content</div>\n  </div>\n\nMISUSE EXAMPLE (PREVENTED):\n  ❌ Can't forget to check disabled - checked inside dismissable\n  ❌ Can't create custom escape handler - this is the only one\n  ❌ Can't bypass via direct event listeners - mergeProps composes correctly",
+      members: [
+        {
+          name: 'node',
+          summary:
+            'Reference to the protected element for outside click detection. Attach the\nreturned capture props to a surface that encloses this node.',
+          signature: 'node?: Node | null;',
+        },
+        {
+          name: 'disabled',
+          summary: 'Whether dismiss is disabled',
+          signature: 'disabled?: boolean;',
+        },
+        {
+          name: 'onDismiss',
+          summary: 'Called when dismiss is triggered (Escape or outside click)',
+          signature: "onDismiss?: (trigger: 'escape' | 'outside') => void;",
+        },
+      ],
     },
     {
       name: 'focusable',
@@ -653,12 +1119,33 @@ export const apiSymbolSets: Readonly<
       anchor: 'focusable-options',
       signature: 'FocusableOptions: any',
       typeOnly: true,
+      summary:
+        'focusable\n\nNormalize focus-related props for hosts.\n- No DOM manipulation here; returns props that the runtime may attach.',
+      members: [
+        {
+          name: 'disabled',
+          summary: '',
+          signature: 'disabled?: boolean;',
+        },
+        {
+          name: 'tabIndex',
+          summary: '',
+          signature: 'tabIndex?: number | undefined;',
+        },
+      ],
     },
     {
       name: 'FocusableResult',
       anchor: 'focusable-result',
       signature: 'FocusableResult: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'tabIndex',
+          summary: '',
+          signature: 'tabIndex?: number;',
+        },
+      ],
     },
     {
       name: 'hoverable',
@@ -672,18 +1159,75 @@ export const apiSymbolSets: Readonly<
       anchor: 'hoverable-options',
       signature: 'HoverableOptions: any',
       typeOnly: true,
+      summary:
+        'hoverable\n\nProduces props for pointer enter/leave handling. Pure and deterministic.',
+      members: [
+        {
+          name: 'disabled',
+          summary: '',
+          signature: 'disabled?: boolean;',
+        },
+        {
+          name: 'onEnter',
+          summary: '',
+          signature: 'onEnter?: (e: HoverEvent) => void;',
+        },
+        {
+          name: 'onLeave',
+          summary: '',
+          signature: 'onLeave?: (e: HoverEvent) => void;',
+        },
+      ],
     },
     {
       name: 'HoverableResult',
       anchor: 'hoverable-result',
       signature: 'HoverableResult: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'onPointerEnter',
+          summary: '',
+          signature: 'onPointerEnter?: (e: HoverEvent) => void;',
+        },
+        {
+          name: 'onPointerLeave',
+          summary: '',
+          signature: 'onPointerLeave?: (e: HoverEvent) => void;',
+        },
+      ],
     },
     {
       name: 'InteractionPolicyInput',
       anchor: 'interaction-policy-input',
       signature: 'InteractionPolicyInput: any',
       typeOnly: true,
+      summary:
+        "USAGE EXAMPLE:\n\nfunction Menu() {\n  const [focusIndex, setFocusIndex] = state(0);\n  const items = ['File', 'Edit', 'View'];\n\n  const navigation = rovingFocus({\n    currentIndex: focusIndex(),\n    itemCount: items.length,\n    orientation: 'horizontal',\n    loop: true,\n    onNavigate: setFocusIndex,\n  });\n\n  return (\n    <div {...navigation.container}>\n      {items.map((label, index) => (\n        <button {...navigation.item(index)}>\n          {label}\n        </button>\n      ))}\n    </div>\n  );\n}",
+      members: [
+        {
+          name: 'isNative',
+          summary:
+            'Whether the host element is a native interactive element (button, a, etc)',
+          signature: 'isNative: boolean;',
+        },
+        {
+          name: 'disabled',
+          summary: 'Disabled state - checked ONLY here, never in components',
+          signature: 'disabled: boolean;',
+        },
+        {
+          name: 'onPress',
+          summary:
+            'User-provided press handler - semantic action, not DOM event',
+          signature: 'onPress?: (e: Event) => void;',
+        },
+        {
+          name: 'ref',
+          summary: 'Optional ref to compose',
+          signature: 'ref?: Ref<unknown>;',
+        },
+      ],
     },
     {
       name: 'mergeInteractionProps',
@@ -691,6 +1235,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'mergeInteractionProps: (childProps: Record<string, unknown>, policyProps: Record<string, unknown>, userProps?: Record<string, unknown>) => Record<string, unknown>',
       typeOnly: true,
+      summary:
+        'Merge rule for Slot / asChild\n\nPrecedence:\n  policy → user → child\n\nEvent handlers are composed (policy first).\nRefs are always composed.\nPolicy props MUST take precedence to enforce invariants.',
     },
     {
       name: 'Orientation',
@@ -710,12 +1256,63 @@ export const apiSymbolSets: Readonly<
       anchor: 'pressable-options',
       signature: 'PressableOptions: any',
       typeOnly: true,
+      summary:
+        'pressable\n\nInteraction helper that produces VNode props for \'press\' semantics.\n- Pure and deterministic: no DOM construction or mutation here\n- The runtime owns event attachment and scheduling\n- This helper returns plain props (handlers) intended to be attached by the runtime\n\nBehaviour:\n- For native buttons: only an `onClick` prop is provided (no ARIA or keyboard shims)\n- For non-button elements: add `role="button"` and `tabIndex` and keyboard handlers\n- Activation: `Enter` activates on keydown, `Space` activates on keyup (matches native button)\n- Disabled: handlers short-circuit and `aria-disabled` is set for all hosts\n\nPOLICY DECISIONS (LOCKED):\n\n1. Activation Timing (Platform Parity)\n   - Enter fires on keydown (immediate response)\n   - Space fires on keyup (allows cancel by moving focus, matches native)\n   - Space keydown prevents scroll (matches native button behavior)\n\n2. Disabled Enforcement Strategy\n   - Native buttons: Use HTML `disabled` attribute (platform-enforced non-interactivity)\n                    AND `aria-disabled` (consistent a11y signaling)\n   - Non-native: Use `tabIndex=-1` (removes from tab order)\n                 AND `aria-disabled` (signals disabled state to AT)\n   - Click handler short-circuits as defense-in-depth (prevents leaked focus issues)\n\n3. Key Repeat Behavior\n   - Held Enter/Space will fire onPress repeatedly (matches native button)\n   - No debouncing or repeat prevention (platform parity)',
+      members: [
+        {
+          name: 'disabled',
+          summary: '',
+          signature: 'disabled?: boolean;',
+        },
+        {
+          name: 'onPress',
+          summary: '',
+          signature: 'onPress?: (e: PressEvent) => void;',
+        },
+        {
+          name: 'isNativeButton',
+          summary: 'Whether the host is a native button. Defaults to false.',
+          signature: 'isNativeButton?: boolean;',
+        },
+      ],
     },
     {
       name: 'PressableResult',
       anchor: 'pressable-result',
       signature: 'PressableResult: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'onClick',
+          summary: '',
+          signature: 'onClick: (e: PressEvent) => void;',
+        },
+        {
+          name: 'disabled',
+          summary: '',
+          signature: 'disabled?: true;',
+        },
+        {
+          name: 'role',
+          summary: '',
+          signature: "role?: 'button';",
+        },
+        {
+          name: 'tabIndex',
+          summary: '',
+          signature: 'tabIndex?: number;',
+        },
+        {
+          name: 'onKeyDown',
+          summary: '',
+          signature: 'onKeyDown?: (e: KeyboardLikeEvent) => void;',
+        },
+        {
+          name: 'onKeyUp',
+          summary: '',
+          signature: 'onKeyUp?: (e: KeyboardLikeEvent) => void;',
+        },
+      ],
     },
     {
       name: 'rovingFocus',
@@ -729,12 +1326,60 @@ export const apiSymbolSets: Readonly<
       anchor: 'roving-focus-options',
       signature: 'RovingFocusOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'currentIndex',
+          summary: 'Current focused index',
+          signature: 'currentIndex: number;',
+        },
+        {
+          name: 'itemCount',
+          summary: 'Total number of items',
+          signature: 'itemCount: number;',
+        },
+        {
+          name: 'orientation',
+          summary:
+            'Navigation orientation\n- horizontal: ArrowLeft/ArrowRight\n- vertical: ArrowUp/ArrowDown\n- both: all arrow keys',
+          signature: 'orientation?: Orientation;',
+        },
+        {
+          name: 'loop',
+          summary: 'Whether to loop when reaching the end',
+          signature: 'loop?: boolean;',
+        },
+        {
+          name: 'onNavigate',
+          summary: 'Callback when navigation occurs',
+          signature: 'onNavigate?: (index: number) => void;',
+        },
+        {
+          name: 'isDisabled',
+          summary: 'Optional disabled state check per index',
+          signature: 'isDisabled?: (index: number) => boolean;',
+        },
+      ],
     },
     {
       name: 'RovingFocusResult',
       anchor: 'roving-focus-result',
       signature: 'RovingFocusResult: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'container',
+          summary: 'Props for the container element (composes via mergeProps)',
+          signature:
+            'container: {\n    onKeyDown: (e: KeyboardLikeEvent) => void;\n  };',
+        },
+        {
+          name: 'item',
+          summary:
+            'Generate props for an item at the given index (composes via mergeProps)',
+          signature:
+            "item: (index: number) => {\n    tabIndex: number;\n    'data-roving-index': number;\n  };",
+        },
+      ],
     },
   ],
   symbols7: [
@@ -744,6 +1389,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'controllableState: <T>(options: { value: T | undefined; defaultValue: T; onChange?: (next: T) => void; }) => ControllableState<T>',
       typeOnly: true,
+      summary:
+        'controllableState\n\nHook-like primitive that mirrors `state()` semantics while supporting\ncontrolled/uncontrolled behavior.',
     },
     {
       name: 'ControllableState',
@@ -785,12 +1432,38 @@ export const apiSymbolSets: Readonly<
       anchor: 'collection',
       signature: 'Collection: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'register',
+          summary:
+            'Register a node with optional metadata.\nReturns an unregister function.',
+          signature: 'register(node: TNode, metadata: TMetadata): () => void;',
+        },
+        {
+          name: 'items',
+          summary: 'Get all registered items in insertion order.',
+          signature:
+            'items(): ReadonlyArray<CollectionItem<TNode, TMetadata>>;',
+        },
+        {
+          name: 'clear',
+          summary: 'Clear all registered items.',
+          signature: 'clear(): void;',
+        },
+        {
+          name: 'size',
+          summary: 'Get the count of registered items.',
+          signature: 'size(): number;',
+        },
+      ],
     },
     {
       name: 'CollectionItem',
       anchor: 'collection-item',
       signature: 'CollectionItem: any',
       typeOnly: true,
+      summary:
+        'createCollection\n\nOrdered descendant registry for coordinating items without DOM queries.\n\nINVARIANTS:\n1. Registration order determines item order (no DOM queries)\n2. Stable ordering across renders (insertion order preserved)\n3. Each item may have metadata (type-safe, user-defined)\n4. No implicit global state (explicit collection instances)\n5. No automatic cleanup (caller controls lifecycle)\n\nDESIGN:\n- Returns a registry API ({ register, items, clear })\n- Items are stored in insertion order\n- Registration returns an unregister function\n- No side effects on registration (pure data structure)\n\nUSAGE:\n  const collection = createCollection<HTMLElement, { disabled: boolean }>();\n  const unregister = collection.register(element, { disabled: false });\n  const allItems = collection.items();\n  unregister();',
     },
     {
       name: 'createCollection',
@@ -829,24 +1502,105 @@ export const apiSymbolSets: Readonly<
       anchor: 'jsxelement',
       signature: 'JSXElement: any',
       typeOnly: true,
+      members: [
+        {
+          name: '$$typeof',
+          summary: 'Internal element marker',
+          signature: '$$typeof: symbol;',
+        },
+        {
+          name: 'type',
+          summary: 'Element type: string, component, Fragment, etc',
+          signature: 'type: JSXElementType;',
+        },
+        {
+          name: 'props',
+          summary: 'Props bag',
+          signature: 'props: Props;',
+        },
+        {
+          name: 'key',
+          summary: 'Optional key (normalized by runtime)',
+          signature: 'key?: string | number | null;',
+        },
+      ],
     },
     {
       name: 'Layer',
       anchor: 'layer',
       signature: 'Layer: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'id',
+          summary: 'Unique layer ID',
+          signature: 'id: number;',
+        },
+        {
+          name: 'isTop',
+          summary: 'Check if this layer is the topmost',
+          signature: 'isTop(): boolean;',
+        },
+        {
+          name: 'unregister',
+          summary: 'Remove this layer from the stack',
+          signature: 'unregister(): void;',
+        },
+      ],
     },
     {
       name: 'LayerManager',
       anchor: 'layer-manager',
       signature: 'LayerManager: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'register',
+          summary: 'Register a new layer',
+          signature: 'register(options: LayerOptions): Layer;',
+        },
+        {
+          name: 'layers',
+          summary: 'Get all active layers in order',
+          signature: 'layers(): ReadonlyArray<Layer>;',
+        },
+        {
+          name: 'handleEscape',
+          summary: 'Manually trigger escape handling on the top layer',
+          signature: 'handleEscape(): void;',
+        },
+        {
+          name: 'handleOutsidePointer',
+          summary: 'Manually trigger outside pointer handling on the top layer',
+          signature: 'handleOutsidePointer(e: PointerEvent): void;',
+        },
+      ],
     },
     {
       name: 'LayerOptions',
       anchor: 'layer-options',
       signature: 'LayerOptions: any',
       typeOnly: true,
+      summary:
+        "createLayer\n\nManages stacking order and coordination for overlays (modals, popovers, etc).\n\nINVARIANTS:\n1. Layers are ordered by registration time (FIFO)\n2. Only the top layer handles Escape key\n3. Only the top layer handles outside pointer events\n4. Nested layers are supported\n5. Does not implement portals (orthogonal concern)\n6. No automatic DOM insertion (caller controls mounting)\n\nDESIGN:\n- Returns a layer manager with register/unregister API\n- Each layer has a unique ID and can query if it's the top layer\n- Escape and outside pointer coordination via callbacks\n- No z-index management (CSS concern)\n\nUSAGE:\n  const manager = createLayer();\n\n  const layer = manager.register({\n    onEscape: () => { ... },\n    onOutsidePointer: () => { ... }\n  });\n\n  layer.isTop(); // true if this is the topmost layer\n  layer.unregister();",
+      members: [
+        {
+          name: 'onEscape',
+          summary: 'Called when Escape is pressed and this is the top layer',
+          signature: 'onEscape?: () => void;',
+        },
+        {
+          name: 'onOutsidePointer',
+          summary:
+            'Called when pointer event occurs outside and this is the top layer',
+          signature: 'onOutsidePointer?: (e: PointerEvent) => void;',
+        },
+        {
+          name: 'node',
+          summary: 'Optional node reference for outside pointer detection',
+          signature: 'node?: Node | null;',
+        },
+      ],
     },
     {
       name: 'layout',
@@ -860,6 +1614,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'layout-component',
       signature: 'LayoutComponent: any',
       typeOnly: true,
+      summary:
+        'Layout helper.\n\nA layout is just a normal component that wraps children.\nPersistence and reuse are handled by the runtime via component identity.\n\nThis helper exists purely for readability and convention.\n\nPOLICY DECISIONS (LOCKED):\n\n1. Return Type is Opaque (unknown)\n   Layout components return `unknown` to remain runtime-agnostic.\n   The runtime owns concrete JSX element types.\n\n2. Children Positioning\n   Layout receives children as first argument (router-friendly).\n   Props come second. This matches route layout conventions where\n   children represent the nested route content.\n\n3. Props Spreading\n   Props are spread into the layout component. This is intentional\n   and deterministic — no merging or composition.',
     },
     {
       name: 'Portal',
@@ -872,6 +1628,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'portal-props',
       signature: 'PortalProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'children',
+          summary: '',
+          signature: 'children?: RenderableChild;',
+        },
+      ],
     },
     {
       name: 'Presence',
@@ -879,18 +1642,34 @@ export const apiSymbolSets: Readonly<
       signature:
         'Presence: ({ present, children }: PresenceProps) => JSXElement | null',
       typeOnly: true,
+      summary:
+        'Presence\n\nStructural policy primitive for conditional mount/unmount.\n- No timers\n- No animation coupling\n- No DOM side-effects\n\nPOLICY DECISIONS (LOCKED):\n\n1. Present as Function\n   Accepts boolean OR function to support lazy evaluation patterns.\n   Function is called once per render. Use boolean form for static values.\n\n2. Children Type\n   Presence forwards normal renderable child content only.\n   Imperative DOM nodes are not part of the public contract.\n\n3. Immediate Mount/Unmount\n   No exit animations or transitions. When `present` becomes false,\n   children are removed immediately. Animation must be layered above\n   this primitive.',
     },
     {
       name: 'PresenceProps',
       anchor: 'presence-props',
       signature: 'PresenceProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'present',
+          summary: '',
+          signature: 'present: boolean | (() => boolean);',
+        },
+        {
+          name: 'children',
+          summary: '',
+          signature: 'children?: RenderableChild;',
+        },
+      ],
     },
     {
       name: 'Slot',
       anchor: 'slot',
       signature: 'Slot: (props: SlotProps) => JSXElement | null',
       typeOnly: true,
+      summary:
+        'Slot\n\nStructural primitive for prop forwarding patterns.\n\nPOLICY DECISIONS (LOCKED):\n\n1. asChild Pattern\n   When asChild=true, merges props into the single child element.\n   Child must be a valid JSXElement; non-element children return null.\n   **Slot props override child props** (injection pattern).\n\n2. Fallback Behavior\n   When asChild=false, returns a Fragment (structural no-op).\n   No DOM element is introduced.\n\n3. Type Safety\n   asChild=true requires exactly one JSXElement child (enforced by type).\n   Runtime validates with isElement() check.',
     },
     {
       name: 'SlotProps',
@@ -990,6 +1769,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'capture',
       signature: 'capture: <T>(fn: () => T) => () => T',
       typeOnly: true,
+      summary:
+        'Capture the result of a synchronous expression at call time and return a\nthunk that returns the captured value later. This is a low-level helper for\ncases where async continuations need to observe a snapshot of values at the\nmoment scheduling occurred.\n\nUsage (public API):\nconst snapshot = capture(() => someState());\nPromise.resolve().then(() => { use(snapshot()); });',
     },
     {
       name: 'documentVisible',
@@ -1002,6 +1783,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'get-signal',
       signature: 'getSignal: () => AbortSignal',
       typeOnly: true,
+      summary:
+        'Get the abort signal for the current component.\n\nThe signal is guaranteed to be aborted when:\n- Component unmounts\n- Navigation occurs (different route)\n- Parent is destroyed',
     },
     {
       name: 'ListenerTarget',
@@ -1029,12 +1812,36 @@ export const apiSymbolSets: Readonly<
       signature:
         'resource: <T, const TDeps extends readonly unknown[]>(fn: (opts: { signal: AbortSignal; }) => PromiseLike<T> | T, deps: TDeps) => ResourceResult<T>',
       typeOnly: true,
+      summary:
+        'Creates a render-scoped async resource with cancellation and refresh; SSR has special data rules.',
     },
     {
       name: 'ResourceResult',
       anchor: 'resource-result',
       signature: 'ResourceResult: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'value',
+          summary: '',
+          signature: 'value: T | null;',
+        },
+        {
+          name: 'pending',
+          summary: '',
+          signature: 'pending: boolean;',
+        },
+        {
+          name: 'error',
+          summary: '',
+          signature: 'error: Error | null;',
+        },
+        {
+          name: 'refresh',
+          summary: '',
+          signature: 'refresh(): void;',
+        },
+      ],
     },
     {
       name: 'routeActive',
@@ -1054,6 +1861,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-change-options',
       signature: 'RouteChangeOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'immediate',
+          summary: '',
+          signature: 'immediate?: boolean;',
+        },
+      ],
     },
     {
       name: 'stream',
@@ -1067,12 +1881,61 @@ export const apiSymbolSets: Readonly<
       anchor: 'stream-options',
       signature: 'StreamOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'deps',
+          summary: '',
+          signature: 'deps?: readonly unknown[];',
+        },
+        {
+          name: 'initialValue',
+          summary: '',
+          signature: 'initialValue?: T;',
+        },
+      ],
     },
     {
       name: 'StreamResult',
       anchor: 'stream-result',
       signature: 'StreamResult: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'value',
+          summary: '',
+          signature: 'value: T | null;',
+        },
+        {
+          name: 'status',
+          summary: '',
+          signature: 'status: StreamStatus;',
+        },
+        {
+          name: 'pending',
+          summary: '',
+          signature: 'pending: boolean;',
+        },
+        {
+          name: 'stale',
+          summary: '',
+          signature: 'stale: boolean;',
+        },
+        {
+          name: 'error',
+          summary: '',
+          signature: 'error: Error | null;',
+        },
+        {
+          name: 'restart',
+          summary: '',
+          signature: 'restart(): void;',
+        },
+        {
+          name: 'close',
+          summary: '',
+          signature: 'close(): void;',
+        },
+      ],
     },
     {
       name: 'StreamStatus',
@@ -1086,6 +1949,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'task: (fn: () => void | (() => void) | PromiseLike<void | (() => void)>) => void',
       typeOnly: true,
+      summary: 'Runs an owned task after commit.',
     },
     {
       name: 'timer',
@@ -1099,6 +1963,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'timer-options',
       signature: 'TimerOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'when',
+          summary: '',
+          signature: 'when?: ActivityPredicate | readonly ActivityPredicate[];',
+        },
+      ],
     },
     {
       name: 'windowFocused',
@@ -1141,12 +2012,58 @@ export const apiSymbolSets: Readonly<
       anchor: 'data-runtime',
       signature: 'DataRuntime: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'queryCache',
+          summary: '',
+          signature: 'readonly queryCache: Map<string, unknown>;',
+        },
+        {
+          name: 'queryData',
+          summary: '',
+          signature: 'readonly queryData: Map<string, unknown>;',
+        },
+        {
+          name: 'queryTestOverrides',
+          summary:
+            'Test-only query overrides keyed by the canonical query key.',
+          signature: 'readonly queryTestOverrides: Map<string, unknown>;',
+        },
+        {
+          name: 'mutationTestOverrides',
+          summary:
+            'Test-only mutation overrides keyed by the canonical mutation key.',
+          signature: 'readonly mutationTestOverrides: Map<string, unknown>;',
+        },
+      ],
     },
     {
       name: 'DataRuntimeOptions',
       anchor: 'data-runtime-options',
       signature: 'DataRuntimeOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'queryCache',
+          summary: '',
+          signature: 'queryCache?: Map<string, unknown>;',
+        },
+        {
+          name: 'queryData',
+          summary: '',
+          signature: 'queryData?: Map<string, unknown>;',
+        },
+        {
+          name: 'queryTestOverrides',
+          summary: '',
+          signature: 'queryTestOverrides?: Map<string, unknown>;',
+        },
+        {
+          name: 'mutationTestOverrides',
+          summary: '',
+          signature: 'mutationTestOverrides?: Map<string, unknown>;',
+        },
+      ],
     },
     {
       name: 'defineQuery',
@@ -1201,12 +2118,46 @@ export const apiSymbolSets: Readonly<
       anchor: 'invalidate-on-interval-options',
       signature: 'InvalidateOnIntervalOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'intervalMs',
+          summary: '',
+          signature: 'intervalMs: number;',
+        },
+        {
+          name: 'activeOn',
+          summary: '',
+          signature: 'activeOn?: string | readonly string[];',
+        },
+        {
+          name: 'visibleOnly',
+          summary: '',
+          signature: 'visibleOnly?: boolean;',
+        },
+        {
+          name: 'focusedOnly',
+          summary: '',
+          signature: 'focusedOnly?: boolean;',
+        },
+      ],
     },
     {
       name: 'InvalidateOptions',
       anchor: 'invalidate-options',
       signature: 'InvalidateOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'markPendingWrite',
+          summary: '',
+          signature: 'markPendingWrite?: boolean;',
+        },
+        {
+          name: 'runtime',
+          summary: '',
+          signature: 'runtime?: DataRuntime;',
+        },
+      ],
     },
     {
       name: 'Mutation',
@@ -1244,6 +2195,30 @@ export const apiSymbolSets: Readonly<
       anchor: 'query-definition',
       signature: 'QueryDefinition: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'key',
+          summary: '',
+          signature: 'readonly key: (input: TInput) => string;',
+        },
+        {
+          name: 'fetch',
+          summary: '',
+          signature:
+            'readonly fetch: (context: TInput & {\n    signal: AbortSignal;\n  }) => Promise<TResult>;',
+        },
+        {
+          name: 'isConsistent',
+          summary: '',
+          signature: 'readonly isConsistent?: (data: TResult) => boolean;',
+        },
+        {
+          name: 'reconcile',
+          summary: '',
+          signature:
+            'readonly reconcile?: (data: TResult, context: {\n    key: string;\n  }) => Promise<boolean> | boolean;',
+        },
+      ],
     },
     {
       name: 'QueryKeyPart',
@@ -1256,6 +2231,34 @@ export const apiSymbolSets: Readonly<
       anchor: 'query-prefetch-context',
       signature: 'QueryPrefetchContext: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'runtime',
+          summary: '',
+          signature: 'readonly runtime: DataRuntime;',
+        },
+        {
+          name: 'request',
+          summary: '',
+          signature: 'readonly request?: Request;',
+        },
+        {
+          name: 'signal',
+          summary: '',
+          signature: 'readonly signal: AbortSignal;',
+        },
+        {
+          name: 'mode',
+          summary: '',
+          signature: "readonly mode: 'ssr' | 'spa';",
+        },
+        {
+          name: 'prefetch',
+          summary: '',
+          signature:
+            'prefetch<TInput, TResult extends {}>(query: QueryDefinition<TInput, TResult>, input: TInput): Promise<boolean>;',
+        },
+      ],
     },
     {
       name: 'queryScope',
@@ -1268,6 +2271,24 @@ export const apiSymbolSets: Readonly<
       anchor: 'query-scope',
       signature: 'QueryScope: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'key',
+          summary: '',
+          signature: 'key(...parts: QueryKeyPart[]): string;',
+        },
+        {
+          name: 'prefix',
+          summary: '',
+          signature: 'prefix(...parts: QueryKeyPart[]): string;',
+        },
+        {
+          name: 'invalidate',
+          summary: '',
+          signature:
+            'invalidate(parts: readonly QueryKeyPart[], options?: InvalidateOptions): void;',
+        },
+      ],
     },
     {
       name: 'QueryStaleReason',
@@ -1287,6 +2308,18 @@ export const apiSymbolSets: Readonly<
       anchor: 'server-query-entry',
       signature: 'ServerQueryEntry: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'query',
+          summary: '',
+          signature: 'readonly query: QueryDefinition<TInput, TResult>;',
+        },
+        {
+          name: 'handler',
+          summary: '',
+          signature: 'readonly handler: ServerQueryHandler<TInput, TResult>;',
+        },
+      ],
     },
     {
       name: 'ServerQueryHandler',
@@ -1299,6 +2332,20 @@ export const apiSymbolSets: Readonly<
       anchor: 'server-query-registry',
       signature: 'ServerQueryRegistry: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'entries',
+          summary: '',
+          signature:
+            'readonly entries: readonly ServerQueryEntry<unknown, {}>[];',
+        },
+        {
+          name: 'get',
+          summary: '',
+          signature:
+            'get<TInput, TResult extends {}>(query: QueryDefinition<TInput, TResult>): ServerQueryHandler<TInput, TResult> | undefined;',
+        },
+      ],
     },
   ],
   symbols12: [
@@ -1313,6 +2360,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'click',
       signature: 'click: (element: Element) => boolean',
       typeOnly: true,
+      summary:
+        "Dispatch the browser click sequence expected by Askr's delegated events.",
     },
     {
       name: 'createInvalidationRecorder',
@@ -1325,12 +2374,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'create-mutation-test-registry',
       signature: 'createMutationTestRegistry: () => MutationTestRegistry',
       typeOnly: true,
+      summary:
+        'Create a keyed mutation fixture registry for a test render runtime.',
     },
     {
       name: 'createQueryTestRegistry',
       anchor: 'create-query-test-registry',
       signature: 'createQueryTestRegistry: () => QueryTestRegistry',
       typeOnly: true,
+      summary:
+        'Create a keyed query fixture registry for a test render runtime.',
     },
     {
       name: 'dispatch',
@@ -1357,12 +2410,46 @@ export const apiSymbolSets: Readonly<
       anchor: 'invalidation-record',
       signature: 'InvalidationRecord: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'prefix',
+          summary: '',
+          signature: 'prefix: string;',
+        },
+        {
+          name: 'markPendingWrite',
+          summary: '',
+          signature: 'markPendingWrite: boolean;',
+        },
+      ],
     },
     {
       name: 'InvalidationRecorder',
       anchor: 'invalidation-recorder',
       signature: 'InvalidationRecorder: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'calls',
+          summary: '',
+          signature: 'readonly calls: readonly InvalidationRecord[];',
+        },
+        {
+          name: 'prefixes',
+          summary: '',
+          signature: 'readonly prefixes: readonly string[];',
+        },
+        {
+          name: 'clear',
+          summary: '',
+          signature: 'clear(): void;',
+        },
+        {
+          name: 'stop',
+          summary: '',
+          signature: 'stop(): void;',
+        },
+      ],
     },
     {
       name: 'matchRoute',
@@ -1383,6 +2470,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'mock-query-options',
       signature: 'MockQueryOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'refresh',
+          summary: '',
+          signature: 'refresh?: MockRefresh;',
+        },
+      ],
     },
     {
       name: 'MockRefresh',
@@ -1421,6 +2515,29 @@ export const apiSymbolSets: Readonly<
       anchor: 'mutation-test-registry',
       signature: 'MutationTestRegistry: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'runtime',
+          summary: '',
+          signature: 'readonly runtime: DataRuntime;',
+        },
+        {
+          name: 'set',
+          summary: '',
+          signature:
+            'set<TInput, TResult>(key: string, mutation: Mutation<TInput, TResult>): void;',
+        },
+        {
+          name: 'delete',
+          summary: '',
+          signature: 'delete(key: string): void;',
+        },
+        {
+          name: 'clear',
+          summary: '',
+          signature: 'clear(): void;',
+        },
+      ],
     },
     {
       name: 'queryState',
@@ -1434,6 +2551,28 @@ export const apiSymbolSets: Readonly<
       anchor: 'query-test-registry',
       signature: 'QueryTestRegistry: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'runtime',
+          summary: '',
+          signature: 'readonly runtime: DataRuntime;',
+        },
+        {
+          name: 'set',
+          summary: '',
+          signature: 'set<T extends {}>(key: string, query: Query<T>): void;',
+        },
+        {
+          name: 'delete',
+          summary: '',
+          signature: 'delete(key: string): void;',
+        },
+        {
+          name: 'clear',
+          summary: '',
+          signature: 'clear(): void;',
+        },
+      ],
     },
     {
       name: 'render',
@@ -1447,12 +2586,58 @@ export const apiSymbolSets: Readonly<
       anchor: 'render-options',
       signature: 'RenderOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'container',
+          summary:
+            'Existing element to own for the duration of the render. When omitted, the\nharness appends a managed `<div>` to `document.body`.',
+          signature: 'container?: HTMLElement;',
+        },
+        {
+          name: 'cleanupStrict',
+          summary: 'Surface lifecycle cleanup errors during unmount.',
+          signature: 'cleanupStrict?: boolean;',
+        },
+      ],
     },
     {
       name: 'RenderResult',
       anchor: 'render-result',
       signature: 'RenderResult: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'container',
+          summary: '',
+          signature: 'readonly container: HTMLElement;',
+        },
+        {
+          name: 'root',
+          summary: '',
+          signature: 'readonly root: HTMLElement;',
+        },
+        {
+          name: 'flush',
+          summary: '',
+          signature: 'flush(): void;',
+        },
+        {
+          name: 'dispatch',
+          summary: '',
+          signature:
+            'dispatch(target: EventTarget, event: Event | string, init?: DispatchEventInit): boolean;',
+        },
+        {
+          name: 'unmount',
+          summary: '',
+          signature: 'unmount(): void;',
+        },
+        {
+          name: 'cleanup',
+          summary: '',
+          signature: 'cleanup(): void;',
+        },
+      ],
     },
     {
       name: 'renderRoute',
@@ -1466,18 +2651,73 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-pattern-warning',
       signature: 'RoutePatternWarning: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'kind',
+          summary: '',
+          signature: "kind: 'route-collision';",
+        },
+        {
+          name: 'path',
+          summary: '',
+          signature: 'path: string;',
+        },
+        {
+          name: 'conflictingPath',
+          summary: '',
+          signature: 'conflictingPath: string;',
+        },
+        {
+          name: 'segment',
+          summary: '',
+          signature: 'segment: string;',
+        },
+        {
+          name: 'namespace',
+          summary: '',
+          signature: 'namespace: string | undefined;',
+        },
+        {
+          name: 'message',
+          summary: '',
+          signature: 'message: string;',
+        },
+      ],
     },
     {
       name: 'RouteRenderOptions',
       anchor: 'route-render-options',
       signature: 'RouteRenderOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'registry',
+          summary: '',
+          signature: 'registry: RouteRegistry;',
+        },
+        {
+          name: 'url',
+          summary: 'Initial path, query, and hash for the routed render.',
+          signature: 'url?: string;',
+        },
+        {
+          name: 'auth',
+          summary: '',
+          signature: 'auth?: RouteAuthOptions;',
+        },
+        {
+          name: 'dataRuntime',
+          summary: '',
+          signature: 'dataRuntime?: DataRuntime;',
+        },
+      ],
     },
     {
       name: 'submit',
       anchor: 'submit',
       signature: 'submit: (form: HTMLFormElement) => boolean',
       typeOnly: true,
+      summary: 'Dispatch a cancelable bubbling submit event on a form.',
     },
     {
       name: 'type',
@@ -1485,6 +2725,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'type: (element: HTMLInputElement | HTMLTextAreaElement, text: string) => void',
       typeOnly: true,
+      summary:
+        "Set a text control's value and emit an input event for each character.",
     },
   ],
   symbols13: [
@@ -1494,6 +2736,19 @@ export const apiSymbolSets: Readonly<
       signature:
         'debounce: <T extends AnyFn>(fn: T, ms: number, options?: DebounceOptions) => T & { cancel(): void; }',
       typeOnly: true,
+      summary:
+        'Debounce — delay execution, coalesce rapid calls\n\nUseful for: text input, resize, autosave',
+      tags: {
+        param: [
+          'fn Function to debounce',
+          'ms Delay in milliseconds',
+          'options trailing (default true), leading',
+        ],
+        returns: ['Debounced function with cancel() method'],
+        example: [
+          "```ts\nconst save = debounce((text) => api.save(text), 500);\ninput.addEventListener('input', (e) => save(e.target.value));\nsave.cancel(); // stop any pending execution\n```",
+        ],
+      },
     },
     {
       name: 'debounceEvent',
@@ -1507,12 +2762,34 @@ export const apiSymbolSets: Readonly<
       anchor: 'debounce-options',
       signature: 'DebounceOptions: any',
       typeOnly: true,
+      summary:
+        'Timing utilities — pure helpers for common async patterns\nNo framework coupling. No lifecycle awareness.',
+      members: [
+        {
+          name: 'leading',
+          summary: '',
+          signature: 'leading?: boolean;',
+        },
+        {
+          name: 'trailing',
+          summary: '',
+          signature: 'trailing?: boolean;',
+        },
+      ],
     },
     {
       name: 'defer',
       anchor: 'defer',
       signature: 'defer: (fn: () => void) => void',
       typeOnly: true,
+      summary:
+        'Defer — schedule on microtask queue\n\nUseful for: run-after-current-stack logic\nMore reliable than setTimeout(..., 0)',
+      tags: {
+        param: ['fn Function to defer'],
+        example: [
+          '```ts\ndefer(() => update()); // runs after current stack, before next macrotask\n```',
+        ],
+      },
     },
     {
       name: 'idle',
@@ -1520,18 +2797,45 @@ export const apiSymbolSets: Readonly<
       signature:
         'idle: (fn: () => void, options?: { timeout?: number; }) => void',
       typeOnly: true,
+      summary:
+        'Idle — schedule low-priority work\n\nUseful for: background prep, non-urgent updates\nFalls back to setTimeout if requestIdleCallback unavailable',
+      tags: {
+        param: [
+          'fn Function to call when idle',
+          'options timeout for fallback',
+        ],
+        example: ['```ts\nidle(() => prefetchData());\n```'],
+      },
     },
     {
       name: 'once',
       anchor: 'once',
       signature: 'once: <T extends AnyFn>(fn: T) => T',
       typeOnly: true,
+      summary:
+        'Once — guard against double execution\n\nUseful for: init logic, event safety',
+      tags: {
+        param: ['fn Function to call at most once'],
+        returns: ['Function that executes fn only on first call'],
+        example: [
+          '```ts\nconst init = once(setup);\ninit(); // runs\ninit(); // does nothing\ninit(); // does nothing\n```',
+        ],
+      },
     },
     {
       name: 'raf',
       anchor: 'raf',
       signature: 'raf: <T extends AnyFn>(fn: T) => T',
       typeOnly: true,
+      summary:
+        'RAF — coalesce multiple updates into single frame\n\nUseful for: animation, layout work, render updates',
+      tags: {
+        param: ['fn Function to schedule on next animation frame'],
+        returns: ['Function that schedules fn on requestAnimationFrame'],
+        example: [
+          '```ts\nconst update = raf(render);\nupdate(); // schedules on next frame\nupdate(); // same frame, no duplicate\n```',
+        ],
+      },
     },
     {
       name: 'rafEvent',
@@ -1546,12 +2850,41 @@ export const apiSymbolSets: Readonly<
       signature:
         'retry: <T>(fn: () => Promise<T>, options?: RetryOptions) => Promise<T>',
       typeOnly: true,
+      summary:
+        'Retry — attempt function with backoff\n\nUseful for: network calls, transient failures',
+      tags: {
+        param: [
+          'fn Async function to retry',
+          'options maxAttempts, delayMs, backoff function',
+        ],
+        returns: ['Promise with final result or error'],
+        example: [
+          '```ts\nconst data = await retry(() => fetch(url), {\n  maxAttempts: 3,\n  delayMs: 100,\n});\n```',
+        ],
+      },
     },
     {
       name: 'RetryOptions',
       anchor: 'retry-options',
       signature: 'RetryOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'maxAttempts',
+          summary: '',
+          signature: 'maxAttempts?: number;',
+        },
+        {
+          name: 'delayMs',
+          summary: '',
+          signature: 'delayMs?: number;',
+        },
+        {
+          name: 'backoff',
+          summary: '',
+          signature: 'backoff?: (attemptIndex: number) => number;',
+        },
+      ],
     },
     {
       name: 'scheduleEventHandler',
@@ -1586,6 +2919,19 @@ export const apiSymbolSets: Readonly<
       signature:
         'throttle: <T extends AnyFn>(fn: T, ms: number, options?: ThrottleOptions) => T & { cancel(): void; }',
       typeOnly: true,
+      summary:
+        'Throttle — rate-limit execution, keep first/last\n\nUseful for: scroll, mouse move, high-frequency events',
+      tags: {
+        param: [
+          'fn Function to throttle',
+          'ms Minimum interval between calls in milliseconds',
+          'options leading (default true), trailing (default true)',
+        ],
+        returns: ['Throttled function with cancel() method'],
+        example: [
+          "```ts\nconst handleScroll = throttle(updateUI, 100);\nwindow.addEventListener('scroll', handleScroll);\nhandleScroll.cancel();\n```",
+        ],
+      },
     },
     {
       name: 'throttleEvent',
@@ -1599,12 +2945,33 @@ export const apiSymbolSets: Readonly<
       anchor: 'throttle-options',
       signature: 'ThrottleOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'leading',
+          summary: '',
+          signature: 'leading?: boolean;',
+        },
+        {
+          name: 'trailing',
+          summary: '',
+          signature: 'trailing?: boolean;',
+        },
+      ],
     },
     {
       name: 'timeout',
       anchor: 'timeout',
       signature: 'timeout: (ms: number) => Promise<void>',
       typeOnly: true,
+      summary:
+        'Timeout — Promise-based delay\n\nUseful for: readable async code, waiting between retries',
+      tags: {
+        param: ['ms Milliseconds to wait'],
+        returns: ['Promise that resolves after delay'],
+        example: [
+          "```ts\nawait timeout(300);\nconsole.log('300ms later');\n```",
+        ],
+      },
     },
   ],
   symbols14: [
@@ -1619,12 +2986,46 @@ export const apiSymbolSets: Readonly<
       anchor: 'access-deny-decision',
       signature: 'AccessDenyDecision: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'kind',
+          summary: '',
+          signature: "kind: 'deny';",
+        },
+        {
+          name: 'status',
+          summary: '',
+          signature: 'status: AccessDenyStatus;',
+        },
+      ],
     },
     {
       name: 'AccessRedirectDecision',
       anchor: 'access-redirect-decision',
       signature: 'AccessRedirectDecision: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'kind',
+          summary: '',
+          signature: "kind: 'redirect';",
+        },
+        {
+          name: 'to',
+          summary: '',
+          signature: 'to: string;',
+        },
+        {
+          name: 'status',
+          summary: '',
+          signature: 'status?: AccessRedirectStatus;',
+        },
+        {
+          name: 'replace',
+          summary: '',
+          signature: 'replace?: boolean;',
+        },
+      ],
     },
     {
       name: 'allow',
@@ -1637,6 +3038,33 @@ export const apiSymbolSets: Readonly<
       anchor: 'auth-context',
       signature: 'AuthContext: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'authenticated',
+          summary: '',
+          signature: 'authenticated: boolean;',
+        },
+        {
+          name: 'principal',
+          summary: '',
+          signature: 'principal: P | null;',
+        },
+        {
+          name: 'session',
+          summary: '',
+          signature: 'session: S | null;',
+        },
+        {
+          name: 'tenant',
+          summary: '',
+          signature: 'tenant: string | null;',
+        },
+        {
+          name: 'scopes',
+          summary: '',
+          signature: 'scopes?: readonly string[];',
+        },
+      ],
     },
     {
       name: 'AuthRequirement',
@@ -1656,6 +3084,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'current-auth',
       signature: 'currentAuth: () => AuthContext$1',
       typeOnly: true,
+      summary:
+        'Return the identity resolved for the route currently being rendered.',
     },
     {
       name: 'currentRoute',
@@ -1675,6 +3105,28 @@ export const apiSymbolSets: Readonly<
       anchor: 'deferred',
       signature: 'Deferred: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'state',
+          summary: '',
+          signature: 'readonly state: DeferredState;',
+        },
+        {
+          name: 'value',
+          summary: '',
+          signature: 'readonly value: T | undefined;',
+        },
+        {
+          name: 'error',
+          summary: '',
+          signature: 'readonly error: unknown;',
+        },
+        {
+          name: 'promise',
+          summary: '',
+          signature: 'readonly promise: Promise<T>;',
+        },
+      ],
     },
     {
       name: 'DeferredState',
@@ -1712,6 +3164,19 @@ export const apiSymbolSets: Readonly<
       anchor: 'group-helper-options',
       signature: 'GroupHelperOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'layout',
+          summary: '',
+          signature:
+            'layout?: (props: {\n    children?: RenderableChild;\n  }) => RenderableChild;',
+        },
+        {
+          name: 'meta',
+          summary: '',
+          signature: 'meta?: RouteMetaSource;',
+        },
+      ],
     },
     {
       name: 'HistoryScrollBehavior',
@@ -1738,6 +3203,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'layout-scope-record',
       signature: 'LayoutScopeRecord: any',
       typeOnly: true,
+      summary:
+        "Resolved layout component as stored in a route record's layout chain.",
+      members: [
+        {
+          name: 'component',
+          summary: '',
+          signature:
+            'component: (props: {\n    children?: RenderableChild;\n  }) => RenderableChild;',
+        },
+      ],
     },
     {
       name: 'lazy',
@@ -1758,6 +3233,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'lazyRouteData: <TModule, TData = TModule>(factory: () => PromiseLike<TModule>, select?: (module: TModule, context: RouteContext & { request?: Request; }) => TData | PromiseLike<TData>) => LazyRouteDataLoader<TModule, TData>',
       typeOnly: true,
+      summary:
+        'Create a cached route loader backed by a dynamic import. The module is only\nrequested when the owning route matches, unless preload() is called.',
     },
     {
       name: 'LazyRouteDataLoader',
@@ -1771,6 +3248,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'Link: ({ href: suppliedHref, to, class: className, children, rel, target, "aria-current": ariaCurrent, "aria-label": ariaLabel, onPress, onClick, ...rest }: LinkProps) => JSXElement',
       typeOnly: true,
+      summary:
+        'Link component that prevents default navigation and uses navigate()\nProvides declarative way to navigate between routes\n\nAccessibility features:\n- Proper semantic <a> element (not a button)\n- Supports aria-current for indicating active page\n- Supports aria-label for descriptive labels\n- Keyboard accessible (Enter key handled by native <a> element)\n\nRespects native browser behaviors:\n- Middle-click (opens in new tab)\n- Ctrl/Cmd+click (opens in new tab)\n- Shift+click (opens in new window)\n- Alt+click (downloads link)\n- Right-click context menu\n\nBest practices:\n- Use target="_blank" with rel="noopener noreferrer" for external links\n- Use aria-current="page" for the current page in navigation\n- Provide descriptive link text or aria-label\n- For a styled link with automatic active-route state, install\n  `@askrjs/themes` and use `NavLink` from `@askrjs/themes/components`\n\nUses applyInteractionPolicy to enforce pit-of-success principles:\n- Interaction behavior centralized in foundations\n- Keyboard handling automatic\n- Composable via mergeProps',
     },
     {
       name: 'LinkProps',
@@ -1827,18 +3306,56 @@ export const apiSymbolSets: Readonly<
       anchor: 'page-helper-options',
       signature: 'PageHelperOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'preload',
+          summary: '',
+          signature:
+            'preload?: (context: RouteContext & {\n    request?: Request;\n    data: QueryPrefetchContext;\n  }) => unknown;',
+        },
+        {
+          name: 'meta',
+          summary: '',
+          signature: 'meta?: RouteMetaSource;',
+        },
+      ],
     },
     {
       name: 'PageScopeRecord',
       anchor: 'page-scope-record',
       signature: 'PageScopeRecord: any',
       typeOnly: true,
+      summary:
+        "Resolved page host component as stored in a route record's page chain.",
+      members: [
+        {
+          name: 'component',
+          summary: '',
+          signature: 'component: RouteComponent;',
+        },
+      ],
     },
     {
       name: 'ParsedSegment',
       anchor: 'parsed-segment',
       signature: 'ParsedSegment: any',
       typeOnly: true,
+      summary:
+        'A single parsed segment from a route path.\n\n- `static`:   a literal path segment, e.g. `"users"` in `/users/{id}`\n- `param`:    a `{name}` capture group — `value` holds the param name\n- `wildcard`: a bare `*` segment that captures exactly one segment\n- `splat`:    a `{*name}` capture group that captures the remaining path\n- `catchall`: the `/*` catch-all that matches any depth',
+      members: [
+        {
+          name: 'kind',
+          summary: '',
+          signature:
+            "kind: 'static' | 'param' | 'wildcard' | 'splat' | 'catchall';",
+        },
+        {
+          name: 'value',
+          summary:
+            'For static/wildcard/catchall: the literal text; for param: the param name.',
+          signature: 'value: string;',
+        },
+      ],
     },
     {
       name: 'reconcileRouteMeta',
@@ -1846,6 +3363,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'reconcileRouteMeta: (meta: Readonly<RouteMeta>, target?: Document) => void',
       typeOnly: true,
+      summary:
+        'Replace only Askr-owned head nodes after a successful client navigation.',
     },
     {
       name: 'redirect',
@@ -1872,6 +3391,29 @@ export const apiSymbolSets: Readonly<
       anchor: 'resolve-props',
       signature: 'ResolveProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'value',
+          summary: '',
+          signature: 'value: Deferred<T>;',
+        },
+        {
+          name: 'pending',
+          summary: '',
+          signature: 'pending?: RenderableChild;',
+        },
+        {
+          name: 'rejected',
+          summary: '',
+          signature:
+            'rejected?: RenderableChild | ((error: unknown) => RenderableChild);',
+        },
+        {
+          name: 'children',
+          summary: '',
+          signature: 'children: (value: T) => RenderableChild;',
+        },
+      ],
     },
     {
       name: 'resolveRouteMeta',
@@ -1899,12 +3441,48 @@ export const apiSymbolSets: Readonly<
       anchor: 'route',
       signature: 'Route: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'path',
+          summary: '',
+          signature: 'path: string;',
+        },
+        {
+          name: 'handler',
+          summary: '',
+          signature: 'handler: RouteHandler<TParams>;',
+        },
+        {
+          name: 'namespace',
+          summary: '',
+          signature: 'namespace?: string;',
+        },
+      ],
     },
     {
       name: 'RouteAuthOptions',
       anchor: 'route-auth-options',
       signature: 'RouteAuthOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'resolve',
+          summary: '',
+          signature: 'resolve: RouteAuthResolver;',
+        },
+        {
+          name: 'loginPath',
+          summary: '',
+          signature:
+            'loginPath?: string | ((context: RouteContext) => string | PromiseLike<string>);',
+        },
+        {
+          name: 'authenticatedRedirectTo',
+          summary: '',
+          signature:
+            'authenticatedRedirectTo?: string | ((context: RouteContext) => string | PromiseLike<string>);',
+        },
+      ],
     },
     {
       name: 'RouteAuthResolver',
@@ -1923,18 +3501,69 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-change-options',
       signature: 'RouteChangeOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'immediate',
+          summary: '',
+          signature: 'immediate?: boolean;',
+        },
+      ],
     },
     {
       name: 'RouteComponent',
       anchor: 'route-component',
       signature: 'RouteComponent: any',
       typeOnly: true,
+      summary:
+        'A route page component: a regular component that receives route params as\nprops derived from the URL pattern.\n\nComponents may accept no params at all — zero-argument components are still\nassignable.',
     },
     {
       name: 'RouteContext',
       anchor: 'route-context',
       signature: 'RouteContext: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'mode',
+          summary: '',
+          signature: 'mode: RouteMode;',
+        },
+        {
+          name: 'params',
+          summary: '',
+          signature: 'params: TParams;',
+        },
+        {
+          name: 'pathname',
+          summary: '',
+          signature: 'pathname: string;',
+        },
+        {
+          name: 'search',
+          summary: '',
+          signature: 'search: string;',
+        },
+        {
+          name: 'hash',
+          summary: '',
+          signature: 'hash: string;',
+        },
+        {
+          name: 'href',
+          summary: '',
+          signature: 'href: string;',
+        },
+        {
+          name: 'auth',
+          summary: '',
+          signature: 'auth: AuthContext;',
+        },
+        {
+          name: 'signal',
+          summary: '',
+          signature: 'signal: AbortSignal;',
+        },
+      ],
     },
     {
       name: 'routeData',
@@ -1947,6 +3576,23 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-data-load-error',
       signature: 'RouteDataLoadError: typeof RouteDataLoadError',
       typeOnly: true,
+      members: [
+        {
+          name: 'route',
+          summary: '',
+          signature: 'readonly route: string;',
+        },
+        {
+          name: 'phase',
+          summary: '',
+          signature: 'readonly phase: RouteDataLoadPhase;',
+        },
+        {
+          name: 'cause',
+          summary: '',
+          signature: 'readonly cause: unknown;',
+        },
+      ],
     },
     {
       name: 'RouteDataLoadPhase',
@@ -1965,6 +3611,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-destination',
       signature: 'RouteDestination: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'href',
+          summary: '',
+          signature: 'readonly href: string;',
+        },
+      ],
     },
     {
       name: 'RouteHandler',
@@ -1977,18 +3630,104 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-manifest',
       signature: 'RouteManifest: any',
       typeOnly: true,
+      summary:
+        "The normalized route manifest produced by registered route definitions.\ndeclarations.  Pass it to `createSPA`, `hydrateSPA`, or `renderToString`\ninstead of assembling plain `Route[]` arrays.\n\n```ts\nimport { createRouteRegistry } from '@askrjs/askr/router';\nconst registry = createRouteRegistry(() => { ... });\nawait createSPA({ root: '#app', registry });\n```",
+      members: [
+        {
+          name: 'records',
+          summary: '',
+          signature: 'records: RouteRecord[];',
+        },
+        {
+          name: 'auth',
+          summary: '',
+          signature: 'auth?: RouteAuthOptions;',
+        },
+        {
+          name: 'basePath',
+          summary:
+            'Normalized public pathname prefix. Empty and root mounts omit it.',
+          signature: 'basePath?: string;',
+        },
+      ],
     },
     {
       name: 'RouteMatch',
       anchor: 'route-match',
       signature: 'RouteMatch: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'path',
+          summary: '',
+          signature: 'path: string;',
+        },
+        {
+          name: 'params',
+          summary: '',
+          signature: 'params: Readonly<TParams>;',
+        },
+        {
+          name: 'name',
+          summary: '',
+          signature: 'name?: string;',
+        },
+        {
+          name: 'namespace',
+          summary: '',
+          signature: 'namespace?: string;',
+        },
+      ],
     },
     {
       name: 'RouteMeta',
       anchor: 'route-meta',
       signature: 'RouteMeta: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'title',
+          summary: '',
+          signature: 'title?: string;',
+        },
+        {
+          name: 'description',
+          summary: '',
+          signature: 'description?: string;',
+        },
+        {
+          name: 'canonical',
+          summary: '',
+          signature: 'canonical?: string;',
+        },
+        {
+          name: 'robots',
+          summary: '',
+          signature: 'robots?: string;',
+        },
+        {
+          name: 'openGraph',
+          summary: '',
+          signature: 'openGraph?: Record<string, string>;',
+        },
+        {
+          name: 'links',
+          summary: '',
+          signature:
+            'links?: readonly {\n    rel: string;\n    href: string;\n    [key: string]: string;\n  }[];',
+        },
+        {
+          name: 'jsonLd',
+          summary: '',
+          signature: 'jsonLd?: unknown | readonly unknown[];',
+        },
+        {
+          name: 'html',
+          summary: '',
+          signature:
+            "html?: {\n    lang?: string;\n    dir?: 'ltr' | 'rtl' | 'auto';\n  };",
+        },
+      ],
     },
     {
       name: 'RouteMetaSource',
@@ -2007,12 +3746,73 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-options',
       signature: 'RouteOptions: any',
       typeOnly: true,
+      summary:
+        'Options for `route()` declarations.\n\n- `loader`: server data loader called before render, result passed as SSR data\n- `entries`: SSG entry generator — returns one param map per static page\n- `title`: page title hint used by SSG and document-meta integrations\n- `namespace`: MFE namespace key for grouped route management',
+      members: [
+        {
+          name: 'loader',
+          summary: '',
+          signature:
+            'loader?: (context: RouteContext<TParams> & {\n    request?: Request;\n  }) => TLoaderData | PromiseLike<TLoaderData>;',
+        },
+        {
+          name: 'dehydrate',
+          summary:
+            'Select the loader data transported to the browser for initial hydration.\n\nServer rendering still receives the complete loader value. The selector\nmust be synchronous; client navigations rerun the loader and receive its\ncomplete result.',
+          signature:
+            'dehydrate?: (data: TLoaderData, context: RouteContext<TParams> & {\n    request?: Request;\n  }) => TDehydratedData extends PromiseLike<unknown> ? never : TDehydratedData;',
+        },
+        {
+          name: 'preload',
+          summary: '',
+          signature:
+            'preload?: (context: RouteContext<TParams> & {\n    request?: Request;\n    data: QueryPrefetchContext;\n  }) => unknown;',
+        },
+        {
+          name: 'entries',
+          summary: '',
+          signature:
+            'entries?: () => Array<TParams> | Promise<Array<TParams>>;',
+        },
+        {
+          name: 'invalidationKeys',
+          summary:
+            'Optional invalidation keys used by incremental SSG generation.',
+          signature: 'invalidationKeys?: readonly string[];',
+        },
+        {
+          name: 'title',
+          summary: '',
+          signature: 'title?: string;',
+        },
+        {
+          name: 'namespace',
+          summary: '',
+          signature: 'namespace?: string;',
+        },
+        {
+          name: 'search',
+          summary: '',
+          signature: 'search?: TSearchSchema;',
+        },
+        {
+          name: 'meta',
+          summary: '',
+          signature: 'meta?: RouteMetaSource<TParams>;',
+        },
+        {
+          name: 'actions',
+          summary: '',
+          signature: 'actions?: readonly ActionDescriptor[];',
+        },
+      ],
     },
     {
       name: 'RouteParams',
       anchor: 'route-params',
       signature: 'RouteParams: any',
       typeOnly: true,
+      summary: 'Common call contracts: Router types',
     },
     {
       name: 'RoutePathParams',
@@ -2031,6 +3831,28 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-query',
       signature: 'RouteQuery: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'get',
+          summary: '',
+          signature: 'get(key: string): string | null;',
+        },
+        {
+          name: 'getAll',
+          summary: '',
+          signature: 'getAll(key: string): string[];',
+        },
+        {
+          name: 'has',
+          summary: '',
+          signature: 'has(key: string): boolean;',
+        },
+        {
+          name: 'toJSON',
+          summary: '',
+          signature: 'toJSON(): Record<string, string | string[]>;',
+        },
+      ],
     },
     {
       name: 'RouteQueryParamInput',
@@ -2061,36 +3883,226 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-record',
       signature: 'RouteRecord: any',
       typeOnly: true,
+      summary:
+        'A fully normalized route record produced by `route(path, Component, options?)`.\n\nThis is the canonical representation shared by:\n  - SPA matching and navigation\n  - SSR request resolution\n  - SSG manifest expansion',
+      members: [
+        {
+          name: 'path',
+          summary: 'Canonical normalized absolute path, e.g. `/posts/{slug}`',
+          signature: 'path: string;',
+        },
+        {
+          name: 'component',
+          summary: 'The page component to render when this route is active',
+          signature: 'component: RouteComponent;',
+        },
+        {
+          name: 'segments',
+          summary:
+            'Pre-parsed segment list for fast matching and typed param extraction',
+          signature: 'segments: ParsedSegment[];',
+        },
+        {
+          name: 'rank',
+          summary: 'Pre-computed specificity rank (higher = more specific)',
+          signature: 'rank: number;',
+        },
+        {
+          name: 'layoutChain',
+          summary:
+            'Layout chain from outermost to innermost, applied automatically on render',
+          signature: 'layoutChain: LayoutScopeRecord[];',
+        },
+        {
+          name: 'pageChain',
+          summary:
+            'Page chain from outermost to innermost, composed through Outlet before layouts apply',
+          signature: 'pageChain: PageScopeRecord[];',
+        },
+        {
+          name: 'options',
+          summary:
+            'Route metadata: loader, entries, policies, title, namespace',
+          signature: 'options: RouteOptions;',
+        },
+        {
+          name: 'metaChain',
+          summary:
+            'Metadata sources ordered from outermost group/page to the route leaf.',
+          signature: 'metaChain?: readonly RouteMetaSource[];',
+        },
+        {
+          name: 'isFallback',
+          summary: 'True when this is the `/*` catch-all fallback route',
+          signature: 'isFallback: boolean;',
+        },
+        {
+          name: 'handler',
+          summary:
+            'Runtime-ready handler with layout composition baked in.\nCompatible with the low-level `RouteHandler` signature so that navigation\nand SSR rendering do not need to know about layout chains.',
+          signature: 'handler: RouteHandler;',
+        },
+      ],
     },
     {
       name: 'RouteRef',
       anchor: 'route-ref',
       signature: 'RouteRef: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'path',
+          summary: '',
+          signature: 'readonly path: string;',
+        },
+        {
+          name: 'searchSchema',
+          summary: '',
+          signature:
+            'readonly searchSchema?: ObjectSchema<TSearch & RouteSearch>;',
+          tags: {
+            internal: [
+              'Executable schema retained for destination validation.',
+            ],
+          },
+        },
+        {
+          name: 'basePath',
+          summary: '',
+          signature: 'readonly basePath?: string;',
+          tags: {
+            internal: ['Public mount point captured by createRouteRegistry().'],
+          },
+        },
+        {
+          name: '__params',
+          summary: '',
+          signature: 'readonly __params?: TParams;',
+        },
+        {
+          name: '__search',
+          summary: '',
+          signature: 'readonly __search?: TSearch;',
+        },
+      ],
     },
     {
       name: 'RouteRegistry',
       anchor: 'route-registry',
       signature: 'RouteRegistry: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'manifest',
+          summary: '',
+          signature: 'manifest: RouteManifest;',
+        },
+        {
+          name: 'routes',
+          summary: '',
+          signature: 'routes: readonly Route[];',
+        },
+      ],
     },
     {
       name: 'RouteRegistryOptions',
       anchor: 'route-registry-options',
       signature: 'RouteRegistryOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'auth',
+          summary: '',
+          signature: 'auth?: RouteAuthOptions;',
+        },
+        {
+          name: 'basePath',
+          summary:
+            'Public pathname prefix for applications mounted below the origin root.',
+          signature: 'basePath?: string;',
+        },
+      ],
     },
     {
       name: 'RouteRenderResult',
       anchor: 'route-render-result',
       signature: 'RouteRenderResult: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'kind',
+          summary: '',
+          signature: "kind: 'render';",
+        },
+        {
+          name: 'handler',
+          summary: '',
+          signature: 'handler: RouteHandler<TParams>;',
+        },
+        {
+          name: 'params',
+          summary: '',
+          signature: 'params: TParams;',
+        },
+        {
+          name: 'record',
+          summary: '',
+          signature: 'record?: RouteRecord;',
+        },
+      ],
     },
     {
       name: 'RouteRequestOptions',
       anchor: 'route-request-options',
       signature: 'RouteRequestOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'registry',
+          summary: 'Explicit route source shared by the application renderers.',
+          signature: 'registry: RouteRegistry;',
+        },
+        {
+          name: 'mode',
+          summary: '',
+          signature: 'mode?: RouteMode;',
+        },
+        {
+          name: 'load',
+          summary: '',
+          signature: 'load?: boolean;',
+          tags: {
+            internal: [
+              'Hydration adopts server loader data instead of rerunning it.',
+            ],
+          },
+        },
+        {
+          name: 'auth',
+          summary: '',
+          signature: 'auth?: RouteAuthOptions;',
+        },
+        {
+          name: 'authContext',
+          summary: '',
+          signature: 'authContext?: AuthContext;',
+        },
+        {
+          name: 'signal',
+          summary: '',
+          signature: 'signal?: AbortSignal;',
+        },
+        {
+          name: 'request',
+          summary: '',
+          signature: 'request?: Request;',
+        },
+        {
+          name: 'telemetry',
+          summary: '',
+          signature: 'telemetry?: CoreTelemetry;',
+        },
+      ],
     },
     {
       name: 'RouteRequestResult',
@@ -2109,12 +4121,51 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-search-value',
       signature: 'RouteSearchValue: any',
       typeOnly: true,
+      summary:
+        'A stable, typed reference returned by route() for destination construction.',
     },
     {
       name: 'RouteSnapshot',
       anchor: 'route-snapshot',
       signature: 'RouteSnapshot: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'path',
+          summary: '',
+          signature: 'path: string;',
+        },
+        {
+          name: 'params',
+          summary: '',
+          signature: 'params: Readonly<TParams>;',
+        },
+        {
+          name: 'query',
+          summary: '',
+          signature: 'query: Readonly<RouteQuery>;',
+        },
+        {
+          name: 'hash',
+          summary: '',
+          signature: 'hash: string | null;',
+        },
+        {
+          name: 'name',
+          summary: '',
+          signature: 'name?: string;',
+        },
+        {
+          name: 'namespace',
+          summary: '',
+          signature: 'namespace?: string;',
+        },
+        {
+          name: 'matches',
+          summary: '',
+          signature: 'matches: readonly RouteMatch<TParams>[];',
+        },
+      ],
     },
     {
       name: 'ScrollRestorationOptions',
@@ -2162,12 +4213,30 @@ export const apiSymbolSets: Readonly<
       signature:
         'action: <TInput extends Record<string, unknown>, TResult = unknown>(descriptor: ActionDescriptor<TInput>) => { state: StateTuple<ActionStatus<TResult>>; submit(input: TInput): Promise<TResult>; }',
       typeOnly: true,
+      summary: 'Returns a command handle, rather than a hook.',
     },
     {
       name: 'ActionDescriptor',
       anchor: 'action-descriptor',
       signature: 'ActionDescriptor: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'id',
+          summary: '',
+          signature: 'readonly id: string;',
+        },
+        {
+          name: 'input',
+          summary: '',
+          signature: 'readonly input: ObjectSchema<TInput>;',
+        },
+        {
+          name: 'invalidates',
+          summary: '',
+          signature: 'readonly invalidates: readonly string[];',
+        },
+      ],
     },
     {
       name: 'ActionForm',
@@ -2175,18 +4244,65 @@ export const apiSymbolSets: Readonly<
       signature:
         'ActionForm: <TInput extends Record<string, unknown>>({ action, children, ...props }: { readonly action: ActionDescriptor<TInput>; readonly children?: RenderableChild; readonly [key: string]: unknown; }) => JSXElement',
       typeOnly: true,
+      summary:
+        'A native form bound to a declared action; it is not a synthetic event API.',
     },
     {
       name: 'ActionStatus',
       anchor: 'action-status',
       signature: 'ActionStatus: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'pending',
+          summary: '',
+          signature: 'readonly pending: boolean;',
+        },
+        {
+          name: 'result',
+          summary: '',
+          signature: 'readonly result?: TResult;',
+        },
+        {
+          name: 'error',
+          summary: '',
+          signature: 'readonly error?: unknown;',
+        },
+      ],
     },
     {
       name: 'ActionValidationError',
       anchor: 'action-validation-error',
       signature: 'ActionValidationError: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'kind',
+          summary: '',
+          signature: "readonly kind: 'invalid';",
+        },
+        {
+          name: 'action',
+          summary: '',
+          signature: 'readonly action: string;',
+        },
+        {
+          name: 'values',
+          summary: '',
+          signature: 'readonly values: Readonly<Record<string, unknown>>;',
+        },
+        {
+          name: 'issues',
+          summary: '',
+          signature: 'readonly issues: readonly unknown[];',
+        },
+        {
+          name: 'fieldErrors',
+          summary: '',
+          signature:
+            'readonly fieldErrors: Readonly<Record<string, readonly string[]>>;',
+        },
+      ],
     },
     {
       name: 'defineAction',
@@ -2209,12 +4325,81 @@ export const apiSymbolSets: Readonly<
       anchor: 'document-render-args',
       signature: 'DocumentRenderArgs: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'appHtml',
+          summary: '',
+          signature: 'appHtml: string;',
+        },
+        {
+          name: 'context',
+          summary: '',
+          signature: 'context: DocumentRenderContext;',
+        },
+      ],
     },
     {
       name: 'DocumentRenderContext',
       anchor: 'document-render-context',
       signature: 'DocumentRenderContext: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'mode',
+          summary: '',
+          signature: "mode: 'ssr' | 'ssg';",
+        },
+        {
+          name: 'url',
+          summary: '',
+          signature: 'url: string;',
+        },
+        {
+          name: 'pathname',
+          summary: '',
+          signature: 'pathname: string;',
+        },
+        {
+          name: 'search',
+          summary: '',
+          signature: 'search: string;',
+        },
+        {
+          name: 'hash',
+          summary: '',
+          signature: 'hash: string;',
+        },
+        {
+          name: 'params',
+          summary: '',
+          signature: 'params: Record<string, string>;',
+        },
+        {
+          name: 'data',
+          summary: '',
+          signature: 'data?: SSRData;',
+        },
+        {
+          name: 'seed',
+          summary: '',
+          signature: 'seed: number;',
+        },
+        {
+          name: 'route',
+          summary: '',
+          signature: 'route: DocumentRenderRoute;',
+        },
+        {
+          name: 'cspNonce',
+          summary: '',
+          signature: 'cspNonce?: string;',
+        },
+        {
+          name: 'styles',
+          summary: '',
+          signature: 'styles?: readonly SSRStyleRegistration[];',
+        },
+      ],
     },
     {
       name: 'DocumentRenderer',
@@ -2227,6 +4412,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'get-render-context',
       signature: 'getRenderContext: () => RenderContext | null',
       typeOnly: true,
+      summary:
+        'Get the current render context.\nReturns null if not inside a render.',
     },
     {
       name: 'renderResolvedToStringSync',
@@ -2247,6 +4434,79 @@ export const apiSymbolSets: Readonly<
       anchor: 'render-route-request-options',
       signature: 'RenderRouteRequestOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'url',
+          summary: '',
+          signature: 'url: string;',
+        },
+        {
+          name: 'registry',
+          summary: '',
+          signature: 'registry: RouteRegistry;',
+        },
+        {
+          name: 'auth',
+          summary: '',
+          signature: 'auth?: RouteAuthOptions;',
+        },
+        {
+          name: 'authContext',
+          summary: '',
+          signature: 'authContext?: AuthContext;',
+        },
+        {
+          name: 'request',
+          summary: '',
+          signature: 'request?: Request;',
+        },
+        {
+          name: 'signal',
+          summary: '',
+          signature: 'signal?: AbortSignal;',
+        },
+        {
+          name: 'seed',
+          summary: '',
+          signature: 'seed?: number;',
+        },
+        {
+          name: 'data',
+          summary: '',
+          signature: 'data?: SSRData;',
+        },
+        {
+          name: 'framework',
+          summary:
+            'Askr-owned state retained independently from route loader output.',
+          signature: 'framework?: Readonly<Record<string, unknown>>;',
+        },
+        {
+          name: 'dataRuntime',
+          summary: '',
+          signature: 'dataRuntime?: DataRuntime;',
+        },
+        {
+          name: 'queryPrefetch',
+          summary: '',
+          signature: 'queryPrefetch?: QueryPrefetchContext;',
+        },
+        {
+          name: 'queryRegistry',
+          summary: '',
+          signature: 'queryRegistry?: ServerQueryRegistry;',
+        },
+        {
+          name: 'telemetry',
+          summary: '',
+          signature: 'telemetry?: CoreTelemetry;',
+        },
+        {
+          name: 'cspNonce',
+          summary: '',
+          signature: 'cspNonce?: string;',
+        },
+      ],
     },
     {
       name: 'RenderRouteRequestResult',
@@ -2293,12 +4553,22 @@ export const apiSymbolSets: Readonly<
       anchor: 'ssrcomponent',
       signature: 'SSRComponent: any',
       typeOnly: true,
+      summary:
+        'Component function signature for SSR.\nComponents receive props and an optional context with signal and SSR context.',
     },
     {
       name: 'SSRDataMissingError',
       anchor: 'ssrdata-missing-error',
       signature: 'SSRDataMissingError: typeof SSRDataMissingError',
       typeOnly: true,
+      summary: 'Common call contracts: SSR error types',
+      members: [
+        {
+          name: 'code',
+          summary: '',
+          signature: 'readonly code = "SSR_DATA_MISSING";',
+        },
+      ],
     },
     {
       name: 'SSRRoute',
@@ -2311,6 +4581,20 @@ export const apiSymbolSets: Readonly<
       anchor: 'ssrstyle-registration',
       signature: 'SSRStyleRegistration: any',
       typeOnly: true,
+      summary:
+        "Styles produced while rendering a request, kept with that request's SSR context.",
+      members: [
+        {
+          name: 'id',
+          summary: '',
+          signature: 'id: string;',
+        },
+        {
+          name: 'cssText',
+          summary: '',
+          signature: 'cssText: string;',
+        },
+      ],
     },
     {
       name: 'SSRStyleRegistrationValidation',
@@ -2323,12 +4607,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'vnode',
       signature: 'VNode: any',
       typeOnly: true,
+      summary: 'VNode representation for SSR rendering',
     },
     {
       name: 'withRenderContext',
       anchor: 'with-render-context',
       signature: 'withRenderContext: <T>(ctx: RenderContext, fn: () => T) => T',
       typeOnly: true,
+      summary:
+        'Run a function with the given render context.\nConcurrency-safe in Node.js via AsyncLocalStorage.',
     },
     {
       name: 'withRenderContextAsync',
@@ -2345,24 +4632,96 @@ export const apiSymbolSets: Readonly<
       signature:
         'createStaticGen: (options: SSGOptions) => { generate(generateOptions?: SSGGenerateOptions): Promise<SSGResult>; getConfig(): { routeCount: number; outputDir: string; seed: number; concurrency: number; parallelism: number; hasDataOverrides: boolean; assetCount: number; }; getResult(): SSGResult | null; }',
       typeOnly: true,
+      summary:
+        "Create a Static Site Generator\n\nUsage:\n```ts\nconst ssg = createStaticGen({\n  registry,\n  outputDir: './dist',\n  dataOverrides: {\n    '/api/posts': { posts: [...] }\n  }\n});\n\nconst result = await ssg.generate();\nconsole.log(`Generated ${result.successful}/${result.totalRoutes} routes`);\n```",
     },
     {
       name: 'DiscoveredResources',
       anchor: 'discovered-resources',
       signature: 'DiscoveredResources: any',
       typeOnly: true,
+      summary: 'Resource discovery result for a single route',
     },
     {
       name: 'DocumentRenderArgs',
       anchor: 'document-render-args',
       signature: 'DocumentRenderArgs: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'appHtml',
+          summary: '',
+          signature: 'appHtml: string;',
+        },
+        {
+          name: 'context',
+          summary: '',
+          signature: 'context: DocumentRenderContext;',
+        },
+      ],
     },
     {
       name: 'DocumentRenderContext',
       anchor: 'document-render-context',
       signature: 'DocumentRenderContext: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'mode',
+          summary: '',
+          signature: "mode: 'ssr' | 'ssg';",
+        },
+        {
+          name: 'url',
+          summary: '',
+          signature: 'url: string;',
+        },
+        {
+          name: 'pathname',
+          summary: '',
+          signature: 'pathname: string;',
+        },
+        {
+          name: 'search',
+          summary: '',
+          signature: 'search: string;',
+        },
+        {
+          name: 'hash',
+          summary: '',
+          signature: 'hash: string;',
+        },
+        {
+          name: 'params',
+          summary: '',
+          signature: 'params: Record<string, string>;',
+        },
+        {
+          name: 'data',
+          summary: '',
+          signature: 'data?: SSRData;',
+        },
+        {
+          name: 'seed',
+          summary: '',
+          signature: 'seed: number;',
+        },
+        {
+          name: 'route',
+          summary: '',
+          signature: 'route: DocumentRenderRoute;',
+        },
+        {
+          name: 'cspNonce',
+          summary: '',
+          signature: 'cspNonce?: string;',
+        },
+        {
+          name: 'styles',
+          summary: '',
+          signature: 'styles?: readonly SSRStyleRegistration[];',
+        },
+      ],
     },
     {
       name: 'DocumentRenderer',
@@ -2375,6 +4734,82 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-config',
       signature: 'RouteConfig: any',
       typeOnly: true,
+      summary:
+        'Route config accepted by SSG.\n\nThe handler is defined by the route registry and matches router/SSR naming.',
+      members: [
+        {
+          name: 'path',
+          summary: 'URL path to generate (e.g., "/blog/post-1", "/")',
+          signature: 'path: Path;',
+        },
+        {
+          name: 'handler',
+          summary: 'Route handler compatible with router/SSR',
+          signature: 'handler: RouteHandler;',
+        },
+        {
+          name: 'props',
+          summary: 'Optional base props merged with route params during render',
+          signature: 'props?: Record<string, unknown>;',
+        },
+        {
+          name: 'namespace',
+          summary: 'Optional namespace for router compatibility',
+          signature: 'namespace?: string;',
+        },
+        {
+          name: 'auth',
+          summary:
+            'Routes with request-auth requirements are runtime-only by default.',
+          signature: 'auth?: AuthRequirement;',
+        },
+        {
+          name: 'policies',
+          summary:
+            'Advanced runtime access checks disable prerendering by default',
+          signature: 'policies?: readonly RoutePolicy[];',
+        },
+        {
+          name: 'params',
+          summary:
+            'Optional path parameter map for template paths like "/blog/{slug}"',
+          signature: 'params?: RouteConfigParams<Path>;',
+        },
+        {
+          name: 'invalidationKeys',
+          summary:
+            'Optional explicit invalidation keys for incremental generation',
+          signature: 'invalidationKeys?: string[];',
+        },
+        {
+          name: 'loader',
+          summary:
+            'Route loader resolved completely before static HTML is rendered.',
+          signature: "loader?: RouteOptions['loader'];",
+        },
+        {
+          name: 'dehydrate',
+          summary: 'Select the loader data transported for initial hydration.',
+          signature: "dehydrate?: RouteOptions['dehydrate'];",
+        },
+        {
+          name: 'basePath',
+          summary: '',
+          signature: 'basePath?: string;',
+          tags: {
+            internal: [
+              'Public mount point inherited from the owning registry.',
+            ],
+          },
+        },
+        {
+          name: 'entries',
+          summary:
+            "SSG entry generator for parameterized routes.\n\nReturn one param map per page to be generated.  The path template is\nexpanded with each map to produce a concrete URL, e.g.:\n\n```ts\nroute('/posts/{slug}', PostPage, {\n  entries: async () => getPosts().map(p => ({ slug: p.slug })),\n});\n```",
+          signature:
+            'entries?: () => Array<RouteConfigParams<Path>> | Promise<Array<RouteConfigParams<Path>>>;',
+        },
+      ],
     },
     {
       name: 'RouteRenderReason',
@@ -2387,6 +4822,70 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-render-result',
       signature: 'RouteRenderResult: any',
       typeOnly: true,
+      summary: 'Result of rendering a single route',
+      members: [
+        {
+          name: 'path',
+          summary: 'URL path',
+          signature: 'path: string;',
+        },
+        {
+          name: 'filePath',
+          summary: 'Output file path relative to outputDir',
+          signature: 'filePath: string;',
+        },
+        {
+          name: 'html',
+          summary: 'Generated HTML content',
+          signature: 'html: string;',
+        },
+        {
+          name: 'fileSize',
+          summary: 'File size in bytes',
+          signature: 'fileSize: number;',
+        },
+        {
+          name: 'renderDuration',
+          summary: 'Render duration in milliseconds',
+          signature: 'renderDuration: number;',
+        },
+        {
+          name: 'resourceCount',
+          summary: 'Number of resources discovered and rendered',
+          signature: 'resourceCount: number;',
+        },
+        {
+          name: 'status',
+          summary: 'Render or generation status',
+          signature: 'status: RouteRenderStatus;',
+        },
+        {
+          name: 'reason',
+          summary: 'Why this route was rendered, skipped, or removed',
+          signature: 'reason: RouteRenderReason;',
+        },
+        {
+          name: 'written',
+          summary: 'Whether the output file was written during this run',
+          signature: 'written: boolean;',
+        },
+        {
+          name: 'error',
+          summary: 'Error message if rendering failed',
+          signature: 'error?: string;',
+        },
+        {
+          name: 'errorCause',
+          summary: 'Original exception preserved for programmatic diagnostics.',
+          signature: 'errorCause?: unknown;',
+        },
+        {
+          name: 'errorContext',
+          summary: 'Route and phase context for the original exception.',
+          signature:
+            "errorContext?: {\n    route: string;\n    phase: 'load' | 'render' | 'write';\n  };",
+        },
+      ],
     },
     {
       name: 'RouteRenderStatus',
@@ -2399,18 +4898,125 @@ export const apiSymbolSets: Readonly<
       anchor: 'ssgasset-source',
       signature: 'SSGAssetSource: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'from',
+          summary:
+            'Source file or directory. Relative paths resolve from the current working directory.',
+          signature: 'from: string;',
+        },
+        {
+          name: 'to',
+          summary:
+            'Destination relative to outputDir. Defaults to the source basename.',
+          signature: 'to?: string;',
+        },
+      ],
     },
     {
       name: 'SSGGenerateOptions',
       anchor: 'ssggenerate-options',
       signature: 'SSGGenerateOptions: any',
       typeOnly: true,
+      summary: 'Options for a single generation run',
+      members: [
+        {
+          name: 'mode',
+          summary: 'Generation mode',
+          signature: 'mode?: SSGMode;',
+        },
+        {
+          name: 'changedKeys',
+          summary: 'Changed invalidation keys for incremental runs',
+          signature: 'changedKeys?: string[];',
+        },
+        {
+          name: 'changedRoutes',
+          summary: 'Changed concrete route paths for incremental runs',
+          signature: 'changedRoutes?: string[];',
+        },
+        {
+          name: 'forceFull',
+          summary:
+            'Force a full rebuild even when incremental mode was requested',
+          signature: 'forceFull?: boolean;',
+        },
+      ],
     },
     {
       name: 'SSGMetadata',
       anchor: 'ssgmetadata',
       signature: 'SSGMetadata: any',
       typeOnly: true,
+      summary: 'Metadata to write to metadata.json',
+      members: [
+        {
+          name: 'generatedAt',
+          summary: 'ISO timestamp of generation',
+          signature: 'generatedAt: string;',
+        },
+        {
+          name: 'totalRoutes',
+          summary: 'Total number of routes processed',
+          signature: 'totalRoutes: number;',
+        },
+        {
+          name: 'successful',
+          summary: 'Number of successfully generated routes',
+          signature: 'successful: number;',
+        },
+        {
+          name: 'failed',
+          summary: 'Number of failed routes',
+          signature: 'failed: number;',
+        },
+        {
+          name: 'totalDuration',
+          summary: 'Total generation duration in milliseconds',
+          signature: 'totalDuration: number;',
+        },
+        {
+          name: 'mode',
+          summary: 'Effective generation mode',
+          signature: 'mode: SSGMode;',
+        },
+        {
+          name: 'rebuilt',
+          summary: 'Number of routes rendered during this run',
+          signature: 'rebuilt: number;',
+        },
+        {
+          name: 'skipped',
+          summary: 'Number of current routes skipped as unchanged',
+          signature: 'skipped: number;',
+        },
+        {
+          name: 'removed',
+          summary: 'Number of stale routes removed from output',
+          signature: 'removed: number;',
+        },
+        {
+          name: 'cacheHits',
+          summary: 'Number of rendered routes whose HTML bytes were unchanged',
+          signature: 'cacheHits: number;',
+        },
+        {
+          name: 'invalidatedKeys',
+          summary: 'Invalidation keys applied to this run',
+          signature: 'invalidatedKeys: string[];',
+        },
+        {
+          name: 'invalidatedRoutes',
+          summary: 'Concrete route paths applied to this run',
+          signature: 'invalidatedRoutes: string[];',
+        },
+        {
+          name: 'routes',
+          summary: 'Per-route details',
+          signature:
+            'routes: Array<{\n    /** URL path */\n    path: string;\n    /** Output file path relative to outputDir */\n    filePath: string;\n    /** File size in bytes */\n    fileSize: number;\n    /** Render duration in milliseconds */\n    renderDuration: number;\n    /** Number of resources discovered and rendered */\n    resourceCount: number;\n    /** Render or generation status */\n    status: RouteRenderStatus;\n    /** Why this route was rendered, skipped, or removed */\n    reason: RouteRenderReason;\n    /** Whether the output file was written during this run */\n    written: boolean;\n    /** Error message if rendering failed */\n    error?: string;\n  }>;',
+        },
+      ],
     },
     {
       name: 'SSGMode',
@@ -2423,12 +5029,81 @@ export const apiSymbolSets: Readonly<
       anchor: 'ssgoptions',
       signature: 'SSGOptions: any',
       typeOnly: true,
+      summary: 'Options for createStaticGen',
     },
     {
       name: 'SSGResult',
       anchor: 'ssgresult',
       signature: 'SSGResult: any',
       typeOnly: true,
+      summary: 'Overall result from SSG generation',
+      members: [
+        {
+          name: 'generatedAt',
+          summary: 'ISO timestamp of generation',
+          signature: 'generatedAt: string;',
+        },
+        {
+          name: 'totalRoutes',
+          summary: 'Total number of routes processed',
+          signature: 'totalRoutes: number;',
+        },
+        {
+          name: 'successful',
+          summary: 'Number of successfully generated routes',
+          signature: 'successful: number;',
+        },
+        {
+          name: 'failed',
+          summary: 'Number of failed routes',
+          signature: 'failed: number;',
+        },
+        {
+          name: 'totalDuration',
+          summary: 'Total generation duration in milliseconds',
+          signature: 'totalDuration: number;',
+        },
+        {
+          name: 'mode',
+          summary: 'Effective generation mode',
+          signature: 'mode: SSGMode;',
+        },
+        {
+          name: 'rebuilt',
+          summary: 'Number of routes rendered during this run',
+          signature: 'rebuilt: number;',
+        },
+        {
+          name: 'skipped',
+          summary: 'Number of current routes skipped as unchanged',
+          signature: 'skipped: number;',
+        },
+        {
+          name: 'removed',
+          summary: 'Number of stale routes removed from output',
+          signature: 'removed: number;',
+        },
+        {
+          name: 'cacheHits',
+          summary: 'Number of rendered routes whose HTML bytes were unchanged',
+          signature: 'cacheHits: number;',
+        },
+        {
+          name: 'invalidatedKeys',
+          summary: 'Invalidation keys applied to this run',
+          signature: 'invalidatedKeys: string[];',
+        },
+        {
+          name: 'invalidatedRoutes',
+          summary: 'Concrete route paths applied to this run',
+          signature: 'invalidatedRoutes: string[];',
+        },
+        {
+          name: 'routes',
+          summary: 'Per-route results',
+          signature: 'routes: RouteRenderResult[];',
+        },
+      ],
     },
     {
       name: 'SSRStyleRegistrationValidation',
@@ -2475,6 +5150,28 @@ export const apiSymbolSets: Readonly<
       anchor: 'jsxelement',
       signature: 'JSXElement: any',
       typeOnly: true,
+      members: [
+        {
+          name: '$$typeof',
+          summary: 'Internal element marker',
+          signature: '$$typeof: symbol;',
+        },
+        {
+          name: 'type',
+          summary: 'Element type: string, component, Fragment, etc',
+          signature: 'type: JSXElementType;',
+        },
+        {
+          name: 'props',
+          summary: 'Props bag',
+          signature: 'props: Props;',
+        },
+        {
+          name: 'key',
+          summary: 'Optional key (normalized by runtime)',
+          signature: 'key?: string | number | null;',
+        },
+      ],
     },
     {
       name: 'JSXElementType',
@@ -2521,6 +5218,28 @@ export const apiSymbolSets: Readonly<
       anchor: 'jsxelement',
       signature: 'JSXElement: any',
       typeOnly: true,
+      members: [
+        {
+          name: '$$typeof',
+          summary: 'Internal element marker',
+          signature: '$$typeof: symbol;',
+        },
+        {
+          name: 'type',
+          summary: 'Element type: string, component, Fragment, etc',
+          signature: 'type: JSXElementType;',
+        },
+        {
+          name: 'props',
+          summary: 'Props bag',
+          signature: 'props: Props;',
+        },
+        {
+          name: 'key',
+          summary: 'Optional key (normalized by runtime)',
+          signature: 'key?: string | number | null;',
+        },
+      ],
     },
     {
       name: 'JSXElementType',
@@ -2549,6 +5268,33 @@ export const apiSymbolSets: Readonly<
       anchor: 'auth-context',
       signature: 'AuthContext: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'authenticated',
+          summary: '',
+          signature: 'authenticated: boolean;',
+        },
+        {
+          name: 'principal',
+          summary: '',
+          signature: 'principal: P | null;',
+        },
+        {
+          name: 'session',
+          summary: '',
+          signature: 'session: S | null;',
+        },
+        {
+          name: 'tenant',
+          summary: '',
+          signature: 'tenant: string | null;',
+        },
+        {
+          name: 'scopes',
+          summary: '',
+          signature: 'scopes?: readonly string[];',
+        },
+      ],
     },
     {
       name: 'AuthDecision',
@@ -2561,6 +5307,44 @@ export const apiSymbolSets: Readonly<
       anchor: 'auth-options',
       signature: 'AuthOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'sessions',
+          summary: '',
+          signature: 'sessions?: SessionStore<S>;',
+        },
+        {
+          name: 'principals',
+          summary: '',
+          signature: 'principals?: PrincipalStore<P>;',
+        },
+        {
+          name: 'jwt',
+          summary: '',
+          signature: 'jwt?: JwtValidator<P>;',
+        },
+        {
+          name: 'jwtCookie',
+          summary: '',
+          signature:
+            'jwtCookie?: {\n    name: string;\n    validator: JwtValidator<P>;\n  };',
+        },
+        {
+          name: 'tenant',
+          summary: '',
+          signature: 'tenant?: TenantResolver;',
+        },
+        {
+          name: 'sessionCookie',
+          summary: '',
+          signature: 'sessionCookie?: string;',
+        },
+        {
+          name: 'clock',
+          summary: '',
+          signature: 'clock?: () => number;',
+        },
+      ],
     },
     {
       name: 'AuthRequirement',
@@ -2573,12 +5357,42 @@ export const apiSymbolSets: Readonly<
       anchor: 'auth-resolver',
       signature: 'AuthResolver: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'resolve',
+          summary: '',
+          signature:
+            'resolve(request: Request, options?: {\n    signal?: AbortSignal;\n  }): Promise<AuthContext<P, S>>;',
+        },
+      ],
     },
     {
       name: 'AuthSession',
       anchor: 'auth-session',
       signature: 'AuthSession: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'id',
+          summary: '',
+          signature: 'id: string;',
+        },
+        {
+          name: 'subject',
+          summary: '',
+          signature: 'subject: string;',
+        },
+        {
+          name: 'expiresAt',
+          summary: '',
+          signature: 'expiresAt?: number;',
+        },
+        {
+          name: 'revokedAt',
+          summary: '',
+          signature: 'revokedAt?: number;',
+        },
+      ],
     },
     {
       name: 'Claim',
@@ -2598,12 +5412,42 @@ export const apiSymbolSets: Readonly<
       anchor: 'principal',
       signature: 'Principal: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'id',
+          summary: '',
+          signature: 'id: string;',
+        },
+        {
+          name: 'subject',
+          summary: '',
+          signature: 'subject?: string;',
+        },
+        {
+          name: 'roles',
+          summary: '',
+          signature: 'roles?: readonly string[];',
+        },
+        {
+          name: 'permissions',
+          summary: '',
+          signature: 'permissions?: readonly string[];',
+        },
+      ],
     },
     {
       name: 'PrincipalStore',
       anchor: 'principal-store',
       signature: 'PrincipalStore: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'get',
+          summary: '',
+          signature:
+            'get(subject: string, options?: {\n    request: Request;\n    signal: AbortSignal;\n  }): P | null | PromiseLike<P | null>;',
+        },
+      ],
     },
     {
       name: 'requireAnonymous',
@@ -2640,6 +5484,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'session-store',
       signature: 'SessionStore: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'get',
+          summary: '',
+          signature:
+            'get(id: string, options?: {\n    request: Request;\n    signal: AbortSignal;\n  }): S | null | PromiseLike<S | null>;',
+        },
+      ],
     },
     {
       name: 'TenantResolver',
@@ -2654,6 +5506,23 @@ export const apiSymbolSets: Readonly<
       anchor: 'askr-json-web-key',
       signature: 'AskrJsonWebKey: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'kid',
+          summary: '',
+          signature: 'kid?: string;',
+        },
+        {
+          name: 'alg',
+          summary: '',
+          signature: 'alg?: string;',
+        },
+        {
+          name: 'use',
+          summary: '',
+          signature: 'use?: string;',
+        },
+      ],
     },
     {
       name: 'createJwtIssuer',
@@ -2686,6 +5555,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'json-web-key-set',
       signature: 'JsonWebKeySet: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'keys',
+          summary: '',
+          signature: 'keys: readonly AskrJsonWebKey[];',
+        },
+      ],
     },
     {
       name: 'JwksProvider',
@@ -2698,42 +5574,132 @@ export const apiSymbolSets: Readonly<
       anchor: 'jwt-issue-input',
       signature: 'JwtIssueInput: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'subject',
+          summary: '',
+          signature: 'subject: string;',
+        },
+      ],
     },
     {
       name: 'JwtIssuer',
       anchor: 'jwt-issuer',
       signature: 'JwtIssuer: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'issue',
+          summary: '',
+          signature: 'issue(principal: JwtIssueInput): Promise<string>;',
+        },
+        {
+          name: 'validator',
+          summary: '',
+          signature: 'readonly validator: JwtValidator<P>;',
+        },
+      ],
     },
     {
       name: 'JwtIssuerOptions',
       anchor: 'jwt-issuer-options',
       signature: 'JwtIssuerOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'privateKey',
+          summary: '',
+          signature: 'privateKey: JsonWebKey;',
+        },
+        {
+          name: 'kid',
+          summary: '',
+          signature: 'kid: string;',
+        },
+        {
+          name: 'issuer',
+          summary: '',
+          signature: 'issuer: string;',
+        },
+        {
+          name: 'audience',
+          summary: '',
+          signature: 'audience: string | readonly string[];',
+        },
+        {
+          name: 'ttlSeconds',
+          summary: '',
+          signature: 'ttlSeconds: number;',
+        },
+        {
+          name: 'clock',
+          summary: '',
+          signature: 'clock?: () => number;',
+        },
+      ],
     },
     {
       name: 'JwtSigner',
       anchor: 'jwt-signer',
       signature: 'JwtSigner: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'sign',
+          summary: '',
+          signature: 'sign(input: JwtSignInput): Promise<string>;',
+        },
+      ],
     },
     {
       name: 'JwtSignerOptions',
       anchor: 'jwt-signer-options',
       signature: 'JwtSignerOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'privateKey',
+          summary: '',
+          signature: 'readonly privateKey: JsonWebKey;',
+        },
+        {
+          name: 'kid',
+          summary: '',
+          signature: 'readonly kid: string;',
+        },
+      ],
     },
     {
       name: 'JwtSignInput',
       anchor: 'jwt-sign-input',
       signature: 'JwtSignInput: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'claims',
+          summary: '',
+          signature: 'readonly claims: Readonly<Record<string, unknown>>;',
+        },
+        {
+          name: 'protectedHeader',
+          summary: '',
+          signature:
+            'readonly protectedHeader?: Readonly<Record<string, unknown>>;',
+        },
+      ],
     },
     {
       name: 'JwtValidationError',
       anchor: 'jwt-validation-error',
       signature: 'JwtValidationError: typeof JwtValidationError',
       typeOnly: true,
+      members: [
+        {
+          name: 'code',
+          summary: '',
+          signature: 'readonly code: JwtValidationErrorCode;',
+        },
+      ],
     },
     {
       name: 'JwtValidationErrorCode',
@@ -2746,24 +5712,124 @@ export const apiSymbolSets: Readonly<
       anchor: 'jwt-validator',
       signature: 'JwtValidator: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'validate',
+          summary: '',
+          signature: 'validate(token: string): Promise<P>;',
+        },
+      ],
     },
     {
       name: 'JwtValidatorOptions',
       anchor: 'jwt-validator-options',
       signature: 'JwtValidatorOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'issuer',
+          summary: '',
+          signature: 'issuer: string;',
+        },
+        {
+          name: 'audience',
+          summary: '',
+          signature: 'audience?: string | readonly string[];',
+        },
+        {
+          name: 'jwks',
+          summary: '',
+          signature: 'jwks: JwksProvider;',
+        },
+        {
+          name: 'clock',
+          summary: '',
+          signature: 'clock?: () => number;',
+        },
+        {
+          name: 'clockSkewSeconds',
+          summary: '',
+          signature: 'clockSkewSeconds?: number;',
+        },
+        {
+          name: 'typ',
+          summary:
+            'Require a protected typ value and restrict it to these values.',
+          signature: 'typ?: string | readonly string[];',
+        },
+        {
+          name: 'requireTyp',
+          summary:
+            'Require a non-empty protected typ value without restricting its value.',
+          signature: 'requireTyp?: boolean;',
+        },
+        {
+          name: 'jwksRefreshCooldownSeconds',
+          summary: '',
+          signature: 'jwksRefreshCooldownSeconds?: number;',
+        },
+        {
+          name: 'unknownKeyCacheSeconds',
+          summary: '',
+          signature: 'unknownKeyCacheSeconds?: number;',
+        },
+      ],
     },
     {
       name: 'OidcIdTokenOptions',
       anchor: 'oidc-id-token-options',
       signature: 'OidcIdTokenOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'nonce',
+          summary: '',
+          signature: 'nonce: string;',
+        },
+      ],
     },
     {
       name: 'TimedJwtInput',
       anchor: 'timed-jwt-input',
       signature: 'TimedJwtInput: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'issuer',
+          summary: '',
+          signature: 'readonly issuer: string;',
+        },
+        {
+          name: 'subject',
+          summary: '',
+          signature: 'readonly subject: string;',
+        },
+        {
+          name: 'audience',
+          summary: '',
+          signature: 'readonly audience: string | readonly string[];',
+        },
+        {
+          name: 'ttlSeconds',
+          summary: '',
+          signature: 'readonly ttlSeconds: number;',
+        },
+        {
+          name: 'typ',
+          summary: '',
+          signature: 'readonly typ: string;',
+        },
+        {
+          name: 'claims',
+          summary: '',
+          signature: 'readonly claims?: Readonly<Record<string, unknown>>;',
+        },
+        {
+          name: 'clock',
+          summary: '',
+          signature: 'readonly clock?: () => number;',
+        },
+      ],
     },
     {
       name: 'validateOidcIdToken',
@@ -2785,24 +5851,99 @@ export const apiSymbolSets: Readonly<
       anchor: 'oidc-authorization-request',
       signature: 'OidcAuthorizationRequest: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'url',
+          summary: '',
+          signature: 'url: string;',
+        },
+        {
+          name: 'state',
+          summary: '',
+          signature: 'state: string;',
+        },
+        {
+          name: 'nonce',
+          summary: '',
+          signature: 'nonce: string;',
+        },
+        {
+          name: 'codeVerifier',
+          summary: '',
+          signature: 'codeVerifier: string;',
+        },
+      ],
     },
     {
       name: 'OidcAuthorizationRequestOptions',
       anchor: 'oidc-authorization-request-options',
       signature: 'OidcAuthorizationRequestOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'state',
+          summary: '',
+          signature: 'state?: string;',
+        },
+        {
+          name: 'nonce',
+          summary: '',
+          signature: 'nonce?: string;',
+        },
+        {
+          name: 'codeVerifier',
+          summary: '',
+          signature: 'codeVerifier?: string;',
+        },
+        {
+          name: 'loginHint',
+          summary: '',
+          signature: 'loginHint?: string;',
+        },
+      ],
     },
     {
       name: 'OidcClient',
       anchor: 'oidc-client',
       signature: 'OidcClient: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'discover',
+          summary: '',
+          signature: 'discover(): Promise<OidcProviderMetadata>;',
+        },
+        {
+          name: 'createAuthorizationRequest',
+          summary: '',
+          signature:
+            'createAuthorizationRequest(options?: OidcAuthorizationRequestOptions): Promise<OidcAuthorizationRequest>;',
+        },
+        {
+          name: 'exchangeCode',
+          summary: '',
+          signature:
+            'exchangeCode(input: OidcCodeExchange): Promise<OidcCodeExchangeResult>;',
+        },
+      ],
     },
     {
       name: 'OidcClientError',
       anchor: 'oidc-client-error',
       signature: 'OidcClientError: typeof OidcClientError',
       typeOnly: true,
+      members: [
+        {
+          name: 'code',
+          summary: '',
+          signature: 'readonly code: OidcClientErrorCode;',
+        },
+        {
+          name: 'name',
+          summary: '',
+          signature: 'readonly name = "OidcClientError";',
+        },
+      ],
     },
     {
       name: 'OidcClientErrorCode',
@@ -2815,30 +5956,151 @@ export const apiSymbolSets: Readonly<
       anchor: 'oidc-client-options',
       signature: 'OidcClientOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'issuer',
+          summary: '',
+          signature: 'issuer: string;',
+        },
+        {
+          name: 'clientId',
+          summary: '',
+          signature: 'clientId: string;',
+        },
+        {
+          name: 'clientSecret',
+          summary: '',
+          signature: 'clientSecret?: string;',
+        },
+        {
+          name: 'redirectUri',
+          summary: '',
+          signature: 'redirectUri: string;',
+        },
+        {
+          name: 'scopes',
+          summary: '',
+          signature: 'scopes?: readonly string[];',
+        },
+        {
+          name: 'fetch',
+          summary: '',
+          signature: 'fetch?: typeof fetch;',
+        },
+      ],
     },
     {
       name: 'OidcCodeExchange',
       anchor: 'oidc-code-exchange',
       signature: 'OidcCodeExchange: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'code',
+          summary: '',
+          signature: 'code: string;',
+        },
+        {
+          name: 'state',
+          summary: '',
+          signature: 'state: string;',
+        },
+        {
+          name: 'request',
+          summary: '',
+          signature:
+            'request: Pick<OidcAuthorizationRequest, "state" | "nonce" | "codeVerifier">;',
+        },
+      ],
     },
     {
       name: 'OidcCodeExchangeResult',
       anchor: 'oidc-code-exchange-result',
       signature: 'OidcCodeExchangeResult: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'tokens',
+          summary: '',
+          signature: 'tokens: OidcTokenResponse;',
+        },
+        {
+          name: 'principal',
+          summary: '',
+          signature: 'principal: Principal;',
+        },
+      ],
     },
     {
       name: 'OidcProviderMetadata',
       anchor: 'oidc-provider-metadata',
       signature: 'OidcProviderMetadata: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'issuer',
+          summary: '',
+          signature: 'issuer: string;',
+        },
+        {
+          name: 'authorization_endpoint',
+          summary: '',
+          signature: 'authorization_endpoint: string;',
+        },
+        {
+          name: 'token_endpoint',
+          summary: '',
+          signature: 'token_endpoint: string;',
+        },
+        {
+          name: 'jwks_uri',
+          summary: '',
+          signature: 'jwks_uri: string;',
+        },
+        {
+          name: 'userinfo_endpoint',
+          summary: '',
+          signature: 'userinfo_endpoint?: string;',
+        },
+        {
+          name: 'end_session_endpoint',
+          summary: '',
+          signature: 'end_session_endpoint?: string;',
+        },
+      ],
     },
     {
       name: 'OidcTokenResponse',
       anchor: 'oidc-token-response',
       signature: 'OidcTokenResponse: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'access_token',
+          summary: '',
+          signature: 'access_token: string;',
+        },
+        {
+          name: 'token_type',
+          summary: '',
+          signature: 'token_type: string;',
+        },
+        {
+          name: 'id_token',
+          summary: '',
+          signature: 'id_token?: string;',
+        },
+        {
+          name: 'refresh_token',
+          summary: '',
+          signature: 'refresh_token?: string;',
+        },
+        {
+          name: 'expires_in',
+          summary: '',
+          signature: 'expires_in?: number;',
+        },
+      ],
     },
   ],
   symbols23: [
@@ -2854,36 +6116,169 @@ export const apiSymbolSets: Readonly<
       anchor: 'saml-principal',
       signature: 'SamlPrincipal: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'saml',
+          summary: '',
+          signature:
+            'saml: {\n    issuer: string;\n    nameId: string;\n    nameIdFormat?: string;\n    sessionIndex?: string;\n    attributes: Readonly<Record<string, readonly string[]>>;\n  };',
+        },
+      ],
     },
     {
       name: 'SamlRequestStore',
       anchor: 'saml-request-store',
       signature: 'SamlRequestStore: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'save',
+          summary: '',
+          signature: 'save(request: SamlStoredRequest): Promise<void>;',
+        },
+        {
+          name: 'get',
+          summary: '',
+          signature: 'get(id: string): Promise<SamlStoredRequest | null>;',
+        },
+        {
+          name: 'consume',
+          summary: '',
+          signature: 'consume(id: string): Promise<boolean>;',
+        },
+      ],
     },
     {
       name: 'SamlServiceProvider',
       anchor: 'saml-service-provider',
       signature: 'SamlServiceProvider: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'metadata',
+          summary: '',
+          signature: 'metadata(): string;',
+        },
+        {
+          name: 'createAuthnRequest',
+          summary: '',
+          signature:
+            'createAuthnRequest(options?: {\n    relayState?: string;\n  }): Promise<{\n    url: string;\n    requestId: string;\n  }>;',
+        },
+        {
+          name: 'validateResponse',
+          summary: '',
+          signature:
+            'validateResponse(input: {\n    samlResponse: string;\n    relayState?: string;\n  }): Promise<SamlPrincipal>;',
+        },
+      ],
     },
     {
       name: 'SamlServiceProviderOptions',
       anchor: 'saml-service-provider-options',
       signature: 'SamlServiceProviderOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'entityId',
+          summary: '',
+          signature: 'entityId: string;',
+        },
+        {
+          name: 'acsUrl',
+          summary: '',
+          signature: 'acsUrl: string;',
+        },
+        {
+          name: 'idp',
+          summary: '',
+          signature:
+            'idp: {\n    entityId: string;\n    ssoUrl: string;\n    certificates: readonly string[];\n  };',
+        },
+        {
+          name: 'requestStore',
+          summary: '',
+          signature: 'requestStore: SamlRequestStore;',
+        },
+        {
+          name: 'signRequests',
+          summary: '',
+          signature:
+            'signRequests?: {\n    privateKey: JsonWebKey;\n    certificate: string;\n  };',
+        },
+        {
+          name: 'decryptAssertions',
+          summary: '',
+          signature:
+            'decryptAssertions?: {\n    privateKey: JsonWebKey;\n    certificate: string;\n  };',
+        },
+        {
+          name: 'requireSignedResponse',
+          summary: '',
+          signature: 'requireSignedResponse?: boolean;',
+        },
+        {
+          name: 'requestTtlSeconds',
+          summary: '',
+          signature: 'requestTtlSeconds?: number;',
+        },
+        {
+          name: 'maxAssertionAgeSeconds',
+          summary: '',
+          signature: 'maxAssertionAgeSeconds?: number;',
+        },
+        {
+          name: 'clockSkewSeconds',
+          summary: '',
+          signature: 'clockSkewSeconds?: number;',
+        },
+        {
+          name: 'clock',
+          summary: '',
+          signature: 'clock?: () => number;',
+        },
+      ],
     },
     {
       name: 'SamlStoredRequest',
       anchor: 'saml-stored-request',
       signature: 'SamlStoredRequest: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'id',
+          summary: '',
+          signature: 'id: string;',
+        },
+        {
+          name: 'createdAt',
+          summary: '',
+          signature: 'createdAt: number;',
+        },
+        {
+          name: 'expiresAt',
+          summary: '',
+          signature: 'expiresAt: number;',
+        },
+        {
+          name: 'relayState',
+          summary: '',
+          signature: 'relayState?: string;',
+        },
+      ],
     },
     {
       name: 'SamlValidationError',
       anchor: 'saml-validation-error',
       signature: 'SamlValidationError: typeof SamlValidationError',
       typeOnly: true,
+      members: [
+        {
+          name: 'code',
+          summary: '',
+          signature: 'readonly code: SamlValidationErrorCode;',
+        },
+      ],
     },
     {
       name: 'SamlValidationErrorCode',
@@ -2898,12 +6293,41 @@ export const apiSymbolSets: Readonly<
       anchor: 'cbor-decode-options',
       signature: 'CborDecodeOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'maxBytes',
+          summary: '',
+          signature: 'maxBytes?: number;',
+        },
+        {
+          name: 'maxDepth',
+          summary: '',
+          signature: 'maxDepth?: number;',
+        },
+        {
+          name: 'maxCollectionLength',
+          summary: '',
+          signature: 'maxCollectionLength?: number;',
+        },
+      ],
     },
     {
       name: 'CborFirstResult',
       anchor: 'cbor-first-result',
       signature: 'CborFirstResult: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'value',
+          summary: '',
+          signature: 'value: unknown;',
+        },
+        {
+          name: 'bytesRead',
+          summary: '',
+          signature: 'bytesRead: number;',
+        },
+      ],
     },
     {
       name: 'CoseAlgorithm',
@@ -2944,6 +6368,18 @@ export const apiSymbolSets: Readonly<
       anchor: 'decoded-cose-public-key',
       signature: 'DecodedCosePublicKey: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'algorithm',
+          summary: '',
+          signature: 'algorithm: CoseAlgorithm;',
+        },
+        {
+          name: 'publicKeyJwk',
+          summary: '',
+          signature: 'publicKeyJwk: JsonWebKey;',
+        },
+      ],
     },
     {
       name: 'generateTotpSecret',
@@ -2957,6 +6393,18 @@ export const apiSymbolSets: Readonly<
       anchor: 'mfa-validation-error',
       signature: 'MfaValidationError: typeof MfaValidationError',
       typeOnly: true,
+      members: [
+        {
+          name: 'code',
+          summary: '',
+          signature: 'readonly code: MfaValidationErrorCode;',
+        },
+        {
+          name: 'name',
+          summary: '',
+          signature: 'readonly name = "MfaValidationError";',
+        },
+      ],
     },
     {
       name: 'MfaValidationErrorCode',
@@ -2975,6 +6423,23 @@ export const apiSymbolSets: Readonly<
       anchor: 'totp-options',
       signature: 'TotpOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'algorithm',
+          summary: '',
+          signature: 'algorithm?: TotpAlgorithm;',
+        },
+        {
+          name: 'digits',
+          summary: '',
+          signature: 'digits?: 6 | 8;',
+        },
+        {
+          name: 'periodSeconds',
+          summary: '',
+          signature: 'periodSeconds?: number;',
+        },
+      ],
     },
     {
       name: 'verifyTotpCode',
@@ -2988,6 +6453,28 @@ export const apiSymbolSets: Readonly<
       anchor: 'verify-totp-options',
       signature: 'VerifyTotpOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'secret',
+          summary: '',
+          signature: 'secret: string;',
+        },
+        {
+          name: 'code',
+          summary: '',
+          signature: 'code: string;',
+        },
+        {
+          name: 'at',
+          summary: '',
+          signature: 'at?: number | Date;',
+        },
+        {
+          name: 'window',
+          summary: '',
+          signature: 'window?: number;',
+        },
+      ],
     },
     {
       name: 'verifyWebAuthnAuthentication',
@@ -3008,18 +6495,149 @@ export const apiSymbolSets: Readonly<
       anchor: 'web-authn-authentication-input',
       signature: 'WebAuthnAuthenticationInput: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'credentialId',
+          summary: '',
+          signature: 'credentialId: Uint8Array;',
+        },
+        {
+          name: 'storedCredentialId',
+          summary: '',
+          signature: 'storedCredentialId: Uint8Array;',
+        },
+        {
+          name: 'publicKeyJwk',
+          summary: '',
+          signature: 'publicKeyJwk: JsonWebKey;',
+        },
+        {
+          name: 'authenticatorData',
+          summary: '',
+          signature: 'authenticatorData: Uint8Array;',
+        },
+        {
+          name: 'clientDataJSON',
+          summary: '',
+          signature: 'clientDataJSON: Uint8Array;',
+        },
+        {
+          name: 'signature',
+          summary: '',
+          signature: 'signature: Uint8Array;',
+        },
+        {
+          name: 'expectedChallenge',
+          summary: '',
+          signature: 'expectedChallenge: Uint8Array;',
+        },
+        {
+          name: 'allowedOrigins',
+          summary: '',
+          signature: 'allowedOrigins: readonly string[];',
+        },
+        {
+          name: 'rpId',
+          summary: '',
+          signature: 'rpId: string;',
+        },
+        {
+          name: 'signCount',
+          summary: '',
+          signature: 'signCount: number;',
+        },
+        {
+          name: 'requireUserVerification',
+          summary: '',
+          signature: 'requireUserVerification?: boolean;',
+        },
+      ],
     },
     {
       name: 'WebAuthnRegistrationInput',
       anchor: 'web-authn-registration-input',
       signature: 'WebAuthnRegistrationInput: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'credentialId',
+          summary: '',
+          signature: 'credentialId: Uint8Array;',
+        },
+        {
+          name: 'clientDataJSON',
+          summary: '',
+          signature: 'clientDataJSON: Uint8Array;',
+        },
+        {
+          name: 'attestationObject',
+          summary: '',
+          signature: 'attestationObject: Uint8Array;',
+        },
+        {
+          name: 'expectedChallenge',
+          summary: '',
+          signature: 'expectedChallenge: Uint8Array;',
+        },
+        {
+          name: 'allowedOrigins',
+          summary: '',
+          signature: 'allowedOrigins: readonly string[];',
+        },
+        {
+          name: 'rpId',
+          summary: '',
+          signature: 'rpId: string;',
+        },
+        {
+          name: 'requireUserVerification',
+          summary: '',
+          signature: 'requireUserVerification?: boolean;',
+        },
+      ],
     },
     {
       name: 'WebAuthnRegistrationResult',
       anchor: 'web-authn-registration-result',
       signature: 'WebAuthnRegistrationResult: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'credentialId',
+          summary: '',
+          signature: 'credentialId: Uint8Array;',
+        },
+        {
+          name: 'publicKeyJwk',
+          summary: '',
+          signature: 'publicKeyJwk: JsonWebKey;',
+        },
+        {
+          name: 'algorithm',
+          summary: '',
+          signature: 'algorithm: CoseAlgorithm;',
+        },
+        {
+          name: 'signCount',
+          summary: '',
+          signature: 'signCount: number;',
+        },
+        {
+          name: 'aaguid',
+          summary: '',
+          signature: 'aaguid: Uint8Array;',
+        },
+        {
+          name: 'backupEligible',
+          summary: '',
+          signature: 'backupEligible: boolean;',
+        },
+        {
+          name: 'backedUp',
+          summary: '',
+          signature: 'backedUp: boolean;',
+        },
+      ],
     },
   ],
   symbols25: [
@@ -3035,6 +6653,43 @@ export const apiSymbolSets: Readonly<
       anchor: 'create-passkey-options',
       signature: 'CreatePasskeyOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'challenge',
+          summary: '',
+          signature: 'readonly challenge: string;',
+        },
+        {
+          name: 'rpId',
+          summary: '',
+          signature: 'readonly rpId: string;',
+        },
+        {
+          name: 'rpName',
+          summary: '',
+          signature: 'readonly rpName: string;',
+        },
+        {
+          name: 'userId',
+          summary: '',
+          signature: 'readonly userId: string;',
+        },
+        {
+          name: 'userName',
+          summary: '',
+          signature: 'readonly userName: string;',
+        },
+        {
+          name: 'userDisplayName',
+          summary: '',
+          signature: 'readonly userDisplayName: string;',
+        },
+        {
+          name: 'userVerification',
+          summary: '',
+          signature: 'readonly userVerification?: UserVerificationRequirement;',
+        },
+      ],
     },
     {
       name: 'decodeBase64Url',
@@ -3060,18 +6715,79 @@ export const apiSymbolSets: Readonly<
       anchor: 'get-passkey-assertion-options',
       signature: 'GetPasskeyAssertionOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'challenge',
+          summary: '',
+          signature: 'readonly challenge: string;',
+        },
+        {
+          name: 'rpId',
+          summary: '',
+          signature: 'readonly rpId: string;',
+        },
+        {
+          name: 'allowCredentials',
+          summary: '',
+          signature: 'readonly allowCredentials?: readonly string[];',
+        },
+        {
+          name: 'userVerification',
+          summary: '',
+          signature: 'readonly userVerification?: UserVerificationRequirement;',
+        },
+      ],
     },
     {
       name: 'PasskeyAssertion',
       anchor: 'passkey-assertion',
       signature: 'PasskeyAssertion: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'credentialId',
+          summary: '',
+          signature: 'readonly credentialId: string;',
+        },
+        {
+          name: 'clientDataJSON',
+          summary: '',
+          signature: 'readonly clientDataJSON: string;',
+        },
+        {
+          name: 'authenticatorData',
+          summary: '',
+          signature: 'readonly authenticatorData: string;',
+        },
+        {
+          name: 'signature',
+          summary: '',
+          signature: 'readonly signature: string;',
+        },
+      ],
     },
     {
       name: 'PasskeyRegistration',
       anchor: 'passkey-registration',
       signature: 'PasskeyRegistration: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'credentialId',
+          summary: '',
+          signature: 'readonly credentialId: string;',
+        },
+        {
+          name: 'clientDataJSON',
+          summary: '',
+          signature: 'readonly clientDataJSON: string;',
+        },
+        {
+          name: 'attestationObject',
+          summary: '',
+          signature: 'readonly attestationObject: string;',
+        },
+      ],
     },
   ],
   symbols26: [
@@ -3099,12 +6815,102 @@ export const apiSymbolSets: Readonly<
       anchor: 'arc-props',
       signature: 'ArcProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'value',
+          summary: '',
+          signature: 'value: RowNumericChannelInput<Row>;',
+        },
+        {
+          name: 'category',
+          summary: '',
+          signature: 'category?: RowColorChannelInput<Row>;',
+        },
+        {
+          name: 'innerRadius',
+          summary: '',
+          signature: 'innerRadius?: number;',
+        },
+        {
+          name: 'outerRadius',
+          summary: '',
+          signature: 'outerRadius?: number;',
+        },
+        {
+          name: 'startAngle',
+          summary: '',
+          signature: 'startAngle?: number;',
+        },
+        {
+          name: 'endAngle',
+          summary: '',
+          signature: 'endAngle?: number;',
+        },
+        {
+          name: 'padAngle',
+          summary: '',
+          signature: 'padAngle?: number;',
+        },
+        {
+          name: 'cornerRadius',
+          summary: '',
+          signature: 'cornerRadius?: number;',
+        },
+        {
+          name: 'min',
+          summary: '',
+          signature: 'min?: number;',
+        },
+        {
+          name: 'max',
+          summary: '',
+          signature: 'max?: number;',
+        },
+      ],
     },
     {
       name: 'AreaProps',
       anchor: 'area-props',
       signature: 'AreaProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'x',
+          summary: '',
+          signature: 'x: BinnedScaleChannelInput<Row>;',
+        },
+        {
+          name: 'y',
+          summary: '',
+          signature: 'y: AggregatedNumericChannelInput<Row>;',
+        },
+        {
+          name: 'y2',
+          summary: '',
+          signature: 'y2?: RowNumericChannelInput<Row>;',
+        },
+        {
+          name: 'baseline',
+          summary: '',
+          signature: 'baseline?: number;',
+        },
+        {
+          name: 'curve',
+          summary: '',
+          signature: 'curve?: "linear" | "step" | "monotone";',
+        },
+        {
+          name: 'stack',
+          summary: '',
+          signature:
+            'stack?: CategoricalField<Row> | RowAccessor<Row, PlotScalar> | boolean;',
+        },
+        {
+          name: 'normalize',
+          summary: '',
+          signature: 'normalize?: boolean;',
+        },
+      ],
     },
     {
       name: 'AxisOrientation',
@@ -3117,12 +6923,97 @@ export const apiSymbolSets: Readonly<
       anchor: 'axis-props',
       signature: 'AxisProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'scale',
+          summary: '',
+          signature: 'scale?: string;',
+        },
+        {
+          name: 'axis',
+          summary: '',
+          signature: 'axis?: CartesianAxis;',
+        },
+        {
+          name: 'orient',
+          summary: '',
+          signature: 'orient?: AxisOrientation;',
+        },
+        {
+          name: 'label',
+          summary: '',
+          signature: 'label?: string;',
+        },
+        {
+          name: 'tickCount',
+          summary: '',
+          signature: 'tickCount?: number;',
+        },
+        {
+          name: 'tickFormat',
+          summary: '',
+          signature: 'tickFormat?: (value: ScaleValue) => string;',
+        },
+        {
+          name: 'grid',
+          summary: '',
+          signature: 'grid?: boolean;',
+        },
+      ],
     },
     {
       name: 'BarProps',
       anchor: 'bar-props',
       signature: 'BarProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'x',
+          summary: '',
+          signature: 'x: BinnedScaleChannelInput<Row>;',
+        },
+        {
+          name: 'y',
+          summary: '',
+          signature: 'y: AggregatedNumericChannelInput<Row>;',
+        },
+        {
+          name: 'orientation',
+          summary: '',
+          signature: 'orientation?: "vertical" | "horizontal";',
+        },
+        {
+          name: 'stack',
+          summary: '',
+          signature:
+            'stack?: CategoricalField<Row> | RowAccessor<Row, PlotScalar> | boolean;',
+        },
+        {
+          name: 'normalize',
+          summary: '',
+          signature: 'normalize?: boolean;',
+        },
+        {
+          name: 'radius',
+          summary: '',
+          signature: 'radius?: number;',
+        },
+        {
+          name: 'inset',
+          summary: '',
+          signature: 'inset?: number;',
+        },
+        {
+          name: 'min',
+          summary: '',
+          signature: 'min?: number;',
+        },
+        {
+          name: 'max',
+          summary: '',
+          signature: 'max?: number;',
+        },
+      ],
     },
     {
       name: 'bin',
@@ -3142,12 +7033,41 @@ export const apiSymbolSets: Readonly<
       anchor: 'bin-options',
       signature: 'BinOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'thresholds',
+          summary: '',
+          signature: 'thresholds?: number | readonly number[];',
+        },
+        {
+          name: 'interval',
+          summary: '',
+          signature: 'interval?: number;',
+        },
+        {
+          name: 'domain',
+          summary: '',
+          signature: 'domain?: readonly [number | Date, number | Date];',
+        },
+      ],
     },
     {
       name: 'BrushProps',
       anchor: 'brush-props',
       signature: 'BrushProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'axis',
+          summary: '',
+          signature: 'axis?: "x" | "y" | "xy";',
+        },
+        {
+          name: 'modifier',
+          summary: '',
+          signature: 'modifier?: "shift" | "none";',
+        },
+      ],
     },
     {
       name: 'CartesianAxis',
@@ -3160,6 +7080,28 @@ export const apiSymbolSets: Readonly<
       anchor: 'cartesian-mark-props',
       signature: 'CartesianMarkProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'x',
+          summary: '',
+          signature: 'x?: unknown;',
+        },
+        {
+          name: 'x2',
+          summary: '',
+          signature: 'x2?: unknown;',
+        },
+        {
+          name: 'y',
+          summary: '',
+          signature: 'y?: unknown;',
+        },
+        {
+          name: 'y2',
+          summary: '',
+          signature: 'y2?: unknown;',
+        },
+      ],
     },
     {
       name: 'CategoricalField',
@@ -3172,12 +7114,66 @@ export const apiSymbolSets: Readonly<
       anchor: 'cell-props',
       signature: 'CellProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'x',
+          summary: '',
+          signature: 'x: RowScaleChannelInput<Row>;',
+        },
+        {
+          name: 'y',
+          summary: '',
+          signature: 'y: RowScaleChannelInput<Row>;',
+        },
+        {
+          name: 'value',
+          summary: '',
+          signature: 'value?: RowNumericChannelInput<Row>;',
+        },
+        {
+          name: 'inset',
+          summary: '',
+          signature: 'inset?: number;',
+        },
+      ],
     },
     {
       name: 'ChannelExpression',
       anchor: 'channel-expression',
       signature: 'ChannelExpression: any',
       typeOnly: true,
+      members: [
+        {
+          name: '__askrPlotExpression',
+          summary: '',
+          signature: 'readonly __askrPlotExpression: true;',
+        },
+        {
+          name: 'kind',
+          summary: '',
+          signature: 'readonly kind: Kind;',
+        },
+        {
+          name: 'input',
+          summary: '',
+          signature: 'readonly input?: unknown;',
+        },
+        {
+          name: 'options',
+          summary: '',
+          signature: 'readonly options: Readonly<Record<string, unknown>>;',
+        },
+        {
+          name: '__field',
+          summary: '',
+          signature: 'readonly __field?: Field;',
+        },
+        {
+          name: '__value',
+          summary: '',
+          signature: 'readonly __value?: Value;',
+        },
+      ],
     },
     {
       name: 'ChannelExpressionKind',
@@ -3221,6 +7217,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'crosshair-props',
       signature: 'CrosshairProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'axes',
+          summary: '',
+          signature: 'axes?: "x" | "y" | "xy";',
+        },
+      ],
     },
     {
       name: 'FieldOfType',
@@ -3246,18 +7249,54 @@ export const apiSymbolSets: Readonly<
       anchor: 'follow-latest-rows',
       signature: 'FollowLatestRows: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'rows',
+          summary: '',
+          signature: 'rows: number;',
+        },
+      ],
     },
     {
       name: 'FollowLatestTime',
       anchor: 'follow-latest-time',
       signature: 'FollowLatestTime: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'durationMs',
+          summary: '',
+          signature: 'durationMs: number;',
+        },
+        {
+          name: 'field',
+          summary: '',
+          signature: 'field: TemporalField<Row> | RowAccessor<Row, Date>;',
+        },
+      ],
     },
     {
       name: 'GridProps',
       anchor: 'grid-props',
       signature: 'GridProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'scale',
+          summary: '',
+          signature: 'scale?: string;',
+        },
+        {
+          name: 'axis',
+          summary: '',
+          signature: 'axis?: CartesianAxis;',
+        },
+        {
+          name: 'tickCount',
+          summary: '',
+          signature: 'tickCount?: number;',
+        },
+      ],
     },
     {
       name: 'group',
@@ -3271,18 +7310,125 @@ export const apiSymbolSets: Readonly<
       anchor: 'legend-props',
       signature: 'LegendProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'scale',
+          summary: '',
+          signature: 'scale?: string;',
+        },
+        {
+          name: 'label',
+          summary: '',
+          signature: 'label?: string;',
+        },
+        {
+          name: 'interactive',
+          summary: '',
+          signature: 'interactive?: boolean;',
+        },
+        {
+          name: 'position',
+          summary: '',
+          signature: 'position?: "top" | "right" | "bottom" | "left";',
+        },
+      ],
     },
     {
       name: 'LineProps',
       anchor: 'line-props',
       signature: 'LineProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'x',
+          summary: '',
+          signature: 'x: RowScaleChannelInput<Row>;',
+        },
+        {
+          name: 'y',
+          summary: '',
+          signature: 'y: RowNumericChannelInput<Row>;',
+        },
+        {
+          name: 'curve',
+          summary: '',
+          signature: 'curve?: "linear" | "step" | "monotone";',
+        },
+        {
+          name: 'strokeWidth',
+          summary: '',
+          signature: 'strokeWidth?: number;',
+        },
+        {
+          name: 'defined',
+          summary: '',
+          signature: 'defined?: RowAccessor<Row, boolean>;',
+        },
+      ],
     },
     {
       name: 'MarkBaseProps',
       anchor: 'mark-base-props',
       signature: 'MarkBaseProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'data',
+          summary: '',
+          signature: 'data?: PlotData<Row>;',
+        },
+        {
+          name: 'transform',
+          summary: '',
+          signature:
+            'transform?: RowTransform<Row> | readonly RowTransform<Row>[];',
+        },
+        {
+          name: 'xScale',
+          summary: '',
+          signature: 'xScale?: string;',
+        },
+        {
+          name: 'yScale',
+          summary: '',
+          signature: 'yScale?: string;',
+        },
+        {
+          name: 'colorScale',
+          summary: '',
+          signature: 'colorScale?: string;',
+        },
+        {
+          name: 'fill',
+          summary: '',
+          signature: 'fill?: RowColorChannelInput<Row>;',
+        },
+        {
+          name: 'stroke',
+          summary: '',
+          signature: 'stroke?: RowColorChannelInput<Row>;',
+        },
+        {
+          name: 'opacity',
+          summary: '',
+          signature: 'opacity?: number;',
+        },
+        {
+          name: 'title',
+          summary: '',
+          signature: 'title?: RowTextChannelInput<Row>;',
+        },
+        {
+          name: 'key',
+          summary: '',
+          signature: 'key?: PlotRowKey<Row>;',
+        },
+        {
+          name: 'hidden',
+          summary: '',
+          signature: 'hidden?: boolean;',
+        },
+      ],
     },
     {
       name: 'mean',
@@ -3296,6 +7442,33 @@ export const apiSymbolSets: Readonly<
       anchor: 'meter-semantics',
       signature: 'MeterSemantics: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'role',
+          summary: '',
+          signature: 'role: "meter";',
+        },
+        {
+          name: 'min',
+          summary: '',
+          signature: 'min: number;',
+        },
+        {
+          name: 'max',
+          summary: '',
+          signature: 'max: number;',
+        },
+        {
+          name: 'value',
+          summary: '',
+          signature: 'value: number;',
+        },
+        {
+          name: 'valueText',
+          summary: '',
+          signature: 'valueText?: string;',
+        },
+      ],
     },
     {
       name: 'movingAverage',
@@ -3316,6 +7489,23 @@ export const apiSymbolSets: Readonly<
       anchor: 'moving-window-options',
       signature: 'MovingWindowOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'window',
+          summary: '',
+          signature: 'window: number;',
+        },
+        {
+          name: 'operation',
+          summary: '',
+          signature: 'operation?: WindowOperation;',
+        },
+        {
+          name: 'partial',
+          summary: '',
+          signature: 'partial?: boolean;',
+        },
+      ],
     },
     {
       name: 'normalize',
@@ -3348,12 +7538,74 @@ export const apiSymbolSets: Readonly<
       anchor: 'partition-options',
       signature: 'PartitionOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'id',
+          summary: '',
+          signature: 'id: RowField<Row> | RowAccessor<Row, PlotKey>;',
+        },
+        {
+          name: 'parentId',
+          summary: '',
+          signature:
+            'parentId?: RowField<Row> | RowAccessor<Row, PlotKey | null | undefined>;',
+        },
+        {
+          name: 'children',
+          summary: '',
+          signature:
+            'children?: RowField<Row> | RowAccessor<Row, readonly Row[] | null | undefined>;',
+        },
+        {
+          name: 'value',
+          summary: '',
+          signature: 'value: RowNumericChannelInput<Row>;',
+        },
+        {
+          name: 'padding',
+          summary: '',
+          signature: 'padding?: number;',
+        },
+      ],
     },
     {
       name: 'PlotApi',
       anchor: 'plot-api',
       signature: 'PlotApi: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'resetView',
+          summary: '',
+          signature: 'resetView(): void;',
+        },
+        {
+          name: 'resumeLive',
+          summary: '',
+          signature: 'resumeLive(): void;',
+        },
+        {
+          name: 'exportPng',
+          summary: '',
+          signature:
+            'exportPng(options?: PlotPngExportOptions): Promise<Blob>;',
+        },
+        {
+          name: 'exportSvg',
+          summary: '',
+          signature: 'exportSvg(options?: PlotSvgExportOptions): string;',
+        },
+        {
+          name: 'exportData',
+          summary: '',
+          signature: 'exportData(options?: PlotDataExportOptions): string;',
+        },
+        {
+          name: 'rows',
+          summary: '',
+          signature: 'readonly rows: readonly Row[];',
+        },
+      ],
     },
     {
       name: 'PlotChannelValue',
@@ -3372,18 +7624,149 @@ export const apiSymbolSets: Readonly<
       anchor: 'plot-data-export-options',
       signature: 'PlotDataExportOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'view',
+          summary: '',
+          signature: 'view?: "current" | "full";',
+        },
+        {
+          name: 'rows',
+          summary: '',
+          signature: 'rows?: "source" | "transformed";',
+        },
+        {
+          name: 'scope',
+          summary: '',
+          signature: 'scope?: "all" | "visible" | "selected";',
+        },
+        {
+          name: 'format',
+          summary: '',
+          signature: 'format?: "csv" | "json";',
+        },
+      ],
     },
     {
       name: 'PlotExportViewOptions',
       anchor: 'plot-export-view-options',
       signature: 'PlotExportViewOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'view',
+          summary: '',
+          signature: 'view?: "current" | "full";',
+        },
+        {
+          name: 'background',
+          summary: '',
+          signature: 'background?: string | null;',
+        },
+      ],
     },
     {
       name: 'PlotFactory',
       anchor: 'plot-factory',
       signature: 'PlotFactory: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'Root',
+          summary: '',
+          signature: 'readonly Root: PrimitiveComponent<RootProps<Row>>;',
+        },
+        {
+          name: 'Scale',
+          summary: '',
+          signature: 'readonly Scale: PrimitiveComponent<ScaleProps>;',
+        },
+        {
+          name: 'Axis',
+          summary: '',
+          signature: 'readonly Axis: PrimitiveComponent<AxisProps>;',
+        },
+        {
+          name: 'Grid',
+          summary: '',
+          signature: 'readonly Grid: PrimitiveComponent<GridProps>;',
+        },
+        {
+          name: 'Bar',
+          summary: '',
+          signature: 'readonly Bar: PrimitiveComponent<BarProps<Row>>;',
+        },
+        {
+          name: 'Line',
+          summary: '',
+          signature: 'readonly Line: PrimitiveComponent<LineProps<Row>>;',
+        },
+        {
+          name: 'Area',
+          summary: '',
+          signature: 'readonly Area: PrimitiveComponent<AreaProps<Row>>;',
+        },
+        {
+          name: 'Point',
+          summary: '',
+          signature: 'readonly Point: PrimitiveComponent<PointProps<Row>>;',
+        },
+        {
+          name: 'Arc',
+          summary: '',
+          signature: 'readonly Arc: PrimitiveComponent<ArcProps<Row>>;',
+        },
+        {
+          name: 'Cell',
+          summary: '',
+          signature: 'readonly Cell: PrimitiveComponent<CellProps<Row>>;',
+        },
+        {
+          name: 'Rect',
+          summary: '',
+          signature: 'readonly Rect: PrimitiveComponent<RectProps<Row>>;',
+        },
+        {
+          name: 'Rule',
+          summary: '',
+          signature: 'readonly Rule: PrimitiveComponent<RuleProps<Row>>;',
+        },
+        {
+          name: 'Text',
+          summary: '',
+          signature: 'readonly Text: PrimitiveComponent<TextProps<Row>>;',
+        },
+        {
+          name: 'Legend',
+          summary: '',
+          signature: 'readonly Legend: PrimitiveComponent<LegendProps>;',
+        },
+        {
+          name: 'Tooltip',
+          summary: '',
+          signature: 'readonly Tooltip: PrimitiveComponent<TooltipProps>;',
+        },
+        {
+          name: 'Crosshair',
+          summary: '',
+          signature: 'readonly Crosshair: PrimitiveComponent<CrosshairProps>;',
+        },
+        {
+          name: 'Select',
+          summary: '',
+          signature: 'readonly Select: PrimitiveComponent<SelectProps>;',
+        },
+        {
+          name: 'Zoom',
+          summary: '',
+          signature: 'readonly Zoom: PrimitiveComponent<ZoomProps>;',
+        },
+        {
+          name: 'Brush',
+          summary: '',
+          signature: 'readonly Brush: PrimitiveComponent<BrushProps>;',
+        },
+      ],
     },
     {
       name: 'PlotHeadingLevel',
@@ -3402,6 +7785,49 @@ export const apiSymbolSets: Readonly<
       anchor: 'plot-interaction-target',
       signature: 'PlotInteractionTarget: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'row',
+          summary: '',
+          signature: 'readonly row: Row;',
+        },
+        {
+          name: 'key',
+          summary: '',
+          signature: 'readonly key: PlotKey;',
+        },
+        {
+          name: 'sourceKeys',
+          summary: '',
+          signature: 'readonly sourceKeys: readonly PlotKey[];',
+        },
+        {
+          name: 'markKind',
+          summary: '',
+          signature:
+            'readonly markKind: "bar" | "line" | "area" | "point" | "arc" | "cell" | "rect" | "rule" | "text";',
+        },
+        {
+          name: 'markId',
+          summary: '',
+          signature: 'readonly markId: string;',
+        },
+        {
+          name: 'series',
+          summary: '',
+          signature: 'readonly series: string | null;',
+        },
+        {
+          name: 'channels',
+          summary: '',
+          signature: 'readonly channels: Readonly<Record<string, unknown>>;',
+        },
+        {
+          name: 'origin',
+          summary: '',
+          signature: 'readonly origin: PlotInteractionOrigin;',
+        },
+      ],
     },
     {
       name: 'PlotKey',
@@ -3414,6 +7840,18 @@ export const apiSymbolSets: Readonly<
       anchor: 'plot-png-export-options',
       signature: 'PlotPngExportOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'pixelRatio',
+          summary: '',
+          signature: 'pixelRatio?: number;',
+        },
+        {
+          name: 'includeOverlays',
+          summary: '',
+          signature: 'includeOverlays?: boolean;',
+        },
+      ],
     },
     {
       name: 'PlotRowKey',
@@ -3432,30 +7870,111 @@ export const apiSymbolSets: Readonly<
       anchor: 'plot-selection',
       signature: 'PlotSelection: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'keys',
+          summary: '',
+          signature: 'keys: readonly PlotKey[];',
+        },
+      ],
     },
     {
       name: 'PlotSummaryContext',
       anchor: 'plot-summary-context',
       signature: 'PlotSummaryContext: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'rows',
+          summary: '',
+          signature: 'readonly rows: readonly Row[];',
+        },
+        {
+          name: 'sourceRowCount',
+          summary: '',
+          signature: 'readonly sourceRowCount: number;',
+        },
+        {
+          name: 'transformedRowCount',
+          summary: '',
+          signature: 'readonly transformedRowCount: number;',
+        },
+        {
+          name: 'omittedRowCount',
+          summary: '',
+          signature: 'readonly omittedRowCount: number;',
+        },
+        {
+          name: 'visibleRowCount',
+          summary: '',
+          signature: 'readonly visibleRowCount: number;',
+        },
+      ],
     },
     {
       name: 'PlotSvgExportOptions',
       anchor: 'plot-svg-export-options',
       signature: 'PlotSvgExportOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'includeOverlays',
+          summary: '',
+          signature: 'includeOverlays?: boolean;',
+        },
+      ],
     },
     {
       name: 'PlotView',
       anchor: 'plot-view',
       signature: 'PlotView: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'x',
+          summary: '',
+          signature: 'x?: readonly [ScaleValue, ScaleValue];',
+        },
+        {
+          name: 'y',
+          summary: '',
+          signature: 'y?: readonly [ScaleValue, ScaleValue];',
+        },
+        {
+          name: 'scales',
+          summary: '',
+          signature:
+            'scales?: Readonly<Record<string, readonly [ScaleValue, ScaleValue]>>;',
+        },
+      ],
     },
     {
       name: 'PointProps',
       anchor: 'point-props',
       signature: 'PointProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'x',
+          summary: '',
+          signature: 'x: RowScaleChannelInput<Row>;',
+        },
+        {
+          name: 'y',
+          summary: '',
+          signature: 'y: RowNumericChannelInput<Row>;',
+        },
+        {
+          name: 'r',
+          summary: '',
+          signature: 'r?: RowNumericChannelInput<Row> | number;',
+        },
+        {
+          name: 'shape',
+          summary: '',
+          signature: 'shape?: "circle" | "square" | "diamond";',
+        },
+      ],
     },
     {
       name: 'PrimitiveComponent',
@@ -3474,6 +7993,33 @@ export const apiSymbolSets: Readonly<
       anchor: 'rect-props',
       signature: 'RectProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'x',
+          summary: '',
+          signature: 'x?: RowScaleChannelInput<Row>;',
+        },
+        {
+          name: 'x2',
+          summary: '',
+          signature: 'x2?: RowScaleChannelInput<Row>;',
+        },
+        {
+          name: 'y',
+          summary: '',
+          signature: 'y?: RowScaleChannelInput<Row>;',
+        },
+        {
+          name: 'y2',
+          summary: '',
+          signature: 'y2?: RowScaleChannelInput<Row>;',
+        },
+        {
+          name: 'radius',
+          summary: '',
+          signature: 'radius?: number;',
+        },
+      ],
     },
     {
       name: 'regression',
@@ -3487,6 +8033,18 @@ export const apiSymbolSets: Readonly<
       anchor: 'regression-options',
       signature: 'RegressionOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'x',
+          summary: '',
+          signature: 'x?: RowScaleChannelInput<Row>;',
+        },
+        {
+          name: 'method',
+          summary: '',
+          signature: 'method?: "linear";',
+        },
+      ],
     },
     {
       name: 'removePlotRows',
@@ -3500,6 +8058,141 @@ export const apiSymbolSets: Readonly<
       anchor: 'root-props',
       signature: 'RootProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'data',
+          summary: '',
+          signature: 'data: PlotData<Row>;',
+        },
+        {
+          name: 'rowKey',
+          summary: '',
+          signature: 'rowKey: PlotRowKey<Row>;',
+        },
+        {
+          name: 'label',
+          summary: '',
+          signature: 'label: string;',
+        },
+        {
+          name: 'children',
+          summary: '',
+          signature: 'children?: unknown;',
+        },
+        {
+          name: 'title',
+          summary: '',
+          signature: 'title?: string;',
+        },
+        {
+          name: 'headingLevel',
+          summary: '',
+          signature: 'headingLevel?: PlotHeadingLevel;',
+        },
+        {
+          name: 'description',
+          summary: '',
+          signature: 'description?: string;',
+        },
+        {
+          name: 'summary',
+          summary: '',
+          signature:
+            'summary?: string | ((context: PlotSummaryContext<Row>) => string);',
+        },
+        {
+          name: 'empty',
+          summary: '',
+          signature: 'empty?: string;',
+        },
+        {
+          name: 'width',
+          summary: '',
+          signature: 'width?: number;',
+        },
+        {
+          name: 'height',
+          summary: '',
+          signature: 'height?: number;',
+        },
+        {
+          name: 'class',
+          summary: '',
+          signature: 'class?: string;',
+        },
+        {
+          name: 'style',
+          summary: '',
+          signature:
+            'style?: string | Record<string, string | number | null | undefined | false>;',
+        },
+        {
+          name: 'id',
+          summary: '',
+          signature: 'id?: string;',
+        },
+        {
+          name: 'meter',
+          summary: '',
+          signature: 'meter?: MeterSemantics;',
+        },
+        {
+          name: 'view',
+          summary: '',
+          signature: 'view?: PlotView;',
+        },
+        {
+          name: 'defaultView',
+          summary: '',
+          signature: 'defaultView?: PlotView;',
+        },
+        {
+          name: 'onViewChange',
+          summary: '',
+          signature: 'onViewChange?: (view: PlotView) => void;',
+        },
+        {
+          name: 'selection',
+          summary: '',
+          signature: 'selection?: PlotSelection;',
+        },
+        {
+          name: 'defaultSelection',
+          summary: '',
+          signature: 'defaultSelection?: PlotSelection;',
+        },
+        {
+          name: 'onSelectionChange',
+          summary: '',
+          signature: 'onSelectionChange?: (selection: PlotSelection) => void;',
+        },
+        {
+          name: 'onActivate',
+          summary: '',
+          signature:
+            'onActivate?: (row: Row, key: PlotKey, target: PlotInteractionTarget<Row>) => void;',
+        },
+        {
+          name: 'followLatest',
+          summary: '',
+          signature: 'followLatest?: FollowLatest<Row>;',
+        },
+        {
+          name: 'onApiChange',
+          summary: '',
+          signature: 'onApiChange?: (api: PlotApi<Row> | null) => void;',
+        },
+        {
+          name: 'locale',
+          summary: '',
+          signature: 'locale?: string;',
+        },
+        {
+          name: 'diagnostics',
+          summary: '',
+          signature: 'diagnostics?: boolean;',
+        },
+      ],
     },
     {
       name: 'RowAccessor',
@@ -3548,6 +8241,28 @@ export const apiSymbolSets: Readonly<
       anchor: 'row-transform',
       signature: 'RowTransform: any',
       typeOnly: true,
+      members: [
+        {
+          name: '__askrPlotTransform',
+          summary: '',
+          signature: 'readonly __askrPlotTransform: true;',
+        },
+        {
+          name: 'kind',
+          summary: '',
+          signature: 'readonly kind: RowTransformKind;',
+        },
+        {
+          name: 'options',
+          summary: '',
+          signature: 'readonly options: Readonly<Record<string, unknown>>;',
+        },
+        {
+          name: '__row',
+          summary: '',
+          signature: 'readonly __row?: (row: Row) => Row;',
+        },
+      ],
     },
     {
       name: 'RowTransformKind',
@@ -3560,6 +8275,38 @@ export const apiSymbolSets: Readonly<
       anchor: 'rule-props',
       signature: 'RuleProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'x',
+          summary: '',
+          signature: 'x?: RowScaleChannelInput<Row>;',
+        },
+        {
+          name: 'x2',
+          summary: '',
+          signature: 'x2?: RowScaleChannelInput<Row>;',
+        },
+        {
+          name: 'y',
+          summary: '',
+          signature: 'y?: RowScaleChannelInput<Row>;',
+        },
+        {
+          name: 'y2',
+          summary: '',
+          signature: 'y2?: RowScaleChannelInput<Row>;',
+        },
+        {
+          name: 'strokeWidth',
+          summary: '',
+          signature: 'strokeWidth?: number;',
+        },
+        {
+          name: 'dash',
+          summary: '',
+          signature: 'dash?: readonly number[];',
+        },
+      ],
     },
     {
       name: 'ScaleChannelInput',
@@ -3584,6 +8331,83 @@ export const apiSymbolSets: Readonly<
       anchor: 'scale-props',
       signature: 'ScaleProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'name',
+          summary: '',
+          signature: 'name?: string;',
+        },
+        {
+          name: 'channel',
+          summary: '',
+          signature: 'channel?: "x" | "y" | "color";',
+        },
+        {
+          name: 'type',
+          summary: '',
+          signature: 'type?: ScaleType;',
+        },
+        {
+          name: 'domain',
+          summary: '',
+          signature: 'domain?: readonly ScaleDomainValue[];',
+        },
+        {
+          name: 'range',
+          summary: '',
+          signature: 'range?: readonly (number | string)[];',
+        },
+        {
+          name: 'clamp',
+          summary: '',
+          signature: 'clamp?: boolean;',
+        },
+        {
+          name: 'nice',
+          summary: '',
+          signature: 'nice?: boolean | number;',
+        },
+        {
+          name: 'reverse',
+          summary: '',
+          signature: 'reverse?: boolean;',
+        },
+        {
+          name: 'padding',
+          summary: '',
+          signature: 'padding?: number;',
+        },
+        {
+          name: 'paddingInner',
+          summary: '',
+          signature: 'paddingInner?: number;',
+        },
+        {
+          name: 'paddingOuter',
+          summary: '',
+          signature: 'paddingOuter?: number;',
+        },
+        {
+          name: 'exponent',
+          summary: '',
+          signature: 'exponent?: number;',
+        },
+        {
+          name: 'base',
+          summary: '',
+          signature: 'base?: number;',
+        },
+        {
+          name: 'constant',
+          summary: '',
+          signature: 'constant?: number;',
+        },
+        {
+          name: 'unknown',
+          summary: '',
+          signature: 'unknown?: string;',
+        },
+      ],
     },
     {
       name: 'ScaleType',
@@ -3602,6 +8426,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'select-props',
       signature: 'SelectProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'mode',
+          summary: '',
+          signature: 'mode?: "single" | "toggle";',
+        },
+      ],
     },
     {
       name: 'sortRows',
@@ -3615,6 +8446,18 @@ export const apiSymbolSets: Readonly<
       anchor: 'sort-rows-options',
       signature: 'SortRowsOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'by',
+          summary: '',
+          signature: 'by: RowField<Row> | RowAccessor<Row, unknown>;',
+        },
+        {
+          name: 'direction',
+          summary: '',
+          signature: 'direction?: "ascending" | "descending";',
+        },
+      ],
     },
     {
       name: 'stack',
@@ -3628,6 +8471,19 @@ export const apiSymbolSets: Readonly<
       anchor: 'stack-options',
       signature: 'StackOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'offset',
+          summary: '',
+          signature: 'offset?: "zero" | "diverging" | "expand";',
+        },
+        {
+          name: 'order',
+          summary: '',
+          signature:
+            'order?: "none" | "ascending" | "descending" | "inside-out";',
+        },
+      ],
     },
     {
       name: 'sum',
@@ -3653,12 +8509,62 @@ export const apiSymbolSets: Readonly<
       anchor: 'text-props',
       signature: 'TextProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'x',
+          summary: '',
+          signature: 'x: RowScaleChannelInput<Row>;',
+        },
+        {
+          name: 'y',
+          summary: '',
+          signature: 'y: RowScaleChannelInput<Row>;',
+        },
+        {
+          name: 'text',
+          summary: '',
+          signature: 'text: RowTextChannelInput<Row>;',
+        },
+        {
+          name: 'align',
+          summary: '',
+          signature: 'align?: CanvasTextAlign;',
+        },
+        {
+          name: 'baseline',
+          summary: '',
+          signature: 'baseline?: CanvasTextBaseline;',
+        },
+        {
+          name: 'font',
+          summary: '',
+          signature: 'font?: string;',
+        },
+      ],
     },
     {
       name: 'TooltipProps',
       anchor: 'tooltip-props',
       signature: 'TooltipProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'channels',
+          summary: '',
+          signature: 'channels?: readonly string[];',
+        },
+        {
+          name: 'format',
+          summary: '',
+          signature:
+            'format?: (record: Readonly<Record<string, unknown>>) => string;',
+        },
+        {
+          name: 'mode',
+          summary: '',
+          signature: 'mode?: "auto" | "mark" | "x";',
+        },
+      ],
     },
     {
       name: 'trimPlotRows',
@@ -3691,6 +8597,38 @@ export const apiSymbolSets: Readonly<
       anchor: 'zoom-props',
       signature: 'ZoomProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'axes',
+          summary: '',
+          signature: 'axes?: "x" | "y" | "xy";',
+        },
+        {
+          name: 'min',
+          summary: '',
+          signature: 'min?: number;',
+        },
+        {
+          name: 'max',
+          summary: '',
+          signature: 'max?: number;',
+        },
+        {
+          name: 'wheel',
+          summary: '',
+          signature: 'wheel?: boolean;',
+        },
+        {
+          name: 'pinch',
+          summary: '',
+          signature: 'pinch?: boolean;',
+        },
+        {
+          name: 'pan',
+          summary: '',
+          signature: 'pan?: boolean;',
+        },
+      ],
     },
   ],
   symbols27: [],
@@ -3700,6 +8638,78 @@ export const apiSymbolSets: Readonly<
       anchor: 'ad-hoc-call',
       signature: 'AdHocCall: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'url',
+          summary: '',
+          signature: 'url: string;',
+        },
+        {
+          name: 'method',
+          summary: '',
+          signature: 'method?: string;',
+        },
+        {
+          name: 'headers',
+          summary: '',
+          signature: 'headers?: HeadersInit;',
+        },
+        {
+          name: 'query',
+          summary: '',
+          signature: 'query?: Record<string, unknown>;',
+        },
+        {
+          name: 'querySpec',
+          summary: '',
+          signature: 'querySpec?: ParameterMap;',
+        },
+        {
+          name: 'body',
+          summary: '',
+          signature: 'body?: unknown;',
+        },
+        {
+          name: 'bodyCodec',
+          summary: '',
+          signature: 'bodyCodec?: Codec;',
+        },
+        {
+          name: 'response',
+          summary: '',
+          signature: 'response?: Codec;',
+        },
+        {
+          name: 'responses',
+          summary: '',
+          signature: 'responses?: Readonly<Record<number, Codec>>;',
+        },
+        {
+          name: 'errors',
+          summary: '',
+          signature: 'errors?: Partial<Record<number | "default", Codec>>;',
+        },
+        {
+          name: 'signal',
+          summary: '',
+          signature: 'signal?: AbortSignal;',
+        },
+        {
+          name: 'timeout',
+          summary: '',
+          signature: 'timeout?: number;',
+        },
+        {
+          name: 'endpoint',
+          summary: '',
+          signature: 'endpoint?: EndpointDescriptor;',
+        },
+        {
+          name: 'operationId',
+          summary: '',
+          signature: 'operationId?: string;',
+        },
+      ],
     },
     {
       name: 'AnyEndpointDescriptor',
@@ -3718,12 +8728,43 @@ export const apiSymbolSets: Readonly<
       anchor: 'api-definition',
       signature: 'ApiDefinition: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'endpoints',
+          summary: '',
+          signature: 'readonly endpoints: E;',
+        },
+        {
+          name: 'metadata',
+          summary: '',
+          signature: 'readonly metadata?: ApiMetadata;',
+        },
+      ],
     },
     {
       name: 'ApiMetadata',
       anchor: 'api-metadata',
       signature: 'ApiMetadata: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'servers',
+          summary: '',
+          signature:
+            'readonly servers?: readonly (string | {\n    readonly url: string;\n  })[];',
+        },
+        {
+          name: 'tags',
+          summary: '',
+          signature: 'readonly tags?: readonly unknown[];',
+        },
+        {
+          name: 'securitySchemes',
+          summary: '',
+          signature:
+            'readonly securitySchemes?: Readonly<Record<string, unknown>>;',
+        },
+      ],
     },
     {
       name: 'arrayBuffer',
@@ -3742,6 +8783,38 @@ export const apiSymbolSets: Readonly<
       anchor: 'client-options',
       signature: 'ClientOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'baseUrl',
+          summary: '',
+          signature: 'baseUrl?: string;',
+        },
+        {
+          name: 'fetch',
+          summary: '',
+          signature: 'fetch?: (request: Request) => Promise<Response>;',
+        },
+        {
+          name: 'headers',
+          summary: '',
+          signature: 'headers?: HeadersInit;',
+        },
+        {
+          name: 'credentials',
+          summary: '',
+          signature: 'credentials?: RequestCredentials;',
+        },
+        {
+          name: 'timeout',
+          summary: '',
+          signature: 'timeout?: number;',
+        },
+        {
+          name: 'middleware',
+          summary: '',
+          signature: 'middleware?: readonly Middleware[];',
+        },
+      ],
     },
     {
       name: 'ClientResult',
@@ -3754,6 +8827,30 @@ export const apiSymbolSets: Readonly<
       anchor: 'codec',
       signature: 'Codec: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'kind',
+          summary: '',
+          signature:
+            'readonly kind: "json" | "text" | "urlEncoded" | "multipart" | "blob" | "arrayBuffer" | "stream" | "empty" | "content";',
+        },
+        {
+          name: 'mediaTypes',
+          summary: '',
+          signature: 'readonly mediaTypes: readonly string[];',
+        },
+        {
+          name: 'validator',
+          summary: '',
+          signature: 'readonly validator?: Validator<T>;',
+        },
+        {
+          name: 'variants',
+          summary: '',
+          signature:
+            'readonly variants?: Readonly<Record<string, Codec<unknown>>>;',
+        },
+      ],
     },
     {
       name: 'content',
@@ -3801,12 +8898,121 @@ export const apiSymbolSets: Readonly<
       anchor: 'endpoint-builder',
       signature: 'EndpointBuilder: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'params',
+          summary: '',
+          signature:
+            'params<T extends Record<string, unknown>>(spec?: ParameterMap): EndpointBuilder<T, Q, H, B, R, E>;',
+        },
+        {
+          name: 'query',
+          summary: '',
+          signature:
+            'query<T extends Record<string, unknown>>(spec?: ParameterMap): EndpointBuilder<P, T, H, B, R, E>;',
+        },
+        {
+          name: 'headers',
+          summary: '',
+          signature:
+            'headers<T extends Record<string, unknown>>(spec?: ParameterMap): EndpointBuilder<P, Q, T, B, R, E>;',
+        },
+        {
+          name: 'body',
+          summary: '',
+          signature:
+            'body<C extends Codec>(codec: C): EndpointBuilder<P, Q, H, C extends Codec<infer T> ? T : never, R, E>;',
+        },
+        {
+          name: 'returns',
+          summary: '',
+          signature:
+            'returns<C extends Codec>(codec: C): EndpointBuilder<P, Q, H, B, R & Record<200, C>, E>;',
+        },
+        {
+          name: 'returns',
+          summary: '',
+          signature:
+            'returns<S extends number, C extends Codec>(status: S, codec: C): EndpointBuilder<P, Q, H, B, R & Record<S, C>, E>;',
+        },
+        {
+          name: 'errors',
+          summary: '',
+          signature:
+            'errors<T extends Errors>(spec: T): EndpointBuilder<P, Q, H, B, R, E & T>;',
+        },
+        {
+          name: 'security',
+          summary: '',
+          signature:
+            'security(requirements: readonly Readonly<Record<string, readonly string[]>>[]): EndpointBuilder<P, Q, H, B, R, E>;',
+        },
+      ],
     },
     {
       name: 'EndpointDescriptor',
       anchor: 'endpoint-descriptor',
       signature: 'EndpointDescriptor: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'method',
+          summary: '',
+          signature: 'readonly method: HttpMethod;',
+        },
+        {
+          name: 'path',
+          summary: '',
+          signature: 'readonly path: string;',
+        },
+        {
+          name: 'params',
+          summary: '',
+          signature: 'readonly params?: ParameterMap;',
+        },
+        {
+          name: 'query',
+          summary: '',
+          signature: 'readonly query?: ParameterMap;',
+        },
+        {
+          name: 'headers',
+          summary: '',
+          signature: 'readonly headers?: ParameterMap;',
+        },
+        {
+          name: 'body',
+          summary: '',
+          signature: 'readonly body?: Codec;',
+        },
+        {
+          name: 'responses',
+          summary: '',
+          signature: 'readonly responses: Readonly<R>;',
+        },
+        {
+          name: 'errors',
+          summary: '',
+          signature: 'readonly errors: Readonly<E>;',
+        },
+        {
+          name: 'security',
+          summary: '',
+          signature:
+            'readonly security?: readonly Readonly<Record<string, readonly string[]>>[];',
+        },
+        {
+          name: 'operationId',
+          summary: '',
+          signature: 'readonly operationId?: string;',
+        },
+        {
+          name: '__input',
+          summary: '',
+          signature:
+            'readonly __input?: {\n    params: P;\n    query: Q;\n    headers: H;\n    body: B;\n  };',
+        },
+      ],
     },
     {
       name: 'FailureKind',
@@ -3825,6 +9031,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'fetch-error',
       signature: 'FetchError: typeof FetchError',
       typeOnly: true,
+      members: [
+        {
+          name: 'result',
+          summary: '',
+          signature:
+            'readonly result: Exclude<FetchResult, {\n    ok: true;\n  }>;',
+        },
+      ],
     },
     {
       name: 'FetchResult',
@@ -3913,6 +9127,23 @@ export const apiSymbolSets: Readonly<
       anchor: 'parameter-spec',
       signature: 'ParameterSpec: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'validator',
+          summary: '',
+          signature: 'readonly validator?: Validator<T>;',
+        },
+        {
+          name: 'style',
+          summary: '',
+          signature: 'readonly style?: ParameterStyle;',
+        },
+        {
+          name: 'explode',
+          summary: '',
+          signature: 'readonly explode?: boolean;',
+        },
+      ],
     },
     {
       name: 'ParameterStyle',
@@ -3952,6 +9183,38 @@ export const apiSymbolSets: Readonly<
       anchor: 'request-context',
       signature: 'RequestContext: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'request',
+          summary: '',
+          signature: 'readonly request: Request;',
+        },
+        {
+          name: 'endpoint',
+          summary: '',
+          signature: 'readonly endpoint?: AnyEndpointDescriptor;',
+        },
+        {
+          name: 'operationId',
+          summary: '',
+          signature: 'readonly operationId?: string;',
+        },
+        {
+          name: 'security',
+          summary: '',
+          signature: 'readonly security?: AnyEndpointDescriptor["security"];',
+        },
+        {
+          name: 'attempt',
+          summary: '',
+          signature: 'readonly attempt: number;',
+        },
+        {
+          name: 'deadline',
+          summary: '',
+          signature: 'readonly deadline?: number;',
+        },
+      ],
     },
     {
       name: 'stream',
@@ -3988,6 +9251,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'validator',
       signature: 'Validator: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'safeParse',
+          summary: '',
+          signature:
+            'safeParse(value: unknown): {\n    success: true;\n    data: T;\n  } | {\n    success: false;\n    error: unknown;\n  };',
+        },
+      ],
     },
   ],
   symbols29: [
@@ -4023,6 +9294,28 @@ export const apiSymbolSets: Readonly<
       anchor: 'retry-options',
       signature: 'RetryOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'attempts',
+          summary: '',
+          signature: 'attempts?: number;',
+        },
+        {
+          name: 'methods',
+          summary: '',
+          signature: 'methods?: readonly string[];',
+        },
+        {
+          name: 'statuses',
+          summary: '',
+          signature: 'statuses?: readonly number[];',
+        },
+        {
+          name: 'delay',
+          summary: '',
+          signature: 'delay?: (attempt: number) => number;',
+        },
+      ],
     },
     {
       name: 'telemetry',
@@ -4035,6 +9328,23 @@ export const apiSymbolSets: Readonly<
       anchor: 'telemetry-hooks',
       signature: 'TelemetryHooks: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'start',
+          summary: '',
+          signature: 'start?(context: RequestContext): unknown;',
+        },
+        {
+          name: 'end',
+          summary: '',
+          signature: 'end?(span: unknown, result: FetchResult): void;',
+        },
+        {
+          name: 'error',
+          summary: '',
+          signature: 'error?(span: unknown, error: unknown): void;',
+        },
+      ],
     },
   ],
   symbols30: [
@@ -4056,12 +9366,59 @@ export const apiSymbolSets: Readonly<
       signature:
         'createI18n: <const SourceLocale extends string, const Catalogs extends Record<SourceLocale, Catalog>>(sourceLocale: SourceLocale, catalogs: Catalogs & ValidCatalogs<Catalogs, SourceLocale>) => I18n<Catalogs>',
       typeOnly: true,
+      summary:
+        'Creates an application-owned internationalization service.\n\nCatalog values are ordinary typed TypeScript functions. Locale selection is\nintentionally left to the application and installed lexically through Scope.',
     },
     {
       name: 'I18n',
       anchor: 'i18n',
       signature: 'I18n: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'catalogs',
+          summary: '',
+          signature: 'readonly catalogs: Readonly<Catalogs>;',
+        },
+        {
+          name: 'Scope',
+          summary: '',
+          signature:
+            'readonly Scope: (props: I18nScopeProps<LocaleOf<Catalogs>>) => JSXElement;',
+        },
+        {
+          name: 'text',
+          summary: '',
+          signature:
+            'text<Key extends CatalogKey<Catalogs>>(key: Key, ...args: MessageArgs<MessageAt<Catalogs, Key>>): string;',
+        },
+        {
+          name: 'format',
+          summary: '',
+          signature:
+            'format<Locale extends LocaleOf<Catalogs>, Key extends keyof Catalogs[Locale] & string>(locale: Locale, key: Key, ...args: MessageArgs<Catalogs[Locale][Key]>): string;',
+        },
+        {
+          name: 'locale',
+          summary: '',
+          signature: 'locale(): LocaleOf<Catalogs>;',
+        },
+        {
+          name: 'direction',
+          summary: '',
+          signature: 'direction(): TextDirection;',
+        },
+        {
+          name: 'catalog',
+          summary: '',
+          signature: 'catalog(): LocaleOf<Catalogs>;',
+        },
+        {
+          name: 'dehydrate',
+          summary: '',
+          signature: 'dehydrate(): I18nHydration<LocaleOf<Catalogs>>;',
+        },
+      ],
     },
     {
       name: 'I18nHydration',
@@ -18321,6 +23678,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'monaco-editor',
       signature: 'MonacoEditor: (props: MonacoEditorProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        "Monaco wrapper that keeps the Askr surface thin and forwards real Monaco\nmodels, options, and lifecycle access instead of recreating Monaco's API.",
     },
     {
       name: 'MonacoEditorInstance',
@@ -18339,6 +23698,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'monaco-editor-props',
       signature: 'MonacoEditorProps: any',
       typeOnly: true,
+      summary:
+        "Thin Askr host for Monaco's standalone editor.\n\nPass raw Monaco `options` and, when needed, provide an external `model`\nto keep full access to Monaco's language services, providers, and editor APIs.",
     },
     {
       name: 'MonacoErrorHandler',
@@ -18389,6 +23750,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'monaco-editor',
       signature: 'MonacoEditor: (props: MonacoEditorProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        "Monaco wrapper that keeps the Askr surface thin and forwards real Monaco\nmodels, options, and lifecycle access instead of recreating Monaco's API.",
     },
     {
       name: 'MonacoEditorInstance',
@@ -18407,6 +23770,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'monaco-editor-props',
       signature: 'MonacoEditorProps: any',
       typeOnly: true,
+      summary:
+        "Thin Askr host for Monaco's standalone editor.\n\nPass raw Monaco `options` and, when needed, provide an external `model`\nto keep full access to Monaco's language services, providers, and editor APIs.",
     },
     {
       name: 'MonacoErrorHandler',
@@ -18452,12 +23817,48 @@ export const apiSymbolSets: Readonly<
       signature:
         'createMonacoEditorTestDriver: (editor: MonacoEditorInstance) => MonacoEditorTestDriver',
       typeOnly: true,
+      summary:
+        "Create deterministic test controls for model edits and editor commands.\nThese controls bypass host keyboard mapping but still use Monaco's model and\nundo stack.",
     },
     {
       name: 'MonacoEditorTestDriver',
       anchor: 'monaco-editor-test-driver',
       signature: 'MonacoEditorTestDriver: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'selectAll',
+          summary:
+            'Select the complete model without relying on a platform modifier key.',
+          signature: 'selectAll(): void;',
+        },
+        {
+          name: 'deleteSelection',
+          summary: "Delete the current selection through Monaco's edit stack.",
+          signature: 'deleteSelection(): void;',
+        },
+        {
+          name: 'replaceAll',
+          summary: "Replace the complete model through Monaco's edit stack.",
+          signature: 'replaceAll(value: string): void;',
+        },
+        {
+          name: 'undo',
+          summary: "Invoke Monaco's undo command.",
+          signature: 'undo(): void;',
+        },
+        {
+          name: 'redo',
+          summary: "Invoke Monaco's redo command.",
+          signature: 'redo(): void;',
+        },
+        {
+          name: 'trigger',
+          summary:
+            'Invoke any Monaco editor command, including completion commands.',
+          signature: 'trigger(actionId: string, payload?: unknown): void;',
+        },
+      ],
     },
   ],
   symbols36: [
@@ -18492,6 +23893,53 @@ export const apiSymbolSets: Readonly<
       anchor: 'listen-options',
       signature: 'ListenOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'port',
+          summary: '',
+          signature: 'port?: number;',
+        },
+        {
+          name: 'host',
+          summary: '',
+          signature: 'host?: string;',
+        },
+        {
+          name: 'allowPublicBind',
+          summary: '',
+          signature: 'allowPublicBind?: boolean;',
+        },
+        {
+          name: 'backlog',
+          summary: '',
+          signature: 'backlog?: number;',
+        },
+        {
+          name: 'signal',
+          summary: '',
+          signature: 'signal?: AbortSignal;',
+        },
+        {
+          name: 'requestTimeout',
+          summary: '',
+          signature: 'requestTimeout?: number;',
+        },
+        {
+          name: 'headersTimeout',
+          summary: '',
+          signature: 'headersTimeout?: number;',
+        },
+        {
+          name: 'keepAliveTimeout',
+          summary: '',
+          signature: 'keepAliveTimeout?: number;',
+        },
+        {
+          name: 'websocket',
+          summary: '',
+          signature: 'websocket?: boolean | NodeWebSocketOptions;',
+        },
+      ],
     },
     {
       name: 'NodeHandler',
@@ -18504,12 +23952,52 @@ export const apiSymbolSets: Readonly<
       anchor: 'node-handler-options',
       signature: 'NodeHandlerOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'baseUrl',
+          summary: '',
+          signature: 'readonly baseUrl?: string;',
+        },
+        {
+          name: 'allowedHosts',
+          summary: '',
+          signature: 'readonly allowedHosts?: readonly string[];',
+        },
+      ],
     },
     {
       name: 'NodeWebSocketOptions',
       anchor: 'node-web-socket-options',
       signature: 'NodeWebSocketOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'closeTimeout',
+          summary: '',
+          signature: 'readonly closeTimeout?: number;',
+        },
+        {
+          name: 'maxPayload',
+          summary: '',
+          signature: 'readonly maxPayload?: number;',
+        },
+        {
+          name: 'maxRejectionBodyBytes',
+          summary: '',
+          signature: 'readonly maxRejectionBodyBytes?: number;',
+        },
+        {
+          name: 'perMessageDeflate',
+          summary: '',
+          signature:
+            'readonly perMessageDeflate?: boolean | PerMessageDeflateOptions;',
+        },
+        {
+          name: 'allowedOrigins',
+          summary: '',
+          signature: 'readonly allowedOrigins?: readonly string[];',
+        },
+      ],
     },
     {
       name: 'serve',
@@ -18523,12 +24011,41 @@ export const apiSymbolSets: Readonly<
       anchor: 'served-application',
       signature: 'ServedApplication: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'server',
+          summary: '',
+          signature: 'readonly server: import("node:http").Server;',
+        },
+        {
+          name: 'url',
+          summary: '',
+          signature: 'readonly url: string;',
+        },
+        {
+          name: 'close',
+          summary: '',
+          signature: 'close(): Promise<void>;',
+        },
+      ],
     },
     {
       name: 'ServeOptions',
       anchor: 'serve-options',
       signature: 'ServeOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'assets',
+          summary: '',
+          signature: 'readonly assets?: {\n    readonly root: string;\n  };',
+        },
+        {
+          name: 'signals',
+          summary: '',
+          signature: 'readonly signals?: false | readonly NodeJS.Signals[];',
+        },
+      ],
     },
   ],
   symbols37: [
@@ -18544,12 +24061,72 @@ export const apiSymbolSets: Readonly<
       anchor: 'mcp-stdio-connection',
       signature: 'McpStdioConnection: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'closed',
+          summary: '',
+          signature: 'readonly closed: Promise<void>;',
+        },
+        {
+          name: 'close',
+          summary: '',
+          signature: 'close(): Promise<void>;',
+        },
+      ],
     },
     {
       name: 'McpStdioOptions',
       anchor: 'mcp-stdio-options',
       signature: 'McpStdioOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'dependencies',
+          summary: '',
+          signature: 'dependencies: Dependencies;',
+        },
+        {
+          name: 'input',
+          summary: '',
+          signature: 'input?: Readable;',
+        },
+        {
+          name: 'output',
+          summary: '',
+          signature: 'output?: Writable;',
+        },
+        {
+          name: 'diagnostics',
+          summary: '',
+          signature: 'diagnostics?: Writable;',
+        },
+        {
+          name: 'signal',
+          summary: '',
+          signature: 'signal?: AbortSignal;',
+        },
+        {
+          name: 'auth',
+          summary: '',
+          signature:
+            'auth?: AuthContext | ((environment: NodeJS.ProcessEnv) => AuthContext | Promise<AuthContext>);',
+        },
+        {
+          name: 'environment',
+          summary: '',
+          signature: 'environment?: NodeJS.ProcessEnv;',
+        },
+        {
+          name: 'maxLineBytes',
+          summary: '',
+          signature: 'maxLineBytes?: number;',
+        },
+        {
+          name: 'maxConcurrency',
+          summary: '',
+          signature: 'maxConcurrency?: number;',
+        },
+      ],
     },
   ],
   symbols38: [
@@ -18558,18 +24135,137 @@ export const apiSymbolSets: Readonly<
       anchor: 'create-telemetry',
       signature: 'createTelemetry: (options?: TelemetryOptions) => Telemetry',
       typeOnly: true,
+      summary:
+        "Creates a function-first bridge to the application's installed OpenTelemetry\nprovider. This package never installs an SDK, processor, backend, or exporter.",
     },
     {
       name: 'Telemetry',
       anchor: 'telemetry',
       signature: 'Telemetry: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'span',
+          summary: '',
+          signature:
+            'span<T>(operation: TelemetryOperation, fields: TelemetryFields, work: () => T): T;',
+        },
+        {
+          name: 'request',
+          summary: '',
+          signature: 'request<T>(fields: TelemetryFields, work: () => T): T;',
+        },
+        {
+          name: 'routeMatch',
+          summary: '',
+          signature:
+            'routeMatch<T>(fields: TelemetryFields, work: () => T): T;',
+        },
+        {
+          name: 'loader',
+          summary: '',
+          signature: 'loader<T>(fields: TelemetryFields, work: () => T): T;',
+        },
+        {
+          name: 'action',
+          summary: '',
+          signature: 'action<T>(fields: TelemetryFields, work: () => T): T;',
+        },
+        {
+          name: 'apiOperation',
+          summary: '',
+          signature:
+            'apiOperation<T>(fields: TelemetryFields, work: () => T): T;',
+        },
+        {
+          name: 'queryPrefetch',
+          summary: '',
+          signature:
+            'queryPrefetch<T>(fields: TelemetryFields, work: () => T): T;',
+        },
+        {
+          name: 'ssrRender',
+          summary: '',
+          signature: 'ssrRender<T>(fields: TelemetryFields, work: () => T): T;',
+        },
+        {
+          name: 'viteDocument',
+          summary: '',
+          signature:
+            'viteDocument<T>(fields: TelemetryFields, work: () => T): T;',
+        },
+        {
+          name: 'log',
+          summary: '',
+          signature:
+            'log(level: TelemetryLevel, event: TelemetryOperation, fields?: TelemetryFields): void;',
+        },
+        {
+          name: 'extract',
+          summary: '',
+          signature:
+            'extract<Carrier>(carrier: Carrier, getter: TextMapGetter<Carrier>): Context;',
+        },
+        {
+          name: 'inject',
+          summary: '',
+          signature:
+            'inject<Carrier>(carrier: Carrier, setter: TextMapSetter<Carrier>, value?: Context): Carrier;',
+        },
+        {
+          name: 'withContext',
+          summary: '',
+          signature: 'withContext<T>(value: Context, work: () => T): T;',
+        },
+        {
+          name: 'traceId',
+          summary: '',
+          signature: 'traceId(): string | undefined;',
+        },
+      ],
     },
     {
       name: 'TelemetryFields',
       anchor: 'telemetry-fields',
       signature: 'TelemetryFields: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'requestId',
+          summary: '',
+          signature: 'requestId?: string;',
+        },
+        {
+          name: 'traceId',
+          summary: '',
+          signature: 'traceId?: string;',
+        },
+        {
+          name: 'route',
+          summary: '',
+          signature: 'route?: string;',
+        },
+        {
+          name: 'action',
+          summary: '',
+          signature: 'action?: string;',
+        },
+        {
+          name: 'operation',
+          summary: '',
+          signature: 'operation?: string;',
+        },
+        {
+          name: 'status',
+          summary: '',
+          signature: 'status?: number;',
+        },
+        {
+          name: 'durationMs',
+          summary: '',
+          signature: 'durationMs?: number;',
+        },
+      ],
     },
     {
       name: 'TelemetryLevel',
@@ -18594,6 +24290,46 @@ export const apiSymbolSets: Readonly<
       anchor: 'telemetry-options',
       signature: 'TelemetryOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'tracerName',
+          summary: '',
+          signature: 'tracerName?: string;',
+        },
+        {
+          name: 'tracerVersion',
+          summary: '',
+          signature: 'tracerVersion?: string;',
+        },
+        {
+          name: 'logger',
+          summary: '',
+          signature: 'logger?: TelemetryLogger;',
+        },
+        {
+          name: 'now',
+          summary: '',
+          signature: 'now?: () => number;',
+        },
+        {
+          name: 'maxFieldLength',
+          summary: '',
+          signature: 'maxFieldLength?: number;',
+        },
+        {
+          name: 'sanitizeField',
+          summary: '',
+          signature:
+            'sanitizeField?: (name: keyof TelemetryFields, value: string | number) => string | number | undefined;',
+        },
+        {
+          name: 'sanitizeException',
+          summary:
+            'Exceptions are not exported unless this hook returns a sanitized value.',
+          signature:
+            'sanitizeException?: (error: Error) => Exception | undefined;',
+        },
+      ],
     },
   ],
   symbols39: [
@@ -18608,6 +24344,23 @@ export const apiSymbolSets: Readonly<
       anchor: 'issue',
       signature: 'Issue: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'path',
+          summary: '',
+          signature: 'readonly path: readonly (string | number)[];',
+        },
+        {
+          name: 'message',
+          summary: '',
+          signature: 'readonly message: string;',
+        },
+        {
+          name: 'code',
+          summary: '',
+          signature: 'readonly code: string;',
+        },
+      ],
     },
     {
       name: 'JsonSchema',
@@ -18620,12 +24373,28 @@ export const apiSymbolSets: Readonly<
       anchor: 'object-schema',
       signature: 'ObjectSchema: any',
       typeOnly: true,
+      summary:
+        'An executable schema whose successful value is always a plain object.',
+      members: [
+        {
+          name: 'kind',
+          summary: '',
+          signature: 'readonly kind: "object";',
+        },
+      ],
     },
     {
       name: 'OptionalSchema',
       anchor: 'optional-schema',
       signature: 'OptionalSchema: any',
       typeOnly: true,
+      members: [
+        {
+          name: '__optional',
+          summary: '',
+          signature: 'readonly __optional: true;',
+        },
+      ],
     },
     {
       name: 'SafeParseResult',
@@ -18645,6 +24414,23 @@ export const apiSymbolSets: Readonly<
       anchor: 'schema',
       signature: 'Schema: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'jsonSchema',
+          summary: '',
+          signature: 'readonly jsonSchema: JsonSchema;',
+        },
+        {
+          name: '__type',
+          summary: '',
+          signature: 'readonly __type?: T;',
+        },
+        {
+          name: 'safeParse',
+          summary: '',
+          signature: 'safeParse(value: unknown): SafeParseResult<T>;',
+        },
+      ],
     },
     {
       name: 'StringFormat',
@@ -18672,30 +24458,134 @@ export const apiSymbolSets: Readonly<
       anchor: 'api-route',
       signature: 'ApiRoute: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'path',
+          summary: '',
+          signature: 'path: string;',
+        },
+        {
+          name: 'method',
+          summary: '',
+          signature: 'method?: string | readonly string[];',
+        },
+        {
+          name: 'handler',
+          summary: '',
+          signature: 'handler: Handler<RouteParams>;',
+        },
+        {
+          name: 'upgrade',
+          summary: '',
+          signature: 'upgrade?: WebSocketHandler<RouteParams>;',
+        },
+      ],
     },
     {
       name: 'ApiRouteOptions',
       anchor: 'api-route-options',
       signature: 'ApiRouteOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'auth',
+          summary: '',
+          signature: 'auth?: AuthRequirement;',
+        },
+        {
+          name: 'middleware',
+          summary: '',
+          signature: 'middleware?: readonly Middleware<RouteParams>[];',
+        },
+        {
+          name: 'maxRequestBytes',
+          summary: '',
+          signature: 'maxRequestBytes?: number;',
+        },
+      ],
     },
     {
       name: 'AuthCredentials',
       anchor: 'auth-credentials',
       signature: 'AuthCredentials: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'email',
+          summary: '',
+          signature: 'email: string;',
+        },
+        {
+          name: 'password',
+          summary: '',
+          signature: 'password: string;',
+        },
+      ],
     },
     {
       name: 'AuthRouteError',
       anchor: 'auth-route-error',
       signature: 'AuthRouteError: typeof AuthRouteError',
       typeOnly: true,
+      members: [
+        {
+          name: 'status',
+          summary: '',
+          signature: 'readonly status: 401 | 409 | 429;',
+        },
+      ],
     },
     {
       name: 'AuthRouteOptions',
       anchor: 'auth-route-options',
       signature: 'AuthRouteOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'issuer',
+          summary: '',
+          signature: 'issuer: TokenIssuer<P>;',
+        },
+        {
+          name: 'cookie',
+          summary: '',
+          signature: 'cookie: CookieOptions & {\n    name: string;\n  };',
+        },
+        {
+          name: 'principalSchema',
+          summary: '',
+          signature: 'principalSchema: Schema;',
+        },
+        {
+          name: 'register',
+          summary: '',
+          signature:
+            'register(context: ServerContext, credentials: AuthCredentials): P | Promise<P>;',
+        },
+        {
+          name: 'authenticate',
+          summary: '',
+          signature:
+            'authenticate(context: ServerContext, credentials: AuthCredentials): P | null | Promise<P | null>;',
+        },
+        {
+          name: 'allowAttempt',
+          summary: '',
+          signature:
+            'allowAttempt(context: ServerContext, operation: "register" | "authenticate", normalizedEmail: string): boolean | Promise<boolean>;',
+        },
+        {
+          name: 'revoke',
+          summary: '',
+          signature: 'revoke?(context: ServerContext): void | Promise<void>;',
+        },
+        {
+          name: 'redirect',
+          summary: '',
+          signature:
+            'redirect?: (context: ServerContext, operation: "register" | "authenticate", principal: P) => string | undefined;',
+        },
+      ],
     },
     {
       name: 'bad',
@@ -18722,12 +24612,46 @@ export const apiSymbolSets: Readonly<
       anchor: 'bind-context',
       signature: 'BindContext: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'request',
+          summary: '',
+          signature: 'request: Request;',
+        },
+        {
+          name: 'params',
+          summary: '',
+          signature: 'params: Params;',
+        },
+        {
+          name: 'url',
+          summary: '',
+          signature: 'url: URL;',
+        },
+        {
+          name: 'query',
+          summary: '',
+          signature: 'query: URLSearchParams;',
+        },
+      ],
     },
     {
       name: 'BindingError',
       anchor: 'binding-error',
       signature: 'BindingError: typeof BindingError',
       typeOnly: true,
+      members: [
+        {
+          name: 'field',
+          summary: '',
+          signature: 'readonly field?: string | undefined;',
+        },
+        {
+          name: 'status',
+          summary: '',
+          signature: 'readonly status = 400;',
+        },
+      ],
     },
     {
       name: 'challenge',
@@ -18740,6 +24664,33 @@ export const apiSymbolSets: Readonly<
       anchor: 'challenge-options',
       signature: 'ChallengeOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'scheme',
+          summary: '',
+          signature: 'scheme?: string;',
+        },
+        {
+          name: 'realm',
+          summary: '',
+          signature: 'realm?: string;',
+        },
+        {
+          name: 'status',
+          summary: '',
+          signature: 'status?: 401 | 407;',
+        },
+        {
+          name: 'detail',
+          summary: '',
+          signature: 'detail?: string;',
+        },
+        {
+          name: 'init',
+          summary: '',
+          signature: 'init?: ResponseInit;',
+        },
+      ],
     },
     {
       name: 'clearCookie',
@@ -18759,6 +24710,43 @@ export const apiSymbolSets: Readonly<
       anchor: 'cookie-options',
       signature: 'CookieOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'domain',
+          summary: '',
+          signature: 'domain?: string;',
+        },
+        {
+          name: 'expires',
+          summary: '',
+          signature: 'expires?: Date;',
+        },
+        {
+          name: 'httpOnly',
+          summary: '',
+          signature: 'httpOnly?: boolean;',
+        },
+        {
+          name: 'maxAge',
+          summary: '',
+          signature: 'maxAge?: number;',
+        },
+        {
+          name: 'path',
+          summary: '',
+          signature: 'path?: string;',
+        },
+        {
+          name: 'sameSite',
+          summary: '',
+          signature: 'sameSite?: CookieSameSite;',
+        },
+        {
+          name: 'secure',
+          summary: '',
+          signature: 'secure?: boolean;',
+        },
+      ],
     },
     {
       name: 'CookieSameSite',
@@ -18830,12 +24818,61 @@ export const apiSymbolSets: Readonly<
       anchor: 'event-stream',
       signature: 'EventStream: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'response',
+          summary: '',
+          signature: 'readonly response: Response;',
+        },
+        {
+          name: 'closed',
+          summary: '',
+          signature: 'readonly closed: Promise<void>;',
+        },
+        {
+          name: 'send',
+          summary: '',
+          signature: 'send(event: ServerSentEvent): Promise<void>;',
+        },
+        {
+          name: 'comment',
+          summary: '',
+          signature: 'comment(value: string): Promise<void>;',
+        },
+        {
+          name: 'close',
+          summary: '',
+          signature: 'close(): Promise<void>;',
+        },
+      ],
     },
     {
       name: 'EventStreamOptions',
       anchor: 'event-stream-options',
       signature: 'EventStreamOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'signal',
+          summary: '',
+          signature: 'signal?: AbortSignal;',
+        },
+        {
+          name: 'heartbeatInterval',
+          summary: '',
+          signature: 'heartbeatInterval?: number;',
+        },
+        {
+          name: 'highWaterMark',
+          summary: '',
+          signature: 'highWaterMark?: number;',
+        },
+        {
+          name: 'headers',
+          summary: '',
+          signature: 'headers?: HeadersInit;',
+        },
+      ],
     },
     {
       name: 'forbidden',
@@ -18936,6 +24973,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'payload-too-large-error',
       signature: 'PayloadTooLargeError: typeof PayloadTooLargeError',
       typeOnly: true,
+      members: [
+        {
+          name: 'status',
+          summary: '',
+          signature: 'readonly status = 413;',
+        },
+      ],
     },
     {
       name: 'ProbeHandler',
@@ -18948,6 +24992,28 @@ export const apiSymbolSets: Readonly<
       anchor: 'probe-options',
       signature: 'ProbeOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'livez',
+          summary: '',
+          signature: 'livez?: ProbeHandler;',
+        },
+        {
+          name: 'readyz',
+          summary: '',
+          signature: 'readyz?: ProbeHandler;',
+        },
+        {
+          name: 'startupz',
+          summary: '',
+          signature: 'startupz?: ProbeHandler;',
+        },
+        {
+          name: 'targetz',
+          summary: '',
+          signature: 'targetz?: ProbeHandler;',
+        },
+      ],
     },
     {
       name: 'ProbeResult',
@@ -18967,12 +25033,61 @@ export const apiSymbolSets: Readonly<
       anchor: 'problem',
       signature: 'Problem: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'type',
+          summary: '',
+          signature: 'type: string;',
+        },
+        {
+          name: 'title',
+          summary: '',
+          signature: 'title: string;',
+        },
+        {
+          name: 'status',
+          summary: '',
+          signature: 'status: number;',
+        },
+        {
+          name: 'detail',
+          summary: '',
+          signature: 'detail?: string;',
+        },
+        {
+          name: 'instance',
+          summary: '',
+          signature: 'instance?: string;',
+        },
+      ],
     },
     {
       name: 'ProblemOptions',
       anchor: 'problem-options',
       signature: 'ProblemOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'type',
+          summary: '',
+          signature: 'type?: string;',
+        },
+        {
+          name: 'title',
+          summary: '',
+          signature: 'title?: string;',
+        },
+        {
+          name: 'instance',
+          summary: '',
+          signature: 'instance?: string;',
+        },
+        {
+          name: 'extensions',
+          summary: '',
+          signature: 'extensions?: Record<string, unknown>;',
+        },
+      ],
     },
     {
       name: 'readRequestBytes',
@@ -19020,12 +25135,163 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-builder',
       signature: 'RouteBuilder: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'route',
+          summary: '',
+          signature:
+            'route<const Path extends string>(method: string | readonly string[], path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'get',
+          summary: '',
+          signature:
+            'get<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'post',
+          summary: '',
+          signature:
+            'post<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'put',
+          summary: '',
+          signature:
+            'put<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'patch',
+          summary: '',
+          signature:
+            'patch<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'delete',
+          summary: '',
+          signature:
+            'delete<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'options',
+          summary: '',
+          signature:
+            'options<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'head',
+          summary: '',
+          signature:
+            'head<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'trace',
+          summary: '',
+          signature:
+            'trace<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'connect',
+          summary: '',
+          signature:
+            'connect<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'ws',
+          summary: '',
+          signature:
+            'ws<const Path extends string>(path: Path, handler: WebSocketHandler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+      ],
     },
     {
       name: 'Router',
       anchor: 'router',
       signature: 'Router: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'routes',
+          summary: '',
+          signature: 'readonly routes: readonly ApiRoute[];',
+        },
+        {
+          name: 'middleware',
+          summary: '',
+          signature: 'readonly middleware: readonly Middleware[];',
+        },
+        {
+          name: 'use',
+          summary: '',
+          signature: 'use(...middleware: Middleware[]): Router;',
+        },
+        {
+          name: 'route',
+          summary: '',
+          signature:
+            'route<const Path extends string>(method: string | readonly string[], path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'get',
+          summary: '',
+          signature:
+            'get<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'post',
+          summary: '',
+          signature:
+            'post<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'put',
+          summary: '',
+          signature:
+            'put<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'patch',
+          summary: '',
+          signature:
+            'patch<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'delete',
+          summary: '',
+          signature:
+            'delete<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'options',
+          summary: '',
+          signature:
+            'options<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'head',
+          summary: '',
+          signature:
+            'head<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'trace',
+          summary: '',
+          signature:
+            'trace<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'connect',
+          summary: '',
+          signature:
+            'connect<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'ws',
+          summary: '',
+          signature:
+            'ws<const Path extends string>(path: Path, handler: WebSocketHandler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+      ],
     },
     {
       name: 'safeRedirect',
@@ -19039,30 +25305,319 @@ export const apiSymbolSets: Readonly<
       anchor: 'safe-redirect-options',
       signature: 'SafeRedirectOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'allowHash',
+          summary: '',
+          signature: 'readonly allowHash?: boolean;',
+        },
+      ],
     },
     {
       name: 'ServerApp',
       anchor: 'server-app',
       signature: 'ServerApp: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'fetch',
+          summary: '',
+          signature:
+            'fetch(request: Request, dispatchOptions?: ServerDispatchOptions): Promise<Response>;',
+        },
+      ],
     },
     {
       name: 'ServerAppOptions',
       anchor: 'server-app-options',
       signature: 'ServerAppOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'router',
+          summary: '',
+          signature: 'router?: Router;',
+        },
+        {
+          name: 'routes',
+          summary: '',
+          signature: 'routes?: readonly ApiRoute[];',
+        },
+        {
+          name: 'middleware',
+          summary: '',
+          signature: 'middleware?: readonly Middleware[];',
+        },
+        {
+          name: 'onError',
+          summary: '',
+          signature:
+            'onError?: (error: unknown, context: ServerContext) => Response | Promise<Response>;',
+        },
+        {
+          name: 'onAccessDenied',
+          summary: '',
+          signature: 'onAccessDenied?: AccessDeniedHandler;',
+        },
+        {
+          name: 'auth',
+          summary: '',
+          signature: 'auth?: AuthResolver;',
+        },
+        {
+          name: 'fallback',
+          summary: '',
+          signature: 'fallback?: Handler;',
+        },
+        {
+          name: 'websocket',
+          summary: '',
+          signature: 'websocket?: WebSocketAdapter;',
+        },
+        {
+          name: 'probes',
+          summary: '',
+          signature: 'probes?: ProbeOptions;',
+        },
+        {
+          name: 'telemetry',
+          summary: '',
+          signature: 'telemetry?: ServerTelemetry;',
+        },
+        {
+          name: 'maxRequestBytes',
+          summary: '',
+          signature: 'maxRequestBytes?: number;',
+        },
+      ],
     },
     {
       name: 'ServerContext',
       anchor: 'server-context',
       signature: 'ServerContext: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'request',
+          summary: '',
+          signature: 'request: Request;',
+        },
+        {
+          name: 'url',
+          summary: '',
+          signature: 'url: URL;',
+        },
+        {
+          name: 'params',
+          summary: '',
+          signature: 'params: RouteParams;',
+        },
+        {
+          name: 'headers',
+          summary: '',
+          signature: 'headers: Headers;',
+        },
+        {
+          name: 'query',
+          summary: '',
+          signature: 'query: URLSearchParams;',
+        },
+        {
+          name: 'state',
+          summary: '',
+          signature: 'state: RequestState;',
+        },
+        {
+          name: 'auth',
+          summary: '',
+          signature: 'auth: AuthContext;',
+        },
+        {
+          name: 'signal',
+          summary: '',
+          signature: 'signal: AbortSignal;',
+        },
+        {
+          name: 'sse',
+          summary: '',
+          signature:
+            'sse(options?: Omit<EventStreamOptions, "signal">): EventStream;',
+        },
+        {
+          name: 'telemetry',
+          summary: '',
+          signature: 'telemetry?: ServerTelemetry;',
+        },
+        {
+          name: 'bind',
+          summary: '',
+          signature:
+            'bind<T extends object = Record<string, unknown>>(): Promise<T>;',
+        },
+        {
+          name: 'json',
+          summary: '',
+          signature: 'json(value: JsonValue, init?: ResponseInit): Response;',
+        },
+        {
+          name: 'text',
+          summary: '',
+          signature: 'text(value: string, init?: ResponseInit): Response;',
+        },
+        {
+          name: 'redirect',
+          summary: '',
+          signature:
+            'redirect(location: string, status?: 301 | 302 | 303 | 307 | 308): Response;',
+        },
+        {
+          name: 'ok',
+          summary: '',
+          signature: 'ok(value?: JsonValue, init?: ResponseInit): Response;',
+        },
+        {
+          name: 'created',
+          summary: '',
+          signature:
+            'created(value?: JsonValue, init?: ResponseInit): Response;',
+        },
+        {
+          name: 'accepted',
+          summary: '',
+          signature:
+            'accepted(value?: JsonValue, init?: ResponseInit): Response;',
+        },
+        {
+          name: 'noContent',
+          summary: '',
+          signature: 'noContent(init?: ResponseInit): Response;',
+        },
+        {
+          name: 'badRequest',
+          summary: '',
+          signature:
+            'badRequest(message?: string, init?: ResponseInit): Response;',
+        },
+        {
+          name: 'bad',
+          summary: '',
+          signature: 'bad(message?: string, init?: ResponseInit): Response;',
+        },
+        {
+          name: 'unauthorized',
+          summary: '',
+          signature:
+            'unauthorized(message?: string, init?: ResponseInit): Response;',
+        },
+        {
+          name: 'forbidden',
+          summary: '',
+          signature:
+            'forbidden(message?: string, init?: ResponseInit): Response;',
+        },
+        {
+          name: 'notFound',
+          summary: '',
+          signature:
+            'notFound(message?: string, init?: ResponseInit): Response;',
+        },
+        {
+          name: 'conflict',
+          summary: '',
+          signature:
+            'conflict(message?: string, init?: ResponseInit): Response;',
+        },
+        {
+          name: 'unprocessableEntity',
+          summary: '',
+          signature:
+            'unprocessableEntity(message?: string, init?: ResponseInit): Response;',
+        },
+        {
+          name: 'tooManyRequests',
+          summary: '',
+          signature:
+            'tooManyRequests(message?: string, init?: ResponseInit): Response;',
+        },
+        {
+          name: 'methodNotAllowed',
+          summary: '',
+          signature:
+            'methodNotAllowed(allow?: string | readonly string[], init?: ResponseInit): Response;',
+        },
+        {
+          name: 'error',
+          summary: '',
+          signature:
+            'error(status?: number, message?: string, init?: ResponseInit): Response;',
+        },
+        {
+          name: 'internalServerError',
+          summary: '',
+          signature:
+            'internalServerError(message?: string, init?: ResponseInit): Response;',
+        },
+        {
+          name: 'serverError',
+          summary: '',
+          signature:
+            'serverError(message?: string, init?: ResponseInit): Response;',
+        },
+        {
+          name: 'notImplemented',
+          summary: '',
+          signature:
+            'notImplemented(message?: string, init?: ResponseInit): Response;',
+        },
+        {
+          name: 'serviceUnavailable',
+          summary: '',
+          signature:
+            'serviceUnavailable(message?: string, init?: ResponseInit): Response;',
+        },
+        {
+          name: 'problem',
+          summary: '',
+          signature:
+            'problem(status: number, detail?: string, options?: ProblemOptions): Response;',
+        },
+        {
+          name: 'challenge',
+          summary: '',
+          signature: 'challenge(options?: ChallengeOptions): Response;',
+        },
+        {
+          name: 'setCookie',
+          summary: '',
+          signature:
+            'setCookie(response: Response, name: string, value: string, options?: CookieOptions): Response;',
+        },
+        {
+          name: 'clearCookie',
+          summary: '',
+          signature:
+            'clearCookie(response: Response, name: string, options?: CookieOptions): Response;',
+        },
+        {
+          name: 'upgrade',
+          summary: '',
+          signature:
+            'upgrade(handler: WebSocketHandler): Response | Promise<Response>;',
+        },
+      ],
     },
     {
       name: 'ServerDispatchOptions',
       anchor: 'server-dispatch-options',
       signature: 'ServerDispatchOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'websocket',
+          summary: '',
+          signature: 'websocket?: WebSocketAdapter;',
+        },
+      ],
     },
     {
       name: 'serverError',
@@ -19076,18 +25631,143 @@ export const apiSymbolSets: Readonly<
       anchor: 'server-sent-event',
       signature: 'ServerSentEvent: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'data',
+          summary: '',
+          signature: 'data?: unknown;',
+        },
+        {
+          name: 'event',
+          summary: '',
+          signature: 'event?: string;',
+        },
+        {
+          name: 'id',
+          summary: '',
+          signature: 'id?: string;',
+        },
+        {
+          name: 'retry',
+          summary: '',
+          signature: 'retry?: number;',
+        },
+      ],
     },
     {
       name: 'ServerTelemetry',
       anchor: 'server-telemetry',
       signature: 'ServerTelemetry: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'request',
+          summary: '',
+          signature:
+            'request<T>(fields: ServerTelemetryFields, work: () => T): T;',
+        },
+        {
+          name: 'routeMatch',
+          summary: '',
+          signature:
+            'routeMatch<T>(fields: ServerTelemetryFields, work: () => T): T;',
+        },
+        {
+          name: 'loader',
+          summary: '',
+          signature:
+            'loader?<T>(fields: ServerTelemetryFields, work: () => T): T;',
+        },
+        {
+          name: 'action',
+          summary: '',
+          signature:
+            'action<T>(fields: ServerTelemetryFields, work: () => T): T;',
+        },
+        {
+          name: 'apiOperation',
+          summary: '',
+          signature:
+            'apiOperation<T>(fields: ServerTelemetryFields, work: () => T): T;',
+        },
+        {
+          name: 'queryPrefetch',
+          summary: '',
+          signature:
+            'queryPrefetch?<T>(fields: ServerTelemetryFields, work: () => T): T;',
+        },
+        {
+          name: 'ssrRender',
+          summary: '',
+          signature:
+            'ssrRender?<T>(fields: ServerTelemetryFields, work: () => T): T;',
+        },
+        {
+          name: 'log',
+          summary: '',
+          signature:
+            'log(level: "debug" | "info" | "warn" | "error", event: ServerTelemetryOperation, fields?: ServerTelemetryFields): void;',
+        },
+        {
+          name: 'traceId',
+          summary: '',
+          signature: 'traceId(): string | undefined;',
+        },
+        {
+          name: 'extract',
+          summary: '',
+          signature:
+            'extract?<Carrier>(carrier: Carrier, getter: {\n    keys(value: Carrier): string[];\n    get(value: Carrier, key: string): string | string[] | undefined;\n  }): unknown;',
+        },
+        {
+          name: 'withContext',
+          summary: '',
+          signature: 'withContext?<T>(context: unknown, work: () => T): T;',
+        },
+      ],
     },
     {
       name: 'ServerTelemetryFields',
       anchor: 'server-telemetry-fields',
       signature: 'ServerTelemetryFields: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'requestId',
+          summary: '',
+          signature: 'requestId?: string;',
+        },
+        {
+          name: 'traceId',
+          summary: '',
+          signature: 'traceId?: string;',
+        },
+        {
+          name: 'route',
+          summary: '',
+          signature: 'route?: string;',
+        },
+        {
+          name: 'action',
+          summary: '',
+          signature: 'action?: string;',
+        },
+        {
+          name: 'operation',
+          summary: '',
+          signature: 'operation?: string;',
+        },
+        {
+          name: 'status',
+          summary: '',
+          signature: 'status?: number;',
+        },
+        {
+          name: 'durationMs',
+          summary: '',
+          signature: 'durationMs?: number;',
+        },
+      ],
     },
     {
       name: 'ServerTelemetryOperation',
@@ -19120,6 +25800,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'token-issuer',
       signature: 'TokenIssuer: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'issue',
+          summary: '',
+          signature:
+            'issue(principal: Omit<P, "id"> & {\n    subject: string;\n  }): Promise<string>;',
+        },
+      ],
     },
     {
       name: 'tooManyRequests',
@@ -19147,12 +25835,37 @@ export const apiSymbolSets: Readonly<
       anchor: 'web-socket-adapter',
       signature: 'WebSocketAdapter: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'upgrade',
+          summary: '',
+          signature:
+            'upgrade(request: Request, handler: WebSocketHandler, context: ServerContext): Response | Promise<Response>;',
+        },
+      ],
     },
     {
       name: 'WebSocketCloseEvent',
       anchor: 'web-socket-close-event',
       signature: 'WebSocketCloseEvent: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'code',
+          summary: '',
+          signature: 'readonly code: number;',
+        },
+        {
+          name: 'reason',
+          summary: '',
+          signature: 'readonly reason: string;',
+        },
+        {
+          name: 'wasClean',
+          summary: '',
+          signature: 'readonly wasClean: boolean;',
+        },
+      ],
     },
     {
       name: 'WebSocketHandler',
@@ -19165,6 +25878,36 @@ export const apiSymbolSets: Readonly<
       anchor: 'web-socket-like',
       signature: 'WebSocketLike: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'send',
+          summary: '',
+          signature:
+            'send(data: string | ArrayBufferLike | ArrayBufferView): void;',
+        },
+        {
+          name: 'close',
+          summary: '',
+          signature: 'close(code?: number, reason?: string): void;',
+        },
+        {
+          name: 'onMessage',
+          summary: '',
+          signature:
+            'onMessage(listener: (data: string | Uint8Array) => void): () => void;',
+        },
+        {
+          name: 'onClose',
+          summary: '',
+          signature:
+            'onClose(listener: (event: WebSocketCloseEvent) => void): () => void;',
+        },
+        {
+          name: 'onError',
+          summary: '',
+          signature: 'onError(listener: (error: unknown) => void): () => void;',
+        },
+      ],
     },
   ],
   symbols41: [
@@ -19173,12 +25916,51 @@ export const apiSymbolSets: Readonly<
       anchor: 'api-route',
       signature: 'ApiRoute: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'path',
+          summary: '',
+          signature: 'path: string;',
+        },
+        {
+          name: 'method',
+          summary: '',
+          signature: 'method?: string | readonly string[];',
+        },
+        {
+          name: 'handler',
+          summary: '',
+          signature: 'handler: Handler<RouteParams>;',
+        },
+        {
+          name: 'upgrade',
+          summary: '',
+          signature: 'upgrade?: WebSocketHandler<RouteParams>;',
+        },
+      ],
     },
     {
       name: 'ApiRouteOptions',
       anchor: 'api-route-options',
       signature: 'ApiRouteOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'auth',
+          summary: '',
+          signature: 'auth?: AuthRequirement;',
+        },
+        {
+          name: 'middleware',
+          summary: '',
+          signature: 'middleware?: readonly Middleware<RouteParams>[];',
+        },
+        {
+          name: 'maxRequestBytes',
+          summary: '',
+          signature: 'maxRequestBytes?: number;',
+        },
+      ],
     },
     {
       name: 'createRouter',
@@ -19210,12 +25992,163 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-builder',
       signature: 'RouteBuilder: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'route',
+          summary: '',
+          signature:
+            'route<const Path extends string>(method: string | readonly string[], path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'get',
+          summary: '',
+          signature:
+            'get<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'post',
+          summary: '',
+          signature:
+            'post<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'put',
+          summary: '',
+          signature:
+            'put<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'patch',
+          summary: '',
+          signature:
+            'patch<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'delete',
+          summary: '',
+          signature:
+            'delete<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'options',
+          summary: '',
+          signature:
+            'options<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'head',
+          summary: '',
+          signature:
+            'head<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'trace',
+          summary: '',
+          signature:
+            'trace<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'connect',
+          summary: '',
+          signature:
+            'connect<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+        {
+          name: 'ws',
+          summary: '',
+          signature:
+            'ws<const Path extends string>(path: Path, handler: WebSocketHandler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): ApiRoute<PathParams<Path>>;',
+        },
+      ],
     },
     {
       name: 'Router',
       anchor: 'router',
       signature: 'Router: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'routes',
+          summary: '',
+          signature: 'readonly routes: readonly ApiRoute[];',
+        },
+        {
+          name: 'middleware',
+          summary: '',
+          signature: 'readonly middleware: readonly Middleware[];',
+        },
+        {
+          name: 'use',
+          summary: '',
+          signature: 'use(...middleware: Middleware[]): Router;',
+        },
+        {
+          name: 'route',
+          summary: '',
+          signature:
+            'route<const Path extends string>(method: string | readonly string[], path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'get',
+          summary: '',
+          signature:
+            'get<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'post',
+          summary: '',
+          signature:
+            'post<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'put',
+          summary: '',
+          signature:
+            'put<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'patch',
+          summary: '',
+          signature:
+            'patch<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'delete',
+          summary: '',
+          signature:
+            'delete<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'options',
+          summary: '',
+          signature:
+            'options<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'head',
+          summary: '',
+          signature:
+            'head<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'trace',
+          summary: '',
+          signature:
+            'trace<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'connect',
+          summary: '',
+          signature:
+            'connect<const Path extends string>(path: Path, handler: Handler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+        {
+          name: 'ws',
+          summary: '',
+          signature:
+            'ws<const Path extends string>(path: Path, handler: WebSocketHandler<PathParams<Path>>, options?: ApiRouteOptions<PathParams<Path>>): Router;',
+        },
+      ],
     },
     {
       name: 'WebSocketHandler',
@@ -19290,12 +26223,61 @@ export const apiSymbolSets: Readonly<
       anchor: 'event-stream',
       signature: 'EventStream: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'response',
+          summary: '',
+          signature: 'readonly response: Response;',
+        },
+        {
+          name: 'closed',
+          summary: '',
+          signature: 'readonly closed: Promise<void>;',
+        },
+        {
+          name: 'send',
+          summary: '',
+          signature: 'send(event: ServerSentEvent): Promise<void>;',
+        },
+        {
+          name: 'comment',
+          summary: '',
+          signature: 'comment(value: string): Promise<void>;',
+        },
+        {
+          name: 'close',
+          summary: '',
+          signature: 'close(): Promise<void>;',
+        },
+      ],
     },
     {
       name: 'EventStreamOptions',
       anchor: 'event-stream-options',
       signature: 'EventStreamOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'signal',
+          summary: '',
+          signature: 'signal?: AbortSignal;',
+        },
+        {
+          name: 'heartbeatInterval',
+          summary: '',
+          signature: 'heartbeatInterval?: number;',
+        },
+        {
+          name: 'highWaterMark',
+          summary: '',
+          signature: 'highWaterMark?: number;',
+        },
+        {
+          name: 'headers',
+          summary: '',
+          signature: 'headers?: HeadersInit;',
+        },
+      ],
     },
     {
       name: 'forbidden',
@@ -19381,6 +26363,28 @@ export const apiSymbolSets: Readonly<
       anchor: 'server-sent-event',
       signature: 'ServerSentEvent: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'data',
+          summary: '',
+          signature: 'data?: unknown;',
+        },
+        {
+          name: 'event',
+          summary: '',
+          signature: 'event?: string;',
+        },
+        {
+          name: 'id',
+          summary: '',
+          signature: 'id?: string;',
+        },
+        {
+          name: 'retry',
+          summary: '',
+          signature: 'retry?: number;',
+        },
+      ],
     },
     {
       name: 'serviceUnavailable',
@@ -19442,6 +26446,39 @@ export const apiSymbolSets: Readonly<
       anchor: 'cors-options',
       signature: 'CorsOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'origin',
+          summary: '',
+          signature:
+            'origin?: string | ((origin: string, context: ServerContext) => string | null);',
+        },
+        {
+          name: 'methods',
+          summary: '',
+          signature: 'methods?: readonly string[];',
+        },
+        {
+          name: 'allowedHeaders',
+          summary: '',
+          signature: 'allowedHeaders?: readonly string[];',
+        },
+        {
+          name: 'exposedHeaders',
+          summary: '',
+          signature: 'exposedHeaders?: readonly string[];',
+        },
+        {
+          name: 'credentials',
+          summary: '',
+          signature: 'credentials?: boolean;',
+        },
+        {
+          name: 'maxAgeSeconds',
+          summary: '',
+          signature: 'maxAgeSeconds?: number;',
+        },
+      ],
     },
     {
       name: 'createCsrfToken',
@@ -19468,6 +26505,29 @@ export const apiSymbolSets: Readonly<
       anchor: 'csrf-options',
       signature: 'CsrfOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'secret',
+          summary: '',
+          signature: 'readonly secret: string;',
+        },
+        {
+          name: 'sessionId',
+          summary: '',
+          signature:
+            'readonly sessionId?: (context: Parameters<Middleware>[0]) => string | undefined;',
+        },
+        {
+          name: 'header',
+          summary: '',
+          signature: 'readonly header?: string;',
+        },
+        {
+          name: 'formField',
+          summary: '',
+          signature: 'readonly formField?: string;',
+        },
+      ],
     },
     {
       name: 'enforceHttps',
@@ -19481,6 +26541,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'memory-rate-limit-store-options',
       signature: 'MemoryRateLimitStoreOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'now',
+          summary: '',
+          signature: 'readonly now?: () => number;',
+        },
+      ],
     },
     {
       name: 'rateLimit',
@@ -19493,12 +26560,49 @@ export const apiSymbolSets: Readonly<
       anchor: 'rate-limit-options',
       signature: 'RateLimitOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'store',
+          summary: '',
+          signature: 'readonly store?: RateLimitStore;',
+        },
+        {
+          name: 'limit',
+          summary: '',
+          signature: 'readonly limit: number;',
+        },
+        {
+          name: 'windowMs',
+          summary: '',
+          signature: 'readonly windowMs: number;',
+        },
+        {
+          name: 'key',
+          summary:
+            'Returns an application-trusted bucket identity. Proxy headers are\nintentionally never interpreted by this middleware.',
+          signature:
+            'readonly key: (context: Parameters<Middleware>[0]) => string;',
+        },
+        {
+          name: 'now',
+          summary: '',
+          signature: 'readonly now?: () => number;',
+        },
+      ],
     },
     {
       name: 'RateLimitStore',
       anchor: 'rate-limit-store',
       signature: 'RateLimitStore: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'consume',
+          summary: '',
+          signature:
+            'consume(key: string, limit: number, windowMs: number): Promise<{\n    readonly remaining: number;\n    /** Epoch milliseconds at which the current window resets. */\n    readonly reset: number;\n    readonly allowed: boolean;\n  }>;',
+        },
+      ],
     },
     {
       name: 'requestId',
@@ -19547,6 +26651,19 @@ export const apiSymbolSets: Readonly<
       anchor: 'action-entry',
       signature: 'ActionEntry: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'descriptor',
+          summary: '',
+          signature: 'readonly descriptor: ActionDescriptor<Input>;',
+        },
+        {
+          name: 'handler',
+          summary: '',
+          signature:
+            'readonly handler: ActionHandler<Dependencies, Input, Result>;',
+        },
+      ],
     },
     {
       name: 'ActionExecution',
@@ -19559,6 +26676,28 @@ export const apiSymbolSets: Readonly<
       anchor: 'action-execution-options',
       signature: 'ActionExecutionOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'authorized',
+          summary: '',
+          signature: 'readonly authorized: readonly ActionDescriptor[];',
+        },
+        {
+          name: 'params',
+          summary: '',
+          signature: 'readonly params: Params;',
+        },
+        {
+          name: 'policies',
+          summary: '',
+          signature: 'readonly policies: readonly RoutePolicy[];',
+        },
+        {
+          name: 'allowsRedirect',
+          summary: '',
+          signature: 'readonly allowsRedirect: (location: URL) => boolean;',
+        },
+      ],
     },
     {
       name: 'ActionHandler',
@@ -19571,66 +26710,339 @@ export const apiSymbolSets: Readonly<
       anchor: 'action-handler-context',
       signature: 'ActionHandlerContext: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'request',
+          summary: '',
+          signature: 'readonly request: Request;',
+        },
+        {
+          name: 'url',
+          summary: '',
+          signature: 'readonly url: URL;',
+        },
+        {
+          name: 'params',
+          summary: '',
+          signature: 'readonly params: Params;',
+        },
+        {
+          name: 'auth',
+          summary: '',
+          signature: 'readonly auth: AuthContext;',
+        },
+        {
+          name: 'policies',
+          summary: '',
+          signature: 'readonly policies: readonly RoutePolicy[];',
+        },
+        {
+          name: 'signal',
+          summary: '',
+          signature: 'readonly signal: AbortSignal;',
+        },
+      ],
     },
     {
       name: 'ActionOutcome',
       anchor: 'action-outcome',
       signature: 'ActionOutcome: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'redirect',
+          summary: '',
+          signature: 'readonly redirect?: string;',
+        },
+        {
+          name: 'result',
+          summary: '',
+          signature: 'readonly result?: Result;',
+        },
+        {
+          name: 'cookies',
+          summary: '',
+          signature: 'readonly cookies?: readonly ActionCookieInstruction[];',
+        },
+      ],
     },
     {
       name: 'ActionRegistration',
       anchor: 'action-registration',
       signature: 'ActionRegistration: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'descriptor',
+          summary: '',
+          signature: 'readonly descriptor: ActionDescriptor;',
+        },
+        {
+          name: 'handler',
+          summary: '',
+          signature:
+            'readonly handler: (context: ActionHandlerContext, input: never, dependencies: Dependencies) => ActionOutcome<unknown> | Promise<ActionOutcome<unknown>>;',
+        },
+      ],
     },
     {
       name: 'ActionRegistry',
       anchor: 'action-registry',
       signature: 'ActionRegistry: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'entries',
+          summary: '',
+          signature:
+            'readonly entries: readonly Readonly<{\n    descriptor: ActionDescriptor;\n  }>[];',
+        },
+        {
+          name: 'csrfToken',
+          summary: '',
+          signature:
+            'csrfToken(context: ServerContext): Promise<string | undefined>;',
+        },
+        {
+          name: 'execute',
+          summary: '',
+          signature:
+            'execute(context: ServerContext, options: ActionExecutionOptions): Promise<ActionExecution | undefined>;',
+        },
+      ],
     },
     {
       name: 'ActionRegistryOptions',
       anchor: 'action-registry-options',
       signature: 'ActionRegistryOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'csrf',
+          summary:
+            'Page actions are protected by session-bound CSRF by default.\n\nThe default identity is `context.auth.session?.id`, so anonymous pages do\nnot receive a token and their submissions are rejected. Pre-authentication\nforms such as login, signup, and password reset must establish an opaque\nguest session before rendering and return its stable identity from\n`sessionId`. The resolver identifies an existing session; it does not\ncreate or persist one.\n\nSet this to `false` only when the complete flow intentionally uses another\nCSRF defense.',
+          signature:
+            'readonly csrf?: false | {\n    /** HMAC secret. A process-local random secret is generated when omitted. */\n    readonly secret?: string;\n    /**\n     * Resolves the authenticated or pre-authentication session identity\n     * used to issue and verify tokens. Returning `undefined` means no token\n     * is rendered and action submissions fail with `403`.\n     */\n    readonly sessionId?: (context: ServerContext) => string | undefined;\n    /** Enhanced-submission token header. Defaults to `x-askr-csrf-token`. */\n    readonly header?: string;\n    /** Native-form token field. Defaults to `_csrf`. */\n    readonly formField?: string;\n  };',
+        },
+        {
+          name: 'randomSecret',
+          summary: '',
+          signature: 'readonly randomSecret?: () => string;',
+        },
+      ],
     },
     {
       name: 'AskrApp',
       anchor: 'askr-app',
       signature: 'AskrApp: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'fetch',
+          summary: '',
+          signature: 'fetch(request: Request): Promise<Response>;',
+        },
+        {
+          name: 'toOpenApiDocument',
+          summary: '',
+          signature: 'toOpenApiDocument(): OpenApiDocument;',
+        },
+        {
+          name: 'close',
+          summary: '',
+          signature: 'close(): Promise<void>;',
+        },
+      ],
     },
     {
       name: 'AskrAppApi',
       anchor: 'askr-app-api',
       signature: 'AskrAppApi: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'schema',
+          summary: '',
+          signature: 'schema: ApiDefinition<Dependencies>["schema"];',
+        },
+      ],
     },
     {
       name: 'AskrAppApiOptions',
       anchor: 'askr-app-api-options',
       signature: 'AskrAppApiOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'prefix',
+          summary: '',
+          signature: 'readonly prefix?: string;',
+        },
+        {
+          name: 'securitySchemes',
+          summary: '',
+          signature:
+            'readonly securitySchemes?: Readonly<Record<string, SecurityScheme>>;',
+        },
+        {
+          name: 'define',
+          summary: '',
+          signature:
+            'readonly define?: (api: AskrAppApi<Dependencies>) => void;',
+        },
+        {
+          name: 'validateResponses',
+          summary: '',
+          signature: 'readonly validateResponses?: boolean;',
+        },
+      ],
     },
     {
       name: 'AskrAppAuthOptions',
       anchor: 'askr-app-auth-options',
       signature: 'AskrAppAuthOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'resolver',
+          summary: '',
+          signature: 'readonly resolver: AuthResolver;',
+        },
+        {
+          name: 'routes',
+          summary: '',
+          signature: 'readonly routes?: AuthRouteOptions<P>;',
+        },
+        {
+          name: 'pages',
+          summary: '',
+          signature: 'readonly pages?: RouteAuthOptions;',
+        },
+      ],
     },
     {
       name: 'AskrAppOptions',
       anchor: 'askr-app-options',
       signature: 'AskrAppOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'name',
+          summary: '',
+          signature: 'readonly name: string;',
+        },
+        {
+          name: 'version',
+          summary: '',
+          signature: 'readonly version: string;',
+        },
+        {
+          name: 'dependencies',
+          summary: '',
+          signature: 'readonly dependencies: Dependencies;',
+        },
+        {
+          name: 'pages',
+          summary: '',
+          signature: 'readonly pages: RouteRegistry;',
+        },
+        {
+          name: 'queryRegistry',
+          summary: '',
+          signature: 'readonly queryRegistry?: ServerQueryRegistry;',
+        },
+        {
+          name: 'api',
+          summary: '',
+          signature: 'readonly api?: AskrAppApiOptions<Dependencies>;',
+        },
+        {
+          name: 'actions',
+          summary: '',
+          signature:
+            'readonly actions?: ActionRegistryOptions & {\n    readonly handlers: readonly ActionRegistration<Dependencies>[];\n  };',
+        },
+        {
+          name: 'auth',
+          summary: '',
+          signature: 'readonly auth?: AskrAppAuthOptions<P>;',
+        },
+        {
+          name: 'middleware',
+          summary: '',
+          signature: 'readonly middleware?: readonly Middleware[];',
+        },
+        {
+          name: 'probes',
+          summary: '',
+          signature: 'readonly probes?: ProbeOptions;',
+        },
+        {
+          name: 'telemetry',
+          summary: '',
+          signature: 'readonly telemetry?: ServerTelemetry;',
+        },
+        {
+          name: 'onError',
+          summary: '',
+          signature: 'readonly onError?: ServerAppOptions["onError"];',
+        },
+        {
+          name: 'onAccessDenied',
+          summary: '',
+          signature:
+            'readonly onAccessDenied?: ServerAppOptions["onAccessDenied"];',
+        },
+        {
+          name: 'close',
+          summary: '',
+          signature:
+            'readonly close?: (dependencies: Dependencies) => void | Promise<void>;',
+        },
+        {
+          name: 'cspNonce',
+          summary: '',
+          signature: 'readonly cspNonce?: CspNonceProvider;',
+        },
+      ],
     },
     {
       name: 'AskrPageHandlerOptions',
       anchor: 'askr-page-handler-options',
       signature: 'AskrPageHandlerOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'registry',
+          summary: '',
+          signature: 'registry: RouteRegistry;',
+        },
+        {
+          name: 'auth',
+          summary: '',
+          signature: 'auth?: RouteAuthOptions;',
+        },
+        {
+          name: 'queryRegistry',
+          summary: '',
+          signature: 'queryRegistry?: ServerQueryRegistry;',
+        },
+        {
+          name: 'seed',
+          summary: '',
+          signature: 'seed?: number;',
+        },
+        {
+          name: 'actions',
+          summary: '',
+          signature: 'actions?: ActionRegistry;',
+        },
+        {
+          name: 'cspNonce',
+          summary: '',
+          signature: 'cspNonce?: CspNonceProvider;',
+        },
+      ],
     },
     {
       name: 'createAskrApp',
@@ -19665,6 +27077,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'server-actions-options',
       signature: 'ServerActionsOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'dependencies',
+          summary: '',
+          signature: 'readonly dependencies: Dependencies;',
+        },
+      ],
     },
   ],
   symbols45: [
@@ -19673,18 +27092,83 @@ export const apiSymbolSets: Readonly<
       anchor: 'auth-credentials',
       signature: 'AuthCredentials: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'email',
+          summary: '',
+          signature: 'email: string;',
+        },
+        {
+          name: 'password',
+          summary: '',
+          signature: 'password: string;',
+        },
+      ],
     },
     {
       name: 'AuthRouteError',
       anchor: 'auth-route-error',
       signature: 'AuthRouteError: typeof AuthRouteError',
       typeOnly: true,
+      members: [
+        {
+          name: 'status',
+          summary: '',
+          signature: 'readonly status: 401 | 409 | 429;',
+        },
+      ],
     },
     {
       name: 'AuthRouteOptions',
       anchor: 'auth-route-options',
       signature: 'AuthRouteOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'issuer',
+          summary: '',
+          signature: 'issuer: TokenIssuer<P>;',
+        },
+        {
+          name: 'cookie',
+          summary: '',
+          signature: 'cookie: CookieOptions & {\n    name: string;\n  };',
+        },
+        {
+          name: 'principalSchema',
+          summary: '',
+          signature: 'principalSchema: Schema;',
+        },
+        {
+          name: 'register',
+          summary: '',
+          signature:
+            'register(context: ServerContext, credentials: AuthCredentials): P | Promise<P>;',
+        },
+        {
+          name: 'authenticate',
+          summary: '',
+          signature:
+            'authenticate(context: ServerContext, credentials: AuthCredentials): P | null | Promise<P | null>;',
+        },
+        {
+          name: 'allowAttempt',
+          summary: '',
+          signature:
+            'allowAttempt(context: ServerContext, operation: "register" | "authenticate", normalizedEmail: string): boolean | Promise<boolean>;',
+        },
+        {
+          name: 'revoke',
+          summary: '',
+          signature: 'revoke?(context: ServerContext): void | Promise<void>;',
+        },
+        {
+          name: 'redirect',
+          summary: '',
+          signature:
+            'redirect?: (context: ServerContext, operation: "register" | "authenticate", principal: P) => string | undefined;',
+        },
+      ],
     },
     {
       name: 'registerAuthRoutes',
@@ -19705,12 +27189,27 @@ export const apiSymbolSets: Readonly<
       anchor: 'safe-redirect-options',
       signature: 'SafeRedirectOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'allowHash',
+          summary: '',
+          signature: 'readonly allowHash?: boolean;',
+        },
+      ],
     },
     {
       name: 'TokenIssuer',
       anchor: 'token-issuer',
       signature: 'TokenIssuer: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'issue',
+          summary: '',
+          signature:
+            'issue(principal: Omit<P, "id"> & {\n    subject: string;\n  }): Promise<string>;',
+        },
+      ],
     },
   ],
   symbols46: [
@@ -19719,12 +27218,120 @@ export const apiSymbolSets: Readonly<
       anchor: 'api-definition',
       signature: 'ApiDefinition: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'schema',
+          summary: '',
+          signature:
+            'schema<const Value extends Schema>(name: string, value: Value): Value;',
+        },
+        {
+          name: 'createRouter',
+          summary: '',
+          signature:
+            'createRouter: [Dependencies] extends [undefined] ? (dependencies?: undefined) => Router : (dependencies: Dependencies) => Router;',
+        },
+        {
+          name: 'toOpenApiDocument',
+          summary: '',
+          signature: 'toOpenApiDocument(): OpenApiDocument;',
+        },
+      ],
     },
     {
       name: 'ApiGroup',
       anchor: 'api-group',
       signature: 'ApiGroup: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'tags',
+          summary: '',
+          signature: 'tags(...values: string[]): ApiGroup<Dependencies>;',
+        },
+        {
+          name: 'use',
+          summary: '',
+          signature:
+            'use(...middleware: Middleware[]): ApiGroup<Dependencies>;',
+        },
+        {
+          name: 'access',
+          summary: '',
+          signature:
+            'access(requirement: AuthRequirement, security: SecurityRequirement): ApiGroup<Dependencies>;',
+        },
+        {
+          name: 'pathParam',
+          summary: '',
+          signature:
+            'pathParam(name: string, value: Schema, options?: ParameterOptions): ApiGroup<Dependencies>;',
+        },
+        {
+          name: 'queryParam',
+          summary: '',
+          signature:
+            'queryParam(name: string, value: Schema, options?: ParameterOptions): ApiGroup<Dependencies>;',
+        },
+        {
+          name: 'headerParam',
+          summary: '',
+          signature:
+            'headerParam(name: string, value: Schema, options?: ParameterOptions): ApiGroup<Dependencies>;',
+        },
+        {
+          name: 'cookieParam',
+          summary: '',
+          signature:
+            'cookieParam(name: string, value: Schema, options?: ParameterOptions): ApiGroup<Dependencies>;',
+        },
+        {
+          name: 'group',
+          summary: '',
+          signature:
+            'group<const Child extends string>(prefix: Child): ApiGroup<Dependencies, JoinPath<Prefix, Child>>;',
+        },
+        {
+          name: 'get',
+          summary: '',
+          signature: 'get: ApiMethod<Dependencies, Prefix>;',
+        },
+        {
+          name: 'post',
+          summary: '',
+          signature: 'post: ApiMethod<Dependencies, Prefix>;',
+        },
+        {
+          name: 'put',
+          summary: '',
+          signature: 'put: ApiMethod<Dependencies, Prefix>;',
+        },
+        {
+          name: 'patch',
+          summary: '',
+          signature: 'patch: ApiMethod<Dependencies, Prefix>;',
+        },
+        {
+          name: 'delete',
+          summary: '',
+          signature: 'delete: ApiMethod<Dependencies, Prefix>;',
+        },
+        {
+          name: 'options',
+          summary: '',
+          signature: 'options: ApiMethod<Dependencies, Prefix>;',
+        },
+        {
+          name: 'head',
+          summary: '',
+          signature: 'head: ApiMethod<Dependencies, Prefix>;',
+        },
+        {
+          name: 'trace',
+          summary: '',
+          signature: 'trace: ApiMethod<Dependencies, Prefix>;',
+        },
+      ],
     },
     {
       name: 'ApiHandler',
@@ -19737,30 +27344,159 @@ export const apiSymbolSets: Readonly<
       anchor: 'api-info',
       signature: 'ApiInfo: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'title',
+          summary: '',
+          signature: 'readonly title: string;',
+        },
+        {
+          name: 'version',
+          summary: '',
+          signature: 'readonly version: string;',
+        },
+        {
+          name: 'summary',
+          summary: '',
+          signature: 'readonly summary?: string;',
+        },
+        {
+          name: 'description',
+          summary: '',
+          signature: 'readonly description?: string;',
+        },
+        {
+          name: 'termsOfService',
+          summary: '',
+          signature: 'readonly termsOfService?: string;',
+        },
+        {
+          name: 'contact',
+          summary: '',
+          signature: 'readonly contact?: ContactObject;',
+        },
+        {
+          name: 'license',
+          summary: '',
+          signature: 'readonly license?: LicenseObject;',
+        },
+      ],
     },
     {
       name: 'ApiInput',
       anchor: 'api-input',
       signature: 'ApiInput: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'params',
+          summary: '',
+          signature: 'readonly params?: ObjectSchema;',
+        },
+        {
+          name: 'query',
+          summary: '',
+          signature: 'readonly query?: ObjectSchema;',
+        },
+        {
+          name: 'headers',
+          summary: '',
+          signature: 'readonly headers?: ObjectSchema;',
+        },
+        {
+          name: 'body',
+          summary: '',
+          signature: 'readonly body?: ApiBodyInput;',
+        },
+      ],
     },
     {
       name: 'ApiOperation',
       anchor: 'api-operation',
       signature: 'ApiOperation: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'input',
+          summary: '',
+          signature: 'readonly input?: Input;',
+        },
+        {
+          name: 'documentation',
+          summary: '',
+          signature: 'readonly documentation?: InputDocumentation;',
+        },
+        {
+          name: 'handler',
+          summary: '',
+          signature:
+            'readonly handler: (context: ServerContext<RouteParams>, input: InferApiInput<Input>, dependencies: Dependencies) => Response | Promise<Response>;',
+        },
+      ],
     },
     {
       name: 'ApiOptions',
       anchor: 'api-options',
       signature: 'ApiOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'info',
+          summary: '',
+          signature: 'readonly info: ApiInfo;',
+        },
+        {
+          name: 'metadata',
+          summary:
+            'Infer registration-safe metadata, or require fully authored public contracts.',
+          signature: 'readonly metadata?: "inferred" | "authored";',
+        },
+        {
+          name: 'servers',
+          summary: '',
+          signature: 'readonly servers?: readonly ServerObject[];',
+        },
+        {
+          name: 'externalDocs',
+          summary: '',
+          signature: 'readonly externalDocs?: ExternalDocumentationObject;',
+        },
+        {
+          name: 'securitySchemes',
+          summary: '',
+          signature:
+            'readonly securitySchemes?: Readonly<Record<string, SecurityScheme>>;',
+        },
+        {
+          name: 'validateResponses',
+          summary:
+            'Validate documented response bodies only when explicitly enabled outside production.',
+          signature: 'readonly validateResponses?: boolean;',
+        },
+      ],
     },
     {
       name: 'BodyOptions',
       anchor: 'body-options',
       signature: 'BodyOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'required',
+          summary: '',
+          signature: 'required?: boolean;',
+        },
+        {
+          name: 'description',
+          summary: '',
+          signature: 'description?: string;',
+        },
+        {
+          name: 'examples',
+          summary: '',
+          signature: 'examples?: Record<string, unknown>;',
+        },
+      ],
     },
     {
       name: 'createApi',
@@ -19780,24 +27516,326 @@ export const apiSymbolSets: Readonly<
       anchor: 'open-api-document',
       signature: 'OpenApiDocument: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'openapi',
+          summary: '',
+          signature: 'readonly openapi: "3.1.2";',
+        },
+        {
+          name: 'info',
+          summary: '',
+          signature: 'readonly info: ApiInfo;',
+        },
+        {
+          name: 'servers',
+          summary: '',
+          signature: 'readonly servers?: readonly ServerObject[];',
+        },
+        {
+          name: 'paths',
+          summary: '',
+          signature:
+            'readonly paths: Readonly<Record<string, PathItemObject>>;',
+        },
+        {
+          name: 'components',
+          summary: '',
+          signature: 'readonly components: ComponentsObject;',
+        },
+        {
+          name: 'externalDocs',
+          summary: '',
+          signature: 'readonly externalDocs?: ExternalDocumentationObject;',
+        },
+      ],
     },
     {
       name: 'ParameterOptions',
       anchor: 'parameter-options',
       signature: 'ParameterOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'description',
+          summary: '',
+          signature: 'description?: string;',
+        },
+        {
+          name: 'required',
+          summary: '',
+          signature: 'required?: boolean;',
+        },
+        {
+          name: 'deprecated',
+          summary: '',
+          signature: 'deprecated?: boolean;',
+        },
+        {
+          name: 'example',
+          summary: '',
+          signature: 'example?: unknown;',
+        },
+      ],
     },
     {
       name: 'ResponseOptions',
       anchor: 'response-options',
       signature: 'ResponseOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'description',
+          summary: '',
+          signature: 'description?: string;',
+        },
+        {
+          name: 'mediaType',
+          summary: '',
+          signature: 'mediaType?: string;',
+        },
+        {
+          name: 'headers',
+          summary: '',
+          signature: 'headers?: Record<string, unknown>;',
+        },
+        {
+          name: 'examples',
+          summary: '',
+          signature: 'examples?: Record<string, unknown>;',
+        },
+      ],
     },
     {
       name: 'RouteBuilder',
       anchor: 'route-builder',
       signature: 'RouteBuilder: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'operationId',
+          summary: '',
+          signature: 'operationId(value: string): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'summary',
+          summary: '',
+          signature: 'summary(value: string): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'description',
+          summary: '',
+          signature: 'description(value: string): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'tags',
+          summary: '',
+          signature: 'tags(...values: string[]): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'deprecated',
+          summary: '',
+          signature: 'deprecated(value?: boolean): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'externalDocs',
+          summary: '',
+          signature:
+            'externalDocs(url: string, description?: string): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'use',
+          summary: '',
+          signature:
+            'use(...middleware: Middleware[]): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'maxRequestBytes',
+          summary: '',
+          signature:
+            'maxRequestBytes(bytes: number): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'access',
+          summary: '',
+          signature:
+            'access(requirement: AuthRequirement, security: SecurityRequirement): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'pathParam',
+          summary: '',
+          signature:
+            'pathParam(name: string, value: Schema, options?: ParameterOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'queryParam',
+          summary: '',
+          signature:
+            'queryParam(name: string, value: Schema, options?: ParameterOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'headerParam',
+          summary: '',
+          signature:
+            'headerParam(name: string, value: Schema, options?: ParameterOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'cookieParam',
+          summary: '',
+          signature:
+            'cookieParam(name: string, value: Schema, options?: ParameterOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'jsonBody',
+          summary: '',
+          signature:
+            'jsonBody(value: Schema, options?: BodyOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'formBody',
+          summary: '',
+          signature:
+            'formBody(value: Schema, options?: BodyOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'multipartBody',
+          summary: '',
+          signature:
+            'multipartBody(value: Schema, options?: BodyOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'body',
+          summary: '',
+          signature:
+            'body(mediaType: string, value: Schema, options?: BodyOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'response',
+          summary: '',
+          signature:
+            'response(status: number | string, value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'ok',
+          summary: '',
+          signature:
+            'ok(value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'created',
+          summary: '',
+          signature:
+            'created(value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'accepted',
+          summary: '',
+          signature:
+            'accepted(value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'noContent',
+          summary: '',
+          signature:
+            'noContent(options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'movedPermanently',
+          summary: '',
+          signature:
+            'movedPermanently(value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'found',
+          summary: '',
+          signature:
+            'found(value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'seeOther',
+          summary: '',
+          signature:
+            'seeOther(value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'temporaryRedirect',
+          summary: '',
+          signature:
+            'temporaryRedirect(value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'permanentRedirect',
+          summary: '',
+          signature:
+            'permanentRedirect(value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'badRequest',
+          summary: '',
+          signature:
+            'badRequest(value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'unauthorized',
+          summary: '',
+          signature:
+            'unauthorized(value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'forbidden',
+          summary: '',
+          signature:
+            'forbidden(value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'notFound',
+          summary: '',
+          signature:
+            'notFound(value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'conflict',
+          summary: '',
+          signature:
+            'conflict(value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'unprocessableEntity',
+          summary: '',
+          signature:
+            'unprocessableEntity(value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'tooManyRequests',
+          summary: '',
+          signature:
+            'tooManyRequests(value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'methodNotAllowed',
+          summary: '',
+          signature:
+            'methodNotAllowed(value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'internalServerError',
+          summary: '',
+          signature:
+            'internalServerError(value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'notImplemented',
+          summary: '',
+          signature:
+            'notImplemented(value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+        {
+          name: 'serviceUnavailable',
+          summary: '',
+          signature:
+            'serviceUnavailable(value?: Schema, options?: ResponseOptions): RouteBuilder<Dependencies>;',
+        },
+      ],
     },
     {
       name: 'schema',
@@ -19811,6 +27849,23 @@ export const apiSymbolSets: Readonly<
       anchor: 'schema',
       signature: 'Schema: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'jsonSchema',
+          summary: '',
+          signature: 'readonly jsonSchema: JsonSchema;',
+        },
+        {
+          name: '__type',
+          summary: '',
+          signature: 'readonly __type?: T;',
+        },
+        {
+          name: 'safeParse',
+          summary: '',
+          signature: 'safeParse(value: unknown): SafeParseResult<T>;',
+        },
+      ],
     },
     {
       name: 'security',
@@ -19845,12 +27900,75 @@ export const apiSymbolSets: Readonly<
       anchor: 'mcp-content',
       signature: 'McpContent: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'type',
+          summary: '',
+          signature: 'type: string;',
+        },
+      ],
     },
     {
       name: 'McpContext',
       anchor: 'mcp-context',
       signature: 'McpContext: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'dependencies',
+          summary: '',
+          signature: 'readonly dependencies: Dependencies;',
+        },
+        {
+          name: 'auth',
+          summary: '',
+          signature: 'readonly auth: AuthContext;',
+        },
+        {
+          name: 'client',
+          summary: '',
+          signature:
+            'readonly client: {\n    name: string;\n    version: string;\n    title?: string;\n  } | null;',
+        },
+        {
+          name: 'clientCapabilities',
+          summary: '',
+          signature:
+            'readonly clientCapabilities: Readonly<Record<string, unknown>>;',
+        },
+        {
+          name: 'protocolRevision',
+          summary: '',
+          signature: 'readonly protocolRevision: McpProtocolRevision;',
+        },
+        {
+          name: 'transport',
+          summary: '',
+          signature: 'readonly transport: McpTransportKind;',
+        },
+        {
+          name: 'sessionId',
+          summary: '',
+          signature: 'readonly sessionId?: string;',
+        },
+        {
+          name: 'signal',
+          summary: '',
+          signature: 'readonly signal: AbortSignal;',
+        },
+        {
+          name: 'progress',
+          summary: '',
+          signature:
+            'progress(progress: number, total?: number, message?: string): void | Promise<void>;',
+        },
+        {
+          name: 'log',
+          summary: '',
+          signature:
+            'log(level: McpLogLevel, data: unknown, logger?: string): void | Promise<void>;',
+        },
+      ],
     },
     {
       name: 'McpLogLevel',
@@ -19863,12 +27981,41 @@ export const apiSymbolSets: Readonly<
       anchor: 'mcp-primitive-options',
       signature: 'McpPrimitiveOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'title',
+          summary: '',
+          signature: 'title?: string;',
+        },
+        {
+          name: 'description',
+          summary: '',
+          signature: 'description?: string;',
+        },
+        {
+          name: 'auth',
+          summary: '',
+          signature: 'auth?: AuthRequirement;',
+        },
+        {
+          name: 'annotations',
+          summary: '',
+          signature: 'annotations?: Readonly<Record<string, unknown>>;',
+        },
+      ],
     },
     {
       name: 'McpPromptOptions',
       anchor: 'mcp-prompt-options',
       signature: 'McpPromptOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'arguments',
+          summary: '',
+          signature: 'arguments?: Arguments;',
+        },
+      ],
     },
     {
       name: 'McpProtocolRevision',
@@ -19881,36 +28028,193 @@ export const apiSymbolSets: Readonly<
       anchor: 'mcp-request-environment',
       signature: 'McpRequestEnvironment: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'dependencies',
+          summary: '',
+          signature: 'dependencies: Dependencies;',
+        },
+        {
+          name: 'auth',
+          summary: '',
+          signature: 'auth: AuthContext;',
+        },
+        {
+          name: 'transport',
+          summary: '',
+          signature: 'transport: McpTransportKind;',
+        },
+        {
+          name: 'sessionId',
+          summary: '',
+          signature: 'sessionId?: string;',
+        },
+        {
+          name: 'signal',
+          summary: '',
+          signature: 'signal?: AbortSignal;',
+        },
+        {
+          name: 'send',
+          summary: '',
+          signature: 'send?(message: unknown): void | Promise<void>;',
+        },
+        {
+          name: 'supportsPush',
+          summary: '',
+          signature: 'supportsPush?: boolean;',
+        },
+      ],
     },
     {
       name: 'McpResourceOptions',
       anchor: 'mcp-resource-options',
       signature: 'McpResourceOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'name',
+          summary: '',
+          signature: 'name?: string;',
+        },
+        {
+          name: 'mimeType',
+          summary: '',
+          signature: 'mimeType?: string;',
+        },
+      ],
     },
     {
       name: 'McpServer',
       anchor: 'mcp-server',
       signature: 'McpServer: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'tool',
+          summary: '',
+          signature:
+            'tool<const Name extends string, Input extends ObjectSchema, Output extends Schema | undefined = undefined>(name: Name, options: McpToolOptions<Input, Output>, handler: (context: McpContext<Dependencies>, input: InferSchema<Input>) => McpToolResult<Output> | Promise<McpToolResult<Output>>): McpServer<Dependencies>;',
+        },
+        {
+          name: 'resource',
+          summary: '',
+          signature:
+            'resource(uri: string, options: McpResourceOptions, handler: (context: McpContext<Dependencies>, uri: URL) => McpContent | readonly McpContent[] | Promise<McpContent | readonly McpContent[]>): McpServer<Dependencies>;',
+        },
+        {
+          name: 'resourceTemplate',
+          summary: '',
+          signature:
+            'resourceTemplate(template: string, options: McpResourceOptions & {\n    complete?: (argument: string, value: string) => readonly string[] | Promise<readonly string[]>;\n  }, handler: (context: McpContext<Dependencies>, uri: URL, variables: Readonly<Record<string, string>>) => McpContent | readonly McpContent[] | Promise<McpContent | readonly McpContent[]>): McpServer<Dependencies>;',
+        },
+        {
+          name: 'prompt',
+          summary: '',
+          signature:
+            'prompt<const Name extends string, Arguments extends ObjectSchema>(name: Name, options: McpPromptOptions<Arguments>, handler: (context: McpContext<Dependencies>, args: InferSchema<Arguments>) => {\n    description?: string;\n    messages: readonly unknown[];\n  } | Promise<{\n    description?: string;\n    messages: readonly unknown[];\n  }>): McpServer<Dependencies>;',
+        },
+        {
+          name: 'notifyToolsChanged',
+          summary: '',
+          signature: 'notifyToolsChanged(): Promise<void>;',
+        },
+        {
+          name: 'notifyResourcesChanged',
+          summary: '',
+          signature: 'notifyResourcesChanged(): Promise<void>;',
+        },
+        {
+          name: 'notifyPromptsChanged',
+          summary: '',
+          signature: 'notifyPromptsChanged(): Promise<void>;',
+        },
+        {
+          name: 'handle',
+          summary: '',
+          signature:
+            'handle(message: unknown, environment: McpRequestEnvironment<Dependencies>): Promise<unknown | undefined>;',
+        },
+        {
+          name: 'terminateSession',
+          summary: '',
+          signature: 'terminateSession(sessionId: string): void;',
+        },
+      ],
     },
     {
       name: 'McpServerOptions',
       anchor: 'mcp-server-options',
       signature: 'McpServerOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'name',
+          summary: '',
+          signature: 'name: string;',
+        },
+        {
+          name: 'version',
+          summary: '',
+          signature: 'version: string;',
+        },
+        {
+          name: 'title',
+          summary: '',
+          signature: 'title?: string;',
+        },
+        {
+          name: 'instructions',
+          summary: '',
+          signature: 'instructions?: string;',
+        },
+        {
+          name: 'pageSize',
+          summary: '',
+          signature: 'pageSize?: number;',
+        },
+      ],
     },
     {
       name: 'McpSessionStore',
       anchor: 'mcp-session-store',
       signature: 'McpSessionStore: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'create',
+          summary: '',
+          signature: 'create(id: string): void | Promise<void>;',
+        },
+        {
+          name: 'has',
+          summary: '',
+          signature: 'has(id: string): boolean | Promise<boolean>;',
+        },
+        {
+          name: 'delete',
+          summary: '',
+          signature: 'delete(id: string): boolean | Promise<boolean>;',
+        },
+      ],
     },
     {
       name: 'McpToolOptions',
       anchor: 'mcp-tool-options',
       signature: 'McpToolOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'input',
+          summary: '',
+          signature: 'input?: Input;',
+        },
+        {
+          name: 'output',
+          summary: '',
+          signature: 'output?: Output;',
+        },
+      ],
     },
     {
       name: 'McpToolResult',
@@ -20026,30 +28330,179 @@ export const apiSymbolSets: Readonly<
       anchor: 'request-target',
       signature: 'RequestTarget: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'fetch',
+          summary: '',
+          signature: 'fetch(request: Request): Response | Promise<Response>;',
+        },
+      ],
     },
     {
       name: 'TestClient',
       anchor: 'test-client',
       signature: 'TestClient: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'cookies',
+          summary: '',
+          signature: 'readonly cookies?: TestCookieJar;',
+        },
+        {
+          name: 'request',
+          summary: '',
+          signature:
+            'request(path: string | URL, options?: InjectOptions): Promise<Response>;',
+        },
+        {
+          name: 'get',
+          summary: '',
+          signature:
+            'get(path: string | URL, options?: Omit<GetHeadOptions, "method">): Promise<Response>;',
+        },
+        {
+          name: 'head',
+          summary: '',
+          signature:
+            'head(path: string | URL, options?: Omit<GetHeadOptions, "method">): Promise<Response>;',
+        },
+        {
+          name: 'post',
+          summary: '',
+          signature:
+            'post(path: string | URL, options?: Omit<BodyRequestOptions, "method">): Promise<Response>;',
+        },
+        {
+          name: 'put',
+          summary: '',
+          signature:
+            'put(path: string | URL, options?: Omit<BodyRequestOptions, "method">): Promise<Response>;',
+        },
+        {
+          name: 'patch',
+          summary: '',
+          signature:
+            'patch(path: string | URL, options?: Omit<BodyRequestOptions, "method">): Promise<Response>;',
+        },
+        {
+          name: 'delete',
+          summary: '',
+          signature:
+            'delete(path: string | URL, options?: Omit<BodyRequestOptions, "method">): Promise<Response>;',
+        },
+        {
+          name: 'options',
+          summary: '',
+          signature:
+            'options(path: string | URL, options?: Omit<BodyRequestOptions, "method">): Promise<Response>;',
+        },
+      ],
     },
     {
       name: 'TestClientOptions',
       anchor: 'test-client-options',
       signature: 'TestClientOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'baseUrl',
+          summary: '',
+          signature: 'baseUrl?: string | URL;',
+        },
+        {
+          name: 'headers',
+          summary: '',
+          signature: 'headers?: HeadersInit;',
+        },
+        {
+          name: 'cookies',
+          summary: '',
+          signature: 'cookies?: true | TestCookieJar;',
+        },
+        {
+          name: 'redirect',
+          summary: '',
+          signature: 'redirect?: RequestRedirect;',
+        },
+        {
+          name: 'maxRedirects',
+          summary: '',
+          signature: 'maxRedirects?: number;',
+        },
+      ],
     },
     {
       name: 'TestCookie',
       anchor: 'test-cookie',
       signature: 'TestCookie: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'name',
+          summary: '',
+          signature: 'name: string;',
+        },
+        {
+          name: 'value',
+          summary: '',
+          signature: 'value: string;',
+        },
+        {
+          name: 'domain',
+          summary: '',
+          signature: 'domain?: string;',
+        },
+        {
+          name: 'path',
+          summary: '',
+          signature: 'path?: string;',
+        },
+        {
+          name: 'expires',
+          summary: '',
+          signature: 'expires?: Date | "Infinity";',
+        },
+        {
+          name: 'httpOnly',
+          summary: '',
+          signature: 'httpOnly: boolean;',
+        },
+        {
+          name: 'secure',
+          summary: '',
+          signature: 'secure: boolean;',
+        },
+        {
+          name: 'sameSite',
+          summary: '',
+          signature: 'sameSite?: "strict" | "lax" | "none";',
+        },
+      ],
     },
     {
       name: 'TestCookieJar',
       anchor: 'test-cookie-jar',
       signature: 'TestCookieJar: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'setCookie',
+          summary: '',
+          signature:
+            'setCookie(cookie: string, url: string | URL): Promise<void>;',
+        },
+        {
+          name: 'getCookies',
+          summary: '',
+          signature: 'getCookies(url: string | URL): Promise<TestCookie[]>;',
+        },
+        {
+          name: 'clear',
+          summary: '',
+          signature: 'clear(): Promise<void>;',
+        },
+      ],
     },
   ],
   symbols49: [],
@@ -20468,6 +28921,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'Button: { (props: ButtonNativeProps): JSX.Element; (props: ButtonAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Headless Button component\n\n## Responsibilities\n- Compose pressable foundation for interaction behavior\n- Enforce type="button" default to prevent accidental form submission\n- Forward props and refs to native button or child element\n\n## Non-Responsibilities (delegated to pressable foundation)\n- Keyboard event handling (Enter/Space)\n- Pointer event handling\n- Disabled state enforcement\n- ARIA attribute application\n\n## Invariants\n- MUST NOT contain any event handler logic\n- MUST NOT check disabled prop directly\n- MUST use pressable() for ALL interaction behavior\n- MUST use mergeProps() for ALL prop composition',
+      tags: {
+        example: [
+          'Native button (prevents accidental submit)\n```tsx\n<Button onPress={handleSave}>Save</Button>\n```',
+          'Explicit form submission\n```tsx\n<Button type="submit" onPress={handleSubmit}>Submit</Button>\n```',
+          'Polymorphic rendering (asChild)\n```tsx\n<Button asChild onPress={handleNav}>\n<a href="/home">Home</a>\n</Button>\n```',
+        ],
+      },
     },
     {
       name: 'ButtonAsChildElement',
@@ -20480,6 +28942,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'button-as-child-props',
       signature: 'ButtonAsChildProps: any',
       typeOnly: true,
+      summary: 'Props when rendering with asChild (polymorphic)',
     },
     {
       name: 'ButtonGroup',
@@ -20504,12 +28967,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'button-native-props',
       signature: 'ButtonNativeProps: any',
       typeOnly: true,
+      summary: 'Props when rendering as native <button>',
     },
     {
       name: 'ButtonProps',
       anchor: 'button-props',
       signature: 'ButtonProps: any',
       typeOnly: true,
+      summary: 'Union of all Button prop variants',
     },
     {
       name: 'ButtonSize',
@@ -20766,6 +29231,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'Checkbox: { (props: CheckboxInputProps): JSX.Element; (props: CheckboxAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Headless Checkbox component\n\n## Responsibilities\n- Apply aria-checked for checkbox state signaling\n- Handle indeterminate state for native and asChild hosts\n- Support controlled and uncontrolled checked state\n- Forward props and refs to native input or child element\n- Preserve native checkbox semantics and apply checkbox behavior to asChild hosts\n\n## Non-Responsibilities\n- Form submission orchestration beyond native input props\n\n## Invariants\n- MUST NOT add role="button" (native inputs are role="checkbox")\n- checked state may be controlled or uncontrolled\n- indeterminate overrides checked for state signaling\n- For asChild, consumer MUST provide role="checkbox"',
+      tags: {
+        example: [
+          'Native checkbox input\n```tsx\nconst checked = state(false);\n<Checkbox checked={checked()} onPress={() => checked.set(!checked())} />\n```',
+          'Polymorphic rendering (asChild)\n```tsx\n<Checkbox asChild checked={agreed} onPress={toggleAgree}>\n<div role="checkbox">I agree to terms</div>\n</Checkbox>\n```',
+          'Indeterminate state (partial selection)\n```tsx\n<Checkbox checked={someChecked} indeterminate={!allChecked && someChecked} onPress={toggleAll}>\nSelect All\n</Checkbox>\n```',
+        ],
+      },
     },
     {
       name: 'Close',
@@ -21061,6 +29535,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'debounced-input',
       signature: 'DebouncedInput: (props: DebouncedInputProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'DebouncedInput is a convenience wrapper around Input that emits a settled\nvalue for search and filter surfaces.',
     },
     {
       name: 'DEFAULT_THEME_OPTIONS',
@@ -22295,6 +30771,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectItemText: { (props: SelectItemTextProps): JSX.Element; (props: SelectItemTextAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'SelectItemText marks the item text node so Select can resolve labels and\nstyle the text slot directly.',
     },
     {
       name: 'SelectLabel',
@@ -22732,6 +31210,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'Table: { (props: TableProps): JSX.Element; (props: TableAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary: 'Semantic table primitive family.',
     },
     {
       name: 'TableBody',
@@ -22958,6 +31437,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'toast',
       signature: 'Toast: (props: ToastProps) => JSX.Element | null',
       typeOnly: true,
+      summary:
+        'Toast registers a notification entry with the host and returns no DOM on\nits own.',
     },
     {
       name: 'ToastAction',
@@ -22965,6 +31446,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastAction: { (props: ToastActionProps): JSX.Element; (props: ToastActionAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'ToastAction closes the toast after handling a user-triggered action.',
     },
     {
       name: 'ToastClose',
@@ -22972,6 +31455,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastClose: { (props: ToastCloseProps): JSX.Element; (props: ToastCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary: 'ToastClose is the dedicated dismiss control for a toast entry.',
     },
     {
       name: 'ToastDescription',
@@ -22979,6 +31463,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastDescription: { (props: ToastDescriptionProps): JSX.Element; (props: ToastDescriptionAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'ToastDescription marks the accessible description slot for a toast entry.',
     },
     {
       name: 'Toaster',
@@ -22991,6 +31477,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'toast-host',
       signature: 'ToastHost: (props: ToastHostProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'ToastHost owns the registry of active toast entries and the default\ndisplay duration for the family.',
     },
     {
       name: 'ToastTitle',
@@ -22998,6 +31486,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastTitle: { (props: ToastTitleProps): JSX.Element; (props: ToastTitleAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary: 'ToastTitle marks the accessible title slot for a toast entry.',
     },
     {
       name: 'ToastViewport',
@@ -23005,6 +31494,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastViewport: { (props: ToastViewportProps): JSX.Element; (props: ToastViewportAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'ToastViewport renders the live toast stack and the notification region.',
     },
     {
       name: 'Toggle',
@@ -23012,6 +31503,14 @@ export const apiSymbolSets: Readonly<
       signature:
         'Toggle: { (props: ToggleButtonProps): JSX.Element; (props: ToggleAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Headless Toggle component\n\n## Responsibilities\n- Compose pressable foundation for interaction behavior\n- Apply aria-pressed for toggle state signaling\n- Enforce type="button" default to prevent accidental form submission\n- Forward props and refs to native button or child element\n\n## Non-Responsibilities (delegated to pressable foundation)\n- Keyboard event handling (Enter/Space)\n- Pointer event handling\n- Disabled state enforcement\n- Role attribute application (for non-native elements)\n\n## Invariants\n- MUST NOT contain any event handler logic\n- MUST NOT check disabled or pressed props directly\n- MUST use pressable() for ALL interaction behavior\n- MUST use mergeProps() for ALL prop composition\n- pressed state is CONTROLLED (consumer manages state)',
+      tags: {
+        example: [
+          'Native toggle button\n```tsx\nconst pressed = state(false);\n<Toggle pressed={pressed()} onPress={() => pressed.set(!pressed())}>\nMute\n</Toggle>\n```',
+          'Polymorphic rendering (asChild)\n```tsx\n<Toggle asChild pressed={muted} onPress={toggleMute}>\n<span>Ã°Å¸â€â€¡</span>\n</Toggle>\n```',
+        ],
+      },
     },
     {
       name: 'ToggleGroup',
@@ -23359,6 +31858,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'withThemeStyles: <TArgs extends DocumentRenderArgsLike>(documentRenderer: (args: TArgs) => string) => (args: TArgs) => string',
       typeOnly: true,
+      summary:
+        'Wrap an Askr SSR/SSG document renderer so generated theme rules used by the\nrendered app are available before hydration.',
     },
   ],
   symbols53: [
@@ -23374,6 +31875,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'ACCORDION_A11Y_CONTRACT: { readonly TRIGGER_ROLE: "button"; readonly EXPANDED_ATTRIBUTE: "aria-expanded"; readonly CONTROLS_ATTRIBUTE: "aria-controls"; readonly PANEL_ROLE: "region"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; readonly orientation: "data-orientation"; }; }',
       typeOnly: true,
+      summary: 'WAI-ARIA accordion/disclosure contract.',
     },
     {
       name: 'AccordionA11yContract',
@@ -23492,6 +31994,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'ALERT_DIALOG_A11Y_CONTRACT: { readonly CONTENT_ROLE: "alertdialog"; readonly LABELLED_BY_ATTRIBUTE: "aria-labelledby"; readonly DESCRIBED_BY_ATTRIBUTE: "aria-describedby"; readonly ACTION_REQUIREMENTS: { readonly hasPrimaryAction: true; readonly hasCancelAction: true; }; }',
       typeOnly: true,
+      summary: 'Alert dialog accessibility contract.',
     },
     {
       name: 'AlertDialog',
@@ -23688,6 +32191,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'AVATAR_A11Y_CONTRACT: { readonly ROOT: { readonly slot: "data-slot"; readonly marker: "data-avatar"; }; readonly IMAGE: { readonly slot: "data-slot"; readonly marker: "data-avatar-image"; readonly requiresAlt: true; }; readonly FALLBACK: { readonly slot: "data-slot"; readonly marker: "data-avatar-fallback"; readonly visibleBeforeImageLoad: true; }; }',
       typeOnly: true,
+      summary: 'Accessibility contract for Avatar primitives.',
     },
     {
       name: 'AvatarA11yContract',
@@ -23768,6 +32272,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'Button: { (props: ButtonNativeProps): JSX.Element; (props: ButtonAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Headless Button component\n\n## Responsibilities\n- Compose pressable foundation for interaction behavior\n- Enforce type="button" default to prevent accidental form submission\n- Forward props and refs to native button or child element\n\n## Non-Responsibilities (delegated to pressable foundation)\n- Keyboard event handling (Enter/Space)\n- Pointer event handling\n- Disabled state enforcement\n- ARIA attribute application\n\n## Invariants\n- MUST NOT contain any event handler logic\n- MUST NOT check disabled prop directly\n- MUST use pressable() for ALL interaction behavior\n- MUST use mergeProps() for ALL prop composition',
+      tags: {
+        example: [
+          'Native button (prevents accidental submit)\n```tsx\n<Button onPress={handleSave}>Save</Button>\n```',
+          'Explicit form submission\n```tsx\n<Button type="submit" onPress={handleSubmit}>Submit</Button>\n```',
+          'Polymorphic rendering (asChild)\n```tsx\n<Button asChild onPress={handleNav}>\n<a href="/home">Home</a>\n</Button>\n```',
+        ],
+      },
     },
     {
       name: 'BUTTON_A11Y_CONTRACT',
@@ -23775,12 +32288,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'BUTTON_A11Y_CONTRACT: { readonly KEYBOARD_ACTIVATION: readonly ["Enter", "Space"]; readonly ROLE: "button"; readonly DISABLED_ATTRIBUTES: { readonly native: "disabled"; readonly asChild: "aria-disabled"; }; readonly DATA_ATTRIBUTES: { readonly disabled: "data-disabled"; }; readonly FOCUS_RULES: { readonly enabled: "focusable"; readonly disabled: "not-focusable"; }; }',
       typeOnly: true,
+      summary:
+        'Accessibility contract for Button component\n\nFollowing WAI-ARIA Button Pattern:\nhttps://www.w3.org/WAI/ARIA/apg/patterns/button/\n\n## Role\n- Native <button>: implicit role="button"\n- asChild: preserves child role (e.g., role="button" on <div>)\n\n## States\n- disabled (native): uses `disabled` attribute\n- disabled (asChild): uses `aria-disabled="true"` + `tabindex="-1"`\n\n## Keyboard\n- Space: Activates button (handled by pressable foundation)\n- Enter: Activates button (handled by pressable foundation)\n- Disabled buttons do not respond to interaction\n\n## Focus\n- Native buttons: focusable by default\n- asChild elements: receive tabindex if not naturally focusable\n- Disabled: removed from tab order (tabindex="-1" or native disabled)\n\n## Screen Reader\n- Announces role as "button"\n- Announces disabled state\n- Announces accessible name from text content or aria-label\n\n## Implementation Notes\n- All interaction behavior is delegated to `pressable` foundation\n- Button component does NOT implement keyboard handling directly\n- Button component does NOT check disabled prop directly\n- All ARIA attributes are applied by foundation, not component',
     },
     {
       name: 'ButtonA11yContract',
       anchor: 'button-a11y-contract',
       signature: 'ButtonA11yContract: any',
       typeOnly: true,
+      summary: 'Type-safe accessibility contract',
     },
     {
       name: 'ButtonAsChildElement',
@@ -23793,24 +32309,28 @@ export const apiSymbolSets: Readonly<
       anchor: 'button-as-child-props',
       signature: 'ButtonAsChildProps: any',
       typeOnly: true,
+      summary: 'Props when rendering with asChild (polymorphic)',
     },
     {
       name: 'ButtonNativeProps',
       anchor: 'button-native-props',
       signature: 'ButtonNativeProps: any',
       typeOnly: true,
+      summary: 'Props when rendering as native <button>',
     },
     {
       name: 'ButtonOwnProps',
       anchor: 'button-own-props',
       signature: 'ButtonOwnProps: any',
       typeOnly: true,
+      summary: 'Core Button props shared across all variants',
     },
     {
       name: 'ButtonProps',
       anchor: 'button-props',
       signature: 'ButtonProps: any',
       typeOnly: true,
+      summary: 'Union of all Button prop variants',
     },
     {
       name: 'ButtonSize',
@@ -23836,6 +32356,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'Checkbox: { (props: CheckboxInputProps): JSX.Element; (props: CheckboxAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Headless Checkbox component\n\n## Responsibilities\n- Apply aria-checked for checkbox state signaling\n- Handle indeterminate state for native and asChild hosts\n- Support controlled and uncontrolled checked state\n- Forward props and refs to native input or child element\n- Preserve native checkbox semantics and apply checkbox behavior to asChild hosts\n\n## Non-Responsibilities\n- Form submission orchestration beyond native input props\n\n## Invariants\n- MUST NOT add role="button" (native inputs are role="checkbox")\n- checked state may be controlled or uncontrolled\n- indeterminate overrides checked for state signaling\n- For asChild, consumer MUST provide role="checkbox"',
+      tags: {
+        example: [
+          'Native checkbox input\n```tsx\nconst checked = state(false);\n<Checkbox checked={checked()} onPress={() => checked.set(!checked())} />\n```',
+          'Polymorphic rendering (asChild)\n```tsx\n<Checkbox asChild checked={agreed} onPress={toggleAgree}>\n<div role="checkbox">I agree to terms</div>\n</Checkbox>\n```',
+          'Indeterminate state (partial selection)\n```tsx\n<Checkbox checked={someChecked} indeterminate={!allChecked && someChecked} onPress={toggleAll}>\nSelect All\n</Checkbox>\n```',
+        ],
+      },
     },
     {
       name: 'CHECKBOX_A11Y_CONTRACT',
@@ -23843,6 +32372,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'CHECKBOX_A11Y_CONTRACT: { readonly ROLE: "checkbox"; readonly KEYBOARD_ACTIVATION: readonly ["Enter", "Space"]; readonly CHECKED_ATTRIBUTE: "aria-checked"; readonly INDETERMINATE_VALUE: "mixed"; readonly DISABLED_ATTRIBUTES: { readonly nativeInput: { readonly disabled: true; }; readonly nonNative: { readonly "aria-disabled": "true"; readonly tabIndex: -1; }; }; readonly DATA_ATTRIBUTES: { readonly state: "data-state"; readonly disabled: "data-disabled"; }; readonly FOCUS_RULES: { readonly enabled: "tabIndex >= 0"; readonly disabled: "tabIndex = -1"; readonly visualIndicator: "required"; }; }',
       typeOnly: true,
+      summary:
+        "WAI-ARIA Checkbox Pattern\n\nSpecification: https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/\n\nA checkbox is an input mechanism that allows users to select one or more items\nfrom a set. Unlike toggle buttons, checkboxes visually represent a checked state\nwith aria-checked (not aria-pressed).\n\n## Required ARIA\n- aria-checked: 'true' | 'false' | 'mixed' (indicates checkbox state)\n- role: 'checkbox' (when not native input)\n\n## Keyboard Support\n- Enter: Activates checkbox (on non-input elements)\n- Space: Activates checkbox\n\n## Focus Management\n- Checkbox is focusable when not disabled\n- Visual focus indicator required\n\n## Disabled State\n- aria-disabled when disabled=true (for non-native)\n- disabled attribute when native input\n- Removed from tab order\n- Visual disabled styling (consumer responsibility)\n\n## Indeterminate State\n- `asChild`: aria-checked='mixed'\n- native input: current host path omits aria-checked and keeps data-state='indeterminate'\n- Typically used for \"select all\" checkboxes when partial selection",
     },
     {
       name: 'CheckboxA11yContract',
@@ -23855,24 +32386,29 @@ export const apiSymbolSets: Readonly<
       anchor: 'checkbox-as-child-props',
       signature: 'CheckboxAsChildProps: any',
       typeOnly: true,
+      summary: 'Props when rendering via asChild',
     },
     {
       name: 'CheckboxInputProps',
       anchor: 'checkbox-input-props',
       signature: 'CheckboxInputProps: any',
       typeOnly: true,
+      summary:
+        'Props when rendering as a native <input type="checkbox"> element',
     },
     {
       name: 'CheckboxOwnProps',
       anchor: 'checkbox-own-props',
       signature: 'CheckboxOwnProps: any',
       typeOnly: true,
+      summary: 'Props shared by all Checkbox variants',
     },
     {
       name: 'CheckboxProps',
       anchor: 'checkbox-props',
       signature: 'CheckboxProps: any',
       typeOnly: true,
+      summary: 'Discriminated union of Checkbox prop types',
     },
     {
       name: 'Collapsible',
@@ -23886,6 +32422,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'COLLAPSIBLE_A11Y_CONTRACT: { readonly TRIGGER_ROLE: "button"; readonly KEYBOARD_ACTIVATION: readonly ["Enter", "Space"]; readonly EXPANDED_ATTRIBUTE: "aria-expanded"; readonly CONTROLS_ATTRIBUTE: "aria-controls"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; }; readonly CONTENT_REQUIREMENTS: { readonly idAttribute: "required"; readonly defaultPresence: "unmounted when closed"; }; readonly FOCUS_RULES: { readonly afterActivation: "focus remains on trigger"; readonly contentFocusable: false; }; }',
       typeOnly: true,
+      summary:
+        'WAI-ARIA Disclosure Pattern (Collapsible)\n\nSpecification: https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/\n\nA disclosure (collapsible) shows and hides a region of content via a button.\nThe button indicates the visibility state of the content region.\n\n## Required ARIA\n- Trigger: role="button" (native or explicit)\n- Trigger: aria-expanded="true" | "false"\n- Trigger: aria-controls={contentId}\n- Content: id attribute for aria-controls reference\n\n## Keyboard Support\n- Enter: Toggles content visibility (on trigger)\n- Space: Toggles content visibility (on trigger)\n\n## Focus Management\n- Trigger is focusable when not disabled\n- Focus remains on trigger after activation\n- Content is not focusable by default\n\n## Disabled State\n- Trigger cannot be activated when disabled\n- Visual disabled styling (consumer responsibility)\n\n## Presence\n- Content unmounts when closed (default)\n- Can force mount for animation/transition control',
     },
     {
       name: 'CollapsibleContent',
@@ -23899,18 +32437,97 @@ export const apiSymbolSets: Readonly<
       anchor: 'collapsible-content-as-child-props',
       signature: 'CollapsibleContentAsChildProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'asChild',
+          summary: 'Render as child element instead of div',
+          signature: 'asChild: true;',
+        },
+        {
+          name: 'children',
+          summary: 'Child content',
+          signature: 'children: JSXElement;',
+        },
+        {
+          name: 'forceMount',
+          summary: 'Force mount even when closed (for animation)',
+          signature: 'forceMount?: boolean;',
+        },
+        {
+          name: 'ref',
+          summary: 'Ref forwarding',
+          signature: 'ref?: Ref<Element>;',
+        },
+      ],
     },
     {
       name: 'CollapsibleContentProps',
       anchor: 'collapsible-content-props',
       signature: 'CollapsibleContentProps: any',
       typeOnly: true,
+      summary: 'Content component props',
+      members: [
+        {
+          name: 'asChild',
+          summary: 'Render as child element instead of div',
+          signature: 'asChild?: false;',
+        },
+        {
+          name: 'children',
+          summary: 'Child content',
+          signature: 'children?: unknown;',
+        },
+        {
+          name: 'forceMount',
+          summary: 'Force mount even when closed (for animation)',
+          signature: 'forceMount?: boolean;',
+        },
+        {
+          name: 'ref',
+          summary: 'Ref forwarding',
+          signature: 'ref?: Ref<HTMLDivElement>;',
+        },
+      ],
     },
     {
       name: 'CollapsibleProps',
       anchor: 'collapsible-props',
       signature: 'CollapsibleProps: any',
       typeOnly: true,
+      summary: 'Root component props',
+      members: [
+        {
+          name: 'id',
+          summary:
+            'Stable caller-provided identity used for ARIA linking when available',
+          signature: 'id?: string;',
+        },
+        {
+          name: 'open',
+          summary: 'Controlled open state',
+          signature: 'open?: boolean;',
+        },
+        {
+          name: 'defaultOpen',
+          summary: 'Uncontrolled default open state',
+          signature: 'defaultOpen?: boolean;',
+        },
+        {
+          name: 'onOpenChange',
+          summary: 'Callback when open state changes',
+          signature: 'onOpenChange?: (open: boolean) => void;',
+        },
+        {
+          name: 'children',
+          summary: 'Child components (Trigger, Content)',
+          signature: 'children?: unknown;',
+        },
+        {
+          name: 'disabled',
+          summary: 'Whether the collapsible is disabled',
+          signature: 'disabled?: boolean;',
+        },
+      ],
     },
     {
       name: 'CollapsibleTrigger',
@@ -23924,18 +32541,55 @@ export const apiSymbolSets: Readonly<
       anchor: 'collapsible-trigger-as-child-props',
       signature: 'CollapsibleTriggerAsChildProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'asChild',
+          summary: 'Render as child element instead of button',
+          signature: 'asChild: true;',
+        },
+        {
+          name: 'children',
+          summary: 'Child content',
+          signature: 'children: JSXElement;',
+        },
+        {
+          name: 'ref',
+          summary: 'Ref forwarding',
+          signature: 'ref?: Ref<Element>;',
+        },
+      ],
     },
     {
       name: 'CollapsibleTriggerProps',
       anchor: 'collapsible-trigger-props',
       signature: 'CollapsibleTriggerProps: any',
       typeOnly: true,
+      summary: 'Trigger component props (button semantics)',
+      members: [
+        {
+          name: 'asChild',
+          summary: 'Render as child element instead of button',
+          signature: 'asChild?: false;',
+        },
+        {
+          name: 'children',
+          summary: 'Child content',
+          signature: 'children?: unknown;',
+        },
+        {
+          name: 'ref',
+          summary: 'Ref forwarding',
+          signature: 'ref?: Ref<HTMLButtonElement>;',
+        },
+      ],
     },
     {
       name: 'DebouncedInput',
       anchor: 'debounced-input',
       signature: 'DebouncedInput: (props: DebouncedInputProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'DebouncedInput is a convenience wrapper around Input that emits a settled\nvalue for search and filter surfaces.',
     },
     {
       name: 'DebouncedInputProps',
@@ -23955,6 +32609,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'DIALOG_A11Y_CONTRACT: { readonly CONTENT_ROLE: "dialog"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; }; readonly MODAL_ATTRIBUTE: "aria-modal"; readonly LABELLED_BY_ATTRIBUTE: "aria-labelledby"; readonly DESCRIBED_BY_ATTRIBUTE: "aria-describedby"; readonly TRIGGER_ATTRIBUTES: { readonly expanded: "aria-expanded"; readonly controls: "aria-controls"; }; }',
       typeOnly: true,
+      summary: 'Dialog accessibility contract.',
     },
     {
       name: 'DialogA11yContract',
@@ -24119,6 +32774,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'DISMISSABLE_LAYER_A11Y_CONTRACT: { readonly DISMISS_EVENTS: readonly ["escape-key", "outside-pointer"]; readonly INTERACTION_POLICY: "background-dismissable"; }',
       typeOnly: true,
+      summary: 'Dismissable layer accessibility contract.',
     },
     {
       name: 'DismissableLayer',
@@ -24163,6 +32819,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'DROPDOWN_A11Y_CONTRACT: { readonly CONTENT_ROLE: "menu"; readonly ITEM_ROLE: "menuitem"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; readonly side: "data-side"; readonly align: "data-align"; }; readonly TRIGGER_ATTRIBUTES: { readonly expanded: "aria-expanded"; readonly controls: "aria-controls"; readonly hasPopup: "aria-haspopup"; }; }',
       typeOnly: true,
+      summary: 'Dropdown accessibility contract.',
     },
     {
       name: 'DropdownA11yContract',
@@ -24351,6 +33008,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'FOCUS_SCOPE_A11Y_CONTRACT: { readonly FEATURES: { readonly trapped: true; readonly loop: true; readonly restoreFocus: true; }; }',
       typeOnly: true,
+      summary: 'Focus scope accessibility contract.',
     },
     {
       name: 'FocusScope',
@@ -24395,6 +33053,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'form-as-child-props',
       signature: 'FormAsChildProps: any',
       typeOnly: true,
+      summary:
+        '`asChild` keeps the form host supplied by the consumer, while retaining the\nnative form attribute contract (method, action, target, encoding, etc.).',
     },
     {
       name: 'FormProps',
@@ -24490,6 +33150,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'INPUT_A11Y_CONTRACT: { readonly HOST_ELEMENT: "input"; readonly DISABLED_ATTRIBUTES: { readonly native: "disabled"; readonly asChild: "disabled"; }; readonly DATA_ATTRIBUTES: { readonly disabled: "data-disabled"; }; readonly FOCUS_RULES: { readonly defaultTabIndex: 0; readonly disabledTabIndex: -1; }; readonly LABELING: { readonly supportsLabelElement: true; readonly supportsAriaLabel: true; readonly supportsAriaLabelledBy: true; }; }',
       typeOnly: true,
+      summary: 'Native input semantics wrapped by askr-ui Input.',
     },
     {
       name: 'InputA11yContract',
@@ -24540,6 +33201,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'LABEL_A11Y_CONTRACT: { readonly ELEMENT: "label"; readonly ASSOCIATION_ATTRIBUTE: "for"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; }; readonly NAME_SOURCE_PRIORITY: readonly ["aria-label", "textContent"]; readonly AS_CHILD: { readonly forwardsProps: true; readonly preservesChildElement: true; }; }',
       typeOnly: true,
+      summary: 'Native label semantics for askr-ui Label.',
     },
     {
       name: 'LabelA11yContract',
@@ -24583,6 +33245,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'MENU_A11Y_CONTRACT: { readonly CONTENT_ROLE: "menu"; readonly ITEM_ROLE: "menuitem"; readonly ORIENTATION_ATTRIBUTE: "aria-orientation"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly disabled: "data-disabled"; readonly orientation: "data-orientation"; }; }',
       typeOnly: true,
+      summary: 'Menu accessibility contract.',
     },
     {
       name: 'MenuA11yContract',
@@ -24602,6 +33265,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'MENUBAR_A11Y_CONTRACT: { readonly ROOT_ROLE: "menubar"; readonly CONTENT_ROLE: "menu"; readonly ITEM_ROLE: "menuitem"; readonly EXPANDED_ATTRIBUTE: "aria-expanded"; readonly HAS_POPUP_ATTRIBUTE: "aria-haspopup"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; readonly side: "data-side"; readonly align: "data-align"; }; }',
       typeOnly: true,
+      summary: 'WAI-ARIA menubar contract.',
     },
     {
       name: 'MenubarA11yContract',
@@ -24941,6 +33605,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'POPOVER_A11Y_CONTRACT: { readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; readonly side: "data-side"; readonly align: "data-align"; }; readonly TRIGGER_ATTRIBUTES: { readonly popup: "aria-haspopup"; readonly expanded: "aria-expanded"; readonly controls: "aria-controls"; }; readonly CONTENT_ATTRIBUTES: { readonly role: "dialog"; readonly labelledBy: "aria-labelledby"; readonly tabIndex: -1; }; readonly DEFAULT_LABELING: { readonly source: "trigger-id"; readonly override: "aria-label or aria-labelledby"; }; readonly FOCUS_RULES: { readonly trapScope: true; readonly restoreFocusOnClose: true; readonly dismissableLayer: true; }; }',
       typeOnly: true,
+      summary: 'WAI-ARIA dialog-style popover contract.',
     },
     {
       name: 'PopoverA11yContract',
@@ -25047,6 +33712,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'press-event',
       signature: 'PressEvent: any',
       typeOnly: true,
+      summary:
+        "Press event passed to onPress handler\n\nCompatible with the pressable foundation's PressEvent type.",
     },
     {
       name: 'Progress',
@@ -25060,6 +33727,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'PROGRESS_A11Y_CONTRACT: { readonly ROLE: "progressbar"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly percentage: "data-percentage"; }; readonly VALUE_NOW_ATTRIBUTE: "aria-valuenow"; readonly VALUE_MIN_ATTRIBUTE: "aria-valuemin"; readonly VALUE_MAX_ATTRIBUTE: "aria-valuemax"; readonly INDICATOR_MARKER: "data-progress-indicator"; readonly INDICATOR_PERCENTAGE_ATTRIBUTE: "data-percentage"; }',
       typeOnly: true,
+      summary: 'WAI-ARIA progressbar contract for linear progress.',
     },
     {
       name: 'PROGRESS_CIRCLE_A11Y_CONTRACT',
@@ -25067,6 +33735,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'PROGRESS_CIRCLE_A11Y_CONTRACT: { readonly ROLE: "progressbar"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly percentage: "data-percentage"; }; readonly VALUE_NOW_ATTRIBUTE: "aria-valuenow"; readonly VALUE_MIN_ATTRIBUTE: "aria-valuemin"; readonly VALUE_MAX_ATTRIBUTE: "aria-valuemax"; readonly INDICATOR_MARKER: "data-progress-circle-indicator"; }',
       typeOnly: true,
+      summary: 'WAI-ARIA progressbar contract for circular progress.',
     },
     {
       name: 'ProgressA11yContract',
@@ -25154,6 +33823,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'RADIO_GROUP_A11Y_CONTRACT: { readonly GROUP_ROLE: "radiogroup"; readonly ITEM_ROLE: "radio"; readonly CHECKED_ATTRIBUTE: "aria-checked"; readonly ORIENTATION_ATTRIBUTE: "aria-orientation"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; readonly orientation: "data-orientation"; }; readonly KEYBOARD_NAVIGATION: readonly ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"]; readonly ROVING_FOCUS: { readonly activeItemTabIndex: 0; readonly inactiveItemTabIndex: -1; }; readonly FORM_INTEGRATION: { readonly hiddenInputType: "hidden"; }; }',
       typeOnly: true,
+      summary:
+        'WAI-ARIA Radio Group Pattern\n\nSpecification: https://www.w3.org/WAI/ARIA/apg/patterns/radio/',
     },
     {
       name: 'RadioGroup',
@@ -25299,6 +33970,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'SELECT_A11Y_CONTRACT: { readonly TRIGGER_ROLE: "button"; readonly CONTENT_ROLE: "listbox"; readonly ITEM_ROLE: "option"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; readonly side: "data-side"; readonly align: "data-align"; }; readonly TRIGGER_ATTRIBUTES: { readonly expanded: "aria-expanded"; readonly controls: "aria-controls"; readonly hasPopup: "aria-haspopup"; }; readonly ITEM_SELECTION_ATTRIBUTE: "aria-selected"; }',
       typeOnly: true,
+      summary: 'Select accessibility contract.',
     },
     {
       name: 'SelectA11yContract',
@@ -25381,6 +34053,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectItemText: { (props: SelectItemTextProps): JSX.Element; (props: SelectItemTextAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'SelectItemText marks the item text node so Select can resolve labels and\nstyle the text slot directly.',
     },
     {
       name: 'SelectItemTextAsChildProps',
@@ -25525,6 +34199,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'SLIDER_A11Y_CONTRACT: { readonly THUMB_ROLE: "slider"; readonly VALUE_NOW_ATTRIBUTE: "aria-valuenow"; readonly VALUE_MIN_ATTRIBUTE: "aria-valuemin"; readonly VALUE_MAX_ATTRIBUTE: "aria-valuemax"; readonly ORIENTATION_ATTRIBUTE: "aria-orientation"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly disabled: "data-disabled"; readonly orientation: "data-orientation"; }; }',
       typeOnly: true,
+      summary: 'Slider accessibility contract.',
     },
     {
       name: 'SliderA11yContract',
@@ -25620,6 +34295,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'SWITCH_A11Y_CONTRACT: { readonly ROLE: "switch"; readonly CHECKED_ATTRIBUTE: "aria-checked"; readonly KEYBOARD_ACTIVATION: readonly ["Enter", "Space"]; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; }; readonly DISABLED_ATTRIBUTES: { readonly nativeButton: { readonly disabled: true; readonly "aria-disabled": "true"; }; readonly nonNative: { readonly "aria-disabled": "true"; readonly tabIndex: -1; }; }; readonly FORM_INTEGRATION: { readonly host: "button"; readonly hiddenInputType: "checkbox"; readonly hiddenInputValue: "on"; }; }',
       typeOnly: true,
+      summary:
+        'WAI-ARIA Switch Pattern\n\nSpecification: https://www.w3.org/WAI/ARIA/apg/patterns/switch/',
     },
     {
       name: 'SwitchA11yContract',
@@ -25657,6 +34334,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'Table: { (props: TableProps): JSX.Element; (props: TableAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary: 'Semantic table primitive family.',
     },
     {
       name: 'TableAsChildProps',
@@ -25816,6 +34494,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'TEXTAREA_A11Y_CONTRACT: { readonly HOST_ELEMENT: "textarea"; readonly DISABLED_ATTRIBUTES: { readonly native: "disabled"; readonly asChild: "disabled"; }; readonly DATA_ATTRIBUTES: { readonly disabled: "data-disabled"; }; readonly FOCUS_RULES: { readonly defaultTabIndex: 0; readonly disabledTabIndex: -1; }; readonly LABELING: { readonly supportsLabelElement: true; readonly supportsAriaLabel: true; readonly supportsAriaLabelledBy: true; }; }',
       typeOnly: true,
+      summary: 'Native textarea semantics wrapped by askr-ui Textarea.',
     },
     {
       name: 'TextareaA11yContract',
@@ -25852,6 +34531,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'toast',
       signature: 'Toast: (props: ToastProps) => JSX.Element | null',
       typeOnly: true,
+      summary:
+        'Toast registers a notification entry with the host and returns no DOM on\nits own.',
     },
     {
       name: 'TOAST_A11Y_CONTRACT',
@@ -25859,6 +34540,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'TOAST_A11Y_CONTRACT: { readonly ROOT_ROLE: "status"; readonly LIVE_REGION_ATTRIBUTE: "aria-live"; readonly LIVE_REGION_VALUE: "polite"; readonly VIEWPORT_LABEL: "Notifications"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; }; }',
       typeOnly: true,
+      summary: 'Toast accessibility contract.',
     },
     {
       name: 'ToastA11yContract',
@@ -25872,6 +34554,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastAction: { (props: ToastActionProps): JSX.Element; (props: ToastActionAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'ToastAction closes the toast after handling a user-triggered action.',
     },
     {
       name: 'ToastActionAsChildProps',
@@ -25891,6 +34575,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastClose: { (props: ToastCloseProps): JSX.Element; (props: ToastCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary: 'ToastClose is the dedicated dismiss control for a toast entry.',
     },
     {
       name: 'ToastCloseAsChildProps',
@@ -25910,6 +34595,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastDescription: { (props: ToastDescriptionProps): JSX.Element; (props: ToastDescriptionAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'ToastDescription marks the accessible description slot for a toast entry.',
     },
     {
       name: 'ToastDescriptionAsChildProps',
@@ -25928,12 +34615,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'toast-host',
       signature: 'ToastHost: (props: ToastHostProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'ToastHost owns the registry of active toast entries and the default\ndisplay duration for the family.',
     },
     {
       name: 'ToastHostOwnProps',
       anchor: 'toast-host-own-props',
       signature: 'ToastHostOwnProps: any',
       typeOnly: true,
+      summary:
+        'Props for the host that owns toast timing defaults and the registry.',
     },
     {
       name: 'ToastHostProps',
@@ -25946,6 +34637,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'toast-own-props',
       signature: 'ToastOwnProps: any',
       typeOnly: true,
+      summary: 'Props for a toast registration entry declared through Toast.',
     },
     {
       name: 'ToastProps',
@@ -25959,6 +34651,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastTitle: { (props: ToastTitleProps): JSX.Element; (props: ToastTitleAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary: 'ToastTitle marks the accessible title slot for a toast entry.',
     },
     {
       name: 'ToastTitleAsChildProps',
@@ -25978,6 +34671,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastViewport: { (props: ToastViewportProps): JSX.Element; (props: ToastViewportAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'ToastViewport renders the live toast stack and the notification region.',
     },
     {
       name: 'ToastViewportAsChildProps',
@@ -25997,6 +34692,14 @@ export const apiSymbolSets: Readonly<
       signature:
         'Toggle: { (props: ToggleButtonProps): JSX.Element; (props: ToggleAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Headless Toggle component\n\n## Responsibilities\n- Compose pressable foundation for interaction behavior\n- Apply aria-pressed for toggle state signaling\n- Enforce type="button" default to prevent accidental form submission\n- Forward props and refs to native button or child element\n\n## Non-Responsibilities (delegated to pressable foundation)\n- Keyboard event handling (Enter/Space)\n- Pointer event handling\n- Disabled state enforcement\n- Role attribute application (for non-native elements)\n\n## Invariants\n- MUST NOT contain any event handler logic\n- MUST NOT check disabled or pressed props directly\n- MUST use pressable() for ALL interaction behavior\n- MUST use mergeProps() for ALL prop composition\n- pressed state is CONTROLLED (consumer manages state)',
+      tags: {
+        example: [
+          'Native toggle button\n```tsx\nconst pressed = state(false);\n<Toggle pressed={pressed()} onPress={() => pressed.set(!pressed())}>\nMute\n</Toggle>\n```',
+          'Polymorphic rendering (asChild)\n```tsx\n<Toggle asChild pressed={muted} onPress={toggleMute}>\n<span>Ã°Å¸â€â€¡</span>\n</Toggle>\n```',
+        ],
+      },
     },
     {
       name: 'TOGGLE_A11Y_CONTRACT',
@@ -26004,6 +34707,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'TOGGLE_A11Y_CONTRACT: { readonly ROLE: "button"; readonly KEYBOARD_ACTIVATION: readonly ["Enter", "Space"]; readonly PRESSED_ATTRIBUTE: "aria-pressed"; readonly DISABLED_ATTRIBUTES: { readonly nativeButton: { readonly disabled: true; readonly "aria-disabled": "true"; }; readonly nonNative: { readonly "aria-disabled": "true"; readonly tabIndex: -1; }; }; readonly DATA_ATTRIBUTES: { readonly state: "data-state"; readonly disabled: "data-disabled"; }; readonly FOCUS_RULES: { readonly enabled: "tabIndex >= 0"; readonly disabled: "tabIndex = -1"; readonly visualIndicator: "required"; }; }',
       typeOnly: true,
+      summary:
+        "WAI-ARIA Toggle Button Pattern\n\nSpecification: https://www.w3.org/WAI/ARIA/apg/patterns/button/\n\nA toggle button is a two-state button that can be either on or off.\nUses aria-pressed to communicate toggle state to assistive technology.\n\n## Required ARIA\n- aria-pressed: 'true' | 'false' (indicates toggle state)\n- role: 'button' (when not native button)\n\n## Keyboard Support\n- Enter: Activates toggle (on native button and non-button elements)\n- Space: Activates toggle\n\n## Focus Management\n- Toggle is focusable when not disabled\n- Visual focus indicator required\n\n## Disabled State\n- aria-disabled when disabled=true\n- Removed from tab order\n- Visual disabled styling (consumer responsibility)",
     },
     {
       name: 'TOGGLE_GROUP_A11Y_CONTRACT',
@@ -26011,6 +34716,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'TOGGLE_GROUP_A11Y_CONTRACT: { readonly GROUP_ROLE: "group"; readonly ITEM_ROLE: "button"; readonly PRESSED_ATTRIBUTE: "aria-pressed"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; readonly orientation: "data-orientation"; }; }',
       typeOnly: true,
+      summary: 'Accessibility contract for toggle groups.',
     },
     {
       name: 'ToggleA11yContract',
@@ -26023,12 +34729,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'toggle-as-child-props',
       signature: 'ToggleAsChildProps: any',
       typeOnly: true,
+      summary: 'Props when rendering via asChild',
     },
     {
       name: 'ToggleButtonProps',
       anchor: 'toggle-button-props',
       signature: 'ToggleButtonProps: any',
       typeOnly: true,
+      summary: 'Props when rendering as a native <button> element',
     },
     {
       name: 'ToggleGroup',
@@ -26096,12 +34804,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'toggle-own-props',
       signature: 'ToggleOwnProps: any',
       typeOnly: true,
+      summary: 'Props shared by all Toggle variants',
     },
     {
       name: 'ToggleProps',
       anchor: 'toggle-props',
       signature: 'ToggleProps: any',
       typeOnly: true,
+      summary: 'Discriminated union of Toggle prop types',
     },
     {
       name: 'Tooltip',
@@ -26115,6 +34825,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'TOOLTIP_A11Y_CONTRACT: { readonly CONTENT_ROLE: "tooltip"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; readonly side: "data-side"; readonly align: "data-align"; }; readonly TRIGGER_ATTRIBUTE: "aria-describedby"; readonly OPEN_STATE_ATTRIBUTE: "data-state"; }',
       typeOnly: true,
+      summary: 'Tooltip accessibility contract.',
     },
     {
       name: 'TooltipA11yContract',
@@ -26319,6 +35030,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'VISUALLY_HIDDEN_A11Y_CONTRACT: { readonly STRATEGY: "visually-hidden-but-screen-reader-visible"; readonly HOST_ELEMENT: "span"; }',
       typeOnly: true,
+      summary: 'Visually hidden content accessibility contract.',
     },
     {
       name: 'VisuallyHidden',
@@ -26372,6 +35084,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'AVATAR_A11Y_CONTRACT: { readonly ROOT: { readonly slot: "data-slot"; readonly marker: "data-avatar"; }; readonly IMAGE: { readonly slot: "data-slot"; readonly marker: "data-avatar-image"; readonly requiresAlt: true; }; readonly FALLBACK: { readonly slot: "data-slot"; readonly marker: "data-avatar-fallback"; readonly visibleBeforeImageLoad: true; }; }',
       typeOnly: true,
+      summary: 'Accessibility contract for Avatar primitives.',
     },
     {
       name: 'AvatarA11yContract',
@@ -26454,6 +35167,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'Button: { (props: ButtonNativeProps): JSX.Element; (props: ButtonAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Headless Button component\n\n## Responsibilities\n- Compose pressable foundation for interaction behavior\n- Enforce type="button" default to prevent accidental form submission\n- Forward props and refs to native button or child element\n\n## Non-Responsibilities (delegated to pressable foundation)\n- Keyboard event handling (Enter/Space)\n- Pointer event handling\n- Disabled state enforcement\n- ARIA attribute application\n\n## Invariants\n- MUST NOT contain any event handler logic\n- MUST NOT check disabled prop directly\n- MUST use pressable() for ALL interaction behavior\n- MUST use mergeProps() for ALL prop composition',
+      tags: {
+        example: [
+          'Native button (prevents accidental submit)\n```tsx\n<Button onPress={handleSave}>Save</Button>\n```',
+          'Explicit form submission\n```tsx\n<Button type="submit" onPress={handleSubmit}>Submit</Button>\n```',
+          'Polymorphic rendering (asChild)\n```tsx\n<Button asChild onPress={handleNav}>\n<a href="/home">Home</a>\n</Button>\n```',
+        ],
+      },
     },
     {
       name: 'BUTTON_A11Y_CONTRACT',
@@ -26461,12 +35183,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'BUTTON_A11Y_CONTRACT: { readonly KEYBOARD_ACTIVATION: readonly ["Enter", "Space"]; readonly ROLE: "button"; readonly DISABLED_ATTRIBUTES: { readonly native: "disabled"; readonly asChild: "aria-disabled"; }; readonly DATA_ATTRIBUTES: { readonly disabled: "data-disabled"; }; readonly FOCUS_RULES: { readonly enabled: "focusable"; readonly disabled: "not-focusable"; }; }',
       typeOnly: true,
+      summary:
+        'Accessibility contract for Button component\n\nFollowing WAI-ARIA Button Pattern:\nhttps://www.w3.org/WAI/ARIA/apg/patterns/button/\n\n## Role\n- Native <button>: implicit role="button"\n- asChild: preserves child role (e.g., role="button" on <div>)\n\n## States\n- disabled (native): uses `disabled` attribute\n- disabled (asChild): uses `aria-disabled="true"` + `tabindex="-1"`\n\n## Keyboard\n- Space: Activates button (handled by pressable foundation)\n- Enter: Activates button (handled by pressable foundation)\n- Disabled buttons do not respond to interaction\n\n## Focus\n- Native buttons: focusable by default\n- asChild elements: receive tabindex if not naturally focusable\n- Disabled: removed from tab order (tabindex="-1" or native disabled)\n\n## Screen Reader\n- Announces role as "button"\n- Announces disabled state\n- Announces accessible name from text content or aria-label\n\n## Implementation Notes\n- All interaction behavior is delegated to `pressable` foundation\n- Button component does NOT implement keyboard handling directly\n- Button component does NOT check disabled prop directly\n- All ARIA attributes are applied by foundation, not component',
     },
     {
       name: 'ButtonA11yContract',
       anchor: 'button-a11y-contract',
       signature: 'ButtonA11yContract: any',
       typeOnly: true,
+      summary: 'Type-safe accessibility contract',
     },
     {
       name: 'ButtonAsChildElement',
@@ -26479,24 +35204,28 @@ export const apiSymbolSets: Readonly<
       anchor: 'button-as-child-props',
       signature: 'ButtonAsChildProps: any',
       typeOnly: true,
+      summary: 'Props when rendering with asChild (polymorphic)',
     },
     {
       name: 'ButtonNativeProps',
       anchor: 'button-native-props',
       signature: 'ButtonNativeProps: any',
       typeOnly: true,
+      summary: 'Props when rendering as native <button>',
     },
     {
       name: 'ButtonOwnProps',
       anchor: 'button-own-props',
       signature: 'ButtonOwnProps: any',
       typeOnly: true,
+      summary: 'Core Button props shared across all variants',
     },
     {
       name: 'ButtonProps',
       anchor: 'button-props',
       signature: 'ButtonProps: any',
       typeOnly: true,
+      summary: 'Union of all Button prop variants',
     },
     {
       name: 'ButtonSize',
@@ -26524,6 +35253,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'Checkbox: { (props: CheckboxInputProps): JSX.Element; (props: CheckboxAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Headless Checkbox component\n\n## Responsibilities\n- Apply aria-checked for checkbox state signaling\n- Handle indeterminate state for native and asChild hosts\n- Support controlled and uncontrolled checked state\n- Forward props and refs to native input or child element\n- Preserve native checkbox semantics and apply checkbox behavior to asChild hosts\n\n## Non-Responsibilities\n- Form submission orchestration beyond native input props\n\n## Invariants\n- MUST NOT add role="button" (native inputs are role="checkbox")\n- checked state may be controlled or uncontrolled\n- indeterminate overrides checked for state signaling\n- For asChild, consumer MUST provide role="checkbox"',
+      tags: {
+        example: [
+          'Native checkbox input\n```tsx\nconst checked = state(false);\n<Checkbox checked={checked()} onPress={() => checked.set(!checked())} />\n```',
+          'Polymorphic rendering (asChild)\n```tsx\n<Checkbox asChild checked={agreed} onPress={toggleAgree}>\n<div role="checkbox">I agree to terms</div>\n</Checkbox>\n```',
+          'Indeterminate state (partial selection)\n```tsx\n<Checkbox checked={someChecked} indeterminate={!allChecked && someChecked} onPress={toggleAll}>\nSelect All\n</Checkbox>\n```',
+        ],
+      },
     },
     {
       name: 'CHECKBOX_A11Y_CONTRACT',
@@ -26531,6 +35269,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'CHECKBOX_A11Y_CONTRACT: { readonly ROLE: "checkbox"; readonly KEYBOARD_ACTIVATION: readonly ["Enter", "Space"]; readonly CHECKED_ATTRIBUTE: "aria-checked"; readonly INDETERMINATE_VALUE: "mixed"; readonly DISABLED_ATTRIBUTES: { readonly nativeInput: { readonly disabled: true; }; readonly nonNative: { readonly "aria-disabled": "true"; readonly tabIndex: -1; }; }; readonly DATA_ATTRIBUTES: { readonly state: "data-state"; readonly disabled: "data-disabled"; }; readonly FOCUS_RULES: { readonly enabled: "tabIndex >= 0"; readonly disabled: "tabIndex = -1"; readonly visualIndicator: "required"; }; }',
       typeOnly: true,
+      summary:
+        "WAI-ARIA Checkbox Pattern\n\nSpecification: https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/\n\nA checkbox is an input mechanism that allows users to select one or more items\nfrom a set. Unlike toggle buttons, checkboxes visually represent a checked state\nwith aria-checked (not aria-pressed).\n\n## Required ARIA\n- aria-checked: 'true' | 'false' | 'mixed' (indicates checkbox state)\n- role: 'checkbox' (when not native input)\n\n## Keyboard Support\n- Enter: Activates checkbox (on non-input elements)\n- Space: Activates checkbox\n\n## Focus Management\n- Checkbox is focusable when not disabled\n- Visual focus indicator required\n\n## Disabled State\n- aria-disabled when disabled=true (for non-native)\n- disabled attribute when native input\n- Removed from tab order\n- Visual disabled styling (consumer responsibility)\n\n## Indeterminate State\n- `asChild`: aria-checked='mixed'\n- native input: current host path omits aria-checked and keeps data-state='indeterminate'\n- Typically used for \"select all\" checkboxes when partial selection",
     },
     {
       name: 'CheckboxA11yContract',
@@ -26543,24 +35283,29 @@ export const apiSymbolSets: Readonly<
       anchor: 'checkbox-as-child-props',
       signature: 'CheckboxAsChildProps: any',
       typeOnly: true,
+      summary: 'Props when rendering via asChild',
     },
     {
       name: 'CheckboxInputProps',
       anchor: 'checkbox-input-props',
       signature: 'CheckboxInputProps: any',
       typeOnly: true,
+      summary:
+        'Props when rendering as a native <input type="checkbox"> element',
     },
     {
       name: 'CheckboxOwnProps',
       anchor: 'checkbox-own-props',
       signature: 'CheckboxOwnProps: any',
       typeOnly: true,
+      summary: 'Props shared by all Checkbox variants',
     },
     {
       name: 'CheckboxProps',
       anchor: 'checkbox-props',
       signature: 'CheckboxProps: any',
       typeOnly: true,
+      summary: 'Discriminated union of Checkbox prop types',
     },
   ],
   symbols57: [
@@ -26569,6 +35314,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'debounced-input',
       signature: 'DebouncedInput: (props: DebouncedInputProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'DebouncedInput is a convenience wrapper around Input that emits a settled\nvalue for search and filter surfaces.',
     },
     {
       name: 'DebouncedInputProps',
@@ -26589,6 +35336,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'INPUT_A11Y_CONTRACT: { readonly HOST_ELEMENT: "input"; readonly DISABLED_ATTRIBUTES: { readonly native: "disabled"; readonly asChild: "disabled"; }; readonly DATA_ATTRIBUTES: { readonly disabled: "data-disabled"; }; readonly FOCUS_RULES: { readonly defaultTabIndex: 0; readonly disabledTabIndex: -1; }; readonly LABELING: { readonly supportsLabelElement: true; readonly supportsAriaLabel: true; readonly supportsAriaLabelledBy: true; }; }',
       typeOnly: true,
+      summary: 'Native input semantics wrapped by askr-ui Input.',
     },
     {
       name: 'InputA11yContract',
@@ -26640,6 +35388,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'form-as-child-props',
       signature: 'FormAsChildProps: any',
       typeOnly: true,
+      summary:
+        '`asChild` keeps the form host supplied by the consumer, while retaining the\nnative form attribute contract (method, action, target, encoding, etc.).',
     },
     {
       name: 'FormProps',
@@ -26662,6 +35412,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'LABEL_A11Y_CONTRACT: { readonly ELEMENT: "label"; readonly ASSOCIATION_ATTRIBUTE: "for"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; }; readonly NAME_SOURCE_PRIORITY: readonly ["aria-label", "textContent"]; readonly AS_CHILD: { readonly forwardsProps: true; readonly preservesChildElement: true; }; }',
       typeOnly: true,
+      summary: 'Native label semantics for askr-ui Label.',
     },
     {
       name: 'LabelA11yContract',
@@ -26707,6 +35458,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'PROGRESS_A11Y_CONTRACT: { readonly ROLE: "progressbar"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly percentage: "data-percentage"; }; readonly VALUE_NOW_ATTRIBUTE: "aria-valuenow"; readonly VALUE_MIN_ATTRIBUTE: "aria-valuemin"; readonly VALUE_MAX_ATTRIBUTE: "aria-valuemax"; readonly INDICATOR_MARKER: "data-progress-indicator"; readonly INDICATOR_PERCENTAGE_ATTRIBUTE: "data-percentage"; }',
       typeOnly: true,
+      summary: 'WAI-ARIA progressbar contract for linear progress.',
     },
     {
       name: 'ProgressA11yContract',
@@ -26753,6 +35505,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'PROGRESS_CIRCLE_A11Y_CONTRACT: { readonly ROLE: "progressbar"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly percentage: "data-percentage"; }; readonly VALUE_NOW_ATTRIBUTE: "aria-valuenow"; readonly VALUE_MIN_ATTRIBUTE: "aria-valuemin"; readonly VALUE_MAX_ATTRIBUTE: "aria-valuemax"; readonly INDICATOR_MARKER: "data-progress-circle-indicator"; }',
       typeOnly: true,
+      summary: 'WAI-ARIA progressbar contract for circular progress.',
     },
     {
       name: 'ProgressCircle',
@@ -26805,6 +35558,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'RADIO_GROUP_A11Y_CONTRACT: { readonly GROUP_ROLE: "radiogroup"; readonly ITEM_ROLE: "radio"; readonly CHECKED_ATTRIBUTE: "aria-checked"; readonly ORIENTATION_ATTRIBUTE: "aria-orientation"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; readonly orientation: "data-orientation"; }; readonly KEYBOARD_NAVIGATION: readonly ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"]; readonly ROVING_FOCUS: { readonly activeItemTabIndex: 0; readonly inactiveItemTabIndex: -1; }; readonly FORM_INTEGRATION: { readonly hiddenInputType: "hidden"; }; }',
       typeOnly: true,
+      summary:
+        'WAI-ARIA Radio Group Pattern\n\nSpecification: https://www.w3.org/WAI/ARIA/apg/patterns/radio/',
     },
     {
       name: 'RadioGroup',
@@ -26869,6 +35624,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'SELECT_A11Y_CONTRACT: { readonly TRIGGER_ROLE: "button"; readonly CONTENT_ROLE: "listbox"; readonly ITEM_ROLE: "option"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; readonly side: "data-side"; readonly align: "data-align"; }; readonly TRIGGER_ATTRIBUTES: { readonly expanded: "aria-expanded"; readonly controls: "aria-controls"; readonly hasPopup: "aria-haspopup"; }; readonly ITEM_SELECTION_ATTRIBUTE: "aria-selected"; }',
       typeOnly: true,
+      summary: 'Select accessibility contract.',
     },
     {
       name: 'SelectA11yContract',
@@ -26951,6 +35707,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectItemText: { (props: SelectItemTextProps): JSX.Element; (props: SelectItemTextAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'SelectItemText marks the item text node so Select can resolve labels and\nstyle the text slot directly.',
     },
     {
       name: 'SelectItemTextAsChildProps',
@@ -27097,6 +35855,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'SLIDER_A11Y_CONTRACT: { readonly THUMB_ROLE: "slider"; readonly VALUE_NOW_ATTRIBUTE: "aria-valuenow"; readonly VALUE_MIN_ATTRIBUTE: "aria-valuemin"; readonly VALUE_MAX_ATTRIBUTE: "aria-valuemax"; readonly ORIENTATION_ATTRIBUTE: "aria-orientation"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly disabled: "data-disabled"; readonly orientation: "data-orientation"; }; }',
       typeOnly: true,
+      summary: 'Slider accessibility contract.',
     },
     {
       name: 'SliderA11yContract',
@@ -27194,6 +35953,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'SWITCH_A11Y_CONTRACT: { readonly ROLE: "switch"; readonly CHECKED_ATTRIBUTE: "aria-checked"; readonly KEYBOARD_ACTIVATION: readonly ["Enter", "Space"]; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; }; readonly DISABLED_ATTRIBUTES: { readonly nativeButton: { readonly disabled: true; readonly "aria-disabled": "true"; }; readonly nonNative: { readonly "aria-disabled": "true"; readonly tabIndex: -1; }; }; readonly FORM_INTEGRATION: { readonly host: "button"; readonly hiddenInputType: "checkbox"; readonly hiddenInputValue: "on"; }; }',
       typeOnly: true,
+      summary:
+        'WAI-ARIA Switch Pattern\n\nSpecification: https://www.w3.org/WAI/ARIA/apg/patterns/switch/',
     },
     {
       name: 'SwitchA11yContract',
@@ -27233,6 +35994,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'Table: { (props: TableProps): JSX.Element; (props: TableAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary: 'Semantic table primitive family.',
     },
     {
       name: 'TableAsChildProps',
@@ -27520,6 +36282,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'TEXTAREA_A11Y_CONTRACT: { readonly HOST_ELEMENT: "textarea"; readonly DISABLED_ATTRIBUTES: { readonly native: "disabled"; readonly asChild: "disabled"; }; readonly DATA_ATTRIBUTES: { readonly disabled: "data-disabled"; }; readonly FOCUS_RULES: { readonly defaultTabIndex: 0; readonly disabledTabIndex: -1; }; readonly LABELING: { readonly supportsLabelElement: true; readonly supportsAriaLabel: true; readonly supportsAriaLabelledBy: true; }; }',
       typeOnly: true,
+      summary: 'Native textarea semantics wrapped by askr-ui Textarea.',
     },
     {
       name: 'TextareaA11yContract',
@@ -27558,6 +36321,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'press-event',
       signature: 'PressEvent: any',
       typeOnly: true,
+      summary:
+        "Press event passed to onPress handler\n\nCompatible with the pressable foundation's PressEvent type.",
     },
     {
       name: 'Toggle',
@@ -27565,6 +36330,14 @@ export const apiSymbolSets: Readonly<
       signature:
         'Toggle: { (props: ToggleButtonProps): JSX.Element; (props: ToggleAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Headless Toggle component\n\n## Responsibilities\n- Compose pressable foundation for interaction behavior\n- Apply aria-pressed for toggle state signaling\n- Enforce type="button" default to prevent accidental form submission\n- Forward props and refs to native button or child element\n\n## Non-Responsibilities (delegated to pressable foundation)\n- Keyboard event handling (Enter/Space)\n- Pointer event handling\n- Disabled state enforcement\n- Role attribute application (for non-native elements)\n\n## Invariants\n- MUST NOT contain any event handler logic\n- MUST NOT check disabled or pressed props directly\n- MUST use pressable() for ALL interaction behavior\n- MUST use mergeProps() for ALL prop composition\n- pressed state is CONTROLLED (consumer manages state)',
+      tags: {
+        example: [
+          'Native toggle button\n```tsx\nconst pressed = state(false);\n<Toggle pressed={pressed()} onPress={() => pressed.set(!pressed())}>\nMute\n</Toggle>\n```',
+          'Polymorphic rendering (asChild)\n```tsx\n<Toggle asChild pressed={muted} onPress={toggleMute}>\n<span>Ã°Å¸â€â€¡</span>\n</Toggle>\n```',
+        ],
+      },
     },
     {
       name: 'TOGGLE_A11Y_CONTRACT',
@@ -27572,6 +36345,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'TOGGLE_A11Y_CONTRACT: { readonly ROLE: "button"; readonly KEYBOARD_ACTIVATION: readonly ["Enter", "Space"]; readonly PRESSED_ATTRIBUTE: "aria-pressed"; readonly DISABLED_ATTRIBUTES: { readonly nativeButton: { readonly disabled: true; readonly "aria-disabled": "true"; }; readonly nonNative: { readonly "aria-disabled": "true"; readonly tabIndex: -1; }; }; readonly DATA_ATTRIBUTES: { readonly state: "data-state"; readonly disabled: "data-disabled"; }; readonly FOCUS_RULES: { readonly enabled: "tabIndex >= 0"; readonly disabled: "tabIndex = -1"; readonly visualIndicator: "required"; }; }',
       typeOnly: true,
+      summary:
+        "WAI-ARIA Toggle Button Pattern\n\nSpecification: https://www.w3.org/WAI/ARIA/apg/patterns/button/\n\nA toggle button is a two-state button that can be either on or off.\nUses aria-pressed to communicate toggle state to assistive technology.\n\n## Required ARIA\n- aria-pressed: 'true' | 'false' (indicates toggle state)\n- role: 'button' (when not native button)\n\n## Keyboard Support\n- Enter: Activates toggle (on native button and non-button elements)\n- Space: Activates toggle\n\n## Focus Management\n- Toggle is focusable when not disabled\n- Visual focus indicator required\n\n## Disabled State\n- aria-disabled when disabled=true\n- Removed from tab order\n- Visual disabled styling (consumer responsibility)",
     },
     {
       name: 'ToggleA11yContract',
@@ -27584,24 +36359,28 @@ export const apiSymbolSets: Readonly<
       anchor: 'toggle-as-child-props',
       signature: 'ToggleAsChildProps: any',
       typeOnly: true,
+      summary: 'Props when rendering via asChild',
     },
     {
       name: 'ToggleButtonProps',
       anchor: 'toggle-button-props',
       signature: 'ToggleButtonProps: any',
       typeOnly: true,
+      summary: 'Props when rendering as a native <button> element',
     },
     {
       name: 'ToggleOwnProps',
       anchor: 'toggle-own-props',
       signature: 'ToggleOwnProps: any',
       typeOnly: true,
+      summary: 'Props shared by all Toggle variants',
     },
     {
       name: 'ToggleProps',
       anchor: 'toggle-props',
       signature: 'ToggleProps: any',
       typeOnly: true,
+      summary: 'Discriminated union of Toggle prop types',
     },
   ],
   symbols71: [
@@ -27611,6 +36390,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'TOGGLE_GROUP_A11Y_CONTRACT: { readonly GROUP_ROLE: "group"; readonly ITEM_ROLE: "button"; readonly PRESSED_ATTRIBUTE: "aria-pressed"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; readonly orientation: "data-orientation"; }; }',
       typeOnly: true,
+      summary: 'Accessibility contract for toggle groups.',
     },
     {
       name: 'ToggleGroup',
@@ -27681,6 +36461,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'VISUALLY_HIDDEN_A11Y_CONTRACT: { readonly STRATEGY: "visually-hidden-but-screen-reader-visible"; readonly HOST_ELEMENT: "span"; }',
       typeOnly: true,
+      summary: 'Visually hidden content accessibility contract.',
     },
     {
       name: 'VisuallyHidden',
@@ -27733,6 +36514,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'ACCORDION_A11Y_CONTRACT: { readonly TRIGGER_ROLE: "button"; readonly EXPANDED_ATTRIBUTE: "aria-expanded"; readonly CONTROLS_ATTRIBUTE: "aria-controls"; readonly PANEL_ROLE: "region"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; readonly orientation: "data-orientation"; }; }',
       typeOnly: true,
+      summary: 'WAI-ARIA accordion/disclosure contract.',
     },
     {
       name: 'AccordionA11yContract',
@@ -27853,6 +36635,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'ALERT_DIALOG_A11Y_CONTRACT: { readonly CONTENT_ROLE: "alertdialog"; readonly LABELLED_BY_ATTRIBUTE: "aria-labelledby"; readonly DESCRIBED_BY_ATTRIBUTE: "aria-describedby"; readonly ACTION_REQUIREMENTS: { readonly hasPrimaryAction: true; readonly hasCancelAction: true; }; }',
       typeOnly: true,
+      summary: 'Alert dialog accessibility contract.',
     },
     {
       name: 'AlertDialog',
@@ -28050,6 +36833,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'COLLAPSIBLE_A11Y_CONTRACT: { readonly TRIGGER_ROLE: "button"; readonly KEYBOARD_ACTIVATION: readonly ["Enter", "Space"]; readonly EXPANDED_ATTRIBUTE: "aria-expanded"; readonly CONTROLS_ATTRIBUTE: "aria-controls"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; }; readonly CONTENT_REQUIREMENTS: { readonly idAttribute: "required"; readonly defaultPresence: "unmounted when closed"; }; readonly FOCUS_RULES: { readonly afterActivation: "focus remains on trigger"; readonly contentFocusable: false; }; }',
       typeOnly: true,
+      summary:
+        'WAI-ARIA Disclosure Pattern (Collapsible)\n\nSpecification: https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/\n\nA disclosure (collapsible) shows and hides a region of content via a button.\nThe button indicates the visibility state of the content region.\n\n## Required ARIA\n- Trigger: role="button" (native or explicit)\n- Trigger: aria-expanded="true" | "false"\n- Trigger: aria-controls={contentId}\n- Content: id attribute for aria-controls reference\n\n## Keyboard Support\n- Enter: Toggles content visibility (on trigger)\n- Space: Toggles content visibility (on trigger)\n\n## Focus Management\n- Trigger is focusable when not disabled\n- Focus remains on trigger after activation\n- Content is not focusable by default\n\n## Disabled State\n- Trigger cannot be activated when disabled\n- Visual disabled styling (consumer responsibility)\n\n## Presence\n- Content unmounts when closed (default)\n- Can force mount for animation/transition control',
     },
     {
       name: 'CollapsibleContent',
@@ -28063,18 +36848,97 @@ export const apiSymbolSets: Readonly<
       anchor: 'collapsible-content-as-child-props',
       signature: 'CollapsibleContentAsChildProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'asChild',
+          summary: 'Render as child element instead of div',
+          signature: 'asChild: true;',
+        },
+        {
+          name: 'children',
+          summary: 'Child content',
+          signature: 'children: JSXElement;',
+        },
+        {
+          name: 'forceMount',
+          summary: 'Force mount even when closed (for animation)',
+          signature: 'forceMount?: boolean;',
+        },
+        {
+          name: 'ref',
+          summary: 'Ref forwarding',
+          signature: 'ref?: Ref<Element>;',
+        },
+      ],
     },
     {
       name: 'CollapsibleContentProps',
       anchor: 'collapsible-content-props',
       signature: 'CollapsibleContentProps: any',
       typeOnly: true,
+      summary: 'Content component props',
+      members: [
+        {
+          name: 'asChild',
+          summary: 'Render as child element instead of div',
+          signature: 'asChild?: false;',
+        },
+        {
+          name: 'children',
+          summary: 'Child content',
+          signature: 'children?: unknown;',
+        },
+        {
+          name: 'forceMount',
+          summary: 'Force mount even when closed (for animation)',
+          signature: 'forceMount?: boolean;',
+        },
+        {
+          name: 'ref',
+          summary: 'Ref forwarding',
+          signature: 'ref?: Ref<HTMLDivElement>;',
+        },
+      ],
     },
     {
       name: 'CollapsibleProps',
       anchor: 'collapsible-props',
       signature: 'CollapsibleProps: any',
       typeOnly: true,
+      summary: 'Root component props',
+      members: [
+        {
+          name: 'id',
+          summary:
+            'Stable caller-provided identity used for ARIA linking when available',
+          signature: 'id?: string;',
+        },
+        {
+          name: 'open',
+          summary: 'Controlled open state',
+          signature: 'open?: boolean;',
+        },
+        {
+          name: 'defaultOpen',
+          summary: 'Uncontrolled default open state',
+          signature: 'defaultOpen?: boolean;',
+        },
+        {
+          name: 'onOpenChange',
+          summary: 'Callback when open state changes',
+          signature: 'onOpenChange?: (open: boolean) => void;',
+        },
+        {
+          name: 'children',
+          summary: 'Child components (Trigger, Content)',
+          signature: 'children?: unknown;',
+        },
+        {
+          name: 'disabled',
+          summary: 'Whether the collapsible is disabled',
+          signature: 'disabled?: boolean;',
+        },
+      ],
     },
     {
       name: 'CollapsibleTrigger',
@@ -28088,12 +36952,47 @@ export const apiSymbolSets: Readonly<
       anchor: 'collapsible-trigger-as-child-props',
       signature: 'CollapsibleTriggerAsChildProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'asChild',
+          summary: 'Render as child element instead of button',
+          signature: 'asChild: true;',
+        },
+        {
+          name: 'children',
+          summary: 'Child content',
+          signature: 'children: JSXElement;',
+        },
+        {
+          name: 'ref',
+          summary: 'Ref forwarding',
+          signature: 'ref?: Ref<Element>;',
+        },
+      ],
     },
     {
       name: 'CollapsibleTriggerProps',
       anchor: 'collapsible-trigger-props',
       signature: 'CollapsibleTriggerProps: any',
       typeOnly: true,
+      summary: 'Trigger component props (button semantics)',
+      members: [
+        {
+          name: 'asChild',
+          summary: 'Render as child element instead of button',
+          signature: 'asChild?: false;',
+        },
+        {
+          name: 'children',
+          summary: 'Child content',
+          signature: 'children?: unknown;',
+        },
+        {
+          name: 'ref',
+          summary: 'Ref forwarding',
+          signature: 'ref?: Ref<HTMLButtonElement>;',
+        },
+      ],
     },
   ],
   symbols76: [
@@ -28109,6 +37008,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'DIALOG_A11Y_CONTRACT: { readonly CONTENT_ROLE: "dialog"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; }; readonly MODAL_ATTRIBUTE: "aria-modal"; readonly LABELLED_BY_ATTRIBUTE: "aria-labelledby"; readonly DESCRIBED_BY_ATTRIBUTE: "aria-describedby"; readonly TRIGGER_ATTRIBUTES: { readonly expanded: "aria-expanded"; readonly controls: "aria-controls"; }; }',
       typeOnly: true,
+      summary: 'Dialog accessibility contract.',
     },
     {
       name: 'DialogA11yContract',
@@ -28275,6 +37175,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'DISMISSABLE_LAYER_A11Y_CONTRACT: { readonly DISMISS_EVENTS: readonly ["escape-key", "outside-pointer"]; readonly INTERACTION_POLICY: "background-dismissable"; }',
       typeOnly: true,
+      summary: 'Dismissable layer accessibility contract.',
     },
     {
       name: 'DismissableLayer',
@@ -28321,6 +37222,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'DROPDOWN_A11Y_CONTRACT: { readonly CONTENT_ROLE: "menu"; readonly ITEM_ROLE: "menuitem"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; readonly side: "data-side"; readonly align: "data-align"; }; readonly TRIGGER_ATTRIBUTES: { readonly expanded: "aria-expanded"; readonly controls: "aria-controls"; readonly hasPopup: "aria-haspopup"; }; }',
       typeOnly: true,
+      summary: 'Dropdown accessibility contract.',
     },
     {
       name: 'DropdownA11yContract',
@@ -28511,6 +37413,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'FOCUS_SCOPE_A11Y_CONTRACT: { readonly FEATURES: { readonly trapped: true; readonly loop: true; readonly restoreFocus: true; }; }',
       typeOnly: true,
+      summary: 'Focus scope accessibility contract.',
     },
     {
       name: 'FocusScope',
@@ -28634,6 +37537,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'MENU_A11Y_CONTRACT: { readonly CONTENT_ROLE: "menu"; readonly ITEM_ROLE: "menuitem"; readonly ORIENTATION_ATTRIBUTE: "aria-orientation"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly disabled: "data-disabled"; readonly orientation: "data-orientation"; }; }',
       typeOnly: true,
+      summary: 'Menu accessibility contract.',
     },
     {
       name: 'MenuA11yContract',
@@ -28768,6 +37672,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'MENUBAR_A11Y_CONTRACT: { readonly ROOT_ROLE: "menubar"; readonly CONTENT_ROLE: "menu"; readonly ITEM_ROLE: "menuitem"; readonly EXPANDED_ATTRIBUTE: "aria-expanded"; readonly HAS_POPUP_ATTRIBUTE: "aria-haspopup"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; readonly side: "data-side"; readonly align: "data-align"; }; }',
       typeOnly: true,
+      summary: 'WAI-ARIA menubar contract.',
     },
     {
       name: 'MenubarA11yContract',
@@ -28996,6 +37901,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'POPOVER_A11Y_CONTRACT: { readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; readonly side: "data-side"; readonly align: "data-align"; }; readonly TRIGGER_ATTRIBUTES: { readonly popup: "aria-haspopup"; readonly expanded: "aria-expanded"; readonly controls: "aria-controls"; }; readonly CONTENT_ATTRIBUTES: { readonly role: "dialog"; readonly labelledBy: "aria-labelledby"; readonly tabIndex: -1; }; readonly DEFAULT_LABELING: { readonly source: "trigger-id"; readonly override: "aria-label or aria-labelledby"; }; readonly FOCUS_RULES: { readonly trapScope: true; readonly restoreFocusOnClose: true; readonly dismissableLayer: true; }; }',
       typeOnly: true,
+      summary: 'WAI-ARIA dialog-style popover contract.',
     },
     {
       name: 'PopoverA11yContract',
@@ -29189,6 +38095,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'toast',
       signature: 'Toast: (props: ToastProps) => JSX.Element | null',
       typeOnly: true,
+      summary:
+        'Toast registers a notification entry with the host and returns no DOM on\nits own.',
     },
     {
       name: 'TOAST_A11Y_CONTRACT',
@@ -29196,6 +38104,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'TOAST_A11Y_CONTRACT: { readonly ROOT_ROLE: "status"; readonly LIVE_REGION_ATTRIBUTE: "aria-live"; readonly LIVE_REGION_VALUE: "polite"; readonly VIEWPORT_LABEL: "Notifications"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; }; }',
       typeOnly: true,
+      summary: 'Toast accessibility contract.',
     },
     {
       name: 'ToastA11yContract',
@@ -29209,6 +38118,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastAction: { (props: ToastActionProps): JSX.Element; (props: ToastActionAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'ToastAction closes the toast after handling a user-triggered action.',
     },
     {
       name: 'ToastActionAsChildProps',
@@ -29228,6 +38139,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastClose: { (props: ToastCloseProps): JSX.Element; (props: ToastCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary: 'ToastClose is the dedicated dismiss control for a toast entry.',
     },
     {
       name: 'ToastCloseAsChildProps',
@@ -29247,6 +38159,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastDescription: { (props: ToastDescriptionProps): JSX.Element; (props: ToastDescriptionAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'ToastDescription marks the accessible description slot for a toast entry.',
     },
     {
       name: 'ToastDescriptionAsChildProps',
@@ -29265,12 +38179,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'toast-host',
       signature: 'ToastHost: (props: ToastHostProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'ToastHost owns the registry of active toast entries and the default\ndisplay duration for the family.',
     },
     {
       name: 'ToastHostOwnProps',
       anchor: 'toast-host-own-props',
       signature: 'ToastHostOwnProps: any',
       typeOnly: true,
+      summary:
+        'Props for the host that owns toast timing defaults and the registry.',
     },
     {
       name: 'ToastHostProps',
@@ -29283,6 +38201,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'toast-own-props',
       signature: 'ToastOwnProps: any',
       typeOnly: true,
+      summary: 'Props for a toast registration entry declared through Toast.',
     },
     {
       name: 'ToastProps',
@@ -29296,6 +38215,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastTitle: { (props: ToastTitleProps): JSX.Element; (props: ToastTitleAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary: 'ToastTitle marks the accessible title slot for a toast entry.',
     },
     {
       name: 'ToastTitleAsChildProps',
@@ -29315,6 +38235,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastViewport: { (props: ToastViewportProps): JSX.Element; (props: ToastViewportAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'ToastViewport renders the live toast stack and the notification region.',
     },
     {
       name: 'ToastViewportAsChildProps',
@@ -29342,6 +38264,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'TOOLTIP_A11Y_CONTRACT: { readonly CONTENT_ROLE: "tooltip"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; readonly side: "data-side"; readonly align: "data-align"; }; readonly TRIGGER_ATTRIBUTE: "aria-describedby"; readonly OPEN_STATE_ATTRIBUTE: "data-state"; }',
       typeOnly: true,
+      summary: 'Tooltip accessibility contract.',
     },
     {
       name: 'TooltipA11yContract',
@@ -29438,18 +38361,66 @@ export const apiSymbolSets: Readonly<
       anchor: 'askr-vite-plugin',
       signature: 'AskrVitePlugin: any',
       typeOnly: true,
+      summary:
+        "Portable public plugin identity.\n\nVite-compatible runners only require the plugin name. Keeping versioned Vite\nhook types out of the installed declaration prevents consumers such as\nvite-plus from comparing two distinct copies of Vite's recursive Plugin type.",
+      members: [
+        {
+          name: 'name',
+          summary: '',
+          signature: 'readonly name: "askr:vite";',
+        },
+      ],
     },
     {
       name: 'AskrVitePluginOptions',
       anchor: 'askr-vite-plugin-options',
       signature: 'AskrVitePluginOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'transformJsx',
+          summary: '',
+          signature: 'transformJsx?: boolean;',
+        },
+        {
+          name: 'optimizeTemplates',
+          summary: '',
+          signature: 'optimizeTemplates?: boolean;',
+        },
+        {
+          name: 'ssrPrecompile',
+          summary: '',
+          signature: 'ssrPrecompile?: boolean;',
+        },
+        {
+          name: 'images',
+          summary: 'Opt into declared responsive image transforms.',
+          signature: 'images?: boolean | ImagePipelineOptions;',
+        },
+      ],
     },
     {
       name: 'ImagePipelineOptions',
       anchor: 'image-pipeline-options',
       signature: 'ImagePipelineOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'widths',
+          summary: '',
+          signature: 'widths?: readonly number[];',
+        },
+        {
+          name: 'formats',
+          summary: '',
+          signature: 'formats?: readonly ImageOutputFormat[];',
+        },
+        {
+          name: 'quality',
+          summary: '',
+          signature: 'quality?: ImageQualityOptions;',
+        },
+      ],
     },
   ],
   symbols88: [
@@ -29476,6 +38447,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'askr-document-options',
       signature: 'AskrDocumentOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'telemetry',
+          summary: '',
+          signature: 'telemetry?: ViteTelemetry;',
+        },
+      ],
     },
     {
       name: 'askrServer',
@@ -29488,12 +38466,37 @@ export const apiSymbolSets: Readonly<
       anchor: 'askr-server-options',
       signature: 'AskrServerOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'entry',
+          summary: '',
+          signature: 'entry: string;',
+        },
+        {
+          name: 'exportName',
+          summary: '',
+          signature: 'exportName?: string;',
+        },
+        {
+          name: 'indexHtml',
+          summary: '',
+          signature: 'indexHtml?: string;',
+        },
+      ],
     },
     {
       name: 'AskrServerPlugin',
       anchor: 'askr-server-plugin',
       signature: 'AskrServerPlugin: any',
       typeOnly: true,
+      summary: 'Portable public identity for the server integration plugin.',
+      members: [
+        {
+          name: 'name',
+          summary: '',
+          signature: 'readonly name: "askr:server";',
+        },
+      ],
     },
     {
       name: 'composeAskrDocumentResponse',
@@ -29537,12 +38540,19 @@ export const apiSymbolSets: Readonly<
       signature:
         'image: { (source: URL, options?: ImageOptions): ResponsiveImage; (source: ResponsiveImage): ResponsiveImage; }',
       typeOnly: true,
+      summary:
+        'Declare a source-controlled image for the opt-in Vite image pipeline.',
+      tags: {
+        internal: ['Build-time replacement signature.'],
+      },
     },
     {
       name: 'Image',
       anchor: 'image',
       signature: 'Image: (props: ImageProps) => ReturnType<typeof jsxs>',
       typeOnly: true,
+      summary:
+        'Render responsive metadata as accessible picture/source/img markup.',
     },
     {
       name: 'ImageFit',
@@ -29555,6 +38565,39 @@ export const apiSymbolSets: Readonly<
       anchor: 'image-options',
       signature: 'ImageOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'widths',
+          summary: '',
+          signature: 'widths?: readonly number[];',
+        },
+        {
+          name: 'formats',
+          summary: '',
+          signature: 'formats?: readonly ImageOutputFormat[];',
+        },
+        {
+          name: 'quality',
+          summary: '',
+          signature: 'quality?: ImageQualityOptions;',
+        },
+        {
+          name: 'fit',
+          summary: '',
+          signature: 'fit?: ImageFit;',
+        },
+        {
+          name: 'aspectRatio',
+          summary: 'Required output width/height ratio when fit is cover.',
+          signature:
+            'aspectRatio?: number | {\n    width: number;\n    height: number;\n  };',
+        },
+        {
+          name: 'position',
+          summary: 'Sharp-compatible crop position. Defaults to centre.',
+          signature: 'position?: string;',
+        },
+      ],
     },
     {
       name: 'ImageOutputFormat',
@@ -29567,30 +38610,130 @@ export const apiSymbolSets: Readonly<
       anchor: 'image-pipeline-options',
       signature: 'ImagePipelineOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'widths',
+          summary: '',
+          signature: 'widths?: readonly number[];',
+        },
+        {
+          name: 'formats',
+          summary: '',
+          signature: 'formats?: readonly ImageOutputFormat[];',
+        },
+        {
+          name: 'quality',
+          summary: '',
+          signature: 'quality?: ImageQualityOptions;',
+        },
+      ],
     },
     {
       name: 'ImageProps',
       anchor: 'image-props',
       signature: 'ImageProps: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'image',
+          summary: '',
+          signature: 'image: ResponsiveImage;',
+        },
+        {
+          name: 'alt',
+          summary: '',
+          signature: 'alt: string;',
+        },
+        {
+          name: 'sizes',
+          summary: '',
+          signature: 'sizes?: string;',
+        },
+      ],
     },
     {
       name: 'ImageQualityOptions',
       anchor: 'image-quality-options',
       signature: 'ImageQualityOptions: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'avif',
+          summary: '',
+          signature: 'avif?: number;',
+        },
+        {
+          name: 'webp',
+          summary: '',
+          signature: 'webp?: number;',
+        },
+        {
+          name: 'jpeg',
+          summary: '',
+          signature: 'jpeg?: number;',
+        },
+        {
+          name: 'png',
+          summary: '',
+          signature: 'png?: number;',
+        },
+      ],
     },
     {
       name: 'ResponsiveImage',
       anchor: 'responsive-image',
       signature: 'ResponsiveImage: any',
       typeOnly: true,
+      members: [
+        {
+          name: '__askrImage',
+          summary: '',
+          signature: 'readonly __askrImage: true;',
+        },
+        {
+          name: 'src',
+          summary: '',
+          signature: 'readonly src: string;',
+        },
+        {
+          name: 'srcset',
+          summary: '',
+          signature: 'readonly srcset?: string;',
+        },
+        {
+          name: 'width',
+          summary: '',
+          signature: 'readonly width: number;',
+        },
+        {
+          name: 'height',
+          summary: '',
+          signature: 'readonly height: number;',
+        },
+        {
+          name: 'sources',
+          summary: '',
+          signature: 'readonly sources: readonly ResponsiveImageSource[];',
+        },
+      ],
     },
     {
       name: 'ResponsiveImageSource',
       anchor: 'responsive-image-source',
       signature: 'ResponsiveImageSource: any',
       typeOnly: true,
+      members: [
+        {
+          name: 'type',
+          summary: '',
+          signature: 'type: string;',
+        },
+        {
+          name: 'srcset',
+          summary: '',
+          signature: 'srcset: string;',
+        },
+      ],
     },
   ],
 };
