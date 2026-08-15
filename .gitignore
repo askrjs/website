@@ -52,10 +52,11 @@ Thumbs.db
 # Screenshots
 screenshots/
 **/screenshots/
+**/__screenshots__/
 .codex-screenshots/
+.vitest-attachments/
 
 # Environment
 .env
 .env.*
 !.env.example
-
