@@ -19,7 +19,8 @@
     "fmt:check": "vp fmt . --check",
     "test:unit": "vp test run --exclude tests/generated-output-contract.test.ts",
     "test:static": "vp test run tests/generated-output-contract.test.ts",
-    "test": "npm run test:unit",
+    "test": "npm run test:unit && npm run test:browser",
+    "test:browser": "vp test run -c vitest.test.browser.config.ts --mode production",
     "typecheck": "tsc --noEmit",
     "check": "npm run fmt:check && npm run lint && npm run typecheck && npm test && npm run build",
     "preview": "vp preview --outDir dist"
@@ -46,6 +47,8 @@
     "@askrjs/testing": "0.0.6",
     "@askrjs/vite": "0.0.13",
     "@types/node": "^26.2.0",
+    "@vitest/browser-playwright": "4.1.10",
+    "playwright": "^1.62.1",
     "@typescript/native": "npm:typescript@^7.0.2",
     "monaco-editor": "^0.56.0",
     "tsx": "4.23.11",

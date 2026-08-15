@@ -53,9 +53,9 @@ Thumbs.db
 screenshots/
 **/screenshots/
 .codex-screenshots/
+.vitest-attachments/
 
 # Environment
 .env
 .env.*
 !.env.example
-
