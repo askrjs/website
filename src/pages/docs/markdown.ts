@@ -85,6 +85,15 @@ function apiPageMarkdown(page: DocsPageDefinition): string {
   for (const symbol of symbols) {
     lines.push('', `### \`${symbol.name}\``, '');
     lines.push(codeFence(symbol.signature, 'ts'));
+    if (symbol.summary) lines.push('', symbol.summary);
+    if (symbol.remarks) lines.push('', symbol.remarks);
+    for (const example of symbol.tags?.example ?? [])
+      lines.push('', codeFence(example, exampleLanguage(example)));
+    for (const member of symbol.members ?? [])
+      lines.push(
+        '',
+        `- \`${member.name}\`: ${member.summary || member.signature}`
+      );
   }
   lines.push(...pagination(page));
   return `${lines.join('\n')}\n`;
