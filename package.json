@@ -17,7 +17,7 @@
     "lint": "vp lint src tests scripts ssg.config.ts vite.config.ts",
     "fmt": "vp fmt .",
     "fmt:check": "vp fmt . --check",
-    "test:unit": "vp test run --exclude tests/generated-output-contract.test.ts",
+    "test:unit": "vp test run --exclude tests/generated-output-contract.test.ts --exclude \"tests/browser/**\"",
     "test:static": "vp test run tests/generated-output-contract.test.ts",
     "test": "npm run test:unit && npm run test:browser",
     "test:browser": "vp test run -c vitest.test.browser.config.ts --mode production",
