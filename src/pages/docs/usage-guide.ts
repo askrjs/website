@@ -83,7 +83,7 @@ const result = createQuery(project, { id: projectId });`,
   '/docs/authentication/authorization': `route('/admin', AdminPage, {
   auth: requireUser(),
   policies: [({ auth }) =>
-    auth.permissions.includes('admin') ? allow() : forbidden()],
+    auth.principal?.permissions?.includes('admin') ? allow() : forbidden()],
 });`,
   '/docs/http-contracts/schemas': `const project = schema.object({
   id: schema.string(),
@@ -274,10 +274,14 @@ import { ScrollArea, ScrollAreaScrollbar, ScrollAreaThumb, ScrollAreaViewport } 
       /Monaco Editor/,
       `import { MonacoEditor } from '@askrjs/monaco';
 
+// MonacoEditorProps has no onChange — subscribe to edits through onMount
+// and the real Monaco editor instance it hands you instead.
 <MonacoEditor
   value={source()}
   language="typescript"
-  onChange={(value) => setSource(value ?? '')}
+  onMount={(editor) => {
+    editor.onDidChangeModelContent(() => setSource(editor.getValue()));
+  }}
   options={{ minimap: { enabled: false } }}
 />`,
     ],

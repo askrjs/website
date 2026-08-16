@@ -24,7 +24,8 @@ const packagePurpose: Record<string, string> = {
   node: 'The Node adapter that runs the server in production.',
   schema: 'Executable schemas that also project to OpenAPI.',
   auth: 'Identity resolution and route access policies.',
-  fetch: 'Typed HTTP clients, generated from an OpenAPI document.',
+  fetch:
+    'Typed HTTP clients defined in code, or generated from an OpenAPI document via the CLI.',
   i18n: 'Typed message keys that fail the build when a translation is missing.',
   otel: 'Redaction-aware OpenTelemetry instrumentation.',
   testing: 'Request injection and HTTP testing helpers.',
