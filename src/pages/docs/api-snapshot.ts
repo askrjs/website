@@ -26,6 +26,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'askr-runtime',
       signature: 'AskrRuntime: typeof AskrRuntime',
       typeOnly: true,
+      summary:
+        'A scheduler + renderer host pairing; owns scheduling and renderer wiring for an app instance.',
       members: [
         {
           name: 'scheduler',
@@ -54,6 +56,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'askr-runtime-options',
       signature: 'AskrRuntimeOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link createRuntime}.',
       members: [
         {
           name: 'scheduler',
@@ -72,12 +75,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'case',
       signature: 'Case: (props: CaseProps) => JSXElement',
       typeOnly: true,
+      summary:
+        'Render the first matching {@link Match} child (by `when`), or `fallback` if none match.',
     },
     {
       name: 'CaseProps',
       anchor: 'case-props',
       signature: 'CaseProps: any',
       typeOnly: true,
+      summary: 'Props for {@link Case}.',
     },
     {
       name: 'configureRenderDiagnostics',
@@ -94,36 +100,52 @@ export const apiSymbolSets: Readonly<
       signature:
         'createQuery: { <T extends {}>(options: QueryOptions<T>): Query<T>; <TInput, TResult extends {}>(definition: QueryDefinition<TInput, TResult>, input: TInput, options?: Omit<QueryOptions<TResult>, "key" | "fetch">): Query<TResult>; }',
       typeOnly: true,
+      summary:
+        'Create a reactive {@link Query} cell bound to the current component, either\nfrom inline `options` (key + fetch) or a reusable {@link QueryDefinition}\nplus its input.',
     },
     {
       name: 'createRef',
       anchor: 'create-ref',
       signature: 'createRef: <T extends Element = Element>() => Ref<T>',
       typeOnly: true,
+      summary: 'Create a new, empty {@link Ref} holder.',
     },
     {
       name: 'createRuntime',
       anchor: 'create-runtime',
       signature: 'createRuntime: (options?: AskrRuntimeOptions) => AskrRuntime',
       typeOnly: true,
+      summary:
+        'Create a new {@link AskrRuntime} instance with its own scheduler/renderer wiring.',
     },
     {
       name: 'cspNonce',
       anchor: 'csp-nonce',
       signature: 'cspNonce: () => string | undefined',
       typeOnly: true,
+      summary:
+        'Read the CSP nonce for the current render from {@link CspNonceScope}.',
+      tags: {
+        returns: [
+          'The active nonce, or `undefined` when called outside of a\ncomponent render or when no nonce was configured.',
+        ],
+      },
     },
     {
       name: 'CspNonceScope',
       anchor: 'csp-nonce-scope',
       signature: 'CspNonceScope: Scope<string | undefined>',
       typeOnly: true,
+      summary:
+        'Lexical scope carrying the CSP nonce for the current render, if any.',
     },
     {
       name: 'DataRuntime',
       anchor: 'data-runtime',
       signature: 'DataRuntime: any',
       typeOnly: true,
+      summary:
+        'Isolated cache/state container backing queries and mutations, e.g. one per test or request.',
       members: [
         {
           name: 'queryCache',
@@ -155,12 +177,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'defineQuery: <TInput, TResult extends {}>(definition: QueryDefinition<TInput, TResult>) => QueryDefinition<TInput, TResult>',
       typeOnly: true,
+      summary: 'Freeze and return a reusable {@link QueryDefinition}.',
     },
     {
       name: 'defineScope',
       anchor: 'define-scope',
       signature: 'defineScope: <T>(defaultValue: T) => Scope<T>',
       typeOnly: true,
+      summary:
+        'Create a new lexical {@link Scope} with `defaultValue`, readable via {@link readScope}.',
     },
     {
       name: 'defineServerQueries',
@@ -168,6 +193,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'defineServerQueries: (...entries: readonly ServerQueryEntry<any, any>[]) => ServerQueryRegistry',
       typeOnly: true,
+      summary:
+        'Build a {@link ServerQueryRegistry} from one or more {@link serveQuery} entries.',
     },
     {
       name: 'dehydrateDataRuntime',
@@ -175,6 +202,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'dehydrateDataRuntime: (runtime: DataRuntime) => Record<string, unknown>',
       typeOnly: true,
+      summary:
+        "Extract a runtime's cached query data into a JSON-serializable snapshot, dropping non-serializable values.",
     },
     {
       name: 'derive',
@@ -190,6 +219,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'derived',
       signature: 'Derived: any',
       typeOnly: true,
+      summary:
+        'A reactive derived value produced by {@link derive}; call it to read the current result.',
     },
     {
       name: 'For',
@@ -197,24 +228,30 @@ export const apiSymbolSets: Readonly<
       signature:
         'For: <T, K extends string | number = string | number>(props: ForProps<T, K>) => JSXElement',
       typeOnly: true,
+      summary:
+        'Render a keyed or indexed list, reconciling items by key instead of position.',
     },
     {
       name: 'ForProps',
       anchor: 'for-props',
       signature: 'ForProps: any',
       typeOnly: true,
+      summary: 'Props for {@link For}.',
     },
     {
       name: 'Fragment',
       anchor: 'fragment',
       signature: 'Fragment: typeof Fragment',
       typeOnly: true,
+      summary:
+        'The element type marker for JSX fragments (`<>...</>`), groups children without a wrapper element.',
     },
     {
       name: 'getDefaultRuntime',
       anchor: 'get-default-runtime',
       signature: 'getDefaultRuntime: () => AskrRuntime',
       typeOnly: true,
+      summary: 'Get the process-wide default {@link AskrRuntime}.',
     },
     {
       name: 'getSignal',
@@ -230,6 +267,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'hydrateDataRuntime: (runtime: DataRuntime, data: unknown) => void',
       typeOnly: true,
+      summary:
+        "Load a {@link dehydrateDataRuntime} snapshot back into a runtime's query cache.",
     },
     {
       name: 'jsx',
@@ -237,6 +276,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'jsx: { (type: EagerControlPrimitive, props: Props | null, key?: string | number): unknown; <TTag extends keyof KnownIntrinsicElementProps>(type: TTag, props: KnownIntrinsicElementProps[TTag] | null, key?: string | number): JSXElement; <TTag extends string>(type: Exclude<TTag, keyof KnownIntrinsicElementProps>, props: IntrinsicFallbackProps | null, key?: string | number): JSXElement; <TProps extends object>(type: (props: TProps) => unknown, props: TProps | null, key?: string | number): JSXElement; (type: symbol, props: Props | null, key?: string | number): JSXElement; }',
       typeOnly: true,
+      summary:
+        'JSX factory for elements with a single or no child, used by the `jsxImportSource` transform.',
     },
     {
       name: 'jsxs',
@@ -244,18 +285,24 @@ export const apiSymbolSets: Readonly<
       signature:
         'jsxs: { (type: EagerControlPrimitive, props: Props | null, key?: string | number): unknown; <TTag extends keyof KnownIntrinsicElementProps>(type: TTag, props: KnownIntrinsicElementProps[TTag] | null, key?: string | number): JSXElement; <TTag extends string>(type: Exclude<TTag, keyof KnownIntrinsicElementProps>, props: IntrinsicFallbackProps | null, key?: string | number): JSXElement; <TProps extends object>(type: (props: TProps) => unknown, props: TProps | null, key?: string | number): JSXElement; (type: symbol, props: Props | null, key?: string | number): JSXElement; }',
       typeOnly: true,
+      summary:
+        'JSX factory for elements with multiple static children, used by the `jsxImportSource` transform.',
     },
     {
       name: 'Match',
       anchor: 'match',
       signature: 'Match: (_props: MatchProps) => null',
       typeOnly: true,
+      summary:
+        'Declares one branch of a {@link Case}; only valid as its direct child.',
     },
     {
       name: 'MatchProps',
       anchor: 'match-props',
       signature: 'MatchProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link Match}, valid only as a direct child of {@link Case}.',
     },
     {
       name: 'prefetchQuery',
@@ -263,6 +310,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'prefetchQuery: <TInput, TResult extends {}>(context: QueryPrefetchContext, query: QueryDefinition<TInput, TResult>, input: TInput) => Promise<boolean>',
       typeOnly: true,
+      summary:
+        "Prefetch `query` with `input` into a {@link QueryPrefetchContext}'s runtime.",
     },
     {
       name: 'Props',
@@ -290,6 +339,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'query-definition',
       signature: 'QueryDefinition: any',
       typeOnly: true,
+      summary:
+        'Reusable query definition for {@link defineQuery}: key, fetcher, and freshness checks.',
       members: [
         {
           name: 'key',
@@ -320,6 +371,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'query-prefetch-context',
       signature: 'QueryPrefetchContext: any',
       typeOnly: true,
+      summary:
+        'Context passed to server prefetch callbacks, exposing a scoped `prefetch` helper.',
       members: [
         {
           name: 'runtime',
@@ -354,6 +407,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'read-scope',
       signature: 'readScope: <T>(context: Scope<T>) => T',
       typeOnly: true,
+      summary:
+        'Read the current value of a {@link Scope} during component render or an async resource.',
     },
     {
       name: 'Ref',
@@ -402,6 +457,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'runtime-keyed-reorder-decision',
       signature: 'RuntimeKeyedReorderDecision: any',
       typeOnly: true,
+      summary:
+        'Diagnostic breakdown of a keyed-list reorder decision, returned by {@link RuntimeRendererHost.isKeyedReorderFastPathEligible}.',
       members: [
         {
           name: 'useFastPath',
@@ -450,6 +507,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'runtime-renderer-host',
       signature: 'RuntimeRendererHost: any',
       typeOnly: true,
+      summary:
+        'The renderer implementation an {@link AskrRuntime} delegates DOM evaluation and cleanup to.',
       members: [
         {
           name: 'evaluate',
@@ -509,6 +568,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'scope',
       signature: 'Scope: any',
       typeOnly: true,
+      summary:
+        'A lexical scope created by {@link defineScope}; render it as a provider component, read it with {@link readScope}.',
       members: [
         {
           name: 'key',
@@ -536,6 +597,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'selector',
       signature: 'Selector: any',
       typeOnly: true,
+      summary:
+        'A fine-grained reactive membership check produced by {@link selector}.',
     },
     {
       name: 'serveQuery',
@@ -543,24 +606,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'serveQuery: <TInput, TResult extends {}>(query: QueryDefinition<TInput, TResult>, handler: ServerQueryHandler<TInput, TResult>) => ServerQueryEntry<TInput, TResult>',
       typeOnly: true,
+      summary:
+        'Pair a {@link QueryDefinition} with the server-side handler that resolves it.',
     },
     {
       name: 'ServerQueryHandler',
       anchor: 'server-query-handler',
       signature: 'ServerQueryHandler: any',
       typeOnly: true,
+      summary:
+        "Server-side handler that resolves a {@link QueryDefinition}'s data for `serveQuery`.",
     },
     {
       name: 'Show',
       anchor: 'show',
       signature: 'Show: <T>(props: ShowProps<T>) => JSXElement',
       typeOnly: true,
+      summary:
+        'Conditionally render children based on `when`, narrowing truthy values for the render function form.',
     },
     {
       name: 'ShowProps',
       anchor: 'show-props',
       signature: 'ShowProps: any',
       typeOnly: true,
+      summary: 'Props for {@link Show}.',
     },
     {
       name: 'state',
@@ -616,6 +686,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'cleanup-app',
       signature: 'cleanupApp: (root: Element | string) => void',
       typeOnly: true,
+      summary:
+        'Tear down the app mounted at `root`: runs its cleanup callbacks, clears\nroute state if it was the last routed root, and removes bookkeeping for\nthe root element.',
     },
     {
       name: 'createIsland',
@@ -645,6 +717,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'has-app',
       signature: 'hasApp: (root: Element | string) => boolean',
       typeOnly: true,
+      summary: 'Check whether an app instance is currently mounted at `root`.',
     },
     {
       name: 'hydrateSPA',
@@ -659,24 +732,30 @@ export const apiSymbolSets: Readonly<
       anchor: 'hydrate-spaconfig',
       signature: 'HydrateSPAConfig: any',
       typeOnly: true,
+      summary: 'Configuration for {@link hydrateSPA}.',
     },
     {
       name: 'IslandConfig',
       anchor: 'island-config',
       signature: 'IslandConfig: any',
       typeOnly: true,
+      summary:
+        'Configuration for {@link createIsland}: mounts one component onto existing DOM.',
     },
     {
       name: 'IslandsConfig',
       anchor: 'islands-config',
       signature: 'IslandsConfig: any',
       typeOnly: true,
+      summary:
+        'Configuration for {@link createIslands}: mounts several islands at once.',
     },
     {
       name: 'SPAConfig',
       anchor: 'spaconfig',
       signature: 'SPAConfig: any',
       typeOnly: true,
+      summary: 'Configuration for {@link createSPA}.',
     },
   ],
   symbols2: [
@@ -686,19 +765,22 @@ export const apiSymbolSets: Readonly<
       signature: 'ErrorBoundary: (props: ErrorBoundaryProps) => JSXElement',
       typeOnly: true,
       summary:
-        'Creates a render-time boundary whose fallback handles descendant render/commit errors.',
+        'Creates a boundary for descendant mount and post-mount render/commit errors,\nincluding content materialized through a portal host.',
     },
     {
       name: 'ErrorBoundaryFallbackRender',
       anchor: 'error-boundary-fallback-render',
       signature: 'ErrorBoundaryFallbackRender: any',
       typeOnly: true,
+      summary:
+        'Renders a fallback for the caught error; call `reset` to retry the children.',
     },
     {
       name: 'ErrorBoundaryProps',
       anchor: 'error-boundary-props',
       signature: 'ErrorBoundaryProps: any',
       typeOnly: true,
+      summary: 'Props for {@link ErrorBoundary}.',
       members: [
         {
           name: 'children',
@@ -707,18 +789,20 @@ export const apiSymbolSets: Readonly<
         },
         {
           name: 'fallback',
-          summary: '',
+          summary:
+            'Static fallback content, or a render function receiving the error and a reset callback.',
           signature:
             'fallback?: ErrorBoundaryFallbackValue | ErrorBoundaryFallbackRender;',
         },
         {
           name: 'onError',
-          summary: '',
+          summary: 'Called with the caught error when the boundary trips.',
           signature: 'onError?: (error: unknown) => void;',
         },
         {
           name: 'resetKey',
-          summary: '',
+          summary:
+            'Changing this value resets the boundary, re-rendering the children.',
           signature: 'resetKey?: unknown;',
         },
       ],
@@ -730,12 +814,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'case',
       signature: 'Case: (props: CaseProps) => JSXElement',
       typeOnly: true,
+      summary:
+        'Render the first matching {@link Match} child (by `when`), or `fallback` if none match.',
     },
     {
       name: 'CaseProps',
       anchor: 'case-props',
       signature: 'CaseProps: any',
       typeOnly: true,
+      summary: 'Props for {@link Case}.',
     },
     {
       name: 'For',
@@ -743,36 +830,46 @@ export const apiSymbolSets: Readonly<
       signature:
         'For: <T, K extends string | number = string | number>(props: ForProps<T, K>) => JSXElement',
       typeOnly: true,
+      summary:
+        'Render a keyed or indexed list, reconciling items by key instead of position.',
     },
     {
       name: 'ForProps',
       anchor: 'for-props',
       signature: 'ForProps: any',
       typeOnly: true,
+      summary: 'Props for {@link For}.',
     },
     {
       name: 'Match',
       anchor: 'match',
       signature: 'Match: (_props: MatchProps) => null',
       typeOnly: true,
+      summary:
+        'Declares one branch of a {@link Case}; only valid as its direct child.',
     },
     {
       name: 'MatchProps',
       anchor: 'match-props',
       signature: 'MatchProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link Match}, valid only as a direct child of {@link Case}.',
     },
     {
       name: 'Show',
       anchor: 'show',
       signature: 'Show: <T>(props: ShowProps<T>) => JSXElement',
       typeOnly: true,
+      summary:
+        'Conditionally render children based on `when`, narrowing truthy values for the render function form.',
     },
     {
       name: 'ShowProps',
       anchor: 'show-props',
       signature: 'ShowProps: any',
       typeOnly: true,
+      summary: 'Props for {@link Show}.',
     },
   ],
   symbols4: [
@@ -781,6 +878,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'default-portal',
       signature: 'DefaultPortal: Portal<RenderableChild>',
       typeOnly: true,
+      summary:
+        'The implicit portal channel that {@link Portal} writes to and that any\nhost rendered without an explicit portal falls back to.',
     },
     {
       name: 'definePortal',
@@ -788,12 +887,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'definePortal: <T extends RenderableChild = RenderableChild>() => Portal<T>',
       typeOnly: true,
+      summary:
+        'Create a new named {@link Portal} channel with its own host and content.',
     },
     {
       name: 'JSXElement',
       anchor: 'jsxelement',
       signature: 'JSXElement: any',
       typeOnly: true,
+      summary: 'The vnode shape produced by JSX/`jsx()` calls.',
       members: [
         {
           name: '$$typeof',
@@ -823,6 +925,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'layout: <P = object>(Layout: LayoutComponent<P>) => (children?: RenderableChild, props?: P) => unknown',
       typeOnly: true,
+      summary:
+        'Wrap a {@link LayoutComponent} so it can be invoked as `(children, props)`,\nmatching route layout conventions.',
     },
     {
       name: 'LayoutComponent',
@@ -830,19 +934,22 @@ export const apiSymbolSets: Readonly<
       signature: 'LayoutComponent: any',
       typeOnly: true,
       summary:
-        'Layout helper.\n\nA layout is just a normal component that wraps children.\nPersistence and reuse are handled by the runtime via component identity.\n\nThis helper exists purely for readability and convention.\n\nPOLICY DECISIONS (LOCKED):\n\n1. Return Type is Opaque (unknown)\n   Layout components return `unknown` to remain runtime-agnostic.\n   The runtime owns concrete JSX element types.\n\n2. Children Positioning\n   Layout receives children as first argument (router-friendly).\n   Props come second. This matches route layout conventions where\n   children represent the nested route content.\n\n3. Props Spreading\n   Props are spread into the layout component. This is intentional\n   and deterministic — no merging or composition.',
+        'A component that receives its route children via `props.children`.',
     },
     {
       name: 'Portal',
       anchor: 'portal',
       signature: 'Portal: (props: PortalProps) => JSXElement | null',
       typeOnly: true,
+      summary:
+        'Write children to the {@link DefaultPortal} host wherever it is rendered.\nA named portal channel created by {@link definePortal}: call it as a\ncomponent to render the host, and call `.render(props)` to write content.',
     },
     {
       name: 'PortalProps',
       anchor: 'portal-props',
       signature: 'PortalProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link Portal} component.',
       members: [
         {
           name: 'children',
@@ -865,10 +972,12 @@ export const apiSymbolSets: Readonly<
       anchor: 'presence-props',
       signature: 'PresenceProps: any',
       typeOnly: true,
+      summary: 'Props for {@link Presence}.',
       members: [
         {
           name: 'present',
-          summary: '',
+          summary:
+            'Whether the children should be mounted, or a function returning it.',
           signature: 'present: boolean | (() => boolean);',
         },
         {
@@ -891,6 +1000,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'slot-props',
       signature: 'SlotProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link Slot}: `asChild` selects prop-merging vs. fragment mode.',
     },
   ],
   symbols5: [
@@ -900,7 +1011,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ariaDisabled: (disabled?: boolean) => { "aria-disabled"?: "true"; }',
       typeOnly: true,
-      summary: 'Tiny aria helpers',
+      summary:
+        'Build an `aria-disabled` prop object; omitted entirely when `disabled` is falsy.',
     },
     {
       name: 'ariaExpanded',
@@ -908,6 +1020,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ariaExpanded: (expanded?: boolean) => { "aria-expanded"?: "true" | "false"; }',
       typeOnly: true,
+      summary:
+        'Build an `aria-expanded` prop object; omitted when `expanded` is `undefined`.',
     },
     {
       name: 'ariaSelected',
@@ -915,6 +1029,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ariaSelected: (selected?: boolean) => { "aria-selected"?: "true" | "false"; }',
       typeOnly: true,
+      summary:
+        'Build an `aria-selected` prop object; omitted when `selected` is `undefined`.',
     },
     {
       name: 'composeHandlers',
@@ -922,14 +1038,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'composeHandlers: <A extends readonly unknown[]>(first?: (...args: A) => void, second?: (...args: A) => void, options?: ComposeHandlersOptions) => (...args: A) => void',
       typeOnly: true,
+      summary:
+        'Compose two optional event handlers into one, running `first` then\n`second` unless `first` marked the event as default-prevented.',
     },
     {
       name: 'ComposeHandlersOptions',
       anchor: 'compose-handlers-options',
       signature: 'ComposeHandlersOptions: any',
       typeOnly: true,
-      summary:
-        'composeHandlers\n\nCompose two event handlers into one. The first handler runs, and unless it\ncalls `event.preventDefault()` (or sets `defaultPrevented`), the second\nhandler runs. This prevents accidental clobbering of child handlers when\ninjecting props.\n\nPOLICY DECISIONS (LOCKED):\n\n1. Execution Order\n   First handler runs before second (injected before base).\n   This allows injected handlers to prevent default behavior.\n\n2. Default Prevention Check\n   By default, checks `defaultPrevented` on first argument.\n   Can be disabled via options.checkDefaultPrevented = false.\n\n3. Undefined Handler Support\n   Undefined handlers are skipped (no-op). This simplifies usage\n   where handlers are optional.\n\n4. Type Safety\n   Args are readonly to prevent mutation. Return type matches input.',
+      summary: 'Options for {@link composeHandlers}.',
       members: [
         {
           name: 'checkDefaultPrevented',
@@ -945,12 +1062,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'composeRefs: <T>(...refs: Array<Ref<T>>) => (value: T | null) => void',
       typeOnly: true,
+      summary:
+        'Combine multiple refs into one callback ref that writes to all of them.',
     },
     {
       name: 'DefaultPreventable',
       anchor: 'default-preventable',
       signature: 'DefaultPreventable: any',
       typeOnly: true,
+      summary:
+        'Minimal shape of an event that can be prevented from its default action.',
       members: [
         {
           name: 'defaultPrevented',
@@ -969,6 +1090,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'focus-like-event',
       signature: 'FocusLikeEvent: any',
       typeOnly: true,
+      summary:
+        'Structural subset of a focus event, for handlers that accept native or synthetic events.',
       members: [
         {
           name: 'relatedTarget',
@@ -990,6 +1113,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'format-id-options',
       signature: 'FormatIdOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link formatId}.',
       members: [
         {
           name: 'prefix',
@@ -1008,6 +1132,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'keyboard-like-event',
       signature: 'KeyboardLikeEvent: any',
       typeOnly: true,
+      summary:
+        'Structural subset of a keyboard event, for handlers that accept native or synthetic events.',
       members: [
         {
           name: 'key',
@@ -1022,12 +1148,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'mergeProps: <TBase extends object, TInjected extends object>(base: TBase, injected: TInjected) => TInjected & TBase',
       typeOnly: true,
+      summary:
+        'Merge `base` props over `injected` props: non-handler keys in `base` win,\nand matching event handlers are composed (`injected` runs first).',
     },
     {
       name: 'PointerLikeEvent',
       anchor: 'pointer-like-event',
       signature: 'PointerLikeEvent: any',
       typeOnly: true,
+      summary:
+        'Structural subset of a pointer event, for handlers that accept native or synthetic events.',
       members: [
         {
           name: 'target',
@@ -1041,6 +1171,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'propagation-stoppable',
       signature: 'PropagationStoppable: any',
       typeOnly: true,
+      summary: 'Minimal shape of an event whose propagation can be stopped.',
       members: [
         {
           name: 'stopPropagation',
@@ -1054,14 +1185,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'ref',
       signature: 'Ref: any',
       typeOnly: true,
-      summary:
-        'Ref composition utilities\n\nPOLICY DECISIONS (LOCKED):\n\n1. Ref Types Supported\n   - Callback refs: (value: T | null) => void\n   - Object refs: { current: T | null }\n   - null/undefined (no-op)\n\n2. Write Failure Handling\n   setRef catches write failures (readonly refs) and ignores them.\n   This is intentional — refs may be readonly in some contexts.\n\n3. Composition Order\n   composeRefs applies refs in array order (left to right).\n   All refs are called even if one fails.',
+      summary: 'A callback ref, an object ref, or a nullish value (no-op).',
     },
     {
       name: 'setRef',
       anchor: 'set-ref',
       signature: 'setRef: <T>(ref: Ref<T>, value: T | null) => void',
       typeOnly: true,
+      summary:
+        'Write `value` to a {@link Ref}, ignoring failures on readonly object refs.',
     },
   ],
   symbols6: [
@@ -1078,22 +1210,30 @@ export const apiSymbolSets: Readonly<
       name: 'dismissable',
       anchor: 'dismissable',
       signature:
-        'dismissable: ({ node, disabled, onDismiss }: DismissableOptions) => { onKeyDown: (e: KeyboardLikeEvent) => void; onPointerDownCapture: (e: PointerLikeEvent) => void; }',
+        'dismissable: ({ node, additionalInsideNodes, disabled, onDismiss }: DismissableOptions) => { onKeyDown: (e: KeyboardLikeEvent) => void; onPointerDownCapture: (e: PointerLikeEvent) => void; }',
       typeOnly: true,
+      summary:
+        'Produce keydown/outside-click props that invoke `onDismiss` on Escape or an outside click.',
     },
     {
       name: 'DismissableOptions',
       anchor: 'dismissable-options',
       signature: 'DismissableOptions: any',
       typeOnly: true,
-      summary:
-        "dismissable\n\nTHE dismissal primitive. Handles Escape key and outside interactions.\n\nINVARIANTS:\n1. Returns props that compose via mergeProps (no factories)\n2. Disabled state respected exactly once, here\n3. No side effects - pure props generation\n4. Outside detection requires explicit node reference\n5. This is the ONLY dismissal primitive - do not create alternatives\n\nDESIGN:\n- Returns standard event handler props (onKeyDown, onPointerDownCapture)\n- Composable via mergeProps with other foundations\n- Caller provides the protected node reference for outside detection\n- Returned capture props must be attached to a surface that can observe both\n  the protected subtree and the outside interaction path (for example, an\n  overlay or wrapper around the protected node)\n- Single onDismiss callback for all dismiss triggers\n\nPIT OF SUCCESS:\n✓ Can't accidentally bypass (only way to get dismiss behavior)\n✓ Can't duplicate (disabled checked once)\n✓ Composes via mergeProps (standard props)\n✓ Wrong usage is hard (no factories to misuse)\n\nUSAGE:\n  const props = dismissable({\n    node: elementRef,\n    disabled: false,\n    onDismiss: () => close()\n  });\n\n  <div {...props}>\n    <div ref={elementRef}>Content</div>\n  </div>\n\nMISUSE EXAMPLE (PREVENTED):\n  ❌ Can't forget to check disabled - checked inside dismissable\n  ❌ Can't create custom escape handler - this is the only one\n  ❌ Can't bypass via direct event listeners - mergeProps composes correctly",
+      summary: 'Options for {@link dismissable}.',
       members: [
         {
           name: 'node',
           summary:
             'Reference to the protected element for outside click detection. Attach the\nreturned capture props to a surface that encloses this node.',
           signature: 'node?: Node | null;',
+        },
+        {
+          name: 'additionalInsideNodes',
+          summary:
+            'Additional roots that are logically inside the protected surface even\nwhen a portal places them outside `node` in the DOM tree.',
+          signature:
+            'additionalInsideNodes?: readonly (Node | null | undefined)[];',
         },
         {
           name: 'disabled',
@@ -1113,14 +1253,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'focusable: ({ disabled, tabIndex }: FocusableOptions) => FocusableResult',
       typeOnly: true,
+      summary:
+        'Normalize `tabIndex`/`aria-disabled` props for a focusable host.',
     },
     {
       name: 'FocusableOptions',
       anchor: 'focusable-options',
       signature: 'FocusableOptions: any',
       typeOnly: true,
-      summary:
-        'focusable\n\nNormalize focus-related props for hosts.\n- No DOM manipulation here; returns props that the runtime may attach.',
+      summary: 'Options for {@link focusable}.',
       members: [
         {
           name: 'disabled',
@@ -1139,6 +1280,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'focusable-result',
       signature: 'FocusableResult: any',
       typeOnly: true,
+      summary: 'Element props returned by {@link focusable}.',
       members: [
         {
           name: 'tabIndex',
@@ -1153,14 +1295,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'hoverable: ({ disabled, onEnter, onLeave }: HoverableOptions) => HoverableResult',
       typeOnly: true,
+      summary:
+        'Produce pointer enter/leave props that call `onEnter`/`onLeave` unless disabled.',
     },
     {
       name: 'HoverableOptions',
       anchor: 'hoverable-options',
       signature: 'HoverableOptions: any',
       typeOnly: true,
-      summary:
-        'hoverable\n\nProduces props for pointer enter/leave handling. Pure and deterministic.',
+      summary: 'Options for {@link hoverable}.',
       members: [
         {
           name: 'disabled',
@@ -1184,6 +1327,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'hoverable-result',
       signature: 'HoverableResult: any',
       typeOnly: true,
+      summary: 'Element props returned by {@link hoverable}.',
       members: [
         {
           name: 'onPointerEnter',
@@ -1202,8 +1346,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'interaction-policy-input',
       signature: 'InteractionPolicyInput: any',
       typeOnly: true,
-      summary:
-        "USAGE EXAMPLE:\n\nfunction Menu() {\n  const [focusIndex, setFocusIndex] = state(0);\n  const items = ['File', 'Edit', 'View'];\n\n  const navigation = rovingFocus({\n    currentIndex: focusIndex(),\n    itemCount: items.length,\n    orientation: 'horizontal',\n    loop: true,\n    onNavigate: setFocusIndex,\n  });\n\n  return (\n    <div {...navigation.container}>\n      {items.map((label, index) => (\n        <button {...navigation.item(index)}>\n          {label}\n        </button>\n      ))}\n    </div>\n  );\n}",
+      summary: 'Input to {@link applyInteractionPolicy}.',
       members: [
         {
           name: 'isNative',
@@ -1243,6 +1386,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'orientation',
       signature: 'Orientation: any',
       typeOnly: true,
+      summary: 'Arrow-key axis for {@link rovingFocus}.',
     },
     {
       name: 'pressable',
@@ -1250,14 +1394,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'pressable: ({ disabled, onPress, isNativeButton }: PressableOptions) => PressableResult',
       typeOnly: true,
+      summary:
+        "Produce click/keyboard props implementing 'press' semantics for an element.",
     },
     {
       name: 'PressableOptions',
       anchor: 'pressable-options',
       signature: 'PressableOptions: any',
       typeOnly: true,
-      summary:
-        'pressable\n\nInteraction helper that produces VNode props for \'press\' semantics.\n- Pure and deterministic: no DOM construction or mutation here\n- The runtime owns event attachment and scheduling\n- This helper returns plain props (handlers) intended to be attached by the runtime\n\nBehaviour:\n- For native buttons: only an `onClick` prop is provided (no ARIA or keyboard shims)\n- For non-button elements: add `role="button"` and `tabIndex` and keyboard handlers\n- Activation: `Enter` activates on keydown, `Space` activates on keyup (matches native button)\n- Disabled: handlers short-circuit and `aria-disabled` is set for all hosts\n\nPOLICY DECISIONS (LOCKED):\n\n1. Activation Timing (Platform Parity)\n   - Enter fires on keydown (immediate response)\n   - Space fires on keyup (allows cancel by moving focus, matches native)\n   - Space keydown prevents scroll (matches native button behavior)\n\n2. Disabled Enforcement Strategy\n   - Native buttons: Use HTML `disabled` attribute (platform-enforced non-interactivity)\n                    AND `aria-disabled` (consistent a11y signaling)\n   - Non-native: Use `tabIndex=-1` (removes from tab order)\n                 AND `aria-disabled` (signals disabled state to AT)\n   - Click handler short-circuits as defense-in-depth (prevents leaked focus issues)\n\n3. Key Repeat Behavior\n   - Held Enter/Space will fire onPress repeatedly (matches native button)\n   - No debouncing or repeat prevention (platform parity)',
+      summary: 'Options for {@link pressable}.',
       members: [
         {
           name: 'disabled',
@@ -1281,6 +1426,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'pressable-result',
       signature: 'PressableResult: any',
       typeOnly: true,
+      summary: 'Element props returned by {@link pressable}.',
       members: [
         {
           name: 'onClick',
@@ -1320,12 +1466,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'rovingFocus: (options: RovingFocusOptions) => RovingFocusResult',
       typeOnly: true,
+      summary:
+        'Implement arrow-key roving tabindex navigation over a set of items.',
     },
     {
       name: 'RovingFocusOptions',
       anchor: 'roving-focus-options',
       signature: 'RovingFocusOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link rovingFocus}.',
       members: [
         {
           name: 'currentIndex',
@@ -1365,6 +1514,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'roving-focus-result',
       signature: 'RovingFocusResult: any',
       typeOnly: true,
+      summary: 'Container and per-item props returned by {@link rovingFocus}.',
       members: [
         {
           name: 'container',
@@ -1397,12 +1547,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'controllable-state',
       signature: 'ControllableState: any',
       typeOnly: true,
+      summary:
+        'A {@link State} accessor that also reports whether it is controlled.',
     },
     {
       name: 'isControlled',
       anchor: 'is-controlled',
       signature: 'isControlled: <T>(value: T | undefined) => value is T',
       typeOnly: true,
+      summary: 'Whether `value` represents controlled mode (not `undefined`).',
     },
     {
       name: 'makeControllable',
@@ -1410,6 +1563,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'makeControllable: <T>(options: { value: T | undefined; defaultValue: T; onChange?: (next: T) => void; setInternal?: (next: T) => void; }) => { set: (next: T) => void; isControlled: boolean; }',
       typeOnly: true,
+      summary:
+        'Build a `set` function that calls `onChange` in controlled mode, or\nupdates internal state and then calls `onChange` in uncontrolled mode.',
     },
     {
       name: 'resolveControllable',
@@ -1417,6 +1572,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'resolveControllable: <T>(value: T | undefined, defaultValue: T) => { value: T; isControlled: boolean; }',
       typeOnly: true,
+      summary:
+        'Resolve the effective value and controlled-ness for a controllable prop.',
     },
   ],
   symbols8: [
@@ -1426,12 +1583,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'cloneElement: (element: JSXElement, props: Record<string, unknown>) => JSXElement',
       typeOnly: true,
+      summary:
+        'Clone a JSX element, shallow-merging `props` over its existing props.',
     },
     {
       name: 'Collection',
       anchor: 'collection',
       signature: 'Collection: any',
       typeOnly: true,
+      summary:
+        'Ordered descendant registry returned by {@link createCollection}.',
       members: [
         {
           name: 'register',
@@ -1463,7 +1624,7 @@ export const apiSymbolSets: Readonly<
       signature: 'CollectionItem: any',
       typeOnly: true,
       summary:
-        'createCollection\n\nOrdered descendant registry for coordinating items without DOM queries.\n\nINVARIANTS:\n1. Registration order determines item order (no DOM queries)\n2. Stable ordering across renders (insertion order preserved)\n3. Each item may have metadata (type-safe, user-defined)\n4. No implicit global state (explicit collection instances)\n5. No automatic cleanup (caller controls lifecycle)\n\nDESIGN:\n- Returns a registry API ({ register, items, clear })\n- Items are stored in insertion order\n- Registration returns an unregister function\n- No side effects on registration (pure data structure)\n\nUSAGE:\n  const collection = createCollection<HTMLElement, { disabled: boolean }>();\n  const unregister = collection.register(element, { disabled: false });\n  const allItems = collection.items();\n  unregister();',
+        'A registered node paired with its metadata inside a {@link Collection}.',
     },
     {
       name: 'createCollection',
@@ -1471,18 +1632,24 @@ export const apiSymbolSets: Readonly<
       signature:
         'createCollection: <TNode, TMetadata = unknown>() => Collection<TNode, TMetadata>',
       typeOnly: true,
+      summary:
+        'Create an empty, insertion-ordered {@link Collection} registry.',
     },
     {
       name: 'createLayer',
       anchor: 'create-layer',
       signature: 'createLayer: () => LayerManager',
       typeOnly: true,
+      summary:
+        'Create a new, empty {@link LayerManager} for coordinating overlay stacking.',
     },
     {
       name: 'DefaultPortal',
       anchor: 'default-portal',
       signature: 'DefaultPortal: Portal<RenderableChild>',
       typeOnly: true,
+      summary:
+        'The implicit portal channel that {@link Portal} writes to and that any\nhost rendered without an explicit portal falls back to.',
     },
     {
       name: 'definePortal',
@@ -1490,18 +1657,22 @@ export const apiSymbolSets: Readonly<
       signature:
         'definePortal: <T extends RenderableChild = RenderableChild>() => Portal<T>',
       typeOnly: true,
+      summary:
+        'Create a new named {@link Portal} channel with its own host and content.',
     },
     {
       name: 'isElement',
       anchor: 'is-element',
       signature: 'isElement: (value: unknown) => value is JSXElement',
       typeOnly: true,
+      summary: 'Check whether `value` is a JSX element vnode.',
     },
     {
       name: 'JSXElement',
       anchor: 'jsxelement',
       signature: 'JSXElement: any',
       typeOnly: true,
+      summary: 'The vnode shape produced by JSX/`jsx()` calls.',
       members: [
         {
           name: '$$typeof',
@@ -1530,6 +1701,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'layer',
       signature: 'Layer: any',
       typeOnly: true,
+      summary:
+        'A registered layer entry returned by {@link LayerManager.register}.',
       members: [
         {
           name: 'id',
@@ -1553,6 +1726,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'layer-manager',
       signature: 'LayerManager: any',
       typeOnly: true,
+      summary: 'Stacking coordinator returned by {@link createLayer}.',
       members: [
         {
           name: 'register',
@@ -1582,7 +1756,7 @@ export const apiSymbolSets: Readonly<
       signature: 'LayerOptions: any',
       typeOnly: true,
       summary:
-        "createLayer\n\nManages stacking order and coordination for overlays (modals, popovers, etc).\n\nINVARIANTS:\n1. Layers are ordered by registration time (FIFO)\n2. Only the top layer handles Escape key\n3. Only the top layer handles outside pointer events\n4. Nested layers are supported\n5. Does not implement portals (orthogonal concern)\n6. No automatic DOM insertion (caller controls mounting)\n\nDESIGN:\n- Returns a layer manager with register/unregister API\n- Each layer has a unique ID and can query if it's the top layer\n- Escape and outside pointer coordination via callbacks\n- No z-index management (CSS concern)\n\nUSAGE:\n  const manager = createLayer();\n\n  const layer = manager.register({\n    onEscape: () => { ... },\n    onOutsidePointer: () => { ... }\n  });\n\n  layer.isTop(); // true if this is the topmost layer\n  layer.unregister();",
+        'Options for registering a layer with {@link LayerManager.register}.',
       members: [
         {
           name: 'onEscape',
@@ -1608,6 +1782,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'layout: <P = object>(Layout: LayoutComponent<P>) => (children?: RenderableChild, props?: P) => unknown',
       typeOnly: true,
+      summary:
+        'Wrap a {@link LayoutComponent} so it can be invoked as `(children, props)`,\nmatching route layout conventions.',
     },
     {
       name: 'LayoutComponent',
@@ -1615,19 +1791,22 @@ export const apiSymbolSets: Readonly<
       signature: 'LayoutComponent: any',
       typeOnly: true,
       summary:
-        'Layout helper.\n\nA layout is just a normal component that wraps children.\nPersistence and reuse are handled by the runtime via component identity.\n\nThis helper exists purely for readability and convention.\n\nPOLICY DECISIONS (LOCKED):\n\n1. Return Type is Opaque (unknown)\n   Layout components return `unknown` to remain runtime-agnostic.\n   The runtime owns concrete JSX element types.\n\n2. Children Positioning\n   Layout receives children as first argument (router-friendly).\n   Props come second. This matches route layout conventions where\n   children represent the nested route content.\n\n3. Props Spreading\n   Props are spread into the layout component. This is intentional\n   and deterministic — no merging or composition.',
+        'A component that receives its route children via `props.children`.',
     },
     {
       name: 'Portal',
       anchor: 'portal',
       signature: 'Portal: (props: PortalProps) => JSXElement | null',
       typeOnly: true,
+      summary:
+        'Write children to the {@link DefaultPortal} host wherever it is rendered.\nA named portal channel created by {@link definePortal}: call it as a\ncomponent to render the host, and call `.render(props)` to write content.',
     },
     {
       name: 'PortalProps',
       anchor: 'portal-props',
       signature: 'PortalProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link Portal} component.',
       members: [
         {
           name: 'children',
@@ -1650,10 +1829,12 @@ export const apiSymbolSets: Readonly<
       anchor: 'presence-props',
       signature: 'PresenceProps: any',
       typeOnly: true,
+      summary: 'Props for {@link Presence}.',
       members: [
         {
           name: 'present',
-          summary: '',
+          summary:
+            'Whether the children should be mounted, or a function returning it.',
           signature: 'present: boolean | (() => boolean);',
         },
         {
@@ -1676,6 +1857,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'slot-props',
       signature: 'SlotProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link Slot}: `asChild` selects prop-merging vs. fragment mode.',
     },
   ],
   symbols9: [
@@ -1685,6 +1868,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'getIconContractProps: ({ size, strokeWidth, color, title, style, iconName }: Pick<IconProps, "color" | "iconName" | "size" | "strokeWidth" | "style" | "title">) => { sizeToken: IconSizeToken | undefined; decorative: string | undefined; iconStyle: string | undefined; attrs: { xmlns: string; width: string; height: string; fill: string; stroke: string; "stroke-width": string; role: string; "aria-hidden": string | undefined; style: string | undefined; "data-slot": string; "data-icon": string | undefined; "data-size": IconSizeToken | undefined; "data-decorative": string | undefined; "data-color": string | undefined; }; }',
       typeOnly: true,
+      summary:
+        'Compute the shared SVG attributes and inline style implementing the icon size/stroke/color contract.',
     },
     {
       name: 'IconBase',
@@ -1692,36 +1877,47 @@ export const apiSymbolSets: Readonly<
       signature:
         'IconBase: ({ size, strokeWidth, color, title, class: className, style, iconName, children, ref, ...rest }: IconProps) => JSXElement',
       typeOnly: true,
+      summary:
+        'Base `<svg>` wrapper implementing the icon contract; generated icon components render into it.',
     },
     {
       name: 'IconOwnProps',
       anchor: 'icon-own-props',
       signature: 'IconOwnProps: any',
       typeOnly: true,
+      summary:
+        'Props specific to the icon contract, independent of the underlying `<svg>` props.',
     },
     {
       name: 'IconProps',
       anchor: 'icon-props',
       signature: 'IconProps: any',
       typeOnly: true,
+      summary:
+        'Full prop set accepted by {@link IconBase} and generated icon components.',
     },
     {
       name: 'IconSizeToken',
       anchor: 'icon-size-token',
       signature: 'IconSizeToken: any',
       typeOnly: true,
+      summary:
+        'Named icon size presets, mapped to CSS variables at render time.',
     },
     {
       name: 'IconStyleObject',
       anchor: 'icon-style-object',
       signature: 'IconStyleObject: any',
       typeOnly: true,
+      summary: 'Camel-cased CSS style object accepted by icon `style` props.',
     },
     {
       name: 'isIconSizeToken',
       anchor: 'is-icon-size-token',
       signature: 'isIconSizeToken: (value: unknown) => value is IconSizeToken',
       typeOnly: true,
+      summary:
+        "Check whether `value` is one of the named icon size tokens ('sm'|'md'|'lg'|'xl').",
     },
     {
       name: 'joinIconStyle',
@@ -1729,18 +1925,24 @@ export const apiSymbolSets: Readonly<
       signature:
         'joinIconStyle: (...styles: Array<string | undefined>) => string | undefined',
       typeOnly: true,
+      summary:
+        'Join non-empty CSS declaration fragments with `;`, dropping any that are blank.',
     },
     {
       name: 'normalizeIconSizeValue',
       anchor: 'normalize-icon-size-value',
       signature: 'normalizeIconSizeValue: (size: number | string) => string',
       typeOnly: true,
+      summary:
+        'Normalize a numeric icon size to a `px` string; strings pass through unchanged.',
     },
     {
       name: 'resolveIconSizeVariable',
       anchor: 'resolve-icon-size-variable',
       signature: 'resolveIconSizeVariable: (size: number | string) => string',
       typeOnly: true,
+      summary:
+        'Resolve a size (token or literal) to a CSS `var(--ak-icon-size-*, ...)` expression or literal value.',
     },
     {
       name: 'resolveIconStrokeWidthVariable',
@@ -1748,6 +1950,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'resolveIconStrokeWidthVariable: (strokeWidth: number, sizeToken: IconSizeToken | undefined) => string',
       typeOnly: true,
+      summary:
+        'Resolve a stroke width to a CSS `var(--ak-icon-stroke-width-*, ...)` expression, scoped to `sizeToken` when given.',
     },
     {
       name: 'serializeIconStyle',
@@ -1755,6 +1959,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'serializeIconStyle: (style: string | IconStyleObject | undefined) => string',
       typeOnly: true,
+      summary:
+        'Serialize an inline style object (or pass through a string) to a CSS declaration string.',
     },
   ],
   symbols10: [
@@ -1763,6 +1969,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'activity-predicate',
       signature: 'ActivityPredicate: any',
       typeOnly: true,
+      summary:
+        'A gating condition for lifecycle primitives like {@link timer}; `true` means active.',
     },
     {
       name: 'capture',
@@ -1777,6 +1985,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'document-visible',
       signature: 'documentVisible: () => ActivityPredicate',
       typeOnly: true,
+      summary:
+        '{@link ActivityPredicate} that is true while the document is visible.',
     },
     {
       name: 'getSignal',
@@ -1791,6 +2001,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'listener-target',
       signature: 'ListenerTarget: any',
       typeOnly: true,
+      summary:
+        'An event target, or a function resolving one, accepted by {@link on}.',
     },
     {
       name: 'on',
@@ -1798,6 +2010,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'on: (target: ListenerTarget, event: string, handler: EventListener, options?: ListenerOptions) => void',
       typeOnly: true,
+      summary:
+        "Attach an owned event listener to `target` for the current component's lifetime.",
     },
     {
       name: 'onRouteChange',
@@ -1805,6 +2019,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'onRouteChange: (fn: (current: RouteSnapshot, previous: RouteSnapshot | null) => RouteChangeCleanup, options?: RouteChangeOptions) => void',
       typeOnly: true,
+      summary:
+        'Register a callback to run whenever the active route changes, with optional cleanup.',
     },
     {
       name: 'resource',
@@ -1820,6 +2036,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'resource-result',
       signature: 'ResourceResult: any',
       typeOnly: true,
+      summary:
+        'Reactive result of a {@link resource}: current value, loading state, and controls.',
       members: [
         {
           name: 'value',
@@ -1849,18 +2067,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'routeActive: (pathOrPaths: string | readonly string[]) => ActivityPredicate',
       typeOnly: true,
+      summary:
+        '{@link ActivityPredicate} that is true while the current route matches `pathOrPaths`.',
     },
     {
       name: 'RouteChangeCleanup',
       anchor: 'route-change-cleanup',
       signature: 'RouteChangeCleanup: any',
       typeOnly: true,
+      summary:
+        'Optional cleanup returned by an {@link onRouteChange} callback, run before the next change.',
     },
     {
       name: 'RouteChangeOptions',
       anchor: 'route-change-options',
       signature: 'RouteChangeOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link onRouteChange}.',
       members: [
         {
           name: 'immediate',
@@ -1875,12 +2098,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'stream: <T>(source: StreamSource<T>, options?: StreamOptions<T>) => StreamResult<T>',
       typeOnly: true,
+      summary:
+        "Subscribe to a streaming data source for the current component's lifetime, with auto reconnect/cleanup.",
     },
     {
       name: 'StreamOptions',
       anchor: 'stream-options',
       signature: 'StreamOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link stream}.',
       members: [
         {
           name: 'deps',
@@ -1899,6 +2125,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'stream-result',
       signature: 'StreamResult: any',
       typeOnly: true,
+      summary:
+        'Reactive result of a {@link stream}: current value, connection status, and controls.',
       members: [
         {
           name: 'value',
@@ -1942,6 +2170,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'stream-status',
       signature: 'StreamStatus: any',
       typeOnly: true,
+      summary: 'Connection status of a {@link stream}.',
     },
     {
       name: 'task',
@@ -1957,12 +2186,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'timer: (intervalMs: number, fn: () => void, options?: TimerOptions) => void',
       typeOnly: true,
+      summary:
+        "Run `fn` on an owned interval for the current component's lifetime, optionally gated by `options.when`.",
     },
     {
       name: 'TimerOptions',
       anchor: 'timer-options',
       signature: 'TimerOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link timer}.',
       members: [
         {
           name: 'when',
@@ -1976,6 +2208,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'window-focused',
       signature: 'windowFocused: () => ActivityPredicate',
       typeOnly: true,
+      summary:
+        '{@link ActivityPredicate} that is true while the window has focus.',
     },
   ],
   symbols11: [
@@ -1985,6 +2219,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'createDataRuntime: (options?: DataRuntimeOptions) => DataRuntime',
       typeOnly: true,
+      summary:
+        'Create a new, isolated {@link DataRuntime} with its own query/mutation caches.',
     },
     {
       name: 'createMutation',
@@ -1992,6 +2228,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'createMutation: <TInput, TResult>(options: MutationOptions<TInput, TResult>) => Mutation<TInput, TResult>',
       typeOnly: true,
+      summary:
+        'Create a reactive {@link Mutation} cell bound to the current component,\nrunning `options.action` on `execute()` and optionally invalidating\naffected query prefixes on success.',
     },
     {
       name: 'createQuery',
@@ -1999,6 +2237,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'createQuery: { <T extends {}>(options: QueryOptions<T>): Query<T>; <TInput, TResult extends {}>(definition: QueryDefinition<TInput, TResult>, input: TInput, options?: Omit<QueryOptions<TResult>, "key" | "fetch">): Query<TResult>; }',
       typeOnly: true,
+      summary:
+        'Create a reactive {@link Query} cell bound to the current component, either\nfrom inline `options` (key + fetch) or a reusable {@link QueryDefinition}\nplus its input.',
     },
     {
       name: 'createQueryPrefetchContext',
@@ -2006,12 +2246,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'createQueryPrefetchContext: (options?: { runtime?: DataRuntime; registry?: ServerQueryRegistry; request?: Request; signal?: AbortSignal; mode?: "ssr" | "spa"; telemetry?: CoreTelemetry; }) => QueryPrefetchContext',
       typeOnly: true,
+      summary:
+        'Create a {@link QueryPrefetchContext} for prefetching query data ahead of\nrender, e.g. during SSR route resolution.',
     },
     {
       name: 'DataRuntime',
       anchor: 'data-runtime',
       signature: 'DataRuntime: any',
       typeOnly: true,
+      summary:
+        'Isolated cache/state container backing queries and mutations, e.g. one per test or request.',
       members: [
         {
           name: 'queryCache',
@@ -2042,6 +2286,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'data-runtime-options',
       signature: 'DataRuntimeOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link createDataRuntime}.',
       members: [
         {
           name: 'queryCache',
@@ -2071,6 +2316,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'defineQuery: <TInput, TResult extends {}>(definition: QueryDefinition<TInput, TResult>) => QueryDefinition<TInput, TResult>',
       typeOnly: true,
+      summary: 'Freeze and return a reusable {@link QueryDefinition}.',
     },
     {
       name: 'defineServerQueries',
@@ -2078,6 +2324,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'defineServerQueries: (...entries: readonly ServerQueryEntry<any, any>[]) => ServerQueryRegistry',
       typeOnly: true,
+      summary:
+        'Build a {@link ServerQueryRegistry} from one or more {@link serveQuery} entries.',
     },
     {
       name: 'dehydrateDataRuntime',
@@ -2085,12 +2333,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'dehydrateDataRuntime: (runtime: DataRuntime) => Record<string, unknown>',
       typeOnly: true,
+      summary:
+        "Extract a runtime's cached query data into a JSON-serializable snapshot, dropping non-serializable values.",
     },
     {
       name: 'getDefaultDataRuntime',
       anchor: 'get-default-data-runtime',
       signature: 'getDefaultDataRuntime: () => DataRuntime',
       typeOnly: true,
+      summary:
+        'Get the process-wide default {@link DataRuntime} used when none is provided explicitly.',
     },
     {
       name: 'hydrateDataRuntime',
@@ -2098,6 +2350,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'hydrateDataRuntime: (runtime: DataRuntime, data: unknown) => void',
       typeOnly: true,
+      summary:
+        "Load a {@link dehydrateDataRuntime} snapshot back into a runtime's query cache.",
     },
     {
       name: 'invalidate',
@@ -2105,6 +2359,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'invalidate: (prefix: string, options?: InvalidateOptions) => void',
       typeOnly: true,
+      summary:
+        'Mark all cached queries whose key starts with `prefix` as stale, triggering a refresh.',
     },
     {
       name: 'invalidateOnInterval',
@@ -2112,12 +2368,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'invalidateOnInterval: (prefix: string, options: InvalidateOnIntervalOptions) => void',
       typeOnly: true,
+      summary:
+        'Periodically invalidate queries matching `prefix` on a fixed interval,\noptionally gated by active route, document visibility, or window focus.',
     },
     {
       name: 'InvalidateOnIntervalOptions',
       anchor: 'invalidate-on-interval-options',
       signature: 'InvalidateOnIntervalOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link invalidateOnInterval}.',
       members: [
         {
           name: 'intervalMs',
@@ -2146,6 +2405,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'invalidate-options',
       signature: 'InvalidateOptions: any',
       typeOnly: true,
+      summary:
+        'Options for {@link invalidate} and {@link QueryScope.invalidate}.',
       members: [
         {
           name: 'markPendingWrite',
@@ -2164,12 +2425,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'mutation',
       signature: 'Mutation: any',
       typeOnly: true,
+      summary:
+        'Reactive state for a mutation cell: status, error/result, and execute/abort/reset controls.',
     },
     {
       name: 'MutationOptions',
       anchor: 'mutation-options',
       signature: 'MutationOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link createMutation}.',
     },
     {
       name: 'prefetchQuery',
@@ -2177,24 +2441,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'prefetchQuery: <TInput, TResult extends {}>(context: QueryPrefetchContext, query: QueryDefinition<TInput, TResult>, input: TInput) => Promise<boolean>',
       typeOnly: true,
+      summary:
+        "Prefetch `query` with `input` into a {@link QueryPrefetchContext}'s runtime.",
     },
     {
       name: 'Query',
       anchor: 'query',
       signature: 'Query: any',
       typeOnly: true,
+      summary:
+        'Reactive read state for a query cell: data, loading/refresh flags, and freshness.',
     },
     {
       name: 'QueryConsistency',
       anchor: 'query-consistency',
       signature: 'QueryConsistency: any',
       typeOnly: true,
+      summary: "Freshness classification for a {@link Query}'s current data.",
     },
     {
       name: 'QueryDefinition',
       anchor: 'query-definition',
       signature: 'QueryDefinition: any',
       typeOnly: true,
+      summary:
+        'Reusable query definition for {@link defineQuery}: key, fetcher, and freshness checks.',
       members: [
         {
           name: 'key',
@@ -2225,12 +2496,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'query-key-part',
       signature: 'QueryKeyPart: any',
       typeOnly: true,
+      summary:
+        'A JSON-serializable value usable as part of a query key or invalidation prefix.',
     },
     {
       name: 'QueryPrefetchContext',
       anchor: 'query-prefetch-context',
       signature: 'QueryPrefetchContext: any',
       typeOnly: true,
+      summary:
+        'Context passed to server prefetch callbacks, exposing a scoped `prefetch` helper.',
       members: [
         {
           name: 'runtime',
@@ -2265,12 +2540,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'query-scope-2',
       signature: 'queryScope: (namespace: string) => QueryScope',
       typeOnly: true,
+      summary:
+        'Create a {@link QueryScope} that namespaces keys and invalidations under `namespace`.',
     },
     {
       name: 'QueryScope',
       anchor: 'query-scope',
       signature: 'QueryScope: any',
       typeOnly: true,
+      summary:
+        'Namespaced key-building and invalidation helper returned by {@link queryScope}.',
       members: [
         {
           name: 'key',
@@ -2295,6 +2574,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'query-stale-reason',
       signature: 'QueryStaleReason: any',
       typeOnly: true,
+      summary: 'Why a {@link Query} is stale.',
     },
     {
       name: 'serveQuery',
@@ -2302,12 +2582,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'serveQuery: <TInput, TResult extends {}>(query: QueryDefinition<TInput, TResult>, handler: ServerQueryHandler<TInput, TResult>) => ServerQueryEntry<TInput, TResult>',
       typeOnly: true,
+      summary:
+        'Pair a {@link QueryDefinition} with the server-side handler that resolves it.',
     },
     {
       name: 'ServerQueryEntry',
       anchor: 'server-query-entry',
       signature: 'ServerQueryEntry: any',
       typeOnly: true,
+      summary:
+        'A query paired with the server handler that resolves it, produced by {@link serveQuery}.',
       members: [
         {
           name: 'query',
@@ -2326,12 +2610,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'server-query-handler',
       signature: 'ServerQueryHandler: any',
       typeOnly: true,
+      summary:
+        "Server-side handler that resolves a {@link QueryDefinition}'s data for `serveQuery`.",
     },
     {
       name: 'ServerQueryRegistry',
       anchor: 'server-query-registry',
       signature: 'ServerQueryRegistry: any',
       typeOnly: true,
+      summary:
+        'Lookup table of server handlers keyed by their {@link QueryDefinition}, built by {@link defineServerQueries}.',
       members: [
         {
           name: 'entries',
@@ -2354,6 +2642,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'cleanup',
       signature: 'cleanup: (target: RenderResult | HTMLElement) => void',
       typeOnly: true,
+      summary:
+        'Tear down a test render, given either its {@link RenderResult} or container element.',
     },
     {
       name: 'click',
@@ -2368,6 +2658,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'create-invalidation-recorder',
       signature: 'createInvalidationRecorder: () => InvalidationRecorder',
       typeOnly: true,
+      summary:
+        'Start recording {@link invalidate } calls for assertions; call `stop()` when done.',
     },
     {
       name: 'createMutationTestRegistry',
@@ -2391,12 +2683,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'dispatch: (target: EventTarget, event: Event | string, init?: DispatchEventInit) => boolean',
       typeOnly: true,
+      summary:
+        'Dispatch an event (constructed from a type string, or given directly) on `target`.',
     },
     {
       name: 'flush',
       anchor: 'flush',
       signature: 'flush: () => void',
       typeOnly: true,
+      summary:
+        "Synchronously flush the runtime's scheduled work (renders, effects).",
     },
     {
       name: 'getRouteWarnings',
@@ -2404,12 +2700,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'getRouteWarnings: (options: MatchRouteOptions) => RoutePatternWarning[]',
       typeOnly: true,
+      summary:
+        'Find named-splat routes whose reserved segments collide with sibling static routes.',
     },
     {
       name: 'InvalidationRecord',
       anchor: 'invalidation-record',
       signature: 'InvalidationRecord: any',
       typeOnly: true,
+      summary:
+        'A single recorded call to {@link invalidate }, captured by {@link createInvalidationRecorder}.',
       members: [
         {
           name: 'prefix',
@@ -2428,6 +2728,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'invalidation-recorder',
       signature: 'InvalidationRecorder: any',
       typeOnly: true,
+      summary: 'Recorder returned by {@link createInvalidationRecorder}.',
       members: [
         {
           name: 'calls',
@@ -2457,6 +2758,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'matchRoute: (path: string, options: MatchRouteOptions) => RouteMatch | null',
       typeOnly: true,
+      summary:
+        'Match `path` against a route registry for tests, without mounting the app.',
     },
     {
       name: 'mockQuery',
@@ -2464,12 +2767,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'mockQuery: (<T extends {}>(data: T, options?: MockQueryOptions) => Query<T>) & { loading<T extends {} = {}>(options?: MockQueryOptions): Query<T>; error<T extends {} = {}>(error: {}, previousData?: T, options?: MockQueryOptions): Query<T>; refreshing<T extends {}>(data: T, options?: MockQueryOptions): Query<T>; stale<T extends {}>(data: T, reason?: StaleValueReason, options?: MockQueryOptions): Query<T>; pendingWrite<T extends {}>(data: T, options?: MockQueryOptions): Query<T>; }',
       typeOnly: true,
+      summary:
+        'Build a fresh {@link Query} fixture for tests: call directly with data, or\nuse `.loading()`/`.error()`/`.refreshing()`/`.stale()`/`.pendingWrite()`.',
     },
     {
       name: 'MockQueryOptions',
       anchor: 'mock-query-options',
       signature: 'MockQueryOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link mockQuery} fixtures.',
       members: [
         {
           name: 'refresh',
@@ -2483,6 +2789,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'mock-refresh',
       signature: 'MockRefresh: any',
       typeOnly: true,
+      summary:
+        "Refresh callback for a {@link mockQuery} fixture, invoked by the query's `refresh()`.",
     },
     {
       name: 'mount',
@@ -2490,18 +2798,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'mount: (component: ComponentFunction, options?: RenderOptions) => RenderResult',
       typeOnly: true,
+      summary: 'Alias for {@link render}.',
     },
     {
       name: 'MutationFixture',
       anchor: 'mutation-fixture',
       signature: 'MutationFixture: any',
       typeOnly: true,
+      summary:
+        'A {@link Mutation} whose state is driven manually via `setPending`/`succeed`/`fail`.',
     },
     {
       name: 'MutationFixtureInitial',
       anchor: 'mutation-fixture-initial',
       signature: 'MutationFixtureInitial: any',
       typeOnly: true,
+      summary:
+        'Initial state for {@link mutationState}; exactly one of `pending`/`error`/`result` may be set.',
     },
     {
       name: 'mutationState',
@@ -2509,12 +2822,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'mutationState: (<TInput = unknown, TResult = unknown>(initial?: MutationFixtureInitial<TResult>) => MutationFixture<TInput, TResult>) & { idle<TInput = unknown, TResult = unknown>(): MutationFixture<TInput, TResult>; pending<TInput = unknown, TResult = unknown>(): MutationFixture<TInput, TResult>; success<TInput = unknown, TResult = unknown>(result: TResult): MutationFixture<TInput, TResult>; error<TInput = unknown, TResult = unknown>(error: {}): MutationFixture<TInput, TResult>; }',
       typeOnly: true,
+      summary:
+        'Build a {@link MutationFixture} for tests: call directly with initial\nstate, or use `.idle()`/`.pending()`/`.success(result)`/`.error(error)`.',
     },
     {
       name: 'MutationTestRegistry',
       anchor: 'mutation-test-registry',
       signature: 'MutationTestRegistry: any',
       typeOnly: true,
+      summary:
+        'Keyed mutation fixture registry returned by {@link createMutationTestRegistry}.',
       members: [
         {
           name: 'runtime',
@@ -2545,12 +2862,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'queryState: { fresh: typeof createFreshQuery; loading: <T extends {} = {}>(options?: MockQueryOptions) => Query<T>; error: <T extends {} = {}>(error: {}, previousData?: T, options?: MockQueryOptions) => Query<T>; refreshing: <T extends {}>(data: T, options?: MockQueryOptions) => Query<T>; stale: <T extends {}>(data: T, reason?: StaleValueReason, options?: MockQueryOptions) => Query<T>; pendingWrite: <T extends {}>(data: T, options?: MockQueryOptions) => Query<T>; }',
       typeOnly: true,
+      summary:
+        "Alias table mirroring {@link mockQuery}'s state builders (`fresh`, `loading`, `error`, ...).",
     },
     {
       name: 'QueryTestRegistry',
       anchor: 'query-test-registry',
       signature: 'QueryTestRegistry: any',
       typeOnly: true,
+      summary:
+        'Keyed query fixture registry returned by {@link createQueryTestRegistry}.',
       members: [
         {
           name: 'runtime',
@@ -2580,12 +2901,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'render: (component: ComponentFunction, options?: RenderOptions) => RenderResult',
       typeOnly: true,
+      summary:
+        'Mount `component` as an island into a test container and flush pending work.',
     },
     {
       name: 'RenderOptions',
       anchor: 'render-options',
       signature: 'RenderOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link render} and {@link mount}.',
       members: [
         {
           name: 'container',
@@ -2605,6 +2929,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'render-result',
       signature: 'RenderResult: any',
       typeOnly: true,
+      summary:
+        'Handle to a mounted test render, returned by {@link render}/{@link mount}/{@link renderRoute}.',
       members: [
         {
           name: 'container',
@@ -2645,12 +2971,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'renderRoute: (options: RouteRenderOptions) => Promise<RenderResult>',
       typeOnly: true,
+      summary:
+        'Mount a routed app (via {@link createSPA }) into a test container for the given route registry.',
     },
     {
       name: 'RoutePatternWarning',
       anchor: 'route-pattern-warning',
       signature: 'RoutePatternWarning: any',
       typeOnly: true,
+      summary:
+        'A splat-route/static-route path collision reported by {@link getRouteWarnings}.',
       members: [
         {
           name: 'kind',
@@ -2689,6 +3019,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-render-options',
       signature: 'RouteRenderOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link renderRoute}.',
       members: [
         {
           name: 'registry',
@@ -2756,14 +3087,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'debounceEvent: (ms: number, handler: EventListener, options?: { leading?: boolean; trailing?: boolean; }) => EventListener & { cancel(): void; flush(): void; }',
       typeOnly: true,
+      summary:
+        'Wrap an event handler so rapid events are coalesced and delayed by `ms`.',
     },
     {
       name: 'DebounceOptions',
       anchor: 'debounce-options',
       signature: 'DebounceOptions: any',
       typeOnly: true,
-      summary:
-        'Timing utilities — pure helpers for common async patterns\nNo framework coupling. No lifecycle awareness.',
+      summary: 'Options for {@link debounce}.',
       members: [
         {
           name: 'leading',
@@ -2843,6 +3175,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'rafEvent: (handler: EventListener) => EventListener & { cancel(): void; }',
       typeOnly: true,
+      summary:
+        'Wrap an event handler so it runs at most once per animation frame, using the latest event.',
     },
     {
       name: 'retry',
@@ -2868,6 +3202,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'retry-options',
       signature: 'RetryOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link retry}.',
       members: [
         {
           name: 'maxAttempts',
@@ -2899,6 +3234,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'scheduleIdle: (fn: () => void, options?: { timeout?: number; }) => CancelFn',
       typeOnly: true,
+      summary:
+        'Schedule `fn` during browser idle time, auto-cancelling on component cleanup.',
     },
     {
       name: 'scheduleRetry',
@@ -2906,12 +3243,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'scheduleRetry: <T>(fn: () => Promise<T>, options?: RetryOptions$1) => { cancel(): void; }',
       typeOnly: true,
+      summary:
+        'Run `fn`, retrying with backoff on failure, auto-cancelling on component cleanup.',
     },
     {
       name: 'scheduleTimeout',
       anchor: 'schedule-timeout',
       signature: 'scheduleTimeout: (ms: number, fn: () => void) => CancelFn',
       typeOnly: true,
+      summary:
+        'Schedule `fn` after `ms`, auto-cancelling on component cleanup; returns a cancel function.',
     },
     {
       name: 'throttle',
@@ -2939,12 +3280,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'throttleEvent: (ms: number, handler: EventListener, options?: { leading?: boolean; trailing?: boolean; }) => EventListener & { cancel(): void; }',
       typeOnly: true,
+      summary:
+        'Wrap an event handler so it runs at most once per `ms` interval.',
     },
     {
       name: 'ThrottleOptions',
       anchor: 'throttle-options',
       signature: 'ThrottleOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link throttle}.',
       members: [
         {
           name: 'leading',
@@ -2980,12 +3324,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'access-decision',
       signature: 'AccessDecision: any',
       typeOnly: true,
+      summary:
+        'Outcome of a {@link RoutePolicy} evaluation: allow, redirect, or deny.',
     },
     {
       name: 'AccessDenyDecision',
       anchor: 'access-deny-decision',
       signature: 'AccessDenyDecision: any',
       typeOnly: true,
+      summary:
+        'Policy decision produced by {@link deny }/{@link unauthorized }/{@link forbidden }/{@link notFound }.',
       members: [
         {
           name: 'kind',
@@ -3004,6 +3352,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'access-redirect-decision',
       signature: 'AccessRedirectDecision: any',
       typeOnly: true,
+      summary:
+        'Policy decision produced by {@link redirect }: sends the visitor to another URL.',
       members: [
         {
           name: 'kind',
@@ -3032,36 +3382,38 @@ export const apiSymbolSets: Readonly<
       anchor: 'allow',
       signature: 'allow: () => AccessAllowDecision',
       typeOnly: true,
+      summary: 'Policy decision: allow the route to render.',
     },
     {
       name: 'AuthContext',
       anchor: 'auth-context',
       signature: 'AuthContext: any',
       typeOnly: true,
+      summary: 'Authentication state resolved for one request.',
       members: [
         {
           name: 'authenticated',
-          summary: '',
+          summary: 'Whether a valid principal was resolved.',
           signature: 'authenticated: boolean;',
         },
         {
           name: 'principal',
-          summary: '',
+          summary: 'Resolved principal, or null for anonymous requests.',
           signature: 'principal: P | null;',
         },
         {
           name: 'session',
-          summary: '',
+          summary: 'Resolved session, or null when no session is active.',
           signature: 'session: S | null;',
         },
         {
           name: 'tenant',
-          summary: '',
+          summary: 'Resolved tenant identifier, or null when unavailable.',
           signature: 'tenant: string | null;',
         },
         {
           name: 'scopes',
-          summary: '',
+          summary: 'Optional scopes carried by the credential.',
           signature: 'scopes?: readonly string[];',
         },
       ],
@@ -3071,6 +3423,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'auth-requirement',
       signature: 'AuthRequirement: any',
       typeOnly: true,
+      summary: 'Predicate that allows or rejects an authentication context.',
     },
     {
       name: 'createRouteRegistry',
@@ -3078,6 +3431,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'createRouteRegistry: (definition: RouteDefinition, options?: RouteRegistryOptions) => RouteRegistry',
       typeOnly: true,
+      summary:
+        'Run `definition` to declare routes (via `route`/`page`/`group`/`fallback`)\nand build a {@link RouteRegistry} to pass to `createSPA`/`hydrateSPA`.',
     },
     {
       name: 'currentAuth',
@@ -3093,18 +3448,24 @@ export const apiSymbolSets: Readonly<
       signature:
         'currentRoute: <TParams extends RouteParams = RouteParams>() => RouteSnapshot<TParams>',
       typeOnly: true,
+      summary:
+        "Read the currently active route's {@link RouteSnapshot}; reactive during component render.",
     },
     {
       name: 'defer',
       anchor: 'defer',
       signature: 'defer: <T>(promise: PromiseLike<T>) => Deferred<T>',
       typeOnly: true,
+      summary:
+        'Wrap a promise as a {@link Deferred} value that tracks its settled state and result.',
     },
     {
       name: 'Deferred',
       anchor: 'deferred',
       signature: 'Deferred: any',
       typeOnly: true,
+      summary:
+        'A promise-backed value that can be read synchronously once settled, produced by {@link defer}.',
       members: [
         {
           name: 'state',
@@ -3133,24 +3494,29 @@ export const apiSymbolSets: Readonly<
       anchor: 'deferred-state',
       signature: 'DeferredState: any',
       typeOnly: true,
+      summary: 'Lifecycle state of a {@link Deferred} value.',
     },
     {
       name: 'deny',
       anchor: 'deny',
       signature: 'deny: (status: AccessDenyStatus) => AccessDenyDecision',
       typeOnly: true,
+      summary: 'Policy decision: deny the request with the given HTTP status.',
     },
     {
       name: 'fallback',
       anchor: 'fallback',
       signature: 'fallback: (Component: RouteComponent) => void',
       typeOnly: true,
+      summary:
+        'Declare the catch-all `/*` fallback route for the enclosing scope.',
     },
     {
       name: 'forbidden',
       anchor: 'forbidden',
       signature: 'forbidden: () => AccessDenyDecision',
       typeOnly: true,
+      summary: 'Policy decision: deny with 403 Forbidden.',
     },
     {
       name: 'group',
@@ -3158,12 +3524,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'group: (options: GroupHelperOptions, fn: RouteDefinition) => void',
       typeOnly: true,
+      summary:
+        'Declare a group of routes sharing `options` (auth, policies, layout, meta).',
     },
     {
       name: 'GroupHelperOptions',
       anchor: 'group-helper-options',
       signature: 'GroupHelperOptions: any',
       typeOnly: true,
+      summary: 'Options accepted by the `group()` route-declaration helper.',
       members: [
         {
           name: 'layout',
@@ -3183,6 +3552,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'history-scroll-behavior',
       signature: 'HistoryScrollBehavior: any',
       typeOnly: true,
+      summary:
+        'Scroll behavior for browser back/forward (popstate) navigations.',
     },
     {
       name: 'index',
@@ -3190,6 +3561,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'index: (Component: RouteComponent, options?: RouteOptions) => void',
       typeOnly: true,
+      summary: 'Declare the index route for the enclosing `page()` scope.',
     },
     {
       name: 'isDeferred',
@@ -3197,6 +3569,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'isDeferred: <T = unknown>(value: unknown) => value is Deferred<T>',
       typeOnly: true,
+      summary:
+        'Check whether `value` is a {@link Deferred} produced by {@link defer}.',
     },
     {
       name: 'LayoutScopeRecord',
@@ -3220,12 +3594,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'lazy: <TComponent extends AnyRouteComponent>(factory: () => Promise<{ default: TComponent; } | TComponent>) => LazyRouteComponent<TComponent>',
       typeOnly: true,
+      summary:
+        'Wrap a dynamic-import factory as a {@link LazyRouteComponent}, loaded on first use.',
     },
     {
       name: 'LazyRouteComponent',
       anchor: 'lazy-route-component',
       signature: 'LazyRouteComponent: any',
       typeOnly: true,
+      summary:
+        'A route component loaded on demand via {@link lazy}, with an explicit `preload()`.',
     },
     {
       name: 'lazyRouteData',
@@ -3241,6 +3619,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'lazy-route-data-loader',
       signature: 'LazyRouteDataLoader: any',
       typeOnly: true,
+      summary:
+        'A route data loader loaded on demand via {@link lazyRouteData}, with an explicit `preload()`.',
     },
     {
       name: 'Link',
@@ -3256,30 +3636,37 @@ export const apiSymbolSets: Readonly<
       anchor: 'link-props',
       signature: 'LinkProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link Link}: either a raw `href` or a typed route `to` destination.',
     },
     {
       name: 'navigate',
       anchor: 'navigate',
       signature: 'navigate: (path: string, options?: NavigateOptions) => void',
       typeOnly: true,
+      summary:
+        'Navigate the client-side router to `path` using the History API.',
     },
     {
       name: 'NavigateOptions',
       anchor: 'navigate-options',
       signature: 'NavigateOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link navigate}.',
     },
     {
       name: 'NavigationScrollBehavior',
       anchor: 'navigation-scroll-behavior',
       signature: 'NavigationScrollBehavior: any',
       typeOnly: true,
+      summary: 'Scroll behavior for programmatic navigations (`navigate()`).',
     },
     {
       name: 'notFound',
       anchor: 'not-found',
       signature: 'notFound: () => AccessDenyDecision',
       typeOnly: true,
+      summary: 'Policy decision: deny with 404 Not Found.',
     },
     {
       name: 'onRouteChange',
@@ -3287,12 +3674,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'onRouteChange: (fn: (current: RouteSnapshot, previous: RouteSnapshot | null) => RouteChangeCleanup, options?: RouteChangeOptions) => void',
       typeOnly: true,
+      summary:
+        'Register a callback to run whenever the active route changes, with optional cleanup.',
     },
     {
       name: 'Outlet',
       anchor: 'outlet',
       signature: 'Outlet: () => JSXElement',
       typeOnly: true,
+      summary:
+        'Renders the nested route content for the enclosing layout or page scope.',
     },
     {
       name: 'page',
@@ -3300,12 +3691,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'page: { <const TPath extends string>(path: TPath, Component: RouteComponent<RoutePathParams<TPath>>, fn: RouteDefinition): void; <const TPath extends string, TComponent extends AnyRouteComponent>(path: TPath, Component: CompatibleRouteComponent<TPath, TComponent>, fn: RouteDefinition): void; <const TPath extends string>(path: TPath, Component: RouteComponent<RoutePathParams<TPath>>, options: PageHelperOptions, fn: RouteDefinition): void; <const TPath extends string, TComponent extends AnyRouteComponent>(path: TPath, Component: CompatibleRouteComponent<TPath, TComponent>, options: PageHelperOptions, fn: RouteDefinition): void; }',
       typeOnly: true,
+      summary:
+        'Declare a route page at `path`, nesting a sub-scope for `index`/`page`/`fallback`\ndeclarations and options like `preload`/`meta`/`auth`.',
     },
     {
       name: 'PageHelperOptions',
       anchor: 'page-helper-options',
       signature: 'PageHelperOptions: any',
       typeOnly: true,
+      summary: 'Options accepted by the `page()` route-declaration helper.',
       members: [
         {
           name: 'preload',
@@ -3372,12 +3766,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'redirect: (to: string, init?: { status?: AccessRedirectStatus; replace?: boolean; }) => AccessRedirectDecision',
       typeOnly: true,
+      summary: 'Policy decision: redirect the visitor to `to`.',
     },
     {
       name: 'Resolve',
       anchor: 'resolve',
       signature: 'Resolve: <T>(props: ResolveProps<T>) => JSXElement',
       typeOnly: true,
+      summary:
+        "Render a {@link Deferred} value's fulfilled state, a pending placeholder, or a rejected fallback.",
     },
     {
       name: 'resolveDeferredValues',
@@ -3385,12 +3782,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'resolveDeferredValues: <T>(input: T, signal?: AbortSignal) => Promise<T>',
       typeOnly: true,
+      summary:
+        'Recursively await any {@link Deferred} values nested within `input`, returning it once fully resolved.',
     },
     {
       name: 'ResolveProps',
       anchor: 'resolve-props',
       signature: 'ResolveProps: any',
       typeOnly: true,
+      summary: 'Props for {@link Resolve}.',
       members: [
         {
           name: 'value',
@@ -3421,6 +3821,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'resolveRouteMeta: (record: RouteRecord, context: RouteContext) => Promise<Readonly<RouteMeta>>',
       typeOnly: true,
+      summary:
+        "Resolve a route's merged {@link RouteMeta} by running its metadata chain against `context`.",
     },
     {
       name: 'resolveRouteRequest',
@@ -3428,6 +3830,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'resolveRouteRequest: (target: string, options: RouteRequestOptions) => RouteRequestResult | Promise<RouteRequestResult>',
       typeOnly: true,
+      summary:
+        'Resolve `target` against a route registry, applying auth/policies to produce a render/redirect/deny result.',
     },
     {
       name: 'route',
@@ -3435,12 +3839,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'route: { <const TPath extends string, const TSearchSchema extends ObjectSchema<RouteSearch> | undefined = undefined, TLoaderData = unknown, TDehydratedData = TLoaderData>(path: TPath, Component: RouteComponent<RoutePathParams<TPath>>, options?: RouteOptions<RoutePathParams<TPath>, TSearchSchema, TLoaderData, TDehydratedData>): RouteRef<RoutePathParams<TPath>, RouteRefSearch<TSearchSchema>>; <const TPath extends string, TComponent extends AnyRouteComponent, const TSearchSchema extends ObjectSchema<RouteSearch> | undefined = undefined, TLoaderData = unknown, TDehydratedData = TLoaderData>(path: TPath, Component: CompatibleRouteComponent<TPath, TComponent>, options?: RouteOptionsForComponent<TPath, TComponent, TSearchSchema, TLoaderData, TDehydratedData>): RouteRef<RoutePathParams<TPath>, RouteRefSearch<TSearchSchema>>; }',
       typeOnly: true,
+      summary:
+        'Declare a route at `path` rendering `Component`, returning a typed {@link RouteRef} for building destinations.',
     },
     {
       name: 'Route',
       anchor: 'route',
       signature: 'Route: any',
       typeOnly: true,
+      summary:
+        'A single path-to-handler binding as seen by low-level navigation code.',
       members: [
         {
           name: 'path',
@@ -3464,6 +3872,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-auth-options',
       signature: 'RouteAuthOptions: any',
       typeOnly: true,
+      summary:
+        'Auth configuration shared across a route registry or a single route.',
       members: [
         {
           name: 'resolve',
@@ -3489,18 +3899,22 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-auth-resolver',
       signature: 'RouteAuthResolver: any',
       typeOnly: true,
+      summary: 'Resolves the {@link AuthContext} for a route request.',
     },
     {
       name: 'RouteChangeCleanup',
       anchor: 'route-change-cleanup',
       signature: 'RouteChangeCleanup: any',
       typeOnly: true,
+      summary:
+        'Optional cleanup returned by an {@link onRouteChange} callback, run before the next change.',
     },
     {
       name: 'RouteChangeOptions',
       anchor: 'route-change-options',
       signature: 'RouteChangeOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link onRouteChange}.',
       members: [
         {
           name: 'immediate',
@@ -3522,6 +3936,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-context',
       signature: 'RouteContext: any',
       typeOnly: true,
+      summary: 'Context passed to route policies, auth resolvers, and loaders.',
       members: [
         {
           name: 'mode',
@@ -3570,12 +3985,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-data',
       signature: 'routeData: <T>() => T',
       typeOnly: true,
+      summary:
+        "Read the current route's server loader data during render or hydration.",
     },
     {
       name: 'RouteDataLoadError',
       anchor: 'route-data-load-error',
       signature: 'RouteDataLoadError: typeof RouteDataLoadError',
       typeOnly: true,
+      summary:
+        "Thrown when a route's `loader` rejects; wraps the original `cause`.",
       members: [
         {
           name: 'route',
@@ -3599,18 +4018,23 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-data-load-phase',
       signature: 'RouteDataLoadPhase: any',
       typeOnly: true,
+      summary: "Which environment a route's data loader ran (or failed) in.",
     },
     {
       name: 'RouteDefinition',
       anchor: 'route-definition',
       signature: 'RouteDefinition: any',
       typeOnly: true,
+      summary:
+        'A callback that declares routes via `route()`/`page()`/`group()`, passed to {@link createRouteRegistry }.',
     },
     {
       name: 'RouteDestination',
       anchor: 'route-destination',
       signature: 'RouteDestination: any',
       typeOnly: true,
+      summary:
+        'A resolved navigation target with a computed `href`, produced by {@link to }.',
       members: [
         {
           name: 'href',
@@ -3624,6 +4048,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-handler',
       signature: 'RouteHandler: any',
       typeOnly: true,
+      summary:
+        "A function rendering a matched route's page content, with layouts already composed.",
     },
     {
       name: 'RouteManifest',
@@ -3656,6 +4082,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-match',
       signature: 'RouteMatch: any',
       typeOnly: true,
+      summary:
+        'A single matched route, as reported by {@link currentRoute } and activity predicates.',
       members: [
         {
           name: 'path',
@@ -3734,12 +4162,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-meta-source',
       signature: 'RouteMetaSource: any',
       typeOnly: true,
+      summary:
+        "A route's metadata, or a function computing it from the resolved context.",
     },
     {
       name: 'RouteMode',
       anchor: 'route-mode',
       signature: 'RouteMode: any',
       typeOnly: true,
+      summary: 'The rendering mode a route is currently being evaluated under.',
     },
     {
       name: 'RouteOptions',
@@ -3812,25 +4243,32 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-params',
       signature: 'RouteParams: any',
       typeOnly: true,
-      summary: 'Common call contracts: Router types',
+      summary:
+        'Path parameters captured for a matched route, keyed by parameter name.',
     },
     {
       name: 'RoutePathParams',
       anchor: 'route-path-params',
       signature: 'RoutePathParams: any',
       typeOnly: true,
+      summary:
+        'Statically infers the param record shape from a route path string literal, e.g. `/posts/{id}`.',
     },
     {
       name: 'RoutePolicy',
       anchor: 'route-policy',
       signature: 'RoutePolicy: any',
       typeOnly: true,
+      summary:
+        'A route access-control check, evaluated against {@link RouteContext} to produce an {@link AccessDecision}.',
     },
     {
       name: 'RouteQuery',
       anchor: 'route-query',
       signature: 'RouteQuery: any',
       typeOnly: true,
+      summary:
+        "Read-only accessor for the current route's query-string parameters.",
       members: [
         {
           name: 'get',
@@ -3859,24 +4297,32 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-query-param-input',
       signature: 'RouteQueryParamInput: any',
       typeOnly: true,
+      summary:
+        'A query-string value, or an array of them for a repeated param.',
     },
     {
       name: 'RouteQueryParamValue',
       anchor: 'route-query-param-value',
       signature: 'RouteQueryParamValue: any',
       typeOnly: true,
+      summary:
+        'A single query-string value accepted by {@link updateRouteQuery}.',
     },
     {
       name: 'RouteQueryUpdater',
       anchor: 'route-query-updater',
       signature: 'RouteQueryUpdater: any',
       typeOnly: true,
+      summary:
+        'A function that mutates a `URLSearchParams` directly, for {@link updateRouteQuery}.',
     },
     {
       name: 'RouteQueryUpdates',
       anchor: 'route-query-updates',
       signature: 'RouteQueryUpdates: any',
       typeOnly: true,
+      summary:
+        'A map of query param updates for {@link updateRouteQuery}; `null`/`undefined` removes the key.',
     },
     {
       name: 'RouteRecord',
@@ -3949,6 +4395,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-ref',
       signature: 'RouteRef: any',
       typeOnly: true,
+      summary:
+        'Stable, typed reference to a route returned by `route()`, used to build destinations.',
       members: [
         {
           name: 'path',
@@ -3991,6 +4439,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-registry',
       signature: 'RouteRegistry: any',
       typeOnly: true,
+      summary:
+        'Opaque handle produced by {@link createRouteRegistry }, required by `createSPA`/`hydrateSPA`.',
       members: [
         {
           name: 'manifest',
@@ -4009,6 +4459,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-registry-options',
       signature: 'RouteRegistryOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link createRouteRegistry }.',
       members: [
         {
           name: 'auth',
@@ -4028,6 +4479,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-render-result',
       signature: 'RouteRenderResult: any',
       typeOnly: true,
+      summary:
+        'A resolved route request that should render `handler` with `params`.',
       members: [
         {
           name: 'kind',
@@ -4056,6 +4509,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-request-options',
       signature: 'RouteRequestOptions: any',
       typeOnly: true,
+      summary:
+        'Options for resolving a route request (used internally by `createSPA`/`hydrateSPA`/SSR).',
       members: [
         {
           name: 'registry',
@@ -4109,12 +4564,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-request-result',
       signature: 'RouteRequestResult: any',
       typeOnly: true,
+      summary:
+        'Outcome of resolving a route request: render, redirect, deny, or no match.',
     },
     {
       name: 'RouteSearch',
       anchor: 'route-search',
       signature: 'RouteSearch: any',
       typeOnly: true,
+      summary: "A route's query-string parameters, keyed by name.",
     },
     {
       name: 'RouteSearchValue',
@@ -4129,6 +4587,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-snapshot',
       signature: 'RouteSnapshot: any',
       typeOnly: true,
+      summary:
+        'Full description of the currently active route, returned by {@link currentRoute }.',
       members: [
         {
           name: 'path',
@@ -4172,12 +4632,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'scroll-restoration-options',
       signature: 'ScrollRestorationOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link configureScrollRestoration }.',
     },
     {
       name: 'serializeRouteMeta',
       anchor: 'serialize-route-meta',
       signature: 'serializeRouteMeta: (meta: RouteMeta) => string',
       typeOnly: true,
+      summary:
+        'Render a {@link RouteMeta} to the `<title>`/`<meta>`/`<link>`/JSON-LD markup for the document `<head>`.',
     },
     {
       name: 'to',
@@ -4185,12 +4648,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'to: <TParams extends RouteParams, TSearch extends RouteSearch = RouteSearch>(route: RouteRef<TParams, TSearch>, params: TParams, search?: TSearch) => RouteDestination',
       typeOnly: true,
+      summary:
+        'Build a {@link RouteDestination} (with a computed `href`) for a {@link RouteRef} and params/search.',
     },
     {
       name: 'unauthorized',
       anchor: 'unauthorized',
       signature: 'unauthorized: () => AccessDenyDecision',
       typeOnly: true,
+      summary: 'Policy decision: deny with 401 Unauthorized.',
     },
     {
       name: 'updateRouteQuery',
@@ -4204,6 +4670,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'update-route-query-options',
       signature: 'UpdateRouteQueryOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link updateRouteQuery}.',
     },
   ],
   symbols15: [
@@ -4220,6 +4687,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'action-descriptor',
       signature: 'ActionDescriptor: any',
       typeOnly: true,
+      summary:
+        'A declared server action, built by {@link defineAction}, bound to a form via {@link ActionForm}.',
       members: [
         {
           name: 'id',
@@ -4252,6 +4721,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'action-status',
       signature: 'ActionStatus: any',
       typeOnly: true,
+      summary:
+        'Pending/result/error status for an action, as reported by the `action()` hook.',
       members: [
         {
           name: 'pending',
@@ -4275,6 +4746,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'action-validation-error',
       signature: 'ActionValidationError: any',
       typeOnly: true,
+      summary:
+        'Server-replayed validation failure for an {@link ActionForm} submission.',
       members: [
         {
           name: 'kind',
@@ -4310,6 +4783,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'defineAction: <TInput extends Record<string, unknown>>(options: { readonly id: string; readonly input: ObjectSchema<TInput>; readonly invalidates?: readonly string[]; }) => ActionDescriptor<TInput>',
       typeOnly: true,
+      summary:
+        'Declare a server action with a stable id, input schema, and query prefixes to invalidate on success.',
     },
   ],
   symbols16: [
@@ -4319,12 +4794,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'createRenderContext: (seed?: number, opts?: { url?: string; data?: SSRData; params?: Record<string, string>; routes?: readonly Route[]; routeAuth?: RouteAuthOptions; basePath?: string; signal?: AbortSignal; dataRuntime?: unknown; mode?: "ssr" | "spa"; queryPrefetch?: QueryPrefetchContext; framework?: Readonly<Record<string, unknown>>; envelope?: PageRenderEnvelope; cspNonce?: string; }) => RenderContext',
       typeOnly: true,
+      summary:
+        'Build a fresh SSR render context (data cache, routes, seed) for a render pass.',
     },
     {
       name: 'DocumentRenderArgs',
       anchor: 'document-render-args',
       signature: 'DocumentRenderArgs: any',
       typeOnly: true,
+      summary:
+        'Arguments passed to a {@link DocumentRenderer}: the rendered app HTML and its context.',
       members: [
         {
           name: 'appHtml',
@@ -4343,6 +4822,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'document-render-context',
       signature: 'DocumentRenderContext: any',
       typeOnly: true,
+      summary: 'Request/render metadata passed to a {@link DocumentRenderer}.',
       members: [
         {
           name: 'mode',
@@ -4406,6 +4886,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'document-renderer',
       signature: 'DocumentRenderer: any',
       typeOnly: true,
+      summary:
+        'Wraps rendered app HTML in a full document (`<html>`, `<head>`, etc.) for SSR/SSG output.',
     },
     {
       name: 'getRenderContext',
@@ -4421,6 +4903,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'renderResolvedToStringSync: (opts: { url: string; registry: RouteRegistry; handler: RouteHandler; params?: Record<string, string>; options?: { seed?: number; data?: SSRData; dataRuntime?: DataRuntime; envelope?: PageRenderEnvelope; cspNonce?: string; }; }) => string',
       typeOnly: true,
+      summary:
+        'Synchronously render an already-resolved route handler to an HTML string.',
     },
     {
       name: 'renderRouteRequest',
@@ -4428,12 +4912,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'renderRouteRequest: (options: RenderRouteRequestOptions) => Promise<RenderRouteRequestResult>',
       typeOnly: true,
+      summary:
+        'Resolve and render a route request for SSR, streaming the body when possible.',
     },
     {
       name: 'RenderRouteRequestOptions',
       anchor: 'render-route-request-options',
       signature: 'RenderRouteRequestOptions: any',
       typeOnly: true,
+      summary:
+        'Options for {@link renderRouteRequest} and {@link renderRouteRequestToString}.',
       members: [
         {
           name: 'url',
@@ -4513,6 +5001,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'render-route-request-result',
       signature: 'RenderRouteRequestResult: any',
       typeOnly: true,
+      summary:
+        'Outcome of rendering a route request for SSR: a render, redirect, deny, or no-match.',
     },
     {
       name: 'renderRouteRequestToString',
@@ -4520,12 +5010,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'renderRouteRequestToString: (options: RenderRouteRequestOptions) => Promise<RenderRouteRequestResult>',
       typeOnly: true,
+      summary:
+        'Resolve and render a route request for SSR, always fully buffering the HTML.',
     },
     {
       name: 'renderToStream',
       anchor: 'render-to-stream',
       signature: 'renderToStream: (opts: RouteStreamOptions) => void',
       typeOnly: true,
+      summary:
+        "Stream a route request's rendered HTML to the response sink described by `opts`.",
     },
     {
       name: 'renderToString',
@@ -4533,6 +5027,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'renderToString: { (component: (props?: Record<string, unknown>) => VNode | JSXElement | string | number | null): string; (opts: RouteRenderOptions): string; }',
       typeOnly: true,
+      summary:
+        'Render a component or route request to a complete HTML string, synchronously.',
     },
     {
       name: 'renderToStringSync',
@@ -4540,6 +5036,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'renderToStringSync: (component: (props?: Record<string, unknown>) => VNode | JSXElement | string | number | boolean | null | undefined, props?: Record<string, unknown>, options?: { seed?: number; data?: SSRData; envelope?: PageRenderEnvelope; cspNonce?: string; onContext?: (ctx: RenderContext) => void; }) => string',
       typeOnly: true,
+      summary:
+        'Synchronously render a component to an HTML string, without route resolution.',
     },
     {
       name: 'resolveRequest',
@@ -4547,6 +5045,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'resolveRequest: (opts: { url: string; registry: RouteRegistry; auth?: RouteAuthOptions; authContext?: AuthContext; request?: Request; signal?: AbortSignal; }) => Promise<RouteRequestResult>',
       typeOnly: true,
+      summary:
+        'Resolve a URL against a route registry for SSR, applying auth/policies before render.',
     },
     {
       name: 'SSRComponent',
@@ -4575,6 +5075,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'ssrroute',
       signature: 'SSRRoute: any',
       typeOnly: true,
+      summary:
+        'A single path-to-handler route binding accepted by low-level SSR route rendering.',
     },
     {
       name: 'SSRStyleRegistration',
@@ -4601,6 +5103,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'ssrstyle-registration-validation',
       signature: 'SSRStyleRegistrationValidation: any',
       typeOnly: true,
+      summary:
+        'How to react when SSR styles were registered but not included in the rendered document.',
     },
     {
       name: 'VNode',
@@ -4623,6 +5127,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'withRenderContextAsync: <T>(ctx: RenderContext, fn: () => T | PromiseLike<T>) => Promise<T>',
       typeOnly: true,
+      summary:
+        'Run `fn` with `ctx` as the active SSR render context, using async-local storage.',
     },
   ],
   symbols17: [
@@ -4647,6 +5153,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'document-render-args',
       signature: 'DocumentRenderArgs: any',
       typeOnly: true,
+      summary:
+        'Arguments passed to a {@link DocumentRenderer}: the rendered app HTML and its context.',
       members: [
         {
           name: 'appHtml',
@@ -4665,6 +5173,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'document-render-context',
       signature: 'DocumentRenderContext: any',
       typeOnly: true,
+      summary: 'Request/render metadata passed to a {@link DocumentRenderer}.',
       members: [
         {
           name: 'mode',
@@ -4728,6 +5237,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'document-renderer',
       signature: 'DocumentRenderer: any',
       typeOnly: true,
+      summary:
+        'Wraps rendered app HTML in a full document (`<html>`, `<head>`, etc.) for SSR/SSG output.',
     },
     {
       name: 'RouteConfig',
@@ -4816,6 +5327,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-render-reason',
       signature: 'RouteRenderReason: any',
       typeOnly: true,
+      summary:
+        'Why a route was rendered, skipped, or removed during generation.',
     },
     {
       name: 'RouteRenderResult',
@@ -4892,12 +5405,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-render-status',
       signature: 'RouteRenderStatus: any',
       typeOnly: true,
+      summary: "Outcome of generating a single route's static HTML.",
     },
     {
       name: 'SSGAssetSource',
       anchor: 'ssgasset-source',
       signature: 'SSGAssetSource: any',
       typeOnly: true,
+      summary: 'A static file or directory to copy alongside generated routes.',
       members: [
         {
           name: 'from',
@@ -5023,6 +5538,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'ssgmode',
       signature: 'SSGMode: any',
       typeOnly: true,
+      summary:
+        'Whether an SSG run rebuilds every route (`full`) or only changed ones (`incremental`).',
     },
     {
       name: 'SSGOptions',
@@ -5110,6 +5627,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'ssrstyle-registration-validation',
       signature: 'SSRStyleRegistrationValidation: any',
       typeOnly: true,
+      summary:
+        'How to react when SSR styles were registered but not included in the rendered document.',
     },
   ],
   symbols18: [
@@ -5118,6 +5637,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'fragment',
       signature: 'Fragment: typeof Fragment',
       typeOnly: true,
+      summary:
+        'The element type marker for JSX fragments (`<>...</>`), groups children without a wrapper element.',
     },
     {
       name: 'jsx',
@@ -5125,6 +5646,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'jsx: { (type: EagerControlPrimitive, props: Props | null, key?: string | number): unknown; <TTag extends keyof KnownIntrinsicElementProps>(type: TTag, props: KnownIntrinsicElementProps[TTag] | null, key?: string | number): JSXElement; <TTag extends string>(type: Exclude<TTag, keyof KnownIntrinsicElementProps>, props: IntrinsicFallbackProps | null, key?: string | number): JSXElement; <TProps extends object>(type: (props: TProps) => unknown, props: TProps | null, key?: string | number): JSXElement; (type: symbol, props: Props | null, key?: string | number): JSXElement; }',
       typeOnly: true,
+      summary:
+        'JSX factory for elements with a single or no child, used by the `jsxImportSource` transform.',
     },
     {
       name: 'JSX',
@@ -5137,6 +5660,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'jsxcomponent',
       signature: 'JSXComponent: any',
       typeOnly: true,
+      summary:
+        "A component function accepting `TProps`, usable as a JSX element's `type`.",
     },
     {
       name: 'jsxDEV',
@@ -5150,6 +5675,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'jsxelement',
       signature: 'JSXElement: any',
       typeOnly: true,
+      summary: 'The vnode shape produced by JSX/`jsx()` calls.',
       members: [
         {
           name: '$$typeof',
@@ -5178,6 +5704,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'jsxelement-type',
       signature: 'JSXElementType: any',
       typeOnly: true,
+      summary:
+        'Valid `type` values for a JSX element: a tag name, a component, or a symbol (e.g. `Fragment`).',
     },
     {
       name: 'jsxs',
@@ -5185,6 +5713,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'jsxs: { (type: EagerControlPrimitive, props: Props | null, key?: string | number): unknown; <TTag extends keyof KnownIntrinsicElementProps>(type: TTag, props: KnownIntrinsicElementProps[TTag] | null, key?: string | number): JSXElement; <TTag extends string>(type: Exclude<TTag, keyof KnownIntrinsicElementProps>, props: IntrinsicFallbackProps | null, key?: string | number): JSXElement; <TProps extends object>(type: (props: TProps) => unknown, props: TProps | null, key?: string | number): JSXElement; (type: symbol, props: Props | null, key?: string | number): JSXElement; }',
       typeOnly: true,
+      summary:
+        'JSX factory for elements with multiple static children, used by the `jsxImportSource` transform.',
     },
   ],
   symbols19: [
@@ -5193,6 +5723,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'fragment',
       signature: 'Fragment: typeof Fragment',
       typeOnly: true,
+      summary:
+        'The element type marker for JSX fragments (`<>...</>`), groups children without a wrapper element.',
     },
     {
       name: 'JSX',
@@ -5205,6 +5737,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'jsxcomponent',
       signature: 'JSXComponent: any',
       typeOnly: true,
+      summary:
+        "A component function accepting `TProps`, usable as a JSX element's `type`.",
     },
     {
       name: 'jsxDEV',
@@ -5218,6 +5752,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'jsxelement',
       signature: 'JSXElement: any',
       typeOnly: true,
+      summary: 'The vnode shape produced by JSX/`jsx()` calls.',
       members: [
         {
           name: '$$typeof',
@@ -5246,6 +5781,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'jsxelement-type',
       signature: 'JSXElementType: any',
       typeOnly: true,
+      summary:
+        'Valid `type` values for a JSX element: a tag name, a component, or a symbol (e.g. `Fragment`).',
     },
   ],
   symbols20: [
@@ -5255,6 +5792,12 @@ export const apiSymbolSets: Readonly<
       signature:
         'allOf: (...requirements: readonly AuthRequirement[]) => AuthRequirement',
       typeOnly: true,
+      summary:
+        'Combine requirements so every requirement must allow the request.',
+      tags: {
+        param: ['requirements Requirements evaluated in order.'],
+        returns: ['A requirement that requires every input to allow.'],
+      },
     },
     {
       name: 'anyOf',
@@ -5262,36 +5805,43 @@ export const apiSymbolSets: Readonly<
       signature:
         'anyOf: (...requirements: readonly AuthRequirement[]) => AuthRequirement',
       typeOnly: true,
+      summary:
+        'Combine requirements so at least one requirement must allow the request.',
+      tags: {
+        param: ['requirements Requirements evaluated in order.'],
+        returns: ['A requirement that requires one input to allow.'],
+      },
     },
     {
       name: 'AuthContext',
       anchor: 'auth-context',
       signature: 'AuthContext: any',
       typeOnly: true,
+      summary: 'Authentication state resolved for one request.',
       members: [
         {
           name: 'authenticated',
-          summary: '',
+          summary: 'Whether a valid principal was resolved.',
           signature: 'authenticated: boolean;',
         },
         {
           name: 'principal',
-          summary: '',
+          summary: 'Resolved principal, or null for anonymous requests.',
           signature: 'principal: P | null;',
         },
         {
           name: 'session',
-          summary: '',
+          summary: 'Resolved session, or null when no session is active.',
           signature: 'session: S | null;',
         },
         {
           name: 'tenant',
-          summary: '',
+          summary: 'Resolved tenant identifier, or null when unavailable.',
           signature: 'tenant: string | null;',
         },
         {
           name: 'scopes',
-          summary: '',
+          summary: 'Optional scopes carried by the credential.',
           signature: 'scopes?: readonly string[];',
         },
       ],
@@ -5301,47 +5851,50 @@ export const apiSymbolSets: Readonly<
       anchor: 'auth-decision',
       signature: 'AuthDecision: any',
       typeOnly: true,
+      summary: 'Result returned by an authorization requirement.',
     },
     {
       name: 'AuthOptions',
       anchor: 'auth-options',
       signature: 'AuthOptions: any',
       typeOnly: true,
+      summary:
+        'Dependencies and policies used by the request authentication resolver.',
       members: [
         {
           name: 'sessions',
-          summary: '',
+          summary: 'Session lookup implementation.',
           signature: 'sessions?: SessionStore<S>;',
         },
         {
           name: 'principals',
-          summary: '',
+          summary: 'Principal lookup implementation.',
           signature: 'principals?: PrincipalStore<P>;',
         },
         {
           name: 'jwt',
-          summary: '',
+          summary: 'Validator for bearer JWTs.',
           signature: 'jwt?: JwtValidator<P>;',
         },
         {
           name: 'jwtCookie',
-          summary: '',
+          summary: 'Optional cookie name and validator for browser sessions.',
           signature:
             'jwtCookie?: {\n    name: string;\n    validator: JwtValidator<P>;\n  };',
         },
         {
           name: 'tenant',
-          summary: '',
+          summary: 'Resolves the tenant associated with a request.',
           signature: 'tenant?: TenantResolver;',
         },
         {
           name: 'sessionCookie',
-          summary: '',
+          summary: 'Cookie name used to identify a session.',
           signature: 'sessionCookie?: string;',
         },
         {
           name: 'clock',
-          summary: '',
+          summary: 'Clock returning Unix time in milliseconds.',
           signature: 'clock?: () => number;',
         },
       ],
@@ -5351,18 +5904,28 @@ export const apiSymbolSets: Readonly<
       anchor: 'auth-requirement',
       signature: 'AuthRequirement: any',
       typeOnly: true,
+      summary: 'Predicate that allows or rejects an authentication context.',
     },
     {
       name: 'AuthResolver',
       anchor: 'auth-resolver',
       signature: 'AuthResolver: any',
       typeOnly: true,
+      summary: 'Resolves authentication context from an incoming request.',
       members: [
         {
           name: 'resolve',
-          summary: '',
+          summary:
+            'Resolve the principal, session, tenant, and authorization state.',
           signature:
             'resolve(request: Request, options?: {\n    signal?: AbortSignal;\n  }): Promise<AuthContext<P, S>>;',
+          tags: {
+            param: [
+              'request Incoming request.',
+              'options Optional cancellation signal.',
+            ],
+            returns: ['Resolved authentication context.'],
+          },
         },
       ],
     },
@@ -5371,25 +5934,26 @@ export const apiSymbolSets: Readonly<
       anchor: 'auth-session',
       signature: 'AuthSession: any',
       typeOnly: true,
+      summary: 'Persisted login session associated with a principal.',
       members: [
         {
           name: 'id',
-          summary: '',
+          summary: 'Stable session identifier.',
           signature: 'id: string;',
         },
         {
           name: 'subject',
-          summary: '',
+          summary: 'Subject owning the session.',
           signature: 'subject: string;',
         },
         {
           name: 'expiresAt',
-          summary: '',
+          summary: 'Expiration time as Unix milliseconds.',
           signature: 'expiresAt?: number;',
         },
         {
           name: 'revokedAt',
-          summary: '',
+          summary: 'Revocation time as Unix milliseconds.',
           signature: 'revokedAt?: number;',
         },
       ],
@@ -5399,6 +5963,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'claim',
       signature: 'Claim: any',
       typeOnly: true,
+      summary:
+        'Additional application-defined claims carried by an authenticated principal or session.',
     },
     {
       name: 'createAuth',
@@ -5406,31 +5972,39 @@ export const apiSymbolSets: Readonly<
       signature:
         'createAuth: <P extends Principal = Principal, S extends AuthSession = AuthSession>(options?: AuthOptions<P, S>) => AuthResolver<P, S>',
       typeOnly: true,
+      summary:
+        'Create a request authentication resolver for bearer tokens, cookies, and sessions.',
+      tags: {
+        param: ['options Authentication dependencies and policy.'],
+        returns: ['Configured request resolver.'],
+      },
     },
     {
       name: 'Principal',
       anchor: 'principal',
       signature: 'Principal: any',
       typeOnly: true,
+      summary: 'Stable identity and authorization attributes for a caller.',
       members: [
         {
           name: 'id',
-          summary: '',
+          summary: 'Application-specific principal identifier.',
           signature: 'id: string;',
         },
         {
           name: 'subject',
-          summary: '',
+          summary:
+            'External subject identifier, when supplied by an identity provider.',
           signature: 'subject?: string;',
         },
         {
           name: 'roles',
-          summary: '',
+          summary: 'Roles granted to the principal.',
           signature: 'roles?: readonly string[];',
         },
         {
           name: 'permissions',
-          summary: '',
+          summary: 'Fine-grained permissions granted to the principal.',
           signature: 'permissions?: readonly string[];',
         },
       ],
@@ -5440,12 +6014,20 @@ export const apiSymbolSets: Readonly<
       anchor: 'principal-store',
       signature: 'PrincipalStore: any',
       typeOnly: true,
+      summary: 'Resolves an authenticated principal by subject.',
       members: [
         {
           name: 'get',
-          summary: '',
+          summary: 'Load a principal by subject.',
           signature:
             'get(subject: string, options?: {\n    request: Request;\n    signal: AbortSignal;\n  }): P | null | PromiseLike<P | null>;',
+          tags: {
+            param: [
+              'subject Principal subject.',
+              'options Request context and cancellation signal.',
+            ],
+            returns: ['The matching principal or null.'],
+          },
         },
       ],
     },
@@ -5454,42 +6036,74 @@ export const apiSymbolSets: Readonly<
       anchor: 'require-anonymous',
       signature: 'requireAnonymous: () => AuthRequirement',
       typeOnly: true,
+      summary: 'Require that the request is not already authenticated.',
+      tags: {
+        returns: ['A reusable authorization requirement.'],
+      },
     },
     {
       name: 'requirePermission',
       anchor: 'require-permission',
       signature: 'requirePermission: (permission: string) => AuthRequirement',
       typeOnly: true,
+      summary:
+        'Require an authenticated principal carrying a specific permission.',
+      tags: {
+        param: ['permission Required permission.'],
+        returns: ['A reusable authorization requirement.'],
+      },
     },
     {
       name: 'requireRole',
       anchor: 'require-role',
       signature: 'requireRole: (role: string) => AuthRequirement',
       typeOnly: true,
+      summary: 'Require an authenticated principal carrying a specific role.',
+      tags: {
+        param: ['role Required role.'],
+        returns: ['A reusable authorization requirement.'],
+      },
     },
     {
       name: 'requireScope',
       anchor: 'require-scope',
       signature: 'requireScope: (scope: string) => AuthRequirement',
       typeOnly: true,
+      summary: 'Require an authenticated principal carrying a specific scope.',
+      tags: {
+        param: ['scope Required scope.'],
+        returns: ['A reusable authorization requirement.'],
+      },
     },
     {
       name: 'requireUser',
       anchor: 'require-user',
       signature: 'requireUser: () => AuthRequirement',
       typeOnly: true,
+      summary: 'Require an authenticated principal.',
+      tags: {
+        returns: ['A reusable authorization requirement.'],
+      },
     },
     {
       name: 'SessionStore',
       anchor: 'session-store',
       signature: 'SessionStore: any',
       typeOnly: true,
+      summary: 'Resolves a persisted session by its identifier.',
       members: [
         {
           name: 'get',
-          summary: '',
+          summary: 'Load a session by identifier.',
           signature:
             'get(id: string, options?: {\n    request: Request;\n    signal: AbortSignal;\n  }): S | null | PromiseLike<S | null>;',
+          tags: {
+            param: [
+              'id Session identifier.',
+              'options Request context and cancellation signal.',
+            ],
+            returns: ['The matching session or null.'],
+          },
         },
       ],
     },
@@ -5498,6 +6112,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'tenant-resolver',
       signature: 'TenantResolver: any',
       typeOnly: true,
+      summary: 'Supplies the tenant identifier for an incoming request.',
     },
   ],
   symbols21: [
@@ -5506,20 +6121,21 @@ export const apiSymbolSets: Readonly<
       anchor: 'askr-json-web-key',
       signature: 'AskrJsonWebKey: any',
       typeOnly: true,
+      summary: 'JSON Web Key with the metadata used by Askr token validation.',
       members: [
         {
           name: 'kid',
-          summary: '',
+          summary: 'Key identifier advertised by the issuer.',
           signature: 'kid?: string;',
         },
         {
           name: 'alg',
-          summary: '',
+          summary: 'JOSE algorithm identifier.',
           signature: 'alg?: string;',
         },
         {
           name: 'use',
-          summary: '',
+          summary: 'Intended key use, such as signing.',
           signature: 'use?: string;',
         },
       ],
@@ -5529,12 +6145,22 @@ export const apiSymbolSets: Readonly<
       anchor: 'create-jwt-issuer',
       signature: 'createJwtIssuer: (options: JwtIssuerOptions) => JwtIssuer',
       typeOnly: true,
+      summary: 'Create an issuer that signs and validates its own JWTs.',
+      tags: {
+        param: ['options Issuer key and claim configuration.'],
+        returns: ['Configured JWT issuer.'],
+      },
     },
     {
       name: 'createJwtSigner',
       anchor: 'create-jwt-signer',
       signature: 'createJwtSigner: (options: JwtSignerOptions) => JwtSigner',
       typeOnly: true,
+      summary: 'Create a signer that enforces Askr-owned JWT headers.',
+      tags: {
+        param: ['options Signer key configuration.'],
+        returns: ['A JWT signer.'],
+      },
     },
     {
       name: 'createJwtValidator',
@@ -5542,6 +6168,12 @@ export const apiSymbolSets: Readonly<
       signature:
         'createJwtValidator: (options: JwtValidatorOptions) => JwtValidator',
       typeOnly: true,
+      summary:
+        'Create a JWT validator with issuer, audience, key-refresh, and clock policy.',
+      tags: {
+        param: ['options Validation policy.'],
+        returns: ['Configured JWT validator.'],
+      },
     },
     {
       name: 'issueTimedJwt',
@@ -5549,16 +6181,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'issueTimedJwt: (signer: JwtSigner, input: TimedJwtInput) => Promise<string>',
       typeOnly: true,
+      summary:
+        'Issue a JWT with validated time, issuer, subject, and audience claims.',
+      tags: {
+        param: ['signer JWT signer.', 'input Timed token claims.'],
+        returns: ['Compact serialized JWT.'],
+      },
     },
     {
       name: 'JsonWebKeySet',
       anchor: 'json-web-key-set',
       signature: 'JsonWebKeySet: any',
       typeOnly: true,
+      summary: 'Set of public keys used to validate JWT signatures.',
       members: [
         {
           name: 'keys',
-          summary: '',
+          summary: 'Public keys indexed by their JOSE metadata.',
           signature: 'keys: readonly AskrJsonWebKey[];',
         },
       ],
@@ -5568,16 +6207,18 @@ export const apiSymbolSets: Readonly<
       anchor: 'jwks-provider',
       signature: 'JwksProvider: any',
       typeOnly: true,
+      summary: 'Static or asynchronously refreshed JSON Web Key provider.',
     },
     {
       name: 'JwtIssueInput',
       anchor: 'jwt-issue-input',
       signature: 'JwtIssueInput: any',
       typeOnly: true,
+      summary: 'Principal claims and subject used to issue a JWT.',
       members: [
         {
           name: 'subject',
-          summary: '',
+          summary: 'Subject claim to encode.',
           signature: 'subject: string;',
         },
       ],
@@ -5587,15 +6228,20 @@ export const apiSymbolSets: Readonly<
       anchor: 'jwt-issuer',
       signature: 'JwtIssuer: any',
       typeOnly: true,
+      summary: 'JWT issuer and its matching validator.',
       members: [
         {
           name: 'issue',
-          summary: '',
+          summary: 'Issue a compact JWT.',
           signature: 'issue(principal: JwtIssueInput): Promise<string>;',
+          tags: {
+            param: ['principal Subject and claims to encode.'],
+            returns: ['Compact serialized JWT.'],
+          },
         },
         {
           name: 'validator',
-          summary: '',
+          summary: "Validator configured with this issuer's public-key policy.",
           signature: 'readonly validator: JwtValidator<P>;',
         },
       ],
@@ -5605,35 +6251,36 @@ export const apiSymbolSets: Readonly<
       anchor: 'jwt-issuer-options',
       signature: 'JwtIssuerOptions: any',
       typeOnly: true,
+      summary: 'Configuration for issuing signed JWTs.',
       members: [
         {
           name: 'privateKey',
-          summary: '',
+          summary: 'Private signing key.',
           signature: 'privateKey: JsonWebKey;',
         },
         {
           name: 'kid',
-          summary: '',
+          summary: 'JOSE key identifier.',
           signature: 'kid: string;',
         },
         {
           name: 'issuer',
-          summary: '',
+          summary: 'Issuer claim.',
           signature: 'issuer: string;',
         },
         {
           name: 'audience',
-          summary: '',
+          summary: 'Audience claim or claims.',
           signature: 'audience: string | readonly string[];',
         },
         {
           name: 'ttlSeconds',
-          summary: '',
+          summary: 'Token lifetime in seconds.',
           signature: 'ttlSeconds: number;',
         },
         {
           name: 'clock',
-          summary: '',
+          summary: 'Clock returning Unix time in seconds.',
           signature: 'clock?: () => number;',
         },
       ],
@@ -5643,11 +6290,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'jwt-signer',
       signature: 'JwtSigner: any',
       typeOnly: true,
+      summary: 'Signs JWT payloads with a configured private key.',
       members: [
         {
           name: 'sign',
-          summary: '',
+          summary: 'Sign claims with the configured key.',
           signature: 'sign(input: JwtSignInput): Promise<string>;',
+          tags: {
+            param: ['input Claims and headers to sign.'],
+            returns: ['Compact serialized JWT.'],
+          },
         },
       ],
     },
@@ -5656,15 +6308,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'jwt-signer-options',
       signature: 'JwtSignerOptions: any',
       typeOnly: true,
+      summary: 'Private-key configuration for a JWT signer.',
       members: [
         {
           name: 'privateKey',
-          summary: '',
+          summary: 'Private signing key in Web Crypto JWK form.',
           signature: 'readonly privateKey: JsonWebKey;',
         },
         {
           name: 'kid',
-          summary: '',
+          summary: 'JOSE key identifier included in protected headers.',
           signature: 'readonly kid: string;',
         },
       ],
@@ -5674,15 +6327,17 @@ export const apiSymbolSets: Readonly<
       anchor: 'jwt-sign-input',
       signature: 'JwtSignInput: any',
       typeOnly: true,
+      summary: 'Claims and optional protected headers for one JWT.',
       members: [
         {
           name: 'claims',
-          summary: '',
+          summary: 'Payload claims to encode.',
           signature: 'readonly claims: Readonly<Record<string, unknown>>;',
         },
         {
           name: 'protectedHeader',
-          summary: '',
+          summary:
+            'Additional protected headers; `alg` and `kid` are managed by Askr.',
           signature:
             'readonly protectedHeader?: Readonly<Record<string, unknown>>;',
         },
@@ -5693,10 +6348,11 @@ export const apiSymbolSets: Readonly<
       anchor: 'jwt-validation-error',
       signature: 'JwtValidationError: typeof JwtValidationError',
       typeOnly: true,
+      summary: 'Error raised when a JWT cannot be validated.',
       members: [
         {
           name: 'code',
-          summary: '',
+          summary: 'Error category used for programmatic handling.',
           signature: 'readonly code: JwtValidationErrorCode;',
         },
       ],
@@ -5706,17 +6362,23 @@ export const apiSymbolSets: Readonly<
       anchor: 'jwt-validation-error-code',
       signature: 'JwtValidationErrorCode: any',
       typeOnly: true,
+      summary: 'Stable failure codes returned by JWT validation.',
     },
     {
       name: 'JwtValidator',
       anchor: 'jwt-validator',
       signature: 'JwtValidator: any',
       typeOnly: true,
+      summary: 'Verifies a JWT and returns its typed principal claims.',
       members: [
         {
           name: 'validate',
-          summary: '',
+          summary: 'Validate a compact JWT.',
           signature: 'validate(token: string): Promise<P>;',
+          tags: {
+            param: ['token Compact serialized JWT.'],
+            returns: ['Validated principal claims.'],
+          },
         },
       ],
     },
@@ -5725,30 +6387,31 @@ export const apiSymbolSets: Readonly<
       anchor: 'jwt-validator-options',
       signature: 'JwtValidatorOptions: any',
       typeOnly: true,
+      summary: 'Validation policy for signed JWTs.',
       members: [
         {
           name: 'issuer',
-          summary: '',
+          summary: 'Expected issuer claim.',
           signature: 'issuer: string;',
         },
         {
           name: 'audience',
-          summary: '',
+          summary: 'Expected audience claim or accepted audience values.',
           signature: 'audience?: string | readonly string[];',
         },
         {
           name: 'jwks',
-          summary: '',
+          summary: 'Public keys used to verify signatures.',
           signature: 'jwks: JwksProvider;',
         },
         {
           name: 'clock',
-          summary: '',
+          summary: 'Clock returning Unix time in seconds.',
           signature: 'clock?: () => number;',
         },
         {
           name: 'clockSkewSeconds',
-          summary: '',
+          summary: 'Allowed clock skew in seconds.',
           signature: 'clockSkewSeconds?: number;',
         },
         {
@@ -5765,12 +6428,12 @@ export const apiSymbolSets: Readonly<
         },
         {
           name: 'jwksRefreshCooldownSeconds',
-          summary: '',
+          summary: 'Minimum interval between refreshes after an unknown key.',
           signature: 'jwksRefreshCooldownSeconds?: number;',
         },
         {
           name: 'unknownKeyCacheSeconds',
-          summary: '',
+          summary: 'Duration for caching unknown-key failures.',
           signature: 'unknownKeyCacheSeconds?: number;',
         },
       ],
@@ -5780,10 +6443,11 @@ export const apiSymbolSets: Readonly<
       anchor: 'oidc-id-token-options',
       signature: 'OidcIdTokenOptions: any',
       typeOnly: true,
+      summary: 'OIDC-specific JWT validation options.',
       members: [
         {
           name: 'nonce',
-          summary: '',
+          summary: 'Expected OIDC nonce claim.',
           signature: 'nonce: string;',
         },
       ],
@@ -5793,40 +6457,41 @@ export const apiSymbolSets: Readonly<
       anchor: 'timed-jwt-input',
       signature: 'TimedJwtInput: any',
       typeOnly: true,
+      summary: 'Standard claims used to issue a short-lived JWT.',
       members: [
         {
           name: 'issuer',
-          summary: '',
+          summary: 'Issuer claim.',
           signature: 'readonly issuer: string;',
         },
         {
           name: 'subject',
-          summary: '',
+          summary: 'Subject claim.',
           signature: 'readonly subject: string;',
         },
         {
           name: 'audience',
-          summary: '',
+          summary: 'Audience claim or claims.',
           signature: 'readonly audience: string | readonly string[];',
         },
         {
           name: 'ttlSeconds',
-          summary: '',
+          summary: 'Lifetime in seconds.',
           signature: 'readonly ttlSeconds: number;',
         },
         {
           name: 'typ',
-          summary: '',
+          summary: 'Protected JOSE type header.',
           signature: 'readonly typ: string;',
         },
         {
           name: 'claims',
-          summary: '',
+          summary: 'Additional application claims.',
           signature: 'readonly claims?: Readonly<Record<string, unknown>>;',
         },
         {
           name: 'clock',
-          summary: '',
+          summary: 'Clock returning Unix time in seconds.',
           signature: 'readonly clock?: () => number;',
         },
       ],
@@ -5837,6 +6502,14 @@ export const apiSymbolSets: Readonly<
       signature:
         'validateOidcIdToken: (token: string, options: OidcIdTokenOptions) => Promise<Principal>',
       typeOnly: true,
+      summary: 'Validate an OIDC ID token, including its nonce claim.',
+      tags: {
+        param: [
+          'token Compact serialized ID token.',
+          'options OIDC validation policy.',
+        ],
+        returns: ['Validated principal claims.'],
+      },
     },
   ],
   symbols22: [
@@ -5845,31 +6518,38 @@ export const apiSymbolSets: Readonly<
       anchor: 'create-oidc-client',
       signature: 'createOidcClient: (options: OidcClientOptions) => OidcClient',
       typeOnly: true,
+      summary:
+        'Create an OIDC client with discovery caching and ID-token validation.',
+      tags: {
+        param: ['options Provider and client configuration.'],
+        returns: ['Configured OIDC client.'],
+      },
     },
     {
       name: 'OidcAuthorizationRequest',
       anchor: 'oidc-authorization-request',
       signature: 'OidcAuthorizationRequest: any',
       typeOnly: true,
+      summary: 'Generated authorization URL and callback values.',
       members: [
         {
           name: 'url',
-          summary: '',
+          summary: 'Provider authorization URL.',
           signature: 'url: string;',
         },
         {
           name: 'state',
-          summary: '',
+          summary: 'CSRF state value.',
           signature: 'state: string;',
         },
         {
           name: 'nonce',
-          summary: '',
+          summary: 'Replay-protection nonce.',
           signature: 'nonce: string;',
         },
         {
           name: 'codeVerifier',
-          summary: '',
+          summary: 'PKCE verifier retained for callback exchange.',
           signature: 'codeVerifier: string;',
         },
       ],
@@ -5879,25 +6559,27 @@ export const apiSymbolSets: Readonly<
       anchor: 'oidc-authorization-request-options',
       signature: 'OidcAuthorizationRequestOptions: any',
       typeOnly: true,
+      summary:
+        'Optional state, nonce, and PKCE values for an authorization request.',
       members: [
         {
           name: 'state',
-          summary: '',
+          summary: 'CSRF state value.',
           signature: 'state?: string;',
         },
         {
           name: 'nonce',
-          summary: '',
+          summary: 'Replay-protection nonce.',
           signature: 'nonce?: string;',
         },
         {
           name: 'codeVerifier',
-          summary: '',
+          summary: 'PKCE verifier.',
           signature: 'codeVerifier?: string;',
         },
         {
           name: 'loginHint',
-          summary: '',
+          summary: 'Optional provider login hint.',
           signature: 'loginHint?: string;',
         },
       ],
@@ -5907,23 +6589,35 @@ export const apiSymbolSets: Readonly<
       anchor: 'oidc-client',
       signature: 'OidcClient: any',
       typeOnly: true,
+      summary: 'High-level OIDC discovery, authorization, and callback client.',
       members: [
         {
           name: 'discover',
-          summary: '',
+          summary: 'Discover and cache provider metadata.',
           signature: 'discover(): Promise<OidcProviderMetadata>;',
+          tags: {
+            returns: ['Provider discovery metadata.'],
+          },
         },
         {
           name: 'createAuthorizationRequest',
-          summary: '',
+          summary: 'Build an authorization URL and callback state.',
           signature:
             'createAuthorizationRequest(options?: OidcAuthorizationRequestOptions): Promise<OidcAuthorizationRequest>;',
+          tags: {
+            param: ['options Optional state, nonce, and PKCE overrides.'],
+            returns: ['Authorization request details.'],
+          },
         },
         {
           name: 'exchangeCode',
-          summary: '',
+          summary: 'Exchange an authorization code and validate its ID token.',
           signature:
             'exchangeCode(input: OidcCodeExchange): Promise<OidcCodeExchangeResult>;',
+          tags: {
+            param: ['input Authorization code and stored request.'],
+            returns: ['Tokens and validated principal.'],
+          },
         },
       ],
     },
@@ -5932,15 +6626,17 @@ export const apiSymbolSets: Readonly<
       anchor: 'oidc-client-error',
       signature: 'OidcClientError: typeof OidcClientError',
       typeOnly: true,
+      summary:
+        'Error raised while discovering, exchanging, or validating OIDC tokens.',
       members: [
         {
           name: 'code',
-          summary: '',
+          summary: 'Error category used for programmatic handling.',
           signature: 'readonly code: OidcClientErrorCode;',
         },
         {
           name: 'name',
-          summary: '',
+          summary: 'Error category used for programmatic handling.',
           signature: 'readonly name = "OidcClientError";',
         },
       ],
@@ -5950,41 +6646,43 @@ export const apiSymbolSets: Readonly<
       anchor: 'oidc-client-error-code',
       signature: 'OidcClientErrorCode: any',
       typeOnly: true,
+      summary: 'Stable failure codes for OIDC client operations.',
     },
     {
       name: 'OidcClientOptions',
       anchor: 'oidc-client-options',
       signature: 'OidcClientOptions: any',
       typeOnly: true,
+      summary: 'Client credentials and callback settings for OIDC.',
       members: [
         {
           name: 'issuer',
-          summary: '',
+          summary: 'Provider issuer URL.',
           signature: 'issuer: string;',
         },
         {
           name: 'clientId',
-          summary: '',
+          summary: 'Registered client identifier.',
           signature: 'clientId: string;',
         },
         {
           name: 'clientSecret',
-          summary: '',
+          summary: 'Optional confidential-client secret.',
           signature: 'clientSecret?: string;',
         },
         {
           name: 'redirectUri',
-          summary: '',
+          summary: 'Registered redirect URI.',
           signature: 'redirectUri: string;',
         },
         {
           name: 'scopes',
-          summary: '',
+          summary: 'Requested scopes.',
           signature: 'scopes?: readonly string[];',
         },
         {
           name: 'fetch',
-          summary: '',
+          summary: 'Fetch implementation for provider requests.',
           signature: 'fetch?: typeof fetch;',
         },
       ],
@@ -5994,20 +6692,21 @@ export const apiSymbolSets: Readonly<
       anchor: 'oidc-code-exchange',
       signature: 'OidcCodeExchange: any',
       typeOnly: true,
+      summary: 'Callback code and original authorization request values.',
       members: [
         {
           name: 'code',
-          summary: '',
+          summary: 'Authorization code.',
           signature: 'code: string;',
         },
         {
           name: 'state',
-          summary: '',
+          summary: 'Returned CSRF state.',
           signature: 'state: string;',
         },
         {
           name: 'request',
-          summary: '',
+          summary: 'Stored authorization request values.',
           signature:
             'request: Pick<OidcAuthorizationRequest, "state" | "nonce" | "codeVerifier">;',
         },
@@ -6018,15 +6717,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'oidc-code-exchange-result',
       signature: 'OidcCodeExchangeResult: any',
       typeOnly: true,
+      summary: 'Result of exchanging an authorization code.',
       members: [
         {
           name: 'tokens',
-          summary: '',
+          summary: 'Provider tokens.',
           signature: 'tokens: OidcTokenResponse;',
         },
         {
           name: 'principal',
-          summary: '',
+          summary: 'Principal derived from the validated ID token.',
           signature: 'principal: Principal;',
         },
       ],
@@ -6036,35 +6736,36 @@ export const apiSymbolSets: Readonly<
       anchor: 'oidc-provider-metadata',
       signature: 'OidcProviderMetadata: any',
       typeOnly: true,
+      summary: 'Discovery metadata published by an OpenID Connect provider.',
       members: [
         {
           name: 'issuer',
-          summary: '',
+          summary: 'Provider issuer URL.',
           signature: 'issuer: string;',
         },
         {
           name: 'authorization_endpoint',
-          summary: '',
+          summary: 'Authorization endpoint URL.',
           signature: 'authorization_endpoint: string;',
         },
         {
           name: 'token_endpoint',
-          summary: '',
+          summary: 'Token endpoint URL.',
           signature: 'token_endpoint: string;',
         },
         {
           name: 'jwks_uri',
-          summary: '',
+          summary: 'JWKS endpoint URL.',
           signature: 'jwks_uri: string;',
         },
         {
           name: 'userinfo_endpoint',
-          summary: '',
+          summary: 'Optional user-info endpoint URL.',
           signature: 'userinfo_endpoint?: string;',
         },
         {
           name: 'end_session_endpoint',
-          summary: '',
+          summary: 'Optional end-session endpoint URL.',
           signature: 'end_session_endpoint?: string;',
         },
       ],
@@ -6074,30 +6775,31 @@ export const apiSymbolSets: Readonly<
       anchor: 'oidc-token-response',
       signature: 'OidcTokenResponse: any',
       typeOnly: true,
+      summary: 'Token response returned by an OIDC provider.',
       members: [
         {
           name: 'access_token',
-          summary: '',
+          summary: 'Access token.',
           signature: 'access_token: string;',
         },
         {
           name: 'token_type',
-          summary: '',
+          summary: 'Token type, normally Bearer.',
           signature: 'token_type: string;',
         },
         {
           name: 'id_token',
-          summary: '',
+          summary: 'Optional ID token.',
           signature: 'id_token?: string;',
         },
         {
           name: 'refresh_token',
-          summary: '',
+          summary: 'Optional refresh token.',
           signature: 'refresh_token?: string;',
         },
         {
           name: 'expires_in',
-          summary: '',
+          summary: 'Optional lifetime in seconds.',
           signature: 'expires_in?: number;',
         },
       ],
@@ -6110,18 +6812,25 @@ export const apiSymbolSets: Readonly<
       signature:
         'createSamlServiceProvider: (options: SamlServiceProviderOptions) => SamlServiceProvider',
       typeOnly: true,
+      summary:
+        'Create a SAML service provider for metadata, login requests, and response validation.',
+      tags: {
+        param: ['options Service-provider configuration.'],
+        returns: ['Configured SAML service provider.'],
+      },
     },
     {
       name: 'SamlPrincipal',
       anchor: 'saml-principal',
       signature: 'SamlPrincipal: any',
       typeOnly: true,
+      summary: 'Principal claims extracted from a validated SAML assertion.',
       members: [
         {
           name: 'saml',
-          summary: '',
+          summary: 'SAML issuer, subject, session, and attributes.',
           signature:
-            'saml: {\n    issuer: string;\n    nameId: string;\n    nameIdFormat?: string;\n    sessionIndex?: string;\n    attributes: Readonly<Record<string, readonly string[]>>;\n  };',
+            'saml: {\n    /** Identity-provider issuer. */\n    issuer: string;\n    /** Assertion NameID. */\n    nameId: string;\n    /** Optional NameID format. */\n    nameIdFormat?: string;\n    /** Optional provider session index. */\n    sessionIndex?: string;\n    /** Assertion attributes grouped by name. */\n    attributes: Readonly<Record<string, readonly string[]>>;\n  };',
         },
       ],
     },
@@ -6130,21 +6839,33 @@ export const apiSymbolSets: Readonly<
       anchor: 'saml-request-store',
       signature: 'SamlRequestStore: any',
       typeOnly: true,
+      summary: 'Persistence contract for pending SAML requests.',
       members: [
         {
           name: 'save',
-          summary: '',
+          summary: 'Persist a pending authentication request.',
           signature: 'save(request: SamlStoredRequest): Promise<void>;',
+          tags: {
+            param: ['request Request to persist.'],
+          },
         },
         {
           name: 'get',
-          summary: '',
+          summary: 'Load a pending authentication request.',
           signature: 'get(id: string): Promise<SamlStoredRequest | null>;',
+          tags: {
+            param: ['id Request identifier.'],
+            returns: ['Stored request or null.'],
+          },
         },
         {
           name: 'consume',
-          summary: '',
+          summary: 'Consume a pending request exactly once.',
           signature: 'consume(id: string): Promise<boolean>;',
+          tags: {
+            param: ['id Request identifier.'],
+            returns: ['Whether a request was consumed.'],
+          },
         },
       ],
     },
@@ -6153,23 +6874,35 @@ export const apiSymbolSets: Readonly<
       anchor: 'saml-service-provider',
       signature: 'SamlServiceProvider: any',
       typeOnly: true,
+      summary: 'SAML service-provider operations.',
       members: [
         {
           name: 'metadata',
-          summary: '',
+          summary: 'Render SAML metadata XML.',
           signature: 'metadata(): string;',
+          tags: {
+            returns: ['SAML metadata XML.'],
+          },
         },
         {
           name: 'createAuthnRequest',
-          summary: '',
+          summary: 'Create a signed authentication request.',
           signature:
             'createAuthnRequest(options?: {\n    relayState?: string;\n  }): Promise<{\n    url: string;\n    requestId: string;\n  }>;',
+          tags: {
+            param: ['options Optional relay state.'],
+            returns: ['Redirect URL and pending request ID.'],
+          },
         },
         {
           name: 'validateResponse',
-          summary: '',
+          summary: 'Validate an encoded SAML response.',
           signature:
             'validateResponse(input: {\n    samlResponse: string;\n    relayState?: string;\n  }): Promise<SamlPrincipal>;',
+          tags: {
+            param: ['input Encoded SAML response and optional relay state.'],
+            returns: ['Validated SAML principal.'],
+          },
         },
       ],
     },
@@ -6178,63 +6911,66 @@ export const apiSymbolSets: Readonly<
       anchor: 'saml-service-provider-options',
       signature: 'SamlServiceProviderOptions: any',
       typeOnly: true,
+      summary:
+        'Service-provider metadata, identity-provider details, and validation policy.',
       members: [
         {
           name: 'entityId',
-          summary: '',
+          summary: 'Service-provider entity ID.',
           signature: 'entityId: string;',
         },
         {
           name: 'acsUrl',
-          summary: '',
+          summary: 'Assertion-consumer service URL.',
           signature: 'acsUrl: string;',
         },
         {
           name: 'idp',
-          summary: '',
+          summary:
+            'Identity-provider entity ID, SSO URL, and signing certificates.',
           signature:
             'idp: {\n    entityId: string;\n    ssoUrl: string;\n    certificates: readonly string[];\n  };',
         },
         {
           name: 'requestStore',
-          summary: '',
+          summary: 'Store for pending authentication requests.',
           signature: 'requestStore: SamlRequestStore;',
         },
         {
           name: 'signRequests',
-          summary: '',
+          summary: 'Optional request-signing key pair.',
           signature:
             'signRequests?: {\n    privateKey: JsonWebKey;\n    certificate: string;\n  };',
         },
         {
           name: 'decryptAssertions',
-          summary: '',
+          summary: 'Optional assertion-decryption key pair.',
           signature:
             'decryptAssertions?: {\n    privateKey: JsonWebKey;\n    certificate: string;\n  };',
         },
         {
           name: 'requireSignedResponse',
-          summary: '',
+          summary: 'Require a valid XML signature on responses.',
           signature: 'requireSignedResponse?: boolean;',
         },
         {
           name: 'requestTtlSeconds',
-          summary: '',
+          summary: 'Pending-request lifetime in seconds.',
           signature: 'requestTtlSeconds?: number;',
         },
         {
           name: 'maxAssertionAgeSeconds',
-          summary: '',
+          summary: 'Maximum assertion age in seconds.',
           signature: 'maxAssertionAgeSeconds?: number;',
         },
         {
           name: 'clockSkewSeconds',
-          summary: '',
+          summary: 'Allowed clock skew in seconds.',
           signature: 'clockSkewSeconds?: number;',
         },
         {
           name: 'clock',
-          summary: '',
+          summary: 'Clock returning Unix time in milliseconds.',
           signature: 'clock?: () => number;',
         },
       ],
@@ -6244,25 +6980,27 @@ export const apiSymbolSets: Readonly<
       anchor: 'saml-stored-request',
       signature: 'SamlStoredRequest: any',
       typeOnly: true,
+      summary:
+        'Pending SAML authentication request retained for callback validation.',
       members: [
         {
           name: 'id',
-          summary: '',
+          summary: 'Request identifier.',
           signature: 'id: string;',
         },
         {
           name: 'createdAt',
-          summary: '',
+          summary: 'Creation time in Unix milliseconds.',
           signature: 'createdAt: number;',
         },
         {
           name: 'expiresAt',
-          summary: '',
+          summary: 'Expiration time in Unix milliseconds.',
           signature: 'expiresAt: number;',
         },
         {
           name: 'relayState',
-          summary: '',
+          summary: 'Optional relay state returned by the identity provider.',
           signature: 'relayState?: string;',
         },
       ],
@@ -6272,10 +7010,11 @@ export const apiSymbolSets: Readonly<
       anchor: 'saml-validation-error',
       signature: 'SamlValidationError: typeof SamlValidationError',
       typeOnly: true,
+      summary: 'Error raised when a SAML response fails validation.',
       members: [
         {
           name: 'code',
-          summary: '',
+          summary: 'Error category used for programmatic handling.',
           signature: 'readonly code: SamlValidationErrorCode;',
         },
       ],
@@ -6285,6 +7024,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'saml-validation-error-code',
       signature: 'SamlValidationErrorCode: any',
       typeOnly: true,
+      summary: 'Stable failure codes for SAML validation.',
     },
   ],
   symbols24: [
@@ -6293,20 +7033,21 @@ export const apiSymbolSets: Readonly<
       anchor: 'cbor-decode-options',
       signature: 'CborDecodeOptions: any',
       typeOnly: true,
+      summary: 'Resource limits applied while decoding CBOR.',
       members: [
         {
           name: 'maxBytes',
-          summary: '',
+          summary: 'Maximum encoded input bytes.',
           signature: 'maxBytes?: number;',
         },
         {
           name: 'maxDepth',
-          summary: '',
+          summary: 'Maximum nesting depth.',
           signature: 'maxDepth?: number;',
         },
         {
           name: 'maxCollectionLength',
-          summary: '',
+          summary: 'Maximum array or map entries.',
           signature: 'maxCollectionLength?: number;',
         },
       ],
@@ -6316,15 +7057,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'cbor-first-result',
       signature: 'CborFirstResult: any',
       typeOnly: true,
+      summary: 'Decoded CBOR value and the number of consumed bytes.',
       members: [
         {
           name: 'value',
-          summary: '',
+          summary: 'Decoded value.',
           signature: 'value: unknown;',
         },
         {
           name: 'bytesRead',
-          summary: '',
+          summary: 'Number of bytes consumed from the input.',
           signature: 'bytesRead: number;',
         },
       ],
@@ -6334,6 +7076,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'cose-algorithm',
       signature: 'CoseAlgorithm: any',
       typeOnly: true,
+      summary: 'COSE algorithm identifiers supported for WebAuthn public keys.',
     },
     {
       name: 'createTotpProvisioningUri',
@@ -6341,6 +7084,11 @@ export const apiSymbolSets: Readonly<
       signature:
         'createTotpProvisioningUri: (input: { secret: string; issuer: string; account: string; } & TotpOptions) => string',
       typeOnly: true,
+      summary: 'Build an `otpauth://` URI for authenticator enrollment.',
+      tags: {
+        param: ['input Secret, issuer, account, and TOTP settings.'],
+        returns: ['Authenticator provisioning URI.'],
+      },
     },
     {
       name: 'decodeCbor',
@@ -6348,6 +7096,14 @@ export const apiSymbolSets: Readonly<
       signature:
         'decodeCbor: (input: Uint8Array, options?: CborDecodeOptions) => unknown',
       typeOnly: true,
+      summary: 'Decode one complete CBOR value.',
+      tags: {
+        param: [
+          'input Encoded CBOR bytes.',
+          'options Decoder resource limits.',
+        ],
+        returns: ['Decoded value.'],
+      },
     },
     {
       name: 'decodeCborFirst',
@@ -6355,6 +7111,14 @@ export const apiSymbolSets: Readonly<
       signature:
         'decodeCborFirst: (input: Uint8Array, options?: CborDecodeOptions) => CborFirstResult',
       typeOnly: true,
+      summary: 'Decode the first CBOR value, allowing trailing bytes.',
+      tags: {
+        param: [
+          'input Encoded CBOR bytes.',
+          'options Decoder resource limits.',
+        ],
+        returns: ['Decoded value and consumed byte count.'],
+      },
     },
     {
       name: 'decodeCosePublicKey',
@@ -6362,21 +7126,28 @@ export const apiSymbolSets: Readonly<
       signature:
         'decodeCosePublicKey: (input: Uint8Array) => DecodedCosePublicKey',
       typeOnly: true,
+      summary: 'Decode a COSE public key into an algorithm and Web Crypto JWK.',
+      tags: {
+        param: ['input Encoded COSE key.'],
+        returns: ['Decoded public-key information.'],
+      },
     },
     {
       name: 'DecodedCosePublicKey',
       anchor: 'decoded-cose-public-key',
       signature: 'DecodedCosePublicKey: any',
       typeOnly: true,
+      summary:
+        'Public-key algorithm and Web Crypto representation decoded from COSE.',
       members: [
         {
           name: 'algorithm',
-          summary: '',
+          summary: 'COSE algorithm identifier.',
           signature: 'algorithm: CoseAlgorithm;',
         },
         {
           name: 'publicKeyJwk',
-          summary: '',
+          summary: 'Equivalent Web Crypto JWK.',
           signature: 'publicKeyJwk: JsonWebKey;',
         },
       ],
@@ -6387,21 +7158,27 @@ export const apiSymbolSets: Readonly<
       signature:
         'generateTotpSecret: (options?: { byteLength?: number; }) => string',
       typeOnly: true,
+      summary: 'Generate a cryptographically random Base32 TOTP secret.',
+      tags: {
+        param: ['options Secret byte length, from 16 through 128.'],
+        returns: ['Base32-encoded secret.'],
+      },
     },
     {
       name: 'MfaValidationError',
       anchor: 'mfa-validation-error',
       signature: 'MfaValidationError: typeof MfaValidationError',
       typeOnly: true,
+      summary: 'Error raised when MFA input or credentials fail validation.',
       members: [
         {
           name: 'code',
-          summary: '',
+          summary: 'Error category used for programmatic handling.',
           signature: 'readonly code: MfaValidationErrorCode;',
         },
         {
           name: 'name',
-          summary: '',
+          summary: 'Error category used for programmatic handling.',
           signature: 'readonly name = "MfaValidationError";',
         },
       ],
@@ -6411,32 +7188,35 @@ export const apiSymbolSets: Readonly<
       anchor: 'mfa-validation-error-code',
       signature: 'MfaValidationErrorCode: any',
       typeOnly: true,
+      summary: 'Stable failure codes for MFA and WebAuthn validation.',
     },
     {
       name: 'TotpAlgorithm',
       anchor: 'totp-algorithm',
       signature: 'TotpAlgorithm: any',
       typeOnly: true,
+      summary: 'Hash algorithms supported by TOTP.',
     },
     {
       name: 'TotpOptions',
       anchor: 'totp-options',
       signature: 'TotpOptions: any',
       typeOnly: true,
+      summary: 'Shared TOTP generation and verification settings.',
       members: [
         {
           name: 'algorithm',
-          summary: '',
+          summary: 'HMAC hash algorithm. Defaults to SHA-1.',
           signature: 'algorithm?: TotpAlgorithm;',
         },
         {
           name: 'digits',
-          summary: '',
+          summary: 'Number of digits in generated codes.',
           signature: 'digits?: 6 | 8;',
         },
         {
           name: 'periodSeconds',
-          summary: '',
+          summary: 'Validity period in seconds.',
           signature: 'periodSeconds?: number;',
         },
       ],
@@ -6447,31 +7227,39 @@ export const apiSymbolSets: Readonly<
       signature:
         'verifyTotpCode: (input: VerifyTotpOptions) => Promise<{ valid: boolean; counter?: number; drift?: number; }>',
       typeOnly: true,
+      summary: 'Verify a TOTP code with a bounded clock-drift window.',
+      tags: {
+        param: ['input Verification input and settings.'],
+        returns: [
+          'Whether the code is valid and its matched counter when valid.',
+        ],
+      },
     },
     {
       name: 'VerifyTotpOptions',
       anchor: 'verify-totp-options',
       signature: 'VerifyTotpOptions: any',
       typeOnly: true,
+      summary: 'Input required to verify one TOTP code.',
       members: [
         {
           name: 'secret',
-          summary: '',
+          summary: 'Base32-encoded shared secret.',
           signature: 'secret: string;',
         },
         {
           name: 'code',
-          summary: '',
+          summary: 'User-entered one-time code.',
           signature: 'code: string;',
         },
         {
           name: 'at',
-          summary: '',
+          summary: 'Verification time; defaults to the current time.',
           signature: 'at?: number | Date;',
         },
         {
           name: 'window',
-          summary: '',
+          summary: 'Number of adjacent periods accepted on either side.',
           signature: 'window?: number;',
         },
       ],
@@ -6482,6 +7270,11 @@ export const apiSymbolSets: Readonly<
       signature:
         'verifyWebAuthnAuthentication: (input: WebAuthnAuthenticationInput) => Promise<{ signCount: number; backupEligible: boolean; backedUp: boolean; }>',
       typeOnly: true,
+      summary: 'Verify a WebAuthn assertion against a stored credential.',
+      tags: {
+        param: ['input Authentication ceremony data.'],
+        returns: ['Whether the assertion is valid.'],
+      },
     },
     {
       name: 'verifyWebAuthnRegistration',
@@ -6489,66 +7282,73 @@ export const apiSymbolSets: Readonly<
       signature:
         'verifyWebAuthnRegistration: (input: WebAuthnRegistrationInput) => Promise<WebAuthnRegistrationResult>',
       typeOnly: true,
+      summary:
+        'Verify a WebAuthn registration ceremony and decode its public key.',
+      tags: {
+        param: ['input Registration ceremony data.'],
+        returns: ['Persistable credential information.'],
+      },
     },
     {
       name: 'WebAuthnAuthenticationInput',
       anchor: 'web-authn-authentication-input',
       signature: 'WebAuthnAuthenticationInput: any',
       typeOnly: true,
+      summary: 'Server-side WebAuthn authentication ceremony data.',
       members: [
         {
           name: 'credentialId',
-          summary: '',
+          summary: 'Credential identifier returned by the browser.',
           signature: 'credentialId: Uint8Array;',
         },
         {
           name: 'storedCredentialId',
-          summary: '',
+          summary: 'Credential identifier stored during registration.',
           signature: 'storedCredentialId: Uint8Array;',
         },
         {
           name: 'publicKeyJwk',
-          summary: '',
+          summary: 'Stored public-key JWK.',
           signature: 'publicKeyJwk: JsonWebKey;',
         },
         {
           name: 'authenticatorData',
-          summary: '',
+          summary: 'Authenticator data bytes.',
           signature: 'authenticatorData: Uint8Array;',
         },
         {
           name: 'clientDataJSON',
-          summary: '',
+          summary: 'Browser client-data JSON bytes.',
           signature: 'clientDataJSON: Uint8Array;',
         },
         {
           name: 'signature',
-          summary: '',
+          summary: 'Assertion signature bytes.',
           signature: 'signature: Uint8Array;',
         },
         {
           name: 'expectedChallenge',
-          summary: '',
+          summary: 'Challenge originally issued by the server.',
           signature: 'expectedChallenge: Uint8Array;',
         },
         {
           name: 'allowedOrigins',
-          summary: '',
+          summary: 'Allowed origins for this ceremony.',
           signature: 'allowedOrigins: readonly string[];',
         },
         {
           name: 'rpId',
-          summary: '',
+          summary: 'Relying-party identifier.',
           signature: 'rpId: string;',
         },
         {
           name: 'signCount',
-          summary: '',
+          summary: 'Previously stored signature counter.',
           signature: 'signCount: number;',
         },
         {
           name: 'requireUserVerification',
-          summary: '',
+          summary: 'Require user verification.',
           signature: 'requireUserVerification?: boolean;',
         },
       ],
@@ -6558,40 +7358,41 @@ export const apiSymbolSets: Readonly<
       anchor: 'web-authn-registration-input',
       signature: 'WebAuthnRegistrationInput: any',
       typeOnly: true,
+      summary: 'Server-side WebAuthn registration ceremony data.',
       members: [
         {
           name: 'credentialId',
-          summary: '',
+          summary: 'Credential identifier returned by the browser.',
           signature: 'credentialId: Uint8Array;',
         },
         {
           name: 'clientDataJSON',
-          summary: '',
+          summary: 'Browser client-data JSON bytes.',
           signature: 'clientDataJSON: Uint8Array;',
         },
         {
           name: 'attestationObject',
-          summary: '',
+          summary: 'Browser attestation object bytes.',
           signature: 'attestationObject: Uint8Array;',
         },
         {
           name: 'expectedChallenge',
-          summary: '',
+          summary: 'Challenge originally issued by the server.',
           signature: 'expectedChallenge: Uint8Array;',
         },
         {
           name: 'allowedOrigins',
-          summary: '',
+          summary: 'Allowed origins for this ceremony.',
           signature: 'allowedOrigins: readonly string[];',
         },
         {
           name: 'rpId',
-          summary: '',
+          summary: 'Relying-party identifier.',
           signature: 'rpId: string;',
         },
         {
           name: 'requireUserVerification',
-          summary: '',
+          summary: 'Require user verification.',
           signature: 'requireUserVerification?: boolean;',
         },
       ],
@@ -6601,40 +7402,41 @@ export const apiSymbolSets: Readonly<
       anchor: 'web-authn-registration-result',
       signature: 'WebAuthnRegistrationResult: any',
       typeOnly: true,
+      summary: 'Verified credential data persisted after registration.',
       members: [
         {
           name: 'credentialId',
-          summary: '',
+          summary: 'Credential identifier to persist.',
           signature: 'credentialId: Uint8Array;',
         },
         {
           name: 'publicKeyJwk',
-          summary: '',
+          summary: 'Public key to persist.',
           signature: 'publicKeyJwk: JsonWebKey;',
         },
         {
           name: 'algorithm',
-          summary: '',
+          summary: 'COSE algorithm identifier.',
           signature: 'algorithm: CoseAlgorithm;',
         },
         {
           name: 'signCount',
-          summary: '',
+          summary: 'Initial signature counter.',
           signature: 'signCount: number;',
         },
         {
           name: 'aaguid',
-          summary: '',
+          summary: 'Authenticator AAGUID.',
           signature: 'aaguid: Uint8Array;',
         },
         {
           name: 'backupEligible',
-          summary: '',
+          summary: 'Whether the credential may be backed up.',
           signature: 'backupEligible: boolean;',
         },
         {
           name: 'backedUp',
-          summary: '',
+          summary: 'Whether the credential is currently backed up.',
           signature: 'backedUp: boolean;',
         },
       ],
@@ -6647,46 +7449,52 @@ export const apiSymbolSets: Readonly<
       signature:
         'createPasskey: (options: CreatePasskeyOptions) => Promise<PasskeyRegistration>',
       typeOnly: true,
+      summary: 'Create a passkey through the browser WebAuthn API.',
+      tags: {
+        param: ['options Registration ceremony options.'],
+        returns: ['Credential data suitable for server registration.'],
+      },
     },
     {
       name: 'CreatePasskeyOptions',
       anchor: 'create-passkey-options',
       signature: 'CreatePasskeyOptions: any',
       typeOnly: true,
+      summary: 'Registration ceremony inputs for creating a passkey.',
       members: [
         {
           name: 'challenge',
-          summary: '',
+          summary: 'Base64url challenge from the server.',
           signature: 'readonly challenge: string;',
         },
         {
           name: 'rpId',
-          summary: '',
+          summary: 'Relying-party identifier.',
           signature: 'readonly rpId: string;',
         },
         {
           name: 'rpName',
-          summary: '',
+          summary: 'Human-readable relying-party name.',
           signature: 'readonly rpName: string;',
         },
         {
           name: 'userId',
-          summary: '',
+          summary: 'Base64url user identifier.',
           signature: 'readonly userId: string;',
         },
         {
           name: 'userName',
-          summary: '',
+          summary: 'User name displayed by the authenticator.',
           signature: 'readonly userName: string;',
         },
         {
           name: 'userDisplayName',
-          summary: '',
+          summary: 'Human-readable user display name.',
           signature: 'readonly userDisplayName: string;',
         },
         {
           name: 'userVerification',
-          summary: '',
+          summary: 'Required user-verification policy.',
           signature: 'readonly userVerification?: UserVerificationRequirement;',
         },
       ],
@@ -6696,12 +7504,22 @@ export const apiSymbolSets: Readonly<
       anchor: 'decode-base64-url',
       signature: 'decodeBase64Url: (value: string) => ArrayBuffer',
       typeOnly: true,
+      summary: 'Decode canonical unpadded base64url.',
+      tags: {
+        param: ['value Base64url text.'],
+        returns: ['Decoded bytes.'],
+      },
     },
     {
       name: 'encodeBase64Url',
       anchor: 'encode-base64-url',
       signature: 'encodeBase64Url: (buffer: ArrayBuffer) => string',
       typeOnly: true,
+      summary: 'Encode binary data as unpadded base64url.',
+      tags: {
+        param: ['buffer Bytes to encode.'],
+        returns: ['Canonical base64url text.'],
+      },
     },
     {
       name: 'getPasskeyAssertion',
@@ -6709,31 +7527,38 @@ export const apiSymbolSets: Readonly<
       signature:
         'getPasskeyAssertion: (options: GetPasskeyAssertionOptions) => Promise<PasskeyAssertion>',
       typeOnly: true,
+      summary: 'Request a passkey assertion through the browser WebAuthn API.',
+      tags: {
+        param: ['options Authentication ceremony options.'],
+        returns: ['Assertion data suitable for server verification.'],
+      },
     },
     {
       name: 'GetPasskeyAssertionOptions',
       anchor: 'get-passkey-assertion-options',
       signature: 'GetPasskeyAssertionOptions: any',
       typeOnly: true,
+      summary:
+        'Authentication ceremony inputs for requesting a passkey assertion.',
       members: [
         {
           name: 'challenge',
-          summary: '',
+          summary: 'Base64url challenge from the server.',
           signature: 'readonly challenge: string;',
         },
         {
           name: 'rpId',
-          summary: '',
+          summary: 'Relying-party identifier.',
           signature: 'readonly rpId: string;',
         },
         {
           name: 'allowCredentials',
-          summary: '',
+          summary: 'Optional allow-list of credential identifiers.',
           signature: 'readonly allowCredentials?: readonly string[];',
         },
         {
           name: 'userVerification',
-          summary: '',
+          summary: 'Required user-verification policy.',
           signature: 'readonly userVerification?: UserVerificationRequirement;',
         },
       ],
@@ -6743,25 +7568,26 @@ export const apiSymbolSets: Readonly<
       anchor: 'passkey-assertion',
       signature: 'PasskeyAssertion: any',
       typeOnly: true,
+      summary: 'Client-safe assertion returned to the server.',
       members: [
         {
           name: 'credentialId',
-          summary: '',
+          summary: 'Base64url credential identifier.',
           signature: 'readonly credentialId: string;',
         },
         {
           name: 'clientDataJSON',
-          summary: '',
+          summary: 'Browser client-data JSON.',
           signature: 'readonly clientDataJSON: string;',
         },
         {
           name: 'authenticatorData',
-          summary: '',
+          summary: 'Authenticator data.',
           signature: 'readonly authenticatorData: string;',
         },
         {
           name: 'signature',
-          summary: '',
+          summary: 'Assertion signature.',
           signature: 'readonly signature: string;',
         },
       ],
@@ -6771,20 +7597,21 @@ export const apiSymbolSets: Readonly<
       anchor: 'passkey-registration',
       signature: 'PasskeyRegistration: any',
       typeOnly: true,
+      summary: 'Client-safe registration credential returned to the server.',
       members: [
         {
           name: 'credentialId',
-          summary: '',
+          summary: 'Base64url credential identifier.',
           signature: 'readonly credentialId: string;',
         },
         {
           name: 'clientDataJSON',
-          summary: '',
+          summary: 'Browser client-data JSON.',
           signature: 'readonly clientDataJSON: string;',
         },
         {
           name: 'attestationObject',
-          summary: '',
+          summary: 'Browser attestation object.',
           signature: 'readonly attestationObject: string;',
         },
       ],
@@ -6796,12 +7623,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'aggregated-numeric-channel-input',
       signature: 'AggregatedNumericChannelInput: any',
       typeOnly: true,
+      summary:
+        'A numeric channel input that may additionally be an aggregate expression.',
     },
     {
       name: 'AggregateOperation',
       anchor: 'aggregate-operation',
       signature: 'AggregateOperation: any',
       typeOnly: true,
+      summary: 'Aggregate operations supported by grouping expressions.',
     },
     {
       name: 'appendPlotRows',
@@ -6809,12 +7639,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'appendPlotRows: <Row>(rows: readonly Row[], appended: readonly Row[] | Row) => readonly Row[]',
       typeOnly: true,
+      summary:
+        'Appends one or more rows to `rows`, returning a new frozen array (or `rows` if nothing was added).',
     },
     {
       name: 'ArcProps',
       anchor: 'arc-props',
       signature: 'ArcProps: any',
       typeOnly: true,
+      summary: 'Props for `Plot.Arc`.',
       members: [
         {
           name: 'value',
@@ -6873,6 +7706,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'area-props',
       signature: 'AreaProps: any',
       typeOnly: true,
+      summary: 'Props for `Plot.Area`.',
       members: [
         {
           name: 'x',
@@ -6917,12 +7751,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'axis-orientation',
       signature: 'AxisOrientation: any',
       typeOnly: true,
+      summary: 'The side of the plot an axis is rendered on.',
     },
     {
       name: 'AxisProps',
       anchor: 'axis-props',
       signature: 'AxisProps: any',
       typeOnly: true,
+      summary: 'Props for `Plot.Axis`.',
       members: [
         {
           name: 'scale',
@@ -6966,6 +7802,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'bar-props',
       signature: 'BarProps: any',
       typeOnly: true,
+      summary: 'Props for `Plot.Bar`.',
       members: [
         {
           name: 'x',
@@ -7021,18 +7858,22 @@ export const apiSymbolSets: Readonly<
       signature:
         'bin: { <Field extends string>(input: Field, options?: BinOptions): ChannelExpression<number | Date, Field, "bin">; <Row>(input: ChannelInput<Row, number | Date>, options?: BinOptions): ChannelExpression<number | Date, never, "bin">; }',
       typeOnly: true,
+      summary: 'Bins a numeric or temporal channel into discrete intervals.',
     },
     {
       name: 'BinnedScaleChannelInput',
       anchor: 'binned-scale-channel-input',
       signature: 'BinnedScaleChannelInput: any',
       typeOnly: true,
+      summary:
+        'A channel input for scales that may be binned, e.g. via {@link bin }.',
     },
     {
       name: 'BinOptions',
       anchor: 'bin-options',
       signature: 'BinOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link bin }.',
       members: [
         {
           name: 'thresholds',
@@ -7056,6 +7897,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'brush-props',
       signature: 'BrushProps: any',
       typeOnly: true,
+      summary: 'Props for `Plot.Brush`.',
       members: [
         {
           name: 'axis',
@@ -7074,12 +7916,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'cartesian-axis',
       signature: 'CartesianAxis: any',
       typeOnly: true,
+      summary: 'A Cartesian axis identifier.',
     },
     {
       name: 'CartesianMarkProps',
       anchor: 'cartesian-mark-props',
       signature: 'CartesianMarkProps: any',
       typeOnly: true,
+      summary: 'Props shared by marks positioned on Cartesian (x/y) axes.',
       members: [
         {
           name: 'x',
@@ -7108,12 +7952,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'categorical-field',
       signature: 'CategoricalField: any',
       typeOnly: true,
+      summary:
+        'Field names of `Row` holding categorical (string, number, or boolean) values.',
     },
     {
       name: 'CellProps',
       anchor: 'cell-props',
       signature: 'CellProps: any',
       typeOnly: true,
+      summary: 'Props for `Plot.Cell`.',
       members: [
         {
           name: 'x',
@@ -7142,6 +7989,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'channel-expression',
       signature: 'ChannelExpression: any',
       typeOnly: true,
+      summary:
+        'A serialized channel transform produced by helpers such as {@link bin }, {@link sum },\nor {@link stack }, and consumed by mark channel props (e.g. `x`, `y`).',
       members: [
         {
           name: '__askrPlotExpression',
@@ -7180,18 +8029,23 @@ export const apiSymbolSets: Readonly<
       anchor: 'channel-expression-kind',
       signature: 'ChannelExpressionKind: any',
       typeOnly: true,
+      summary:
+        'The discriminant `kind` values a {@link ChannelExpression} may carry.',
     },
     {
       name: 'ChannelInput',
       anchor: 'channel-input',
       signature: 'ChannelInput: any',
       typeOnly: true,
+      summary:
+        'Anything usable as a mark channel input: a field name, an accessor, or a channel expression.',
     },
     {
       name: 'ColorChannelInput',
       anchor: 'color-channel-input',
       signature: 'ColorChannelInput: any',
       typeOnly: true,
+      summary: 'A channel input resolving to a color-scale-compatible value.',
     },
     {
       name: 'constant',
@@ -7199,24 +8053,35 @@ export const apiSymbolSets: Readonly<
       signature:
         'constant: <Value>(value: Value) => ChannelExpression<Value, never, "constant">',
       typeOnly: true,
+      summary:
+        'A channel expression that always resolves to the same fixed value for every row.',
     },
     {
       name: 'count',
       anchor: 'count',
       signature: 'count: () => ChannelExpression<number, never, "count">',
       typeOnly: true,
+      summary: 'Counts the number of rows in each group.',
     },
     {
       name: 'createPlot',
       anchor: 'create-plot',
       signature: 'createPlot: <Row>() => PlotFactory<Row>',
       typeOnly: true,
+      summary:
+        'Creates a self-contained set of plot components (`Root`, marks, scales, and\nannotations) bound to a single row type.',
+      tags: {
+        example: [
+          'const Plot = createPlot<{ x: number; y: number }>();\n<Plot.Root data={rows} rowKey="x" label="Example">\n  <Plot.Line x="x" y="y" />\n</Plot.Root>',
+        ],
+      },
     },
     {
       name: 'CrosshairProps',
       anchor: 'crosshair-props',
       signature: 'CrosshairProps: any',
       typeOnly: true,
+      summary: 'Props for `Plot.Crosshair`.',
       members: [
         {
           name: 'axes',
@@ -7230,6 +8095,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'field-of-type',
       signature: 'FieldOfType: any',
       typeOnly: true,
+      summary:
+        'The field names of `Row` whose (non-nullable) value type is assignable to `Value`.',
     },
     {
       name: 'filterRows',
@@ -7237,18 +8104,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'filterRows: <Row>(predicate: (row: Readonly<Row>, index: number) => boolean) => RowTransform<Row>',
       typeOnly: true,
+      summary:
+        'A row transform that keeps only rows for which `predicate` returns true.',
     },
     {
       name: 'FollowLatest',
       anchor: 'follow-latest',
       signature: 'FollowLatest: any',
       typeOnly: true,
+      summary:
+        '`RootProps.followLatest` shorthand: a bare number is treated as a row count\n(equivalent to `{ rows: n }`).',
     },
     {
       name: 'FollowLatestRows',
       anchor: 'follow-latest-rows',
       signature: 'FollowLatestRows: any',
       typeOnly: true,
+      summary: 'Keep only the most recent N rows; see {@link FollowLatest}.',
       members: [
         {
           name: 'rows',
@@ -7262,6 +8134,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'follow-latest-time',
       signature: 'FollowLatestTime: any',
       typeOnly: true,
+      summary:
+        'Keep only rows within a trailing time window of a temporal field; see {@link FollowLatest}.',
       members: [
         {
           name: 'durationMs',
@@ -7280,6 +8154,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'grid-props',
       signature: 'GridProps: any',
       typeOnly: true,
+      summary: 'Props for `Plot.Grid`.',
       members: [
         {
           name: 'scale',
@@ -7304,12 +8179,14 @@ export const apiSymbolSets: Readonly<
       signature:
         'group: { <Field extends string>(input: Field): ChannelExpression<unknown, Field, "group">; <Row, Value>(input: ChannelInput<Row, Value>): ChannelExpression<Value, never, "group">; }',
       typeOnly: true,
+      summary: "Groups rows by a channel's distinct values.",
     },
     {
       name: 'LegendProps',
       anchor: 'legend-props',
       signature: 'LegendProps: any',
       typeOnly: true,
+      summary: 'Props for `Plot.Legend`.',
       members: [
         {
           name: 'scale',
@@ -7338,6 +8215,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'line-props',
       signature: 'LineProps: any',
       typeOnly: true,
+      summary: 'Props for `Plot.Line`.',
       members: [
         {
           name: 'x',
@@ -7360,6 +8238,12 @@ export const apiSymbolSets: Readonly<
           signature: 'strokeWidth?: number;',
         },
         {
+          name: 'dash',
+          summary:
+            'Explicit stroke dash pattern. When omitted, a multi-series line mark cycles\naccessible dash patterns; pass an empty array to keep every series solid.',
+          signature: 'dash?: readonly number[];',
+        },
+        {
           name: 'defined',
           summary: '',
           signature: 'defined?: RowAccessor<Row, boolean>;',
@@ -7371,6 +8255,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'mark-base-props',
       signature: 'MarkBaseProps: any',
       typeOnly: true,
+      summary: 'Props shared by all mark components.',
       members: [
         {
           name: 'data',
@@ -7436,12 +8321,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'mean: { <Field extends string>(input: Field): ChannelExpression<number, Field, "mean">; <Row>(input: NumericChannelInput<Row>): ChannelExpression<number, never, "mean">; }',
       typeOnly: true,
+      summary: 'Averages a numeric channel across each group.',
     },
     {
       name: 'MeterSemantics',
       anchor: 'meter-semantics',
       signature: 'MeterSemantics: any',
       typeOnly: true,
+      summary:
+        "ARIA `meter` role semantics applied to the plot's graphic region.",
       members: [
         {
           name: 'role',
@@ -7476,6 +8364,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'movingAverage: { <Field extends string>(input: Field, options: Omit<MovingWindowOptions, "operation">): ChannelExpression<number, Field, "moving-average">; <Row>(input: NumericChannelInput<Row>, options: Omit<MovingWindowOptions, "operation">): ChannelExpression<number, never, "moving-average">; }',
       typeOnly: true,
+      summary: 'Shorthand for {@link movingWindow} with `operation: "mean"`.',
     },
     {
       name: 'movingWindow',
@@ -7483,12 +8372,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'movingWindow: { <Field extends string>(input: Field, options: MovingWindowOptions): ChannelExpression<number, Field, "moving-window">; <Row>(input: NumericChannelInput<Row>, options: MovingWindowOptions): ChannelExpression<number, never, "moving-window">; }',
       typeOnly: true,
+      summary:
+        'Applies a sliding-window aggregate (sum, mean, min, or max) to a numeric channel.',
     },
     {
       name: 'MovingWindowOptions',
       anchor: 'moving-window-options',
       signature: 'MovingWindowOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link movingWindow } and {@link movingAverage }.',
       members: [
         {
           name: 'window',
@@ -7513,18 +8405,22 @@ export const apiSymbolSets: Readonly<
       signature:
         'normalize: { <Field extends string>(input: Field): ChannelExpression<number, Field, "normalize">; <Row>(input: NumericChannelInput<Row>): ChannelExpression<number, never, "normalize">; }',
       typeOnly: true,
+      summary:
+        "Normalizes a numeric channel's values within each group to a 0–1 (or proportional) range.",
     },
     {
       name: 'NumericChannelInput',
       anchor: 'numeric-channel-input',
       signature: 'NumericChannelInput: any',
       typeOnly: true,
+      summary: 'A channel input resolving to a number.',
     },
     {
       name: 'NumericField',
       anchor: 'numeric-field',
       signature: 'NumericField: any',
       typeOnly: true,
+      summary: 'Field names of `Row` holding numbers.',
     },
     {
       name: 'partition',
@@ -7532,12 +8428,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'partition: <Row>(options: PartitionOptions<Row>) => RowTransform<Row>',
       typeOnly: true,
+      summary:
+        'A row transform that builds a hierarchy (e.g. for treemap/icicle-style marks) from flat rows.',
     },
     {
       name: 'PartitionOptions',
       anchor: 'partition-options',
       signature: 'PartitionOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link partition }.',
       members: [
         {
           name: 'id',
@@ -7573,6 +8472,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'plot-api',
       signature: 'PlotApi: any',
       typeOnly: true,
+      summary:
+        'The imperative API exposed for a rendered plot, delivered via `RootProps.onApiChange`.',
       members: [
         {
           name: 'resetView',
@@ -7612,18 +8513,22 @@ export const apiSymbolSets: Readonly<
       anchor: 'plot-channel-value',
       signature: 'PlotChannelValue: any',
       typeOnly: true,
+      summary: 'A channel value, allowing for missing data.',
     },
     {
       name: 'PlotData',
       anchor: 'plot-data',
       signature: 'PlotData: any',
       typeOnly: true,
+      summary:
+        'The data a plot consumes: a readonly array of rows, or a function producing one.',
     },
     {
       name: 'PlotDataExportOptions',
       anchor: 'plot-data-export-options',
       signature: 'PlotDataExportOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link PlotApi.exportData}.',
       members: [
         {
           name: 'view',
@@ -7652,6 +8557,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'plot-export-view-options',
       signature: 'PlotExportViewOptions: any',
       typeOnly: true,
+      summary:
+        'Options shared by the plot export methods that capture a rendered view.',
       members: [
         {
           name: 'view',
@@ -7670,6 +8577,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'plot-factory',
       signature: 'PlotFactory: any',
       typeOnly: true,
+      summary:
+        'The set of components returned by {@link createPlot } for a given row type.',
       members: [
         {
           name: 'Root',
@@ -7773,18 +8682,22 @@ export const apiSymbolSets: Readonly<
       anchor: 'plot-heading-level',
       signature: 'PlotHeadingLevel: any',
       typeOnly: true,
+      summary:
+        'A valid heading level (`h1`–`h6`) for `RootProps.headingLevel`.',
     },
     {
       name: 'PlotInteractionOrigin',
       anchor: 'plot-interaction-origin',
       signature: 'PlotInteractionOrigin: any',
       typeOnly: true,
+      summary: 'How a plot interaction was triggered.',
     },
     {
       name: 'PlotInteractionTarget',
       anchor: 'plot-interaction-target',
       signature: 'PlotInteractionTarget: any',
       typeOnly: true,
+      summary: 'The mark instance a pointer/keyboard interaction resolved to.',
       members: [
         {
           name: 'row',
@@ -7834,12 +8747,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'plot-key',
       signature: 'PlotKey: any',
       typeOnly: true,
+      summary:
+        'A row identity: any string or number usable as a stable key for a plot row.',
     },
     {
       name: 'PlotPngExportOptions',
       anchor: 'plot-png-export-options',
       signature: 'PlotPngExportOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link PlotApi.exportPng}.',
       members: [
         {
           name: 'pixelRatio',
@@ -7858,18 +8774,22 @@ export const apiSymbolSets: Readonly<
       anchor: 'plot-row-key',
       signature: 'PlotRowKey: any',
       typeOnly: true,
+      summary:
+        "How to derive a row's stable {@link PlotKey}: a field name or an accessor function.",
     },
     {
       name: 'PlotScalar',
       anchor: 'plot-scalar',
       signature: 'PlotScalar: any',
       typeOnly: true,
+      summary: 'A primitive value a plot channel may resolve to.',
     },
     {
       name: 'PlotSelection',
       anchor: 'plot-selection',
       signature: 'PlotSelection: any',
       typeOnly: true,
+      summary: 'The set of row keys currently selected via `Plot.Select`.',
       members: [
         {
           name: 'keys',
@@ -7883,6 +8803,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'plot-summary-context',
       signature: 'PlotSummaryContext: any',
       typeOnly: true,
+      summary:
+        "Context passed to a `RootProps.summary` function to compute the plot's summary text.",
       members: [
         {
           name: 'rows',
@@ -7916,6 +8838,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'plot-svg-export-options',
       signature: 'PlotSvgExportOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link PlotApi.exportSvg}.',
       members: [
         {
           name: 'includeOverlays',
@@ -7929,6 +8852,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'plot-view',
       signature: 'PlotView: any',
       typeOnly: true,
+      summary:
+        "The visible domain of a plot's scales, used for `view`/`defaultView`.",
       members: [
         {
           name: 'x',
@@ -7953,6 +8878,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'point-props',
       signature: 'PointProps: any',
       typeOnly: true,
+      summary: 'Props for `Plot.Point`.',
       members: [
         {
           name: 'x',
@@ -7971,7 +8897,8 @@ export const apiSymbolSets: Readonly<
         },
         {
           name: 'shape',
-          summary: '',
+          summary:
+            'Explicit point shape. When omitted, a multi-series point mark cycles shapes\nso color is not the only default series encoding.',
           signature: 'shape?: "circle" | "square" | "diamond";',
         },
       ],
@@ -7981,18 +8908,22 @@ export const apiSymbolSets: Readonly<
       anchor: 'primitive-component',
       signature: 'PrimitiveComponent: any',
       typeOnly: true,
+      summary: 'A plot component that renders `Props` to a `JSXElement`.',
     },
     {
       name: 'PrimitiveKind',
       anchor: 'primitive-kind',
       signature: 'PrimitiveKind: any',
       typeOnly: true,
+      summary:
+        'The keys of {@link PlotFactory} that identify a mark/annotation primitive (excludes `Root`).',
     },
     {
       name: 'RectProps',
       anchor: 'rect-props',
       signature: 'RectProps: any',
       typeOnly: true,
+      summary: 'Props for `Plot.Rect`.',
       members: [
         {
           name: 'x',
@@ -8027,12 +8958,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'regression: { <Field extends string>(input: Field, options?: { x?: string; method?: "linear"; }): ChannelExpression<number, Field, "regression">; <Row>(input: NumericChannelInput<Row>, options?: RegressionOptions<Row>): ChannelExpression<number, never, "regression">; }',
       typeOnly: true,
+      summary:
+        'Fits a regression curve (currently linear) to a numeric channel against an x channel.',
     },
     {
       name: 'RegressionOptions',
       anchor: 'regression-options',
       signature: 'RegressionOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link regression }.',
       members: [
         {
           name: 'x',
@@ -8052,12 +8986,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'removePlotRows: <Row>(rows: readonly Row[], keys: readonly PlotKey[] | ReadonlySet<PlotKey> | ((row: Readonly<Row>, index: number) => boolean), rowKey?: PlotRowKey<Row>) => readonly Row[]',
       typeOnly: true,
+      summary:
+        'Removes rows matching a predicate, or by key (requires `rowKey` when `keys` is an array/set).\nReturns the original `rows` reference unchanged if nothing was removed.',
     },
     {
       name: 'RootProps',
       anchor: 'root-props',
       signature: 'RootProps: any',
       typeOnly: true,
+      summary: "Props accepted by a plot factory's `Root` component.",
       members: [
         {
           name: 'data',
@@ -8199,48 +9136,60 @@ export const apiSymbolSets: Readonly<
       anchor: 'row-accessor',
       signature: 'RowAccessor: any',
       typeOnly: true,
+      summary:
+        'A function that reads a channel value from a row and its index.',
     },
     {
       name: 'RowChannelInput',
       anchor: 'row-channel-input',
       signature: 'RowChannelInput: any',
       typeOnly: true,
+      summary:
+        'A channel input restricted to row-level (non-aggregating) expression kinds.',
     },
     {
       name: 'RowColorChannelInput',
       anchor: 'row-color-channel-input',
       signature: 'RowColorChannelInput: any',
       typeOnly: true,
+      summary:
+        '{@link RowChannelInput} resolving to a color-scale-compatible value.',
     },
     {
       name: 'RowField',
       anchor: 'row-field',
       signature: 'RowField: any',
       typeOnly: true,
+      summary: 'The string-keyed field names of a row type.',
     },
     {
       name: 'RowNumericChannelInput',
       anchor: 'row-numeric-channel-input',
       signature: 'RowNumericChannelInput: any',
       typeOnly: true,
+      summary: '{@link RowChannelInput} resolving to a number.',
     },
     {
       name: 'RowScaleChannelInput',
       anchor: 'row-scale-channel-input',
       signature: 'RowScaleChannelInput: any',
       typeOnly: true,
+      summary: '{@link RowChannelInput} for a positional/categorical scale.',
     },
     {
       name: 'RowTextChannelInput',
       anchor: 'row-text-channel-input',
       signature: 'RowTextChannelInput: any',
       typeOnly: true,
+      summary: '{@link RowChannelInput} resolving to a displayable text value.',
     },
     {
       name: 'RowTransform',
       anchor: 'row-transform',
       signature: 'RowTransform: any',
       typeOnly: true,
+      summary:
+        "A serialized row-level transform produced by helpers such as {@link filterRows },\n{@link sortRows }, or {@link partition }, and applied to a mark's `data` via `transform`.",
       members: [
         {
           name: '__askrPlotTransform',
@@ -8269,12 +9218,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'row-transform-kind',
       signature: 'RowTransformKind: any',
       typeOnly: true,
+      summary:
+        'The discriminant `kind` values a {@link RowTransform} may carry.',
     },
     {
       name: 'RuleProps',
       anchor: 'rule-props',
       signature: 'RuleProps: any',
       typeOnly: true,
+      summary: 'Props for `Plot.Rule`.',
       members: [
         {
           name: 'x',
@@ -8313,24 +9265,30 @@ export const apiSymbolSets: Readonly<
       anchor: 'scale-channel-input',
       signature: 'ScaleChannelInput: any',
       typeOnly: true,
+      summary: 'A channel input for a positional/categorical scale.',
     },
     {
       name: 'ScaleDomainValue',
       anchor: 'scale-domain-value',
       signature: 'ScaleDomainValue: any',
       typeOnly: true,
+      summary:
+        'A scale domain value, including booleans (for ordinal/color scales).',
     },
     {
       name: 'ScaleField',
       anchor: 'scale-field',
       signature: 'ScaleField: any',
       typeOnly: true,
+      summary:
+        'Field names of `Row` usable as a scale channel (string, number, or Date).',
     },
     {
       name: 'ScaleProps',
       anchor: 'scale-props',
       signature: 'ScaleProps: any',
       typeOnly: true,
+      summary: 'Props for `Plot.Scale`.',
       members: [
         {
           name: 'name',
@@ -8414,18 +9372,21 @@ export const apiSymbolSets: Readonly<
       anchor: 'scale-type',
       signature: 'ScaleType: any',
       typeOnly: true,
+      summary: 'The scale types supported by `Plot.Scale`.',
     },
     {
       name: 'ScaleValue',
       anchor: 'scale-value',
       signature: 'ScaleValue: any',
       typeOnly: true,
+      summary: 'A value usable as a scale domain/range endpoint.',
     },
     {
       name: 'SelectProps',
       anchor: 'select-props',
       signature: 'SelectProps: any',
       typeOnly: true,
+      summary: 'Props for `Plot.Select`.',
       members: [
         {
           name: 'mode',
@@ -8440,12 +9401,14 @@ export const apiSymbolSets: Readonly<
       signature:
         'sortRows: <Row>(options: SortRowsOptions<Row>) => RowTransform<Row>',
       typeOnly: true,
+      summary: 'A row transform that sorts rows by a field or accessor.',
     },
     {
       name: 'SortRowsOptions',
       anchor: 'sort-rows-options',
       signature: 'SortRowsOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link sortRows }.',
       members: [
         {
           name: 'by',
@@ -8465,12 +9428,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'stack: { <Field extends string>(input: Field, options?: StackOptions): ChannelExpression<number, Field, "stack">; <Row>(input: NumericChannelInput<Row>, options?: StackOptions): ChannelExpression<number, never, "stack">; }',
       typeOnly: true,
+      summary:
+        "Stacks a numeric channel's values within each group, e.g. for stacked bar/area charts.",
     },
     {
       name: 'StackOptions',
       anchor: 'stack-options',
       signature: 'StackOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link stack }.',
       members: [
         {
           name: 'offset',
@@ -8491,24 +9457,28 @@ export const apiSymbolSets: Readonly<
       signature:
         'sum: { <Field extends string>(input: Field): ChannelExpression<number, Field, "sum">; <Row>(input: NumericChannelInput<Row>): ChannelExpression<number, never, "sum">; }',
       typeOnly: true,
+      summary: 'Sums a numeric channel across each group.',
     },
     {
       name: 'TemporalField',
       anchor: 'temporal-field',
       signature: 'TemporalField: any',
       typeOnly: true,
+      summary: 'Field names of `Row` holding `Date` values.',
     },
     {
       name: 'TextChannelInput',
       anchor: 'text-channel-input',
       signature: 'TextChannelInput: any',
       typeOnly: true,
+      summary: 'A channel input resolving to a displayable text value.',
     },
     {
       name: 'TextProps',
       anchor: 'text-props',
       signature: 'TextProps: any',
       typeOnly: true,
+      summary: 'Props for `Plot.Text`.',
       members: [
         {
           name: 'x',
@@ -8547,6 +9517,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'tooltip-props',
       signature: 'TooltipProps: any',
       typeOnly: true,
+      summary: 'Props for `Plot.Tooltip`.',
       members: [
         {
           name: 'channels',
@@ -8572,12 +9543,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'trimPlotRows: <Row>(rows: readonly Row[], options: number | TrimPlotRowsOptions<Row>) => readonly Row[]',
       typeOnly: true,
+      summary:
+        'Trims `rows` down to a trailing window, either by row count or by a duration relative to a\ntemporal field. A bare number is shorthand for `{ rows: number }`. Returns the original `rows`\nreference unchanged if nothing was trimmed.',
     },
     {
       name: 'TrimPlotRowsOptions',
       anchor: 'trim-plot-rows-options',
       signature: 'TrimPlotRowsOptions: any',
       typeOnly: true,
+      summary:
+        'Options for {@link trimPlotRows}: keep the last `rows` rows, or rows within `durationMs` of `now`.',
     },
     {
       name: 'upsertPlotRows',
@@ -8585,18 +9560,22 @@ export const apiSymbolSets: Readonly<
       signature:
         'upsertPlotRows: <Row>(rows: readonly Row[], updates: readonly Row[] | Row, rowKey: PlotRowKey<Row>) => readonly Row[]',
       typeOnly: true,
+      summary:
+        'Inserts or updates rows by key: rows whose key matches an existing row replace it in place,\nand new keys are appended. Throws if `updates` or the existing `rows` contain duplicate keys.',
     },
     {
       name: 'WindowOperation',
       anchor: 'window-operation',
       signature: 'WindowOperation: any',
       typeOnly: true,
+      summary: 'Operations supported by moving-window expressions.',
     },
     {
       name: 'ZoomProps',
       anchor: 'zoom-props',
       signature: 'ZoomProps: any',
       typeOnly: true,
+      summary: 'Props for `Plot.Zoom`.',
       members: [
         {
           name: 'axes',
@@ -8638,6 +9617,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'ad-hoc-call',
       signature: 'AdHocCall: any',
       typeOnly: true,
+      summary:
+        "A one-off, untyped request description accepted by {@link createFetch}'s returned function.",
       members: [
         {
           name: 'url',
@@ -8716,18 +9697,24 @@ export const apiSymbolSets: Readonly<
       anchor: 'any-endpoint-descriptor',
       signature: 'AnyEndpointDescriptor: any',
       typeOnly: true,
+      summary:
+        'An {@link EndpointDescriptor} with its type parameters erased, for use in generic contexts.',
     },
     {
       name: 'ApiClient',
       anchor: 'api-client',
       signature: 'ApiClient: any',
       typeOnly: true,
+      summary:
+        'A fully-typed client for an {@link ApiDefinition}, with one method per endpoint.',
     },
     {
       name: 'ApiDefinition',
       anchor: 'api-definition',
       signature: 'ApiDefinition: any',
       typeOnly: true,
+      summary:
+        'A named collection of endpoints plus optional API metadata, as produced by {@link defineApi }.',
       members: [
         {
           name: 'endpoints',
@@ -8746,6 +9733,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'api-metadata',
       signature: 'ApiMetadata: any',
       typeOnly: true,
+      summary:
+        'API-level (rather than per-endpoint) metadata, such as servers and security schemes.',
       members: [
         {
           name: 'servers',
@@ -8771,18 +9760,23 @@ export const apiSymbolSets: Readonly<
       anchor: 'array-buffer',
       signature: 'arrayBuffer: () => Codec<ArrayBuffer>',
       typeOnly: true,
+      summary:
+        'Creates a codec that decodes any response body as an `ArrayBuffer`.',
     },
     {
       name: 'blob',
       anchor: 'blob',
       signature: 'blob: () => Codec<Blob>',
       typeOnly: true,
+      summary: 'Creates a codec that decodes any response body as a `Blob`.',
     },
     {
       name: 'ClientOptions',
       anchor: 'client-options',
       signature: 'ClientOptions: any',
       typeOnly: true,
+      summary:
+        'Options controlling how a {@link createClient } or {@link createFetch } client makes requests.',
       members: [
         {
           name: 'baseUrl',
@@ -8791,7 +9785,7 @@ export const apiSymbolSets: Readonly<
         },
         {
           name: 'fetch',
-          summary: '',
+          summary: 'Custom transport, defaulting to the global `fetch`.',
           signature: 'fetch?: (request: Request) => Promise<Response>;',
         },
         {
@@ -8806,12 +9800,12 @@ export const apiSymbolSets: Readonly<
         },
         {
           name: 'timeout',
-          summary: '',
+          summary: 'Request timeout in milliseconds.',
           signature: 'timeout?: number;',
         },
         {
           name: 'middleware',
-          summary: '',
+          summary: 'Middleware chain applied to every request, in order.',
           signature: 'middleware?: readonly Middleware[];',
         },
       ],
@@ -8821,12 +9815,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'client-result',
       signature: 'ClientResult: any',
       typeOnly: true,
+      summary:
+        'The possible results of calling a typed client method for endpoint descriptor `D`.',
     },
     {
       name: 'Codec',
       anchor: 'codec',
       signature: 'Codec: any',
       typeOnly: true,
+      summary:
+        'Describes how a request or response body is serialized/deserialized:\nwhich wire format (`kind`), which media types it matches, and optionally\na {@link Validator} to parse/validate the decoded value.',
       members: [
         {
           name: 'kind',
@@ -8846,7 +9844,7 @@ export const apiSymbolSets: Readonly<
         },
         {
           name: 'variants',
-          summary: '',
+          summary: 'For `kind: "content"`, the per-media-type codec variants.',
           signature:
             'readonly variants?: Readonly<Record<string, Codec<unknown>>>;',
         },
@@ -8858,6 +9856,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'content: <T extends Record<string, Codec>>(variants: T) => Codec<{ [K in keyof T]: T[K] extends Codec<infer V> ? V : never; }[keyof T]>',
       typeOnly: true,
+      summary:
+        "Creates a content-negotiated codec that selects among `variants` by the response's\nmedia type, decoding with whichever variant matches.",
     },
     {
       name: 'createClient',
@@ -8865,6 +9865,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'createClient: <A extends ApiDefinition>(api: A, options?: ClientOptions) => ApiClient<A>',
       typeOnly: true,
+      summary:
+        'Builds a typed {@link ApiClient} from an {@link ApiDefinition}. Each endpoint becomes\na method that fills in the path, query, header, and body parameters, executes the\nrequest via {@link createFetch}, and returns a {@link ClientResult}.',
     },
     {
       name: 'createFetch',
@@ -8872,6 +9874,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'createFetch: (options?: ClientOptions) => (call: AdHocCall) => Promise<FetchResult>',
       typeOnly: true,
+      summary:
+        'Creates a low-level fetch function that builds a `Request` from an {@link AdHocCall},\nruns it through the configured middleware chain, and decodes the response with the\nmatching codec. Used internally by {@link createClient}, and usable directly for\nrequests without a full {@link EndpointDescriptor}.',
     },
     {
       name: 'defineApi',
@@ -8879,6 +9883,13 @@ export const apiSymbolSets: Readonly<
       signature:
         'defineApi: <E extends Record<string, AnyEndpointDescriptor | EndpointBuilder>>(endpoints: E, metadata?: ApiMetadata) => ApiDefinition<Defined<E>>',
       typeOnly: true,
+      summary:
+        "Finalizes a map of {@link EndpointBuilder}s and/or raw {@link EndpointDescriptor}s into\na frozen {@link ApiDefinition}, stamping each endpoint's `operationId` from its key and\ndeep-freezing its parameters, security, responses, and errors.",
+      tags: {
+        example: [
+          'const api = defineApi({\n  getUser: get("/users/{id}").returns(json()),\n});',
+        ],
+      },
     },
     {
       name: 'del',
@@ -8886,18 +9897,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'del: (path: string) => EndpointBuilder<undefined, undefined, undefined, undefined, {}, {}>',
       typeOnly: true,
+      summary: 'Starts building a DELETE endpoint at the given path.',
     },
     {
       name: 'empty',
       anchor: 'empty',
       signature: 'empty: () => Codec<undefined>',
       typeOnly: true,
+      summary:
+        'Creates a codec for bodies expected to be empty (e.g. 204 No Content), decoded as `undefined`.',
     },
     {
       name: 'EndpointBuilder',
       anchor: 'endpoint-builder',
       signature: 'EndpointBuilder: any',
       typeOnly: true,
+      summary:
+        "Fluent, immutable builder for describing a single endpoint's params, query,\nheaders, body, responses, errors, and security requirements. Each method\nreturns a new builder reflecting the added configuration; the accumulated\nstate is finalized into an {@link EndpointDescriptor} by {@link defineApi}.",
       members: [
         {
           name: 'params',
@@ -8954,6 +9970,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'endpoint-descriptor',
       signature: 'EndpointDescriptor: any',
       typeOnly: true,
+      summary:
+        'Describes a single API endpoint: its method, path, parameters, body, and possible responses.',
       members: [
         {
           name: 'method',
@@ -9019,18 +10037,24 @@ export const apiSymbolSets: Readonly<
       anchor: 'failure-kind',
       signature: 'FailureKind: any',
       typeOnly: true,
+      summary:
+        'Categorizes why a fetch could not produce an {@link HttpResult} or {@link SuccessResult}.',
     },
     {
       name: 'FailureResult',
       anchor: 'failure-result',
       signature: 'FailureResult: any',
       typeOnly: true,
+      summary:
+        'A fetch outcome that failed before or independently of receiving a decodable HTTP response.',
     },
     {
       name: 'FetchError',
       anchor: 'fetch-error',
       signature: 'FetchError: typeof FetchError',
       typeOnly: true,
+      summary:
+        'An `Error` thrown by {@link unwrap} that wraps a failed (non-`ok`) {@link FetchResult}.',
       members: [
         {
           name: 'result',
@@ -9045,6 +10069,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'fetch-result',
       signature: 'FetchResult: any',
       typeOnly: true,
+      summary:
+        'The outcome of a fetch call: success, an HTTP-level error, or another kind of failure.',
     },
     {
       name: 'get',
@@ -9052,6 +10078,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'get: (path: string) => EndpointBuilder<undefined, undefined, undefined, undefined, {}, {}>',
       typeOnly: true,
+      summary: 'Starts building a GET endpoint at the given path.',
     },
     {
       name: 'head',
@@ -9059,30 +10086,36 @@ export const apiSymbolSets: Readonly<
       signature:
         'head: (path: string) => EndpointBuilder<undefined, undefined, undefined, undefined, {}, {}>',
       typeOnly: true,
+      summary: 'Starts building a HEAD endpoint at the given path.',
     },
     {
       name: 'HttpMethod',
       anchor: 'http-method',
       signature: 'HttpMethod: any',
       typeOnly: true,
+      summary: 'The set of HTTP methods supported by endpoint descriptors.',
     },
     {
       name: 'HttpResult',
       anchor: 'http-result',
       signature: 'HttpResult: any',
       typeOnly: true,
+      summary:
+        'A non-2xx fetch outcome where the server responded with a decodable error body.',
     },
     {
       name: 'InferCodec',
       anchor: 'infer-codec',
       signature: 'InferCodec: any',
       typeOnly: true,
+      summary: 'Infers the decoded value type `T` from a {@link Codec}.',
     },
     {
       name: 'InferValidator',
       anchor: 'infer-validator',
       signature: 'InferValidator: any',
       typeOnly: true,
+      summary: 'Infers the parsed output type `T` from a {@link Validator}.',
     },
     {
       name: 'json',
@@ -9090,24 +10123,32 @@ export const apiSymbolSets: Readonly<
       signature:
         'json: { <T = unknown>(): Codec<T>; <V extends Validator>(schema: V): Codec<V extends Validator<infer T> ? T : never>; }',
       typeOnly: true,
+      summary:
+        'Creates a JSON codec, matching `application/json` and `+json` suffixed media types.\nCreates a JSON codec that validates/parses the decoded value with the given schema.',
     },
     {
       name: 'Middleware',
       anchor: 'middleware',
       signature: 'Middleware: any',
       typeOnly: true,
+      summary:
+        'A function that can inspect/replace the request context and/or the result of calling `next`.',
     },
     {
       name: 'multipart',
       anchor: 'multipart',
       signature: 'multipart: () => Codec<FormData>',
       typeOnly: true,
+      summary:
+        'Creates a codec for `multipart/form-data` bodies, decoded as `FormData`.',
     },
     {
       name: 'Next',
       anchor: 'next',
       signature: 'Next: any',
       typeOnly: true,
+      summary:
+        'Invokes the next middleware in the chain, optionally passing a replacement context.',
     },
     {
       name: 'options',
@@ -9115,18 +10156,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'options: (path: string) => EndpointBuilder<undefined, undefined, undefined, undefined, {}, {}>',
       typeOnly: true,
+      summary: 'Starts building an OPTIONS endpoint at the given path.',
     },
     {
       name: 'ParameterMap',
       anchor: 'parameter-map',
       signature: 'ParameterMap: any',
       typeOnly: true,
+      summary:
+        'Maps parameter names to either a bare {@link Validator} or a full\n{@link ParameterSpec} describing serialization and validation.',
     },
     {
       name: 'ParameterSpec',
       anchor: 'parameter-spec',
       signature: 'ParameterSpec: any',
       typeOnly: true,
+      summary:
+        'Serialization and validation settings for a single path, query, or header parameter.',
       members: [
         {
           name: 'validator',
@@ -9150,6 +10196,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'parameter-style',
       signature: 'ParameterStyle: any',
       typeOnly: true,
+      summary:
+        'OpenAPI-style serialization styles for path, query, and header parameters.',
     },
     {
       name: 'patch',
@@ -9157,12 +10205,20 @@ export const apiSymbolSets: Readonly<
       signature:
         'patch: (path: string) => EndpointBuilder<undefined, undefined, undefined, undefined, {}, {}>',
       typeOnly: true,
+      summary: 'Starts building a PATCH endpoint at the given path.',
     },
     {
       name: 'pathNames',
       anchor: 'path-names',
       signature: 'pathNames: (path: string) => string[]',
       typeOnly: true,
+      summary:
+        'Extracts the ordered list of `{param}` placeholder names from an endpoint path.',
+      tags: {
+        throws: [
+          '{TypeError} If the path uses colon/wildcard syntax, has malformed\n`{...}` placeholders, or contains a duplicate parameter name.',
+        ],
+      },
     },
     {
       name: 'post',
@@ -9170,6 +10226,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'post: (path: string) => EndpointBuilder<undefined, undefined, undefined, undefined, {}, {}>',
       typeOnly: true,
+      summary: 'Starts building a POST endpoint at the given path.',
     },
     {
       name: 'put',
@@ -9177,12 +10234,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'put: (path: string) => EndpointBuilder<undefined, undefined, undefined, undefined, {}, {}>',
       typeOnly: true,
+      summary: 'Starts building a PUT endpoint at the given path.',
     },
     {
       name: 'RequestContext',
       anchor: 'request-context',
       signature: 'RequestContext: any',
       typeOnly: true,
+      summary:
+        'The mutable-by-replacement state threaded through the middleware chain for a single request.',
       members: [
         {
           name: 'request',
@@ -9206,12 +10266,20 @@ export const apiSymbolSets: Readonly<
         },
         {
           name: 'attempt',
-          summary: '',
+          summary:
+            '1 on the first attempt, incremented by middleware (e.g. {@link retry }) on subsequent attempts.',
           signature: 'readonly attempt: number;',
         },
         {
+          name: 'replayableBody',
+          summary:
+            'Whether a body was encoded from a replayable value; streaming bodies set this to `false`.',
+          signature: 'readonly replayableBody?: boolean;',
+        },
+        {
           name: 'deadline',
-          summary: '',
+          summary:
+            'Absolute timestamp (ms since epoch) by which the request must complete, if a timeout is set.',
           signature: 'readonly deadline?: number;',
         },
       ],
@@ -9221,36 +10289,48 @@ export const apiSymbolSets: Readonly<
       anchor: 'stream',
       signature: 'stream: () => Codec<ReadableStream<Uint8Array>>',
       typeOnly: true,
+      summary:
+        'Creates a codec that exposes the raw response body as a `ReadableStream`, without buffering it.',
     },
     {
       name: 'SuccessResult',
       anchor: 'success-result',
       signature: 'SuccessResult: any',
       typeOnly: true,
+      summary:
+        'A successful (2xx) fetch outcome, carrying the decoded response data.',
     },
     {
       name: 'text',
       anchor: 'text',
       signature: 'text: () => Codec<string>',
       typeOnly: true,
+      summary:
+        'Creates a codec for plain text bodies (`text/*`), decoded as a string.',
     },
     {
       name: 'unwrap',
       anchor: 'unwrap',
       signature: 'unwrap: <T>(result: FetchResult<T>) => T',
       typeOnly: true,
+      summary:
+        'Returns the data of a successful {@link FetchResult}, or throws a {@link FetchError}\nwrapping the result if it was not `ok`.',
     },
     {
       name: 'urlEncoded',
       anchor: 'url-encoded',
       signature: 'urlEncoded: () => Codec<URLSearchParams>',
       typeOnly: true,
+      summary:
+        'Creates a codec for `application/x-www-form-urlencoded` bodies, decoded as `URLSearchParams`.',
     },
     {
       name: 'Validator',
       anchor: 'validator',
       signature: 'Validator: any',
       typeOnly: true,
+      summary:
+        'A minimal schema-validation contract, compatible with libraries such as Zod\nthat expose a `safeParse` method (e.g. via a thin adapter).',
       members: [
         {
           name: 'safeParse',
@@ -9268,6 +10348,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'apiKeyAuth: ({ key, value, in: location }: { key: string; value: string | (() => string | Promise<string>); in?: "header" | "query"; }) => Middleware',
       typeOnly: true,
+      summary:
+        'Middleware that attaches an API key to every request, either as a header or a query\nparameter (`in`, default `"header"`). `value` may be a static string or a (possibly\nasync) function resolved on each request. The key is marked sensitive so the\n{@link logging} middleware redacts it.',
     },
     {
       name: 'bearerAuth',
@@ -9275,6 +10357,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'bearerAuth: ({ token }: { token: string | (() => string | Promise<string>); }) => Middleware',
       typeOnly: true,
+      summary:
+        'Middleware that attaches an `Authorization: Bearer <token>` header to every request.\n`token` may be a static string or a (possibly async) function resolved on each request.',
     },
     {
       name: 'logging',
@@ -9282,37 +10366,46 @@ export const apiSymbolSets: Readonly<
       signature:
         'logging: (logger?: { log(event: Record<string, unknown>): void; }) => Middleware',
       typeOnly: true,
+      summary:
+        'Middleware that logs a `"request"` event before and a `"response"` event after each\nrequest, via the given logger (defaults to `console`). Headers and query parameters\nmarked sensitive (e.g. by {@link apiKeyAuth}) or matching common sensitive-name\npatterns (authorization, cookie, token, secret, password, api key) are redacted.',
     },
     {
       name: 'retry',
       anchor: 'retry',
       signature: 'retry: (options?: RetryOptions) => Middleware',
       typeOnly: true,
+      summary:
+        "Middleware that retries failed requests. Retries eligible methods on network failures\nor eligible response statuses, honoring a `Retry-After` header when present and\nstopping early if the request's deadline would be exceeded. A non-streaming request body\nis replayed only when it can be cloned before the first attempt; streaming, already-consumed,\nor otherwise non-cloneable bodies are sent once without retrying.",
     },
     {
       name: 'RetryOptions',
       anchor: 'retry-options',
       signature: 'RetryOptions: any',
       typeOnly: true,
+      summary: "Options controlling the {@link retry} middleware's behavior.",
       members: [
         {
           name: 'attempts',
-          summary: '',
+          summary:
+            'Maximum number of attempts, including the first. Defaults to 3.',
           signature: 'attempts?: number;',
         },
         {
           name: 'methods',
-          summary: '',
+          summary:
+            'HTTP methods eligible for retry. Defaults to idempotent-by-convention methods.',
           signature: 'methods?: readonly string[];',
         },
         {
           name: 'statuses',
-          summary: '',
+          summary:
+            'Response statuses that trigger a retry. Defaults to common transient failure codes.',
           signature: 'statuses?: readonly number[];',
         },
         {
           name: 'delay',
-          summary: '',
+          summary:
+            'Computes the delay (ms) before the given retry attempt, if no `Retry-After` header is present.',
           signature: 'delay?: (attempt: number) => number;',
         },
       ],
@@ -9322,26 +10415,32 @@ export const apiSymbolSets: Readonly<
       anchor: 'telemetry',
       signature: 'telemetry: (hooks: TelemetryHooks) => Middleware',
       typeOnly: true,
+      summary:
+        'Middleware that wraps each request with {@link TelemetryHooks}, calling `start` before\nthe request, `end` after it completes, and `error` (then rethrowing) if it throws.',
     },
     {
       name: 'TelemetryHooks',
       anchor: 'telemetry-hooks',
       signature: 'TelemetryHooks: any',
       typeOnly: true,
+      summary:
+        'Hooks invoked by the {@link telemetry} middleware around each request.',
       members: [
         {
           name: 'start',
-          summary: '',
+          summary:
+            'Called before the request proceeds; its return value (a "span") is passed to `end`/`error`.',
           signature: 'start?(context: RequestContext): unknown;',
         },
         {
           name: 'end',
-          summary: '',
+          summary:
+            "Called after the request completes successfully (from this middleware's perspective).",
           signature: 'end?(span: unknown, result: FetchResult): void;',
         },
         {
           name: 'error',
-          summary: '',
+          summary: 'Called if a downstream middleware or the transport throws.',
           signature: 'error?(span: unknown, error: unknown): void;',
         },
       ],
@@ -9353,12 +10452,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'catalog',
       signature: 'Catalog: any',
       typeOnly: true,
+      summary: 'Read-only map of message keys to typed message functions.',
     },
     {
       name: 'CatalogMessage',
       anchor: 'catalog-message',
       signature: 'CatalogMessage: any',
       typeOnly: true,
+      summary: 'Typed message function in a locale catalog.',
     },
     {
       name: 'createI18n',
@@ -9368,54 +10469,63 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
       summary:
         'Creates an application-owned internationalization service.\n\nCatalog values are ordinary typed TypeScript functions. Locale selection is\nintentionally left to the application and installed lexically through Scope.',
+      tags: {
+        param: [
+          'sourceLocale Locale whose message keys and argument tuples define the contract.',
+          'catalogs Complete, argument-compatible catalogs for every locale.',
+        ],
+        returns: ['A typed internationalization service.'],
+      },
     },
     {
       name: 'I18n',
       anchor: 'i18n',
       signature: 'I18n: any',
       typeOnly: true,
+      summary:
+        'Typed internationalization service backed by aligned locale catalogs.',
       members: [
         {
           name: 'catalogs',
-          summary: '',
+          summary: 'Frozen catalogs supplied at creation time.',
           signature: 'readonly catalogs: Readonly<Catalogs>;',
         },
         {
           name: 'Scope',
-          summary: '',
+          summary: 'JSX scope component that installs the active locale.',
           signature:
             'readonly Scope: (props: I18nScopeProps<LocaleOf<Catalogs>>) => JSXElement;',
         },
         {
           name: 'text',
-          summary: '',
+          summary: 'Format a message in the active locale.',
           signature:
             'text<Key extends CatalogKey<Catalogs>>(key: Key, ...args: MessageArgs<MessageAt<Catalogs, Key>>): string;',
         },
         {
           name: 'format',
-          summary: '',
+          summary: 'Format a message in an explicitly selected locale.',
           signature:
             'format<Locale extends LocaleOf<Catalogs>, Key extends keyof Catalogs[Locale] & string>(locale: Locale, key: Key, ...args: MessageArgs<Catalogs[Locale][Key]>): string;',
         },
         {
           name: 'locale',
-          summary: '',
+          summary: 'Read the active locale.',
           signature: 'locale(): LocaleOf<Catalogs>;',
         },
         {
           name: 'direction',
-          summary: '',
+          summary: "Read the active locale's text direction.",
           signature: 'direction(): TextDirection;',
         },
         {
           name: 'catalog',
-          summary: '',
+          summary: 'Read the active catalog identifier.',
           signature: 'catalog(): LocaleOf<Catalogs>;',
         },
         {
           name: 'dehydrate',
-          summary: '',
+          summary: 'Serialize the active locale state for hydration.',
           signature: 'dehydrate(): I18nHydration<LocaleOf<Catalogs>>;',
         },
       ],
@@ -9425,18 +10535,21 @@ export const apiSymbolSets: Readonly<
       anchor: 'i18n-hydration',
       signature: 'I18nHydration: any',
       typeOnly: true,
+      summary: 'Serializable locale state for SSR hydration.',
     },
     {
       name: 'I18nScopeProps',
       anchor: 'i18n-scope-props',
       signature: 'I18nScopeProps: any',
       typeOnly: true,
+      summary: 'Props for installing locale state through the Scope component.',
     },
     {
       name: 'TextDirection',
       anchor: 'text-direction',
       signature: 'TextDirection: any',
       typeOnly: true,
+      summary: 'Text direction used by a locale.',
     },
   ],
   symbols31: [
@@ -9446,6 +10559,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'AppleLogo: { (props: LogoProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
+      summary: 'Apple logo icon component.',
     },
     {
       name: 'createLogo',
@@ -9453,6 +10567,20 @@ export const apiSymbolSets: Readonly<
       signature:
         'createLogo: (displayName: string, logoNode: LogoNode) => { (props: LogoProps): JSXElement; displayName: string; }',
       typeOnly: true,
+      summary:
+        'Builds a brand logo icon component from a set of SVG shape descriptors.\n\nValidates the given `logoNode` against an allow-list of safe SVG tags and\nattributes (rejecting any `url(...)` references in `fill`/`stroke`), then\nreturns a component that renders those shapes wrapped in `IconBase`,\nmatching the sizing/color conventions of other Askr icons.',
+      tags: {
+        param: [
+          "displayName - Name used for the icon (`iconName`) and set as the\nreturned component's `displayName`.",
+          "logoNode - Read-only list of `[tag, attributes]` pairs describing\nthe logo's SVG shapes.",
+        ],
+        returns: [
+          'A component accepting {@link LogoProps} that renders the logo.',
+        ],
+        throws: [
+          '{TypeError} If `logoNode` contains an unsupported tag/attribute,\na non-string attribute value, or a `url(...)` reference in `fill`/`stroke`.',
+        ],
+      },
     },
     {
       name: 'FacebookLogo',
@@ -9460,6 +10588,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'FacebookLogo: { (props: LogoProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
+      summary: 'Facebook logo icon component.',
     },
     {
       name: 'GitHubLogo',
@@ -9467,6 +10596,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'GitHubLogo: { (props: LogoProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
+      summary: 'GitHub logo icon component.',
     },
     {
       name: 'GoogleLogo',
@@ -9474,36 +10604,46 @@ export const apiSymbolSets: Readonly<
       signature:
         'GoogleLogo: { (props: LogoProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
+      summary: 'Google logo icon component.',
     },
     {
       name: 'LogoAttribute',
       anchor: 'logo-attribute',
       signature: 'LogoAttribute: any',
       typeOnly: true,
+      summary:
+        'SVG attribute names permitted on the elements of a {@link LogoNode}.',
     },
     {
       name: 'LogoAttributes',
       anchor: 'logo-attributes',
       signature: 'LogoAttributes: any',
       typeOnly: true,
+      summary:
+        'Map of allowed SVG attribute values, keyed by {@link LogoAttribute}.',
     },
     {
       name: 'LogoNode',
       anchor: 'logo-node',
       signature: 'LogoNode: any',
       typeOnly: true,
+      summary:
+        "Ordered list of `[tag, attributes]` pairs describing a logo's SVG shapes.",
     },
     {
       name: 'LogoProps',
       anchor: 'logo-props',
       signature: 'LogoProps: any',
       typeOnly: true,
+      summary:
+        'Props accepted by logo components; identical to {@link IconProps}.',
     },
     {
       name: 'LogoTag',
       anchor: 'logo-tag',
       signature: 'LogoTag: any',
       typeOnly: true,
+      summary: 'SVG element tags permitted inside a {@link LogoNode}.',
     },
     {
       name: 'MicrosoftLogo',
@@ -9511,6 +10651,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'MicrosoftLogo: { (props: LogoProps): import("@askrjs/askr/foundations").JSXElement; displayName: string; }',
       typeOnly: true,
+      summary: 'Microsoft logo icon component.',
     },
   ],
   symbols32: [
@@ -16392,12 +17533,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'icon-props',
       signature: 'IconProps: any',
       typeOnly: true,
+      summary:
+        'Full prop set accepted by {@link IconBase} and generated icon components.',
     },
     {
       name: 'IconSizeToken',
       anchor: 'icon-size-token',
       signature: 'IconSizeToken: any',
       typeOnly: true,
+      summary:
+        'Named icon size presets, mapped to CSS variables at render time.',
     },
     {
       name: 'IdCardIcon',
@@ -23672,6 +24817,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'monaco-before-mount',
       signature: 'MonacoBeforeMount: any',
       typeOnly: true,
+      summary:
+        'Hook run after Monaco loads but before the editor instance is created.',
     },
     {
       name: 'MonacoEditor',
@@ -23686,12 +24833,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'monaco-editor-instance',
       signature: 'MonacoEditorInstance: any',
       typeOnly: true,
+      summary: 'A live Monaco standalone code editor instance.',
     },
     {
       name: 'MonacoEditorOptions',
       anchor: 'monaco-editor-options',
       signature: 'MonacoEditorOptions: any',
       typeOnly: true,
+      summary:
+        'Monaco standalone editor construction options, excluding the fields that\n`MonacoEditorProps` manages directly (`model`, `value`, `language`, `theme`).',
     },
     {
       name: 'MonacoEditorProps',
@@ -23706,36 +24856,45 @@ export const apiSymbolSets: Readonly<
       anchor: 'monaco-error-handler',
       signature: 'MonacoErrorHandler: any',
       typeOnly: true,
+      summary: 'Handler invoked when loading Monaco or applying an edit fails.',
     },
     {
       name: 'MonacoLoader',
       anchor: 'monaco-loader',
       signature: 'MonacoLoader: any',
       typeOnly: true,
+      summary:
+        "Loader invoked to resolve the Monaco namespace when `monaco` isn't provided directly.",
     },
     {
       name: 'MonacoMountHandler',
       anchor: 'monaco-mount-handler',
       signature: 'MonacoMountHandler: any',
       typeOnly: true,
+      summary:
+        'Handler invoked with the editor and Monaco namespace on mount or unmount.',
     },
     {
       name: 'MonacoNamespace',
       anchor: 'monaco-namespace',
       signature: 'MonacoNamespace: any',
       typeOnly: true,
+      summary:
+        'The `monaco-editor` module namespace, either provided directly or resolved by `loadMonaco`.',
     },
     {
       name: 'MonacoTextModel',
       anchor: 'monaco-text-model',
       signature: 'MonacoTextModel: any',
       typeOnly: true,
+      summary: 'A Monaco text model backing an editor instance.',
     },
     {
       name: 'MonacoUri',
       anchor: 'monaco-uri',
       signature: 'MonacoUri: any',
       typeOnly: true,
+      summary: "A Monaco URI, used to identify a text model's path.",
     },
   ],
   symbols34: [
@@ -23744,6 +24903,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'monaco-before-mount',
       signature: 'MonacoBeforeMount: any',
       typeOnly: true,
+      summary:
+        'Hook run after Monaco loads but before the editor instance is created.',
     },
     {
       name: 'MonacoEditor',
@@ -23758,12 +24919,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'monaco-editor-instance',
       signature: 'MonacoEditorInstance: any',
       typeOnly: true,
+      summary: 'A live Monaco standalone code editor instance.',
     },
     {
       name: 'MonacoEditorOptions',
       anchor: 'monaco-editor-options',
       signature: 'MonacoEditorOptions: any',
       typeOnly: true,
+      summary:
+        'Monaco standalone editor construction options, excluding the fields that\n`MonacoEditorProps` manages directly (`model`, `value`, `language`, `theme`).',
     },
     {
       name: 'MonacoEditorProps',
@@ -23778,36 +24942,45 @@ export const apiSymbolSets: Readonly<
       anchor: 'monaco-error-handler',
       signature: 'MonacoErrorHandler: any',
       typeOnly: true,
+      summary: 'Handler invoked when loading Monaco or applying an edit fails.',
     },
     {
       name: 'MonacoLoader',
       anchor: 'monaco-loader',
       signature: 'MonacoLoader: any',
       typeOnly: true,
+      summary:
+        "Loader invoked to resolve the Monaco namespace when `monaco` isn't provided directly.",
     },
     {
       name: 'MonacoMountHandler',
       anchor: 'monaco-mount-handler',
       signature: 'MonacoMountHandler: any',
       typeOnly: true,
+      summary:
+        'Handler invoked with the editor and Monaco namespace on mount or unmount.',
     },
     {
       name: 'MonacoNamespace',
       anchor: 'monaco-namespace',
       signature: 'MonacoNamespace: any',
       typeOnly: true,
+      summary:
+        'The `monaco-editor` module namespace, either provided directly or resolved by `loadMonaco`.',
     },
     {
       name: 'MonacoTextModel',
       anchor: 'monaco-text-model',
       signature: 'MonacoTextModel: any',
       typeOnly: true,
+      summary: 'A Monaco text model backing an editor instance.',
     },
     {
       name: 'MonacoUri',
       anchor: 'monaco-uri',
       signature: 'MonacoUri: any',
       typeOnly: true,
+      summary: "A Monaco URI, used to identify a text model's path.",
     },
   ],
   symbols35: [
@@ -23863,10 +25036,20 @@ export const apiSymbolSets: Readonly<
   ],
   symbols36: [
     {
+      name: 'CLIENT_ADDRESS_HEADER',
+      anchor: 'client-address-header',
+      signature: 'CLIENT_ADDRESS_HEADER: "x-askr-client-address"',
+      typeOnly: true,
+      summary:
+        'Reserved request header containing the TCP peer address authenticated by the Node adapter.\nAny value supplied by the HTTP client is overwritten before application dispatch.',
+    },
+    {
       name: 'ConnectNext',
       anchor: 'connect-next',
       signature: 'ConnectNext: any',
       typeOnly: true,
+      summary:
+        'Connect/Express-style `next` callback used to hand off unhandled requests.',
     },
     {
       name: 'createNodeHandler',
@@ -23874,6 +25057,17 @@ export const apiSymbolSets: Readonly<
       signature:
         'createNodeHandler: (app: ServerApp, options: NodeHandlerOptions) => NodeHandler',
       typeOnly: true,
+      summary:
+        'Wraps an `@askrjs/server` application as a Node-style request handler.\n\nConverts each incoming `IncomingMessage`/`ServerResponse` pair into a web\n`Request`, dispatches it through `app.fetch`, and writes the resulting web\n`Response` back to Node. Errors are reported to `next` when provided,\notherwise a minimal 400/500 response is written directly.',
+      tags: {
+        param: [
+          'app - The application to dispatch requests to.',
+          'options - Options controlling base URL resolution and host validation.',
+        ],
+        returns: [
+          'A handler usable with `http.createServer` or Connect-style middleware.',
+        ],
+      },
     },
     {
       name: 'listen',
@@ -23881,62 +25075,83 @@ export const apiSymbolSets: Readonly<
       signature:
         'listen: (app: ServerApp, options?: ListenOptions) => Promise<ListeningServer>',
       typeOnly: true,
+      summary:
+        'Starts a Node HTTP server for an `@askrjs/server` application and resolves once it is listening.\n\nOptionally installs WebSocket support and wires up graceful shutdown on\n`options.signal`. Unlike {@link serve}, this does not serve static assets\nor install OS signal handlers.',
+      tags: {
+        param: [
+          'app - The application to serve.',
+          'options - Listen options such as port, host, timeouts, and WebSocket support.',
+        ],
+        returns: [
+          'A promise resolving to the listening server once it has bound successfully.',
+        ],
+        example: ['const server = await listen(app, { port: 3000 });'],
+      },
     },
     {
       name: 'ListeningServer',
       anchor: 'listening-server',
       signature: 'ListeningServer: any',
       typeOnly: true,
+      summary:
+        'A Node HTTP server that is guaranteed to be listening for connections.',
     },
     {
       name: 'ListenOptions',
       anchor: 'listen-options',
       signature: 'ListenOptions: any',
       typeOnly: true,
+      summary:
+        'Options for {@link listen}, controlling how the Node HTTP server binds and behaves.',
       members: [
         {
           name: 'port',
-          summary: '',
+          summary:
+            'Port to listen on; defaults to an ephemeral port when omitted.',
           signature: 'port?: number;',
         },
         {
           name: 'host',
-          summary: '',
+          summary: 'Host/address to bind to.',
           signature: 'host?: string;',
         },
         {
           name: 'allowPublicBind',
-          summary: '',
+          summary:
+            'Allows binding to a non-loopback host without the usual safety check.',
           signature: 'allowPublicBind?: boolean;',
         },
         {
           name: 'backlog',
-          summary: '',
+          summary: 'Maximum length of the queue of pending connections.',
           signature: 'backlog?: number;',
         },
         {
           name: 'signal',
-          summary: '',
+          summary: 'Aborting this signal stops the server.',
           signature: 'signal?: AbortSignal;',
         },
         {
           name: 'requestTimeout',
-          summary: '',
+          summary:
+            'Node HTTP server `requestTimeout`, enforced from server construction, in milliseconds.',
           signature: 'requestTimeout?: number;',
         },
         {
           name: 'headersTimeout',
-          summary: '',
+          summary:
+            'Node HTTP server `headersTimeout`, enforced from server construction, in milliseconds.',
           signature: 'headersTimeout?: number;',
         },
         {
           name: 'keepAliveTimeout',
-          summary: '',
+          summary: 'Node HTTP server `keepAliveTimeout`, in milliseconds.',
           signature: 'keepAliveTimeout?: number;',
         },
         {
           name: 'websocket',
-          summary: '',
+          summary:
+            'Enables WebSocket support, optionally with detailed options.',
           signature: 'websocket?: boolean | NodeWebSocketOptions;',
         },
       ],
@@ -23946,21 +25161,26 @@ export const apiSymbolSets: Readonly<
       anchor: 'node-handler',
       signature: 'NodeHandler: any',
       typeOnly: true,
+      summary:
+        'A Node-style request handler compatible with `http.Server` and Connect-style middleware chains.',
     },
     {
       name: 'NodeHandlerOptions',
       anchor: 'node-handler-options',
       signature: 'NodeHandlerOptions: any',
       typeOnly: true,
+      summary:
+        'Options shared by anything that turns Node HTTP requests into `@askrjs/server` fetch calls.',
       members: [
         {
           name: 'baseUrl',
-          summary: '',
+          summary: 'Base URL used to resolve request paths into absolute URLs.',
           signature: 'readonly baseUrl?: string;',
         },
         {
           name: 'allowedHosts',
-          summary: '',
+          summary:
+            "Hosts allowed in the request's `Host` header; requests for other hosts are rejected.",
           signature: 'readonly allowedHosts?: readonly string[];',
         },
       ],
@@ -23970,34 +25190,50 @@ export const apiSymbolSets: Readonly<
       anchor: 'node-web-socket-options',
       signature: 'NodeWebSocketOptions: any',
       typeOnly: true,
+      summary:
+        'Options controlling how WebSocket upgrades are handled on a Node server.',
       members: [
         {
           name: 'closeTimeout',
-          summary: '',
+          summary:
+            'Milliseconds to wait for a peer to acknowledge a close handshake before the socket is force-closed.',
           signature: 'readonly closeTimeout?: number;',
         },
         {
           name: 'maxPayload',
-          summary: '',
+          summary:
+            'Maximum allowed size, in bytes, of a single WebSocket message.',
           signature: 'readonly maxPayload?: number;',
         },
         {
           name: 'maxRejectionBodyBytes',
-          summary: '',
+          summary:
+            'Maximum number of body bytes read from a rejected upgrade request before the connection is destroyed.',
           signature: 'readonly maxRejectionBodyBytes?: number;',
         },
         {
           name: 'perMessageDeflate',
-          summary: '',
+          summary:
+            'Enables or configures the permessage-deflate WebSocket extension.',
           signature:
             'readonly perMessageDeflate?: boolean | PerMessageDeflateOptions;',
         },
         {
           name: 'allowedOrigins',
-          summary: '',
+          summary:
+            'Origins allowed to open a WebSocket connection; when omitted, all origins are allowed.',
           signature: 'readonly allowedOrigins?: readonly string[];',
         },
       ],
+    },
+    {
+      name: 'normalizeClientAddress',
+      anchor: 'normalize-client-address',
+      signature:
+        'normalizeClientAddress: (address: string | undefined) => string',
+      typeOnly: true,
+      summary:
+        'Normalizes the socket peer address used for the adapter-authenticated request header.',
     },
     {
       name: 'serve',
@@ -24005,26 +25241,42 @@ export const apiSymbolSets: Readonly<
       signature:
         'serve: (app: ServerApp & { close?: () => void | Promise<void>; }, options?: ServeOptions) => Promise<ServedApplication>',
       typeOnly: true,
+      summary:
+        "Serves an `@askrjs/server` application over Node HTTP, with optional static\nasset serving, WebSocket support, and graceful shutdown on OS signals or an\nabort signal.\n\nRequests for paths with a file extension are first checked against\n`options.assets.root` (path-traversal safe, following symlinks) and served\ndirectly with appropriate `content-type`/`cache-control` headers before\nfalling back to the application handler. HTML responses from the\napplication get a `no-cache` header when they don't already set\n`cache-control`.",
+      tags: {
+        param: [
+          'app - The application to serve; may expose an optional `close()` for cleanup.',
+          'options - Serve options such as port, host, static assets, and shutdown signals.',
+        ],
+        returns: [
+          'The served application, including its bound `url` and a `close()` for shutdown.',
+        ],
+        example: [
+          'const app = await serve(myApp, { port: 3000, assets: { root: "./public" } });\n// ...\nawait app.close();',
+        ],
+      },
     },
     {
       name: 'ServedApplication',
       anchor: 'served-application',
       signature: 'ServedApplication: any',
       typeOnly: true,
+      summary: 'A running application returned by {@link serve}.',
       members: [
         {
           name: 'server',
-          summary: '',
+          summary: 'The underlying Node HTTP server.',
           signature: 'readonly server: import("node:http").Server;',
         },
         {
           name: 'url',
-          summary: '',
+          summary: 'The base URL the server is listening on.',
           signature: 'readonly url: string;',
         },
         {
           name: 'close',
-          summary: '',
+          summary:
+            'Gracefully shuts down the server, any WebSocket connections, and the application.',
           signature: 'close(): Promise<void>;',
         },
       ],
@@ -24034,15 +25286,19 @@ export const apiSymbolSets: Readonly<
       anchor: 'serve-options',
       signature: 'ServeOptions: any',
       typeOnly: true,
+      summary:
+        'Options for {@link serve}, extending {@link ListenOptions} with static asset serving and shutdown behavior.',
       members: [
         {
           name: 'assets',
-          summary: '',
+          summary:
+            'Serves static files from this directory before falling back to the application.',
           signature: 'readonly assets?: {\n    readonly root: string;\n  };',
         },
         {
           name: 'signals',
-          summary: '',
+          summary:
+            'OS signals that trigger a graceful shutdown; pass `false` to disable automatic shutdown handling.',
           signature: 'readonly signals?: false | readonly NodeJS.Signals[];',
         },
       ],
@@ -24055,21 +25311,35 @@ export const apiSymbolSets: Readonly<
       signature:
         'connectMcpStdio: <Dependencies>(mcp: McpServer<Dependencies>, options: McpStdioOptions<Dependencies>) => McpStdioConnection',
       typeOnly: true,
+      summary:
+        'Connects an MCP server to newline-delimited JSON-RPC over stdio (or any\npair of readable/writable streams).\n\nReads one JSON-RPC message per line, dispatches it to `mcp.handle`, and\nwrites the response back as a line of JSON. Handles request cancellation\nnotifications, enforces `maxConcurrency` and `maxLineBytes`, and cleans up\nthe MCP session when the connection closes.',
+      tags: {
+        param: [
+          'mcp - The MCP server to dispatch requests to.',
+          'options - Stdio connection options, including dependencies and stream overrides.',
+        ],
+        returns: [
+          "A handle exposing `closed` and `close()` for the connection's lifecycle.",
+        ],
+      },
     },
     {
       name: 'McpStdioConnection',
       anchor: 'mcp-stdio-connection',
       signature: 'McpStdioConnection: any',
       typeOnly: true,
+      summary:
+        'A live MCP stdio connection returned by {@link connectMcpStdio}.',
       members: [
         {
           name: 'closed',
-          summary: '',
+          summary: 'Resolves once the connection has fully closed.',
           signature: 'readonly closed: Promise<void>;',
         },
         {
           name: 'close',
-          summary: '',
+          summary:
+            'Closes the connection, aborting in-flight requests and terminating the MCP session.',
           signature: 'close(): Promise<void>;',
         },
       ],
@@ -24079,51 +25349,60 @@ export const apiSymbolSets: Readonly<
       anchor: 'mcp-stdio-options',
       signature: 'McpStdioOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link connectMcpStdio}.',
       members: [
         {
           name: 'dependencies',
-          summary: '',
+          summary:
+            'Application dependencies passed through to each MCP request.',
           signature: 'dependencies: Dependencies;',
         },
         {
           name: 'input',
-          summary: '',
+          summary:
+            'Stream to read newline-delimited JSON-RPC requests from; defaults to `process.stdin`.',
           signature: 'input?: Readable;',
         },
         {
           name: 'output',
-          summary: '',
+          summary:
+            'Stream to write newline-delimited JSON-RPC responses to; defaults to `process.stdout`.',
           signature: 'output?: Writable;',
         },
         {
           name: 'diagnostics',
-          summary: '',
+          summary:
+            'Stream that non-protocol errors are reported to; defaults to `process.stderr`.',
           signature: 'diagnostics?: Writable;',
         },
         {
           name: 'signal',
-          summary: '',
+          summary: 'Aborting this signal closes the connection.',
           signature: 'signal?: AbortSignal;',
         },
         {
           name: 'auth',
-          summary: '',
+          summary:
+            'Auth context to use for requests, or a function that derives one from the environment.',
           signature:
             'auth?: AuthContext | ((environment: NodeJS.ProcessEnv) => AuthContext | Promise<AuthContext>);',
         },
         {
           name: 'environment',
-          summary: '',
+          summary:
+            'Environment passed to the `auth` function; defaults to `process.env`.',
           signature: 'environment?: NodeJS.ProcessEnv;',
         },
         {
           name: 'maxLineBytes',
-          summary: '',
+          summary:
+            'Maximum size, in bytes, of a single input line before it is rejected; defaults to 1 MiB.',
           signature: 'maxLineBytes?: number;',
         },
         {
           name: 'maxConcurrency',
-          summary: '',
+          summary:
+            'Maximum number of requests handled concurrently; defaults to 16.',
           signature: 'maxConcurrency?: number;',
         },
       ],
@@ -24143,83 +25422,98 @@ export const apiSymbolSets: Readonly<
       anchor: 'telemetry',
       signature: 'Telemetry: any',
       typeOnly: true,
+      summary:
+        "Function-first bridge to the application's installed OpenTelemetry provider.\nEvery method wraps a unit of work in a span (or emits a log line) and never\nthrows on account of tracing/logging failures — application behavior is\nalways isolated from observability failures.",
       members: [
         {
           name: 'span',
-          summary: '',
+          summary:
+            'Wraps `work` in a span for the given `operation`, recording `fields` as attributes.',
           signature:
             'span<T>(operation: TelemetryOperation, fields: TelemetryFields, work: () => T): T;',
         },
         {
           name: 'request',
-          summary: '',
+          summary:
+            'Convenience wrapper for {@link Telemetry.span} with operation `"askr.request"`.',
           signature: 'request<T>(fields: TelemetryFields, work: () => T): T;',
         },
         {
           name: 'routeMatch',
-          summary: '',
+          summary:
+            'Convenience wrapper for {@link Telemetry.span} with operation `"askr.route.match"`.',
           signature:
             'routeMatch<T>(fields: TelemetryFields, work: () => T): T;',
         },
         {
           name: 'loader',
-          summary: '',
+          summary:
+            'Convenience wrapper for {@link Telemetry.span} with operation `"askr.loader"`.',
           signature: 'loader<T>(fields: TelemetryFields, work: () => T): T;',
         },
         {
           name: 'action',
-          summary: '',
+          summary:
+            'Convenience wrapper for {@link Telemetry.span} with operation `"askr.action"`.',
           signature: 'action<T>(fields: TelemetryFields, work: () => T): T;',
         },
         {
           name: 'apiOperation',
-          summary: '',
+          summary:
+            'Convenience wrapper for {@link Telemetry.span} with operation `"askr.api.operation"`.',
           signature:
             'apiOperation<T>(fields: TelemetryFields, work: () => T): T;',
         },
         {
           name: 'queryPrefetch',
-          summary: '',
+          summary:
+            'Convenience wrapper for {@link Telemetry.span} with operation `"askr.query.prefetch"`.',
           signature:
             'queryPrefetch<T>(fields: TelemetryFields, work: () => T): T;',
         },
         {
           name: 'ssrRender',
-          summary: '',
+          summary:
+            'Convenience wrapper for {@link Telemetry.span} with operation `"askr.ssr.render"`.',
           signature: 'ssrRender<T>(fields: TelemetryFields, work: () => T): T;',
         },
         {
           name: 'viteDocument',
-          summary: '',
+          summary:
+            'Convenience wrapper for {@link Telemetry.span} with operation `"askr.vite.document"`.',
           signature:
             'viteDocument<T>(fields: TelemetryFields, work: () => T): T;',
         },
         {
           name: 'log',
-          summary: '',
+          summary: 'Emits a single sanitized log line without opening a span.',
           signature:
             'log(level: TelemetryLevel, event: TelemetryOperation, fields?: TelemetryFields): void;',
         },
         {
           name: 'extract',
-          summary: '',
+          summary:
+            'Extracts a trace {@link Context} from a carrier (e.g. incoming request headers) using `getter`.',
           signature:
             'extract<Carrier>(carrier: Carrier, getter: TextMapGetter<Carrier>): Context;',
         },
         {
           name: 'inject',
-          summary: '',
+          summary:
+            'Injects the active (or given) {@link Context} into `carrier` using `setter`, returning the carrier.',
           signature:
             'inject<Carrier>(carrier: Carrier, setter: TextMapSetter<Carrier>, value?: Context): Carrier;',
         },
         {
           name: 'withContext',
-          summary: '',
+          summary:
+            'Runs `work` with `value` as the active OpenTelemetry context.',
           signature: 'withContext<T>(value: Context, work: () => T): T;',
         },
         {
           name: 'traceId',
-          summary: '',
+          summary:
+            'Returns the trace ID of the currently active span, if any and if valid.',
           signature: 'traceId(): string | undefined;',
         },
       ],
@@ -24229,6 +25523,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'telemetry-fields',
       signature: 'TelemetryFields: any',
       typeOnly: true,
+      summary:
+        'Structured fields attached to a span or log line. Only these known keys are\never sanitized and forwarded; unknown keys on a passed-in object are dropped.',
       members: [
         {
           name: 'requestId',
@@ -24272,53 +25568,63 @@ export const apiSymbolSets: Readonly<
       anchor: 'telemetry-level',
       signature: 'TelemetryLevel: any',
       typeOnly: true,
+      summary:
+        'Severity of a telemetry log line, mirrored from common structured-logging conventions.',
     },
     {
       name: 'TelemetryLogger',
       anchor: 'telemetry-logger',
       signature: 'TelemetryLogger: any',
       typeOnly: true,
+      summary: 'Callback invoked with each sanitized telemetry log line.',
     },
     {
       name: 'TelemetryOperation',
       anchor: 'telemetry-operation',
       signature: 'TelemetryOperation: any',
       typeOnly: true,
+      summary:
+        'The set of Askr lifecycle stages that {@link Telemetry} can wrap with a span.',
     },
     {
       name: 'TelemetryOptions',
       anchor: 'telemetry-options',
       signature: 'TelemetryOptions: any',
       typeOnly: true,
+      summary: 'Configuration accepted by {@link createTelemetry}.',
       members: [
         {
           name: 'tracerName',
-          summary: '',
+          summary:
+            'Name passed to `trace.getTracer`. Defaults to `"@askrjs/otel"`.',
           signature: 'tracerName?: string;',
         },
         {
           name: 'tracerVersion',
-          summary: '',
+          summary: 'Version passed to `trace.getTracer`.',
           signature: 'tracerVersion?: string;',
         },
         {
           name: 'logger',
-          summary: '',
+          summary: 'Sink for sanitized log lines. Defaults to a no-op.',
           signature: 'logger?: TelemetryLogger;',
         },
         {
           name: 'now',
-          summary: '',
+          summary:
+            'Clock used for span durations. Defaults to `performance.now`.',
           signature: 'now?: () => number;',
         },
         {
           name: 'maxFieldLength',
-          summary: '',
+          summary:
+            'Maximum length, in characters, retained for any string field. Defaults to 256.',
           signature: 'maxFieldLength?: number;',
         },
         {
           name: 'sanitizeField',
-          summary: '',
+          summary:
+            'Per-field hook to redact or transform a field before it is logged or attached to a span; return `undefined` to drop it.',
           signature:
             'sanitizeField?: (name: keyof TelemetryFields, value: string | number) => string | number | undefined;',
         },
@@ -24338,26 +25644,31 @@ export const apiSymbolSets: Readonly<
       anchor: 'infer-schema',
       signature: 'InferSchema: any',
       typeOnly: true,
+      summary: 'Infers the parsed value type of a {@link Schema}.',
     },
     {
       name: 'Issue',
       anchor: 'issue',
       signature: 'Issue: any',
       typeOnly: true,
+      summary:
+        'A single validation failure produced by {@link Schema.safeParse}.',
       members: [
         {
           name: 'path',
-          summary: '',
+          summary:
+            'Location of the offending value, as a sequence of object keys and/or array indices.',
           signature: 'readonly path: readonly (string | number)[];',
         },
         {
           name: 'message',
-          summary: '',
+          summary: 'Human-readable description of the failure.',
           signature: 'readonly message: string;',
         },
         {
           name: 'code',
-          summary: '',
+          summary:
+            'Stable machine-readable failure code, e.g. `"invalid_type"` or `"too_small"`.',
           signature: 'readonly code: string;',
         },
       ],
@@ -24367,6 +25678,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'json-schema',
       signature: 'JsonSchema: any',
       typeOnly: true,
+      summary:
+        'A frozen, deterministic JSON Schema (draft 2020-12) object produced by a {@link Schema}.',
     },
     {
       name: 'ObjectSchema',
@@ -24388,6 +25701,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'optional-schema',
       signature: 'OptionalSchema: any',
       typeOnly: true,
+      summary:
+        'A {@link Schema} produced by {@link schema.optional} that permits `undefined` values.',
       members: [
         {
           name: '__optional',
@@ -24401,33 +25716,46 @@ export const apiSymbolSets: Readonly<
       anchor: 'safe-parse-result',
       signature: 'SafeParseResult: any',
       typeOnly: true,
+      summary:
+        'The outcome of parsing a value: either the validated data, or the list of issues found.',
     },
     {
       name: 'schema',
       anchor: 'schema-2',
       signature:
-        'schema: Readonly<{ string: typeof string; uuid: (options?: StringOptions) => Schema<string>; email: (options?: StringOptions) => Schema<string>; uri: (options?: StringOptions) => Schema<string>; date: (options?: StringOptions) => Schema<string>; dateTime: (options?: StringOptions) => Schema<string>; byte: (options?: StringOptions) => Schema<string>; binary: (options?: StringOptions) => Schema<string>; number: (options?: NumberOptions) => Schema<number>; integer: (options?: NumberOptions) => Schema<number>; boolean: (options?: CommonOptions) => Schema<boolean>; null: (options?: CommonOptions) => Schema<null>; object: typeof object; array: typeof array; record: <T>(values: Schema<T>, options?: CommonOptions) => ObjectSchema<Record<string, T>>; enum: <const T extends readonly (string | number | boolean)[]>(values: T, options?: CommonOptions) => Schema<T[number]>; literal: <const T extends string | number | boolean | null>(value: T, options?: CommonOptions) => Schema<T>; optional: <T>(value: Schema<T>) => OptionalSchema<T>; nullable: <T>(value: Schema<T>) => Schema<T | null>; oneOf: <const T extends readonly Schema[]>(...values: T) => Schema<InferSchema<T[number]>>; anyOf: <const T extends readonly Schema[]>(...values: T) => Schema<InferSchema<T[number]>>; allOf: <const T extends readonly Schema[]>(...values: T) => Schema<UnionToIntersection<InferSchema<T[number]>>>; raw: <T>(jsonSchema: JsonSchema, safeParse: (value: unknown) => SafeParseResult<T>) => Schema<T>; }>',
+        'schema: Readonly<{ string: typeof string; uuid: (options?: StringOptions) => Schema<string>; email: (options?: StringOptions) => Schema<string>; uri: (options?: StringOptions) => Schema<string>; date: (options?: StringOptions) => Schema<string>; dateTime: (options?: StringOptions) => Schema<string>; byte: (options?: StringOptions) => Schema<string>; binary: (options?: StringOptions) => Schema<string>; number: (options?: NumberOptions) => Schema<number>; integer: (options?: NumberOptions) => Schema<number>; boolean: (options?: CommonOptions) => Schema<boolean>; null: (options?: CommonOptions) => Schema<null>; object: typeof object; array: typeof array; record: <T>(values: Schema<T>, options?: CommonOptions) => ObjectSchema<Record<string, T>>; enum: <const T extends readonly (string | number | boolean)[]>(values: T, options?: CommonOptions) => Schema<T[number]>; literal: <const T extends string | number | boolean | null>(value: T, options?: CommonOptions) => Schema<T>; optional: <T>(value: Schema<T>) => OptionalSchema<T>; nullable: <T extends Schema>(value: T) => NullableSchema<T>; oneOf: <const T extends readonly Schema[]>(...values: T) => Schema<InferSchema<T[number]>>; anyOf: <const T extends readonly Schema[]>(...values: T) => Schema<InferSchema<T[number]>>; allOf: <const T extends readonly Schema[]>(...values: T) => Schema<UnionToIntersection<InferSchema<T[number]>>>; raw: <T>(jsonSchema: JsonSchema, safeParse: (value: unknown) => SafeParseResult<T>) => Schema<T>; }>',
       typeOnly: true,
+      summary:
+        'The public schema builder namespace: create executable schemas whose {@link Schema.safeParse}\nvalidates a value and whose `jsonSchema` field is a deterministic JSON Schema (draft 2020-12)\nprojection suitable for OpenAPI documents.',
+      tags: {
+        example: [
+          'const user = schema.object({ id: schema.uuid(), name: schema.string({ minLength: 1 }) });\nconst result = user.safeParse({ id: "...", name: "Ada" });',
+        ],
+      },
     },
     {
       name: 'Schema',
       anchor: 'schema',
       signature: 'Schema: any',
       typeOnly: true,
+      summary:
+        'An executable schema: carries its JSON Schema projection and a runtime parser.',
       members: [
         {
           name: 'jsonSchema',
-          summary: '',
+          summary:
+            'The deterministic JSON Schema (draft 2020-12) projection of this schema.',
           signature: 'readonly jsonSchema: JsonSchema;',
         },
         {
           name: '__type',
-          summary: '',
+          summary: 'Phantom type marker only; never set at runtime.',
           signature: 'readonly __type?: T;',
         },
         {
           name: 'safeParse',
-          summary: '',
+          summary:
+            'Validates `value`, returning either the parsed data or a list of issues.',
           signature: 'safeParse(value: unknown): SafeParseResult<T>;',
         },
       ],
@@ -24437,6 +25765,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'string-format',
       signature: 'StringFormat: any',
       typeOnly: true,
+      summary:
+        'Supported `format` values for {@link schema.string} and its format-specific shorthands.',
     },
   ],
   symbols40: [
@@ -24446,18 +25776,24 @@ export const apiSymbolSets: Readonly<
       signature:
         'accepted: (value?: JsonValue, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary:
+        'Builds a `202 Accepted` response; JSON-serializes `value` if given, otherwise an empty body.',
     },
     {
       name: 'AccessDeniedHandler',
       anchor: 'access-denied-handler',
       signature: 'AccessDeniedHandler: any',
       typeOnly: true,
+      summary:
+        'Handler invoked to produce a response when an auth decision denies access.',
     },
     {
       name: 'ApiRoute',
       anchor: 'api-route',
       signature: 'ApiRoute: any',
       typeOnly: true,
+      summary:
+        'A single registered route: a path/method pattern paired with a handler (or WebSocket upgrade handler).',
       members: [
         {
           name: 'path',
@@ -24486,6 +25822,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'api-route-options',
       signature: 'ApiRouteOptions: any',
       typeOnly: true,
+      summary: 'Per-route configuration shared by {@link ApiRoute}.',
       members: [
         {
           name: 'auth',
@@ -24509,6 +25846,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'auth-credentials',
       signature: 'AuthCredentials: any',
       typeOnly: true,
+      summary:
+        'Email/password credentials submitted to the register or authenticate endpoints.',
       members: [
         {
           name: 'email',
@@ -24527,6 +25866,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'auth-route-error',
       signature: 'AuthRouteError: typeof AuthRouteError',
       typeOnly: true,
+      summary:
+        'Error thrown from `register`/`authenticate`/etc. callbacks to short-circuit an auth route with a specific status.',
       members: [
         {
           name: 'status',
@@ -24540,6 +25881,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'auth-route-options',
       signature: 'AuthRouteOptions: any',
       typeOnly: true,
+      summary: 'Configuration for {@link registerAuthRoutes}.',
       members: [
         {
           name: 'issuer',
@@ -24592,6 +25934,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'bad',
       signature: 'bad: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Alias for {@link badRequest}.',
     },
     {
       name: 'badRequest',
@@ -24599,6 +25942,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'badRequest: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `400 Bad Request` Problem Details response.',
     },
     {
       name: 'bind',
@@ -24606,12 +25950,25 @@ export const apiSymbolSets: Readonly<
       signature:
         'bind: <T extends object = Record<string, unknown>>(context: BindContext) => Promise<T>',
       typeOnly: true,
+      summary:
+        "Merges a request's body, query string, and path parameters into a single object, in that\nprecedence order (path parameters win, then query string, then body). Supports JSON,\nURL-encoded, and multipart/form-data bodies; unrecognized content types yield an empty body.",
+      tags: {
+        param: [
+          'context - The request, URL, query, and path parameters to bind from.',
+        ],
+        returns: ['The merged values, cast to `T`.'],
+        throws: [
+          '{BindingError} If the body cannot be read or parsed for its declared content type.',
+        ],
+      },
     },
     {
       name: 'BindContext',
       anchor: 'bind-context',
       signature: 'BindContext: any',
       typeOnly: true,
+      summary:
+        'Minimal request context required by {@link bind} to gather body, query, and path values.',
       members: [
         {
           name: 'request',
@@ -24640,6 +25997,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'binding-error',
       signature: 'BindingError: typeof BindingError',
       typeOnly: true,
+      summary:
+        'Error thrown when request data cannot be bound, e.g. an unreadable or malformed body.',
       members: [
         {
           name: 'field',
@@ -24658,12 +26017,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'challenge',
       signature: 'challenge: (options?: ChallengeOptions) => Response',
       typeOnly: true,
+      summary:
+        'Builds a `401`/`407` Problem Details response with a `WWW-Authenticate` (or\n`Proxy-Authenticate` for `407`) challenge header.',
     },
     {
       name: 'ChallengeOptions',
       anchor: 'challenge-options',
       signature: 'ChallengeOptions: any',
       typeOnly: true,
+      summary:
+        'Options for building a `WWW-Authenticate` challenge response via {@link ServerContext.challenge}.',
       members: [
         {
           name: 'scheme',
@@ -24698,18 +26061,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'clearCookie: (response: Response, name: string, options?: CookieOptions) => Response',
       typeOnly: true,
+      summary:
+        'Returns a clone of `response` with a `Set-Cookie` header that expires and clears `name`.',
     },
     {
       name: 'conflict',
       anchor: 'conflict',
       signature: 'conflict: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `409 Conflict` Problem Details response.',
     },
     {
       name: 'CookieOptions',
       anchor: 'cookie-options',
       signature: 'CookieOptions: any',
       typeOnly: true,
+      summary:
+        'Options controlling how a cookie is set via {@link ServerContext.setCookie}.',
       members: [
         {
           name: 'domain',
@@ -24753,12 +26121,18 @@ export const apiSymbolSets: Readonly<
       anchor: 'cookie-same-site',
       signature: 'CookieSameSite: any',
       typeOnly: true,
+      summary: 'Valid values for the `SameSite` cookie attribute.',
     },
     {
       name: 'createCspNonce',
       anchor: 'create-csp-nonce',
       signature: 'createCspNonce: () => CspNonceProvider',
       typeOnly: true,
+      summary:
+        'Creates a {@link CspNonceProvider} that lazily generates a cryptographically random,\nURL-safe base64 nonce per {@link ServerContext} and caches it for the lifetime of that\ncontext, so repeated calls within the same request return the same value.',
+      tags: {
+        returns: ['A provider function `(context) => nonce`.'],
+      },
     },
     {
       name: 'created',
@@ -24766,6 +26140,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'created: (value?: JsonValue, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary:
+        'Builds a `201 Created` response; JSON-serializes `value` if given, otherwise an empty body.',
     },
     {
       name: 'createEventStream',
@@ -24773,12 +26149,30 @@ export const apiSymbolSets: Readonly<
       signature:
         'createEventStream: (options?: EventStreamOptions) => EventStream',
       typeOnly: true,
+      summary:
+        'Creates a Server-Sent Events stream backed by a `text/event-stream` `Response`, with\nbounded backpressure-aware writes, optional heartbeat comments, and automatic closing when\n`options.signal` aborts or `close()` is called.',
+      tags: {
+        param: [
+          'options - Stream configuration (abort signal, heartbeat interval, backpressure, headers).',
+        ],
+        returns: [
+          'An {@link EventStream} exposing the response plus `send`/`comment`/`close` methods.',
+        ],
+        throws: [
+          '{TypeError} If `highWaterMark` or `heartbeatInterval` are not positive safe integers.',
+        ],
+      },
     },
     {
       name: 'createRouter',
       anchor: 'create-router',
       signature: 'createRouter: () => Router',
       typeOnly: true,
+      summary:
+        'Creates an empty, mutable {@link Router} with chainable HTTP-method route builders\n(`get`, `post`, `put`, `patch`, `delete`, `options`, `head`, `trace`, `connect`, `ws`) and a\n`use` method for registering middleware.',
+      tags: {
+        returns: ['A new router instance.'],
+      },
     },
     {
       name: 'createServerApp',
@@ -24786,18 +26180,37 @@ export const apiSymbolSets: Readonly<
       signature:
         'createServerApp: { (router: Router): ServerApp; (options?: ServerAppOptions): ServerApp; }',
       typeOnly: true,
+      summary:
+        "Creates a transport-neutral server application that dispatches Web `Request`s to a\nrouter's routes and middleware, returning Web `Response`s.\n\nAccepts either a bare {@link Router} or a full {@link ServerAppOptions} object (which\nmay itself reference a router). Builds a path matcher from the combined routes, validates\nrequest-size limits, and wraps dispatch with auth resolution, telemetry, and error handling\n(payload-too-large, malformed path parameters, binding errors, and a fallback `onError`).\nCreates a transport-neutral server application. See the {@link Router} overload for details.",
+      tags: {
+        param: [
+          'router - A router whose routes and middleware should back the application.',
+          'options - Configuration including router, routes, middleware, auth, telemetry,\nerror handling, and request-size limits.',
+        ],
+        returns: [
+          'A {@link ServerApp} exposing a `fetch(request, dispatchOptions)` method.',
+          'A {@link ServerApp} exposing a `fetch(request, dispatchOptions)` method.',
+        ],
+        example: [
+          'const app = createServerApp(router);\nexport default { fetch: app.fetch };',
+        ],
+      },
     },
     {
       name: 'CspNonceProvider',
       anchor: 'csp-nonce-provider',
       signature: 'CspNonceProvider: any',
       typeOnly: true,
+      summary:
+        'A function that returns a CSP nonce for a given request context, stable across calls for the same context.',
     },
     {
       name: 'DEFAULT_MAX_REQUEST_BYTES',
       anchor: 'default-max-request-bytes',
       signature: 'DEFAULT_MAX_REQUEST_BYTES: 1048576',
       typeOnly: true,
+      summary:
+        'Default maximum request body size, in bytes (1 MiB), used when no limit is configured.',
     },
     {
       name: 'defineRoutes',
@@ -24805,6 +26218,14 @@ export const apiSymbolSets: Readonly<
       signature:
         'defineRoutes: (definition: (route: RouteBuilder) => void) => ApiRoute[]',
       typeOnly: true,
+      summary:
+        'Builds a flat list of {@link ApiRoute}s by invoking `definition` with a {@link RouteBuilder}.\nUseful for defining a set of routes without a full {@link Router} (e.g. to compose into one).',
+      tags: {
+        param: [
+          'definition - Callback that registers routes via the provided builder.',
+        ],
+        returns: ['The collected routes.'],
+      },
     },
     {
       name: 'error',
@@ -24812,12 +26233,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'error: (status?: number, detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary:
+        'Builds a Problem Details error response with a configurable status (default `500`).',
     },
     {
       name: 'EventStream',
       anchor: 'event-stream',
       signature: 'EventStream: any',
       typeOnly: true,
+      summary:
+        'A live Server-Sent Events stream, backed by a streaming `Response`.',
       members: [
         {
           name: 'response',
@@ -24831,12 +26256,14 @@ export const apiSymbolSets: Readonly<
         },
         {
           name: 'send',
-          summary: '',
+          summary:
+            'Queues an event in order. Await or otherwise handle the returned promise before producing\nwithout bound. Rejects with `QuotaExceededError` when the pending-write limit is full.',
           signature: 'send(event: ServerSentEvent): Promise<void>;',
         },
         {
           name: 'comment',
-          summary: '',
+          summary:
+            'Queues an SSE comment in order. Rejects with `QuotaExceededError` when the pending-write\nlimit is full.',
           signature: 'comment(value: string): Promise<void>;',
         },
         {
@@ -24851,20 +26278,23 @@ export const apiSymbolSets: Readonly<
       anchor: 'event-stream-options',
       signature: 'EventStreamOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link createEventStream}.',
       members: [
         {
           name: 'signal',
-          summary: '',
+          summary: 'Aborting this signal closes the stream.',
           signature: 'signal?: AbortSignal;',
         },
         {
           name: 'heartbeatInterval',
-          summary: '',
+          summary:
+            'If set, sends a `heartbeat` comment on this interval (in ms) to keep the connection alive.',
           signature: 'heartbeatInterval?: number;',
         },
         {
           name: 'highWaterMark',
-          summary: '',
+          summary:
+            'Backpressure threshold for the underlying `ReadableStream` and maximum number of\nunresolved `send()`/`comment()` calls admitted at once. Defaults to 16.',
           signature: 'highWaterMark?: number;',
         },
         {
@@ -24880,18 +26310,28 @@ export const apiSymbolSets: Readonly<
       signature:
         'forbidden: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `403 Forbidden` Problem Details response.',
     },
     {
       name: 'formatServerSentEvent',
       anchor: 'format-server-sent-event',
       signature: 'formatServerSentEvent: (event: ServerSentEvent) => string',
       typeOnly: true,
+      summary:
+        'Serializes a {@link ServerSentEvent} to the `text/event-stream` wire format, escaping\nmulti-line data/comment fields and validating that `event`/`id` contain no line breaks.',
+      tags: {
+        throws: [
+          '{TypeError} If `event`, `id`, or `retry` contain invalid characters/values.',
+        ],
+      },
     },
     {
       name: 'Handler',
       anchor: 'handler',
       signature: 'Handler: any',
       typeOnly: true,
+      summary:
+        'A route handler function that produces a response for a given {@link ServerContext}.',
     },
     {
       name: 'internalServerError',
@@ -24899,18 +26339,22 @@ export const apiSymbolSets: Readonly<
       signature:
         'internalServerError: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `500 Internal Server Error` Problem Details response.',
     },
     {
       name: 'json',
       anchor: 'json',
       signature: 'json: (value: JsonValue, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary:
+        'Builds a `200 OK`-shaped JSON response, serializing `value` and setting the JSON content type.',
     },
     {
       name: 'JsonValue',
       anchor: 'json-value',
       signature: 'JsonValue: any',
       typeOnly: true,
+      summary: 'A value that can be serialized as JSON.',
     },
     {
       name: 'methodNotAllowed',
@@ -24918,30 +26362,38 @@ export const apiSymbolSets: Readonly<
       signature:
         'methodNotAllowed: (allow?: string | readonly string[], init?: ResponseInit) => Response',
       typeOnly: true,
+      summary:
+        'Builds a `405 Method Not Allowed` Problem Details response, setting the `Allow` header if given.',
     },
     {
       name: 'Middleware',
       anchor: 'middleware',
       signature: 'Middleware: any',
       typeOnly: true,
+      summary:
+        'A middleware function that may short-circuit or delegate to `next` to produce a response.',
     },
     {
       name: 'Next',
       anchor: 'next',
       signature: 'Next: any',
       typeOnly: true,
+      summary:
+        'Continuation function passed to a {@link Middleware}, invoking the next handler in the chain.',
     },
     {
       name: 'noContent',
       anchor: 'no-content',
       signature: 'noContent: (init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `204 No Content` response with an empty body.',
     },
     {
       name: 'notFound',
       anchor: 'not-found',
       signature: 'notFound: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `404 Not Found` Problem Details response.',
     },
     {
       name: 'notImplemented',
@@ -24949,30 +26401,38 @@ export const apiSymbolSets: Readonly<
       signature:
         'notImplemented: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `501 Not Implemented` Problem Details response.',
     },
     {
       name: 'ok',
       anchor: 'ok',
       signature: 'ok: (value?: JsonValue, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary:
+        'Builds a `200 OK` response; JSON-serializes `value` if given, otherwise an empty body.',
     },
     {
       name: 'Params',
       anchor: 'params',
       signature: 'Params: any',
       typeOnly: true,
+      summary: 'A map of route path parameter names to their string values.',
     },
     {
       name: 'PathParams',
       anchor: 'path-params',
       signature: 'PathParams: any',
       typeOnly: true,
+      summary:
+        'Infers a {@link Params}-shaped object type from a route path pattern, extracting the names\nof `{param}` and `{*param}` segments as required string keys.',
     },
     {
       name: 'PayloadTooLargeError',
       anchor: 'payload-too-large-error',
       signature: 'PayloadTooLargeError: typeof PayloadTooLargeError',
       typeOnly: true,
+      summary:
+        'Error thrown when a request body exceeds the configured maximum size.',
       members: [
         {
           name: 'status',
@@ -24986,12 +26446,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'probe-handler',
       signature: 'ProbeHandler: any',
       typeOnly: true,
+      summary:
+        'A health-check handler used for liveness/readiness/startup probes.',
     },
     {
       name: 'ProbeOptions',
       anchor: 'probe-options',
       signature: 'ProbeOptions: any',
       typeOnly: true,
+      summary:
+        'Optional handlers for the built-in `livez`/`readyz`/`startupz`/`targetz` health probe routes.',
       members: [
         {
           name: 'livez',
@@ -25020,6 +26484,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'probe-result',
       signature: 'ProbeResult: any',
       typeOnly: true,
+      summary:
+        'Result of a health probe: `true`/`false` for pass/fail, a `Response` to return as-is, or `void` for pass.',
     },
     {
       name: 'problem',
@@ -25027,12 +26493,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'problem: (status: number, detail?: string, options?: ProblemOptions & { init?: ResponseInit; }) => Response',
       typeOnly: true,
+      summary:
+        'Builds an RFC 9457 `application/problem+json` response, defaulting `type` to `about:blank`\nand `title` to a standard reason phrase for the given `status` (falling back to "HTTP Error").',
     },
     {
       name: 'Problem',
       anchor: 'problem',
       signature: 'Problem: any',
       typeOnly: true,
+      summary:
+        'An RFC 9457 Problem Details object, as produced by {@link ServerContext.problem}.',
       members: [
         {
           name: 'type',
@@ -25066,6 +26536,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'problem-options',
       signature: 'ProblemOptions: any',
       typeOnly: true,
+      summary: 'Optional fields used to customize a {@link Problem} response.',
       members: [
         {
           name: 'type',
@@ -25095,6 +26566,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'readRequestBytes: (request: Request, maximum?: number) => Promise<Uint8Array>',
       typeOnly: true,
+      summary:
+        'Reads a request body into memory as raw bytes, enforcing a maximum size. The result is\ncached per-request so subsequent reads (e.g. for JSON, text, or form data) reuse the same\nbuffered bytes instead of re-reading the stream.',
+      tags: {
+        param: [
+          'request - The request whose body to read.',
+          "maximum - Maximum allowed size in bytes; defaults to the request's configured limit.",
+        ],
+        returns: ['The full body as a `Uint8Array`.'],
+        throws: ['{PayloadTooLargeError} If the body exceeds `maximum`.'],
+      },
     },
     {
       name: 'readRequestFormData',
@@ -25102,6 +26583,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'readRequestFormData: (request: Request, maximum?: number) => Promise<FormData>',
       typeOnly: true,
+      summary:
+        'Reads a request body and parses it as `multipart/form-data`, enforcing a maximum size.',
+      tags: {
+        param: [
+          'request - The request whose body to read.',
+          "maximum - Maximum allowed size in bytes; defaults to the request's configured limit.",
+        ],
+        returns: ['The parsed form data.'],
+        throws: ['{PayloadTooLargeError} If the body exceeds `maximum`.'],
+      },
     },
     {
       name: 'readRequestText',
@@ -25109,6 +26600,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'readRequestText: (request: Request, maximum?: number) => Promise<string>',
       typeOnly: true,
+      summary:
+        'Reads and decodes a request body as UTF-8 text, enforcing a maximum size.',
+      tags: {
+        param: [
+          'request - The request whose body to read.',
+          "maximum - Maximum allowed size in bytes; defaults to the request's configured limit.",
+        ],
+        throws: ['{PayloadTooLargeError} If the body exceeds `maximum`.'],
+      },
     },
     {
       name: 'redirect',
@@ -25116,6 +26616,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'redirect: (location: string, status?: 301 | 302 | 303 | 307 | 308) => Response',
       typeOnly: true,
+      summary:
+        'Builds a redirect response with an empty body and a `Location` header. Defaults to `302 Found`.',
     },
     {
       name: 'registerAuthRoutes',
@@ -25123,18 +26625,30 @@ export const apiSymbolSets: Readonly<
       signature:
         'registerAuthRoutes: <Dependencies, P extends Principal>(api: Pick<ApiDefinition<Dependencies>, "group">, options: AuthRouteOptions<P>) => void',
       typeOnly: true,
+      summary:
+        'Registers a standard set of authentication routes (`POST /auth/v1/accounts`,\n`GET/POST /auth/v1/session`, `DELETE /auth/v1/session`) on an OpenAPI-style API/group,\nhandling registration, login, session lookup, and logout with CSRF protection via a\nsame-origin `Origin` header check, per-attempt rate limiting, and cookie-based token storage.',
+      tags: {
+        param: [
+          'api - The API or group to register routes on (only its `group` method is used).',
+          'options - Issuer, cookie configuration, principal schema, and register/authenticate/\nallowAttempt/revoke/redirect callbacks.',
+        ],
+      },
     },
     {
       name: 'RequestState',
       anchor: 'request-state',
       signature: 'RequestState: any',
       typeOnly: true,
+      summary:
+        'Arbitrary per-request state bag attached to a {@link ServerContext}.',
     },
     {
       name: 'RouteBuilder',
       anchor: 'route-builder',
       signature: 'RouteBuilder: any',
       typeOnly: true,
+      summary:
+        'Chainable, per-HTTP-method route registration methods, one per method plus `ws` for WebSockets.',
       members: [
         {
           name: 'route',
@@ -25209,6 +26723,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'router',
       signature: 'Router: any',
       typeOnly: true,
+      summary:
+        'A mutable collection of routes and middleware, built with chainable per-method registration\nmethods (each returning the router itself for chaining) and a `use` method for middleware.',
       members: [
         {
           name: 'routes',
@@ -25299,16 +26815,30 @@ export const apiSymbolSets: Readonly<
       signature:
         'safeRedirect: (fallback: string, options?: SafeRedirectOptions) => (value: unknown) => string',
       typeOnly: true,
+      summary:
+        'Creates a validator that resolves an untrusted redirect target to a safe, same-origin,\nrelative path — or to `fallback` if the value is unsafe (absolute, protocol-relative,\ncontains a scheme, control characters, `..` traversal, backslashes, or an unwanted hash).',
+      tags: {
+        param: [
+          'fallback - The safe path to use when the requested value is not itself safe. Must\nitself pass the safety check, or this function throws.',
+          'options - Redirect validation options.',
+        ],
+        returns: [
+          'A function `(value) => path` that returns `value` if safe, otherwise `fallback`.',
+        ],
+        throws: ['{Error} If `fallback` is not itself a safe path.'],
+      },
     },
     {
       name: 'SafeRedirectOptions',
       anchor: 'safe-redirect-options',
       signature: 'SafeRedirectOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link safeRedirect}.',
       members: [
         {
           name: 'allowHash',
-          summary: '',
+          summary:
+            'Allow redirect targets that include a URL fragment (`#...`). Defaults to disallowed.',
           signature: 'readonly allowHash?: boolean;',
         },
       ],
@@ -25318,6 +26848,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'server-app',
       signature: 'ServerApp: any',
       typeOnly: true,
+      summary:
+        'A configured server application, as returned by {@link createServerApp }.',
       members: [
         {
           name: 'fetch',
@@ -25332,6 +26864,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'server-app-options',
       signature: 'ServerAppOptions: any',
       typeOnly: true,
+      summary:
+        'Options accepted by {@link createServerApp } to configure a server application.',
       members: [
         {
           name: 'router',
@@ -25396,6 +26930,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'server-context',
       signature: 'ServerContext: any',
       typeOnly: true,
+      summary:
+        'The per-request context passed to handlers and middleware, bundling the incoming request,\nparsed URL/params/query, auth state, and a family of response-building helper methods\n(`json`, `ok`, `notFound`, `problem`, `setCookie`, `upgrade`, etc.).',
       members: [
         {
           name: 'request',
@@ -25611,6 +27147,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'server-dispatch-options',
       signature: 'ServerDispatchOptions: any',
       typeOnly: true,
+      summary: 'Per-request options passed to {@link ServerApp.fetch}.',
       members: [
         {
           name: 'websocket',
@@ -25625,12 +27162,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'serverError: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Alias for {@link internalServerError}.',
     },
     {
       name: 'ServerSentEvent',
       anchor: 'server-sent-event',
       signature: 'ServerSentEvent: any',
       typeOnly: true,
+      summary:
+        'A single Server-Sent Event; `data` is JSON-serialized unless already a string.',
       members: [
         {
           name: 'data',
@@ -25659,6 +27199,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'server-telemetry',
       signature: 'ServerTelemetry: any',
       typeOnly: true,
+      summary:
+        'Telemetry hooks that a {@link ServerAppOptions.telemetry} implementation provides. Each\n`work`-wrapping method should run `work` inside an appropriately named span, propagating its\nreturn value.',
       members: [
         {
           name: 'request',
@@ -25731,6 +27273,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'server-telemetry-fields',
       signature: 'ServerTelemetryFields: any',
       typeOnly: true,
+      summary: 'Contextual fields attached to a telemetry span or log entry.',
       members: [
         {
           name: 'requestId',
@@ -25774,6 +27317,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'server-telemetry-operation',
       signature: 'ServerTelemetryOperation: any',
       typeOnly: true,
+      summary:
+        'Identifies the kind of operation a {@link ServerTelemetry} call is instrumenting.',
     },
     {
       name: 'serviceUnavailable',
@@ -25781,6 +27326,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'serviceUnavailable: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `503 Service Unavailable` Problem Details response.',
     },
     {
       name: 'setCookie',
@@ -25788,18 +27334,24 @@ export const apiSymbolSets: Readonly<
       signature:
         'setCookie: (response: Response, name: string, value: string, options?: CookieOptions) => Response',
       typeOnly: true,
+      summary:
+        'Returns a clone of `response` with an additional `Set-Cookie` header appended, serialized\nfrom `name`, `value`, and `options`.',
     },
     {
       name: 'text',
       anchor: 'text',
       signature: 'text: (value: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary:
+        'Builds a plain-text response, setting the `text/plain; charset=utf-8` content type.',
     },
     {
       name: 'TokenIssuer',
       anchor: 'token-issuer',
       signature: 'TokenIssuer: any',
       typeOnly: true,
+      summary:
+        'Issues auth tokens for a principal, used by {@link registerAuthRoutes} to mint session tokens.',
       members: [
         {
           name: 'issue',
@@ -25815,6 +27367,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'tooManyRequests: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `429 Too Many Requests` Problem Details response.',
     },
     {
       name: 'unauthorized',
@@ -25822,6 +27375,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'unauthorized: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `401 Unauthorized` Problem Details response.',
     },
     {
       name: 'unprocessableEntity',
@@ -25829,12 +27383,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'unprocessableEntity: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `422 Unprocessable Entity` Problem Details response.',
     },
     {
       name: 'WebSocketAdapter',
       anchor: 'web-socket-adapter',
       signature: 'WebSocketAdapter: any',
       typeOnly: true,
+      summary:
+        'Adapter that performs the transport-specific work of upgrading a request to a WebSocket.',
       members: [
         {
           name: 'upgrade',
@@ -25849,6 +27406,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'web-socket-close-event',
       signature: 'WebSocketCloseEvent: any',
       typeOnly: true,
+      summary:
+        'Details of a WebSocket close event, mirroring the DOM `CloseEvent` fields used here.',
       members: [
         {
           name: 'code',
@@ -25872,12 +27431,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'web-socket-handler',
       signature: 'WebSocketHandler: any',
       typeOnly: true,
+      summary:
+        'Handler invoked with a live {@link WebSocketLike} once a connection has been upgraded.',
     },
     {
       name: 'WebSocketLike',
       anchor: 'web-socket-like',
       signature: 'WebSocketLike: any',
       typeOnly: true,
+      summary:
+        'Transport-neutral interface for an upgraded WebSocket connection.',
       members: [
         {
           name: 'send',
@@ -25916,6 +27479,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'api-route',
       signature: 'ApiRoute: any',
       typeOnly: true,
+      summary:
+        'A single registered route: a path/method pattern paired with a handler (or WebSocket upgrade handler).',
       members: [
         {
           name: 'path',
@@ -25944,6 +27509,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'api-route-options',
       signature: 'ApiRouteOptions: any',
       typeOnly: true,
+      summary: 'Per-route configuration shared by {@link ApiRoute}.',
       members: [
         {
           name: 'auth',
@@ -25967,6 +27533,11 @@ export const apiSymbolSets: Readonly<
       anchor: 'create-router',
       signature: 'createRouter: () => Router',
       typeOnly: true,
+      summary:
+        'Creates an empty, mutable {@link Router} with chainable HTTP-method route builders\n(`get`, `post`, `put`, `patch`, `delete`, `options`, `head`, `trace`, `connect`, `ws`) and a\n`use` method for registering middleware.',
+      tags: {
+        returns: ['A new router instance.'],
+      },
     },
     {
       name: 'defineRoutes',
@@ -25974,24 +27545,38 @@ export const apiSymbolSets: Readonly<
       signature:
         'defineRoutes: (definition: (route: RouteBuilder) => void) => ApiRoute[]',
       typeOnly: true,
+      summary:
+        'Builds a flat list of {@link ApiRoute}s by invoking `definition` with a {@link RouteBuilder}.\nUseful for defining a set of routes without a full {@link Router} (e.g. to compose into one).',
+      tags: {
+        param: [
+          'definition - Callback that registers routes via the provided builder.',
+        ],
+        returns: ['The collected routes.'],
+      },
     },
     {
       name: 'Handler',
       anchor: 'handler',
       signature: 'Handler: any',
       typeOnly: true,
+      summary:
+        'A route handler function that produces a response for a given {@link ServerContext}.',
     },
     {
       name: 'Middleware',
       anchor: 'middleware',
       signature: 'Middleware: any',
       typeOnly: true,
+      summary:
+        'A middleware function that may short-circuit or delegate to `next` to produce a response.',
     },
     {
       name: 'RouteBuilder',
       anchor: 'route-builder',
       signature: 'RouteBuilder: any',
       typeOnly: true,
+      summary:
+        'Chainable, per-HTTP-method route registration methods, one per method plus `ws` for WebSockets.',
       members: [
         {
           name: 'route',
@@ -26066,6 +27651,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'router',
       signature: 'Router: any',
       typeOnly: true,
+      summary:
+        'A mutable collection of routes and middleware, built with chainable per-method registration\nmethods (each returning the router itself for chaining) and a `use` method for middleware.',
       members: [
         {
           name: 'routes',
@@ -26155,6 +27742,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'web-socket-handler',
       signature: 'WebSocketHandler: any',
       typeOnly: true,
+      summary:
+        'Handler invoked with a live {@link WebSocketLike} once a connection has been upgraded.',
     },
   ],
   symbols42: [
@@ -26164,12 +27753,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'accepted: (value?: JsonValue, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary:
+        'Builds a `202 Accepted` response; JSON-serializes `value` if given, otherwise an empty body.',
     },
     {
       name: 'bad',
       anchor: 'bad',
       signature: 'bad: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Alias for {@link badRequest}.',
     },
     {
       name: 'badRequest',
@@ -26177,12 +27769,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'badRequest: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `400 Bad Request` Problem Details response.',
     },
     {
       name: 'challenge',
       anchor: 'challenge',
       signature: 'challenge: (options?: ChallengeOptions) => Response',
       typeOnly: true,
+      summary:
+        'Builds a `401`/`407` Problem Details response with a `WWW-Authenticate` (or\n`Proxy-Authenticate` for `407`) challenge header.',
     },
     {
       name: 'clearCookie',
@@ -26190,12 +27785,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'clearCookie: (response: Response, name: string, options?: CookieOptions) => Response',
       typeOnly: true,
+      summary:
+        'Returns a clone of `response` with a `Set-Cookie` header that expires and clears `name`.',
     },
     {
       name: 'conflict',
       anchor: 'conflict',
       signature: 'conflict: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `409 Conflict` Problem Details response.',
     },
     {
       name: 'created',
@@ -26203,6 +27801,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'created: (value?: JsonValue, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary:
+        'Builds a `201 Created` response; JSON-serializes `value` if given, otherwise an empty body.',
     },
     {
       name: 'createEventStream',
@@ -26210,6 +27810,19 @@ export const apiSymbolSets: Readonly<
       signature:
         'createEventStream: (options?: EventStreamOptions) => EventStream',
       typeOnly: true,
+      summary:
+        'Creates a Server-Sent Events stream backed by a `text/event-stream` `Response`, with\nbounded backpressure-aware writes, optional heartbeat comments, and automatic closing when\n`options.signal` aborts or `close()` is called.',
+      tags: {
+        param: [
+          'options - Stream configuration (abort signal, heartbeat interval, backpressure, headers).',
+        ],
+        returns: [
+          'An {@link EventStream} exposing the response plus `send`/`comment`/`close` methods.',
+        ],
+        throws: [
+          '{TypeError} If `highWaterMark` or `heartbeatInterval` are not positive safe integers.',
+        ],
+      },
     },
     {
       name: 'error',
@@ -26217,12 +27830,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'error: (status?: number, detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary:
+        'Builds a Problem Details error response with a configurable status (default `500`).',
     },
     {
       name: 'EventStream',
       anchor: 'event-stream',
       signature: 'EventStream: any',
       typeOnly: true,
+      summary:
+        'A live Server-Sent Events stream, backed by a streaming `Response`.',
       members: [
         {
           name: 'response',
@@ -26236,12 +27853,14 @@ export const apiSymbolSets: Readonly<
         },
         {
           name: 'send',
-          summary: '',
+          summary:
+            'Queues an event in order. Await or otherwise handle the returned promise before producing\nwithout bound. Rejects with `QuotaExceededError` when the pending-write limit is full.',
           signature: 'send(event: ServerSentEvent): Promise<void>;',
         },
         {
           name: 'comment',
-          summary: '',
+          summary:
+            'Queues an SSE comment in order. Rejects with `QuotaExceededError` when the pending-write\nlimit is full.',
           signature: 'comment(value: string): Promise<void>;',
         },
         {
@@ -26256,20 +27875,23 @@ export const apiSymbolSets: Readonly<
       anchor: 'event-stream-options',
       signature: 'EventStreamOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link createEventStream}.',
       members: [
         {
           name: 'signal',
-          summary: '',
+          summary: 'Aborting this signal closes the stream.',
           signature: 'signal?: AbortSignal;',
         },
         {
           name: 'heartbeatInterval',
-          summary: '',
+          summary:
+            'If set, sends a `heartbeat` comment on this interval (in ms) to keep the connection alive.',
           signature: 'heartbeatInterval?: number;',
         },
         {
           name: 'highWaterMark',
-          summary: '',
+          summary:
+            'Backpressure threshold for the underlying `ReadableStream` and maximum number of\nunresolved `send()`/`comment()` calls admitted at once. Defaults to 16.',
           signature: 'highWaterMark?: number;',
         },
         {
@@ -26285,12 +27907,20 @@ export const apiSymbolSets: Readonly<
       signature:
         'forbidden: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `403 Forbidden` Problem Details response.',
     },
     {
       name: 'formatServerSentEvent',
       anchor: 'format-server-sent-event',
       signature: 'formatServerSentEvent: (event: ServerSentEvent) => string',
       typeOnly: true,
+      summary:
+        'Serializes a {@link ServerSentEvent} to the `text/event-stream` wire format, escaping\nmulti-line data/comment fields and validating that `event`/`id` contain no line breaks.',
+      tags: {
+        throws: [
+          '{TypeError} If `event`, `id`, or `retry` contain invalid characters/values.',
+        ],
+      },
     },
     {
       name: 'internalServerError',
@@ -26298,12 +27928,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'internalServerError: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `500 Internal Server Error` Problem Details response.',
     },
     {
       name: 'json',
       anchor: 'json',
       signature: 'json: (value: JsonValue, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary:
+        'Builds a `200 OK`-shaped JSON response, serializing `value` and setting the JSON content type.',
     },
     {
       name: 'methodNotAllowed',
@@ -26311,18 +27944,22 @@ export const apiSymbolSets: Readonly<
       signature:
         'methodNotAllowed: (allow?: string | readonly string[], init?: ResponseInit) => Response',
       typeOnly: true,
+      summary:
+        'Builds a `405 Method Not Allowed` Problem Details response, setting the `Allow` header if given.',
     },
     {
       name: 'noContent',
       anchor: 'no-content',
       signature: 'noContent: (init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `204 No Content` response with an empty body.',
     },
     {
       name: 'notFound',
       anchor: 'not-found',
       signature: 'notFound: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `404 Not Found` Problem Details response.',
     },
     {
       name: 'notImplemented',
@@ -26330,12 +27967,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'notImplemented: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `501 Not Implemented` Problem Details response.',
     },
     {
       name: 'ok',
       anchor: 'ok',
       signature: 'ok: (value?: JsonValue, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary:
+        'Builds a `200 OK` response; JSON-serializes `value` if given, otherwise an empty body.',
     },
     {
       name: 'problem',
@@ -26343,6 +27983,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'problem: (status: number, detail?: string, options?: ProblemOptions & { init?: ResponseInit; }) => Response',
       typeOnly: true,
+      summary:
+        'Builds an RFC 9457 `application/problem+json` response, defaulting `type` to `about:blank`\nand `title` to a standard reason phrase for the given `status` (falling back to "HTTP Error").',
     },
     {
       name: 'redirect',
@@ -26350,6 +27992,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'redirect: (location: string, status?: 301 | 302 | 303 | 307 | 308) => Response',
       typeOnly: true,
+      summary:
+        'Builds a redirect response with an empty body and a `Location` header. Defaults to `302 Found`.',
     },
     {
       name: 'serverError',
@@ -26357,12 +28001,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'serverError: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Alias for {@link internalServerError}.',
     },
     {
       name: 'ServerSentEvent',
       anchor: 'server-sent-event',
       signature: 'ServerSentEvent: any',
       typeOnly: true,
+      summary:
+        'A single Server-Sent Event; `data` is JSON-serialized unless already a string.',
       members: [
         {
           name: 'data',
@@ -26392,6 +28039,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'serviceUnavailable: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `503 Service Unavailable` Problem Details response.',
     },
     {
       name: 'setCookie',
@@ -26399,12 +28047,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'setCookie: (response: Response, name: string, value: string, options?: CookieOptions) => Response',
       typeOnly: true,
+      summary:
+        'Returns a clone of `response` with an additional `Set-Cookie` header appended, serialized\nfrom `name`, `value`, and `options`.',
     },
     {
       name: 'text',
       anchor: 'text',
       signature: 'text: (value: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary:
+        'Builds a plain-text response, setting the `text/plain; charset=utf-8` content type.',
     },
     {
       name: 'tooManyRequests',
@@ -26412,6 +28064,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'tooManyRequests: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `429 Too Many Requests` Problem Details response.',
     },
     {
       name: 'unauthorized',
@@ -26419,6 +28072,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'unauthorized: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `401 Unauthorized` Problem Details response.',
     },
     {
       name: 'unprocessableEntity',
@@ -26426,6 +28080,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'unprocessableEntity: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
+      summary: 'Builds a `422 Unprocessable Entity` Problem Details response.',
     },
   ],
   symbols43: [
@@ -26434,18 +28089,34 @@ export const apiSymbolSets: Readonly<
       anchor: 'access-log',
       signature: 'accessLog: (logger: ResponseLogger) => Middleware',
       typeOnly: true,
+      summary:
+        'Creates middleware that times each request and invokes `logger` with the request, response,\nduration, and (if present) request ID after the downstream chain resolves.',
+      tags: {
+        param: ['logger - Called once per request with the completed entry.'],
+      },
     },
     {
       name: 'cors',
       anchor: 'cors',
       signature: 'cors: (options?: CorsOptions) => Middleware',
       typeOnly: true,
+      summary:
+        'Creates CORS middleware that validates the request origin, answers preflight `OPTIONS`\nrequests with `204` and the appropriate `Access-Control-*` headers, and adds\n`Access-Control-Allow-Origin`/`Vary: Origin` (plus exposed headers) to actual responses.\nGenuine preflight is quota-neutral in {@link rateLimit } regardless of middleware order.',
+      tags: {
+        param: [
+          'options - Allowed origin(s)/methods/headers, credential support, and preflight max-age.',
+        ],
+        throws: [
+          '{TypeError} If `credentials` is combined with a wildcard origin, or `maxAgeSeconds`\nis not a non-negative safe integer.',
+        ],
+      },
     },
     {
       name: 'CorsOptions',
       anchor: 'cors-options',
       signature: 'CorsOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link cors}.',
       members: [
         {
           name: 'origin',
@@ -26486,6 +28157,14 @@ export const apiSymbolSets: Readonly<
       signature:
         'createCsrfToken: (secret: string, sessionId: string) => Promise<string>',
       typeOnly: true,
+      summary:
+        'Creates a CSRF token bound to a session ID, as an HMAC-SHA256 signature encoded base64url.',
+      tags: {
+        param: [
+          'secret - The HMAC secret; must match what {@link verifyCsrfToken} uses.',
+          'sessionId - The session ID to bind the token to.',
+        ],
+      },
     },
     {
       name: 'createMemoryRateLimitStore',
@@ -26493,18 +28172,34 @@ export const apiSymbolSets: Readonly<
       signature:
         'createMemoryRateLimitStore: (options?: MemoryRateLimitStoreOptions) => RateLimitStore',
       typeOnly: true,
+      summary:
+        'Creates an in-memory {@link RateLimitStore} backed by a `Map`, suitable for single-process\ndeployments. Periodically prunes expired entries as a side effect of `consume` calls.',
+      tags: {
+        param: [
+          'options.now - Clock function used to determine window boundaries. Defaults to `Date.now`.',
+        ],
+      },
     },
     {
       name: 'csrf',
       anchor: 'csrf',
       signature: 'csrf: (options: CsrfOptions) => Middleware',
       typeOnly: true,
+      summary:
+        'Creates middleware that enforces CSRF protection on state-changing requests (all methods\nexcept `GET`/`HEAD`/`OPTIONS`/`TRACE`) by requiring a valid token bound to the current\nsession, supplied via a request header or (for form-encoded bodies) a form field.',
+      tags: {
+        param: [
+          'options - HMAC secret, session ID resolver, and header/form field names.',
+        ],
+        throws: ['{Error} If `options.secret` is empty.'],
+      },
     },
     {
       name: 'CsrfOptions',
       anchor: 'csrf-options',
       signature: 'CsrfOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link csrf}.',
       members: [
         {
           name: 'secret',
@@ -26535,12 +28230,21 @@ export const apiSymbolSets: Readonly<
       signature:
         'enforceHttps: (options?: { trustProxy?: boolean; status?: 301 | 302 | 307 | 308; }) => Middleware',
       typeOnly: true,
+      summary:
+        'Creates middleware that redirects non-HTTPS requests to their HTTPS equivalent.',
+      tags: {
+        param: [
+          "options.trustProxy - When true, honors the `X-Forwarded-Proto` header (first value)\ninstead of the request's own scheme, for use behind a TLS-terminating proxy.",
+          'options.status - Redirect status code to use. Defaults to `308` (permanent, method-preserving).',
+        ],
+      },
     },
     {
       name: 'MemoryRateLimitStoreOptions',
       anchor: 'memory-rate-limit-store-options',
       signature: 'MemoryRateLimitStoreOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link createMemoryRateLimitStore}.',
       members: [
         {
           name: 'now',
@@ -26554,12 +28258,23 @@ export const apiSymbolSets: Readonly<
       anchor: 'rate-limit',
       signature: 'rateLimit: (options: RateLimitOptions) => Middleware',
       typeOnly: true,
+      summary:
+        'Creates middleware that enforces a request-rate limit per key (e.g. per client), adding\n`RateLimit-*` response headers and returning `429 Too Many Requests` with `Retry-After`\nwhen the limit is exceeded. Genuine CORS preflight requests (`OPTIONS` with both `Origin`\nand `Access-Control-Request-Method`) are quota-neutral regardless of middleware order.',
+      tags: {
+        param: [
+          'options - Limit, window, key resolver, and optional store/clock.',
+        ],
+        throws: [
+          '{Error} If `limit` is not a positive integer or `windowMs` is not positive.',
+        ],
+      },
     },
     {
       name: 'RateLimitOptions',
       anchor: 'rate-limit-options',
       signature: 'RateLimitOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link rateLimit}.',
       members: [
         {
           name: 'store',
@@ -26595,6 +28310,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'rate-limit-store',
       signature: 'RateLimitStore: any',
       typeOnly: true,
+      summary:
+        'Pluggable backing store for {@link rateLimit}, tracking request counts per key/window.',
       members: [
         {
           name: 'consume',
@@ -26610,12 +28327,22 @@ export const apiSymbolSets: Readonly<
       signature:
         'requestId: (options?: { header?: string; generate?: () => string; }) => Middleware',
       typeOnly: true,
+      summary:
+        'Creates middleware that reads a request ID from an incoming header (generating one if\nabsent), stores it on `ctx.state.requestId`, and echoes it back on the response header.',
+      tags: {
+        param: [
+          'options.header - Header name to read/write. Defaults to `x-request-id`.',
+          'options.generate - ID generator used when the header is absent. Defaults to `crypto.randomUUID()`.',
+        ],
+      },
     },
     {
       name: 'ResponseLogger',
       anchor: 'response-logger',
       signature: 'ResponseLogger: any',
       typeOnly: true,
+      summary:
+        'Callback invoked by {@link accessLog} with details of a completed request.',
     },
     {
       name: 'securityHeaders',
@@ -26623,6 +28350,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'securityHeaders: (options?: { contentSecurityPolicy?: string | ((context: ServerContext) => string); referrerPolicy?: string; frameOptions?: string; }) => Middleware',
       typeOnly: true,
+      summary:
+        'Creates middleware that adds standard security headers to every response:\n`X-Content-Type-Options: nosniff`, `Referrer-Policy`, `X-Frame-Options`, and (if configured)\n`Content-Security-Policy`.',
+      tags: {
+        param: [
+          'options.contentSecurityPolicy - A static CSP string, or a function of the request\ncontext (e.g. to embed a per-request nonce). Omitted if not set.',
+          'options.referrerPolicy - Defaults to `strict-origin-when-cross-origin`.',
+          'options.frameOptions - Defaults to `DENY`.',
+        ],
+      },
     },
     {
       name: 'trace',
@@ -26630,6 +28366,13 @@ export const apiSymbolSets: Readonly<
       signature:
         'trace: (start: (context: ServerContext) => void | (() => void | Promise<void>)) => Middleware',
       typeOnly: true,
+      summary:
+        'Creates middleware that invokes `start` at the beginning of each request and, if it returns\na function, invokes that function after the downstream chain settles (success or throw) —\ne.g. to open and close a tracing span around the request.',
+      tags: {
+        param: [
+          'start - Called with the request context; may return a cleanup/finish callback.',
+        ],
+      },
     },
     {
       name: 'verifyCsrfToken',
@@ -26637,6 +28380,18 @@ export const apiSymbolSets: Readonly<
       signature:
         'verifyCsrfToken: (secret: string, sessionId: string, token: string) => Promise<boolean>',
       typeOnly: true,
+      summary:
+        'Verifies a CSRF token against a session ID using an HMAC-SHA256 signature.',
+      tags: {
+        param: [
+          'secret - The HMAC secret used to sign tokens.',
+          'sessionId - The session ID the token should be bound to.',
+          'token - The base64url-encoded token to verify.',
+        ],
+        returns: [
+          '`true` if the token is a valid signature of `sessionId` under `secret`.',
+        ],
+      },
     },
   ],
   symbols44: [
@@ -26645,12 +28400,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'action-cookie-instruction',
       signature: 'ActionCookieInstruction: any',
       typeOnly: true,
+      summary: 'A cookie to set or clear as part of an {@link ActionOutcome}.',
     },
     {
       name: 'ActionEntry',
       anchor: 'action-entry',
       signature: 'ActionEntry: any',
       typeOnly: true,
+      summary:
+        'A registered action: its descriptor (schema/id) paired with its handler, as produced by {@link handleAction }.',
       members: [
         {
           name: 'descriptor',
@@ -26670,12 +28428,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'action-execution',
       signature: 'ActionExecution: any',
       typeOnly: true,
+      summary:
+        'Result of {@link ActionRegistry.execute}: either a final response, or invalid-input details to re-render the page with.',
     },
     {
       name: 'ActionExecutionOptions',
       anchor: 'action-execution-options',
       signature: 'ActionExecutionOptions: any',
       typeOnly: true,
+      summary:
+        "Options passed to {@link ActionRegistry.execute} describing the current page's allowed actions.",
       members: [
         {
           name: 'authorized',
@@ -26704,12 +28466,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'action-handler',
       signature: 'ActionHandler: any',
       typeOnly: true,
+      summary:
+        "A server action's business logic: validated `input` in, an {@link ActionOutcome} out.",
     },
     {
       name: 'ActionHandlerContext',
       anchor: 'action-handler-context',
       signature: 'ActionHandlerContext: any',
       typeOnly: true,
+      summary: 'Request-derived context passed to an {@link ActionHandler}.',
       members: [
         {
           name: 'request',
@@ -26748,6 +28513,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'action-outcome',
       signature: 'ActionOutcome: any',
       typeOnly: true,
+      summary:
+        'The result of a successful {@link ActionHandler} invocation: an optional redirect, result payload, and cookies.',
       members: [
         {
           name: 'redirect',
@@ -26771,6 +28538,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'action-registration',
       signature: 'ActionRegistration: any',
       typeOnly: true,
+      summary:
+        'A type-erased {@link ActionEntry}, as accepted by {@link defineServerActions }.',
       members: [
         {
           name: 'descriptor',
@@ -26790,6 +28559,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'action-registry',
       signature: 'ActionRegistry: any',
       typeOnly: true,
+      summary:
+        'A registry of server actions, as created by {@link defineServerActions }, used by {@link createAskrPageHandler }.',
       members: [
         {
           name: 'entries',
@@ -26816,6 +28587,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'action-registry-options',
       signature: 'ActionRegistryOptions: any',
       typeOnly: true,
+      summary: 'CSRF configuration shared by {@link ServerActionsOptions }.',
       members: [
         {
           name: 'csrf',
@@ -26836,6 +28608,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'askr-app',
       signature: 'AskrApp: any',
       typeOnly: true,
+      summary:
+        'A configured Askr application, as returned by {@link createAskrApp}.',
       members: [
         {
           name: 'fetch',
@@ -26859,6 +28633,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'askr-app-api',
       signature: 'AskrAppApi: any',
       typeOnly: true,
+      summary:
+        'The API group passed to {@link AskrAppApiOptions.define}, extended with a `schema` helper.',
       members: [
         {
           name: 'schema',
@@ -26872,6 +28648,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'askr-app-api-options',
       signature: 'AskrAppApiOptions: any',
       typeOnly: true,
+      summary:
+        'Options for the OpenAPI-backed API portion of an {@link AskrApp}.',
       members: [
         {
           name: 'prefix',
@@ -26902,6 +28680,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'askr-app-auth-options',
       signature: 'AskrAppAuthOptions: any',
       typeOnly: true,
+      summary:
+        'Authentication configuration for an {@link AskrApp}: request resolver, optional auth routes, and page auth policy.',
       members: [
         {
           name: 'resolver',
@@ -26925,6 +28705,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'askr-app-options',
       signature: 'AskrAppOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link createAskrApp}.',
       members: [
         {
           name: 'name',
@@ -27011,6 +28792,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'askr-page-handler-options',
       signature: 'AskrPageHandlerOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link createAskrPageHandler}.',
       members: [
         {
           name: 'registry',
@@ -27050,6 +28832,19 @@ export const apiSymbolSets: Readonly<
       signature:
         'createAskrApp: <Dependencies, P extends Principal = Principal>(options: AskrAppOptions<Dependencies, P>) => AskrApp',
       typeOnly: true,
+      summary:
+        'Assembles a complete Askr application from page routes, an optional OpenAPI-described API,\noptional server actions, and optional authentication — wiring an API router (mounted at\n`options.api?.prefix`, default `/api`), auth routes, and a page-rendering fallback handler\ninto a single {@link ServerApp }-like object.',
+      tags: {
+        param: [
+          'options - Pages registry, dependencies, API/auth/action configuration, and lifecycle hooks.',
+        ],
+        returns: [
+          'An {@link AskrApp} exposing `fetch`, `toOpenApiDocument`, and `close`.',
+        ],
+        throws: [
+          '{Error} If `options.api.prefix` is invalid, or collides with the reserved `/auth` prefix.',
+        ],
+      },
     },
     {
       name: 'createAskrPageHandler',
@@ -27057,6 +28852,14 @@ export const apiSymbolSets: Readonly<
       signature:
         'createAskrPageHandler: (options: AskrPageHandlerOptions) => Handler',
       typeOnly: true,
+      summary:
+        "Creates a catch-all route {@link Handler} that server-renders Askr framework pages: routes\n`GET`/`HEAD` requests through Askr's SSR pipeline, and (if `options.actions` is provided)\ndispatches `POST` requests as form actions, re-rendering the page with validation errors on\nfailure or following a redirect/response on success.",
+      tags: {
+        param: [
+          'options - Route registry, auth policy, query registry, action registry, and CSP nonce provider.',
+        ],
+        throws: ['{Error} If `options.registry` is not provided.'],
+      },
     },
     {
       name: 'defineServerActions',
@@ -27064,6 +28867,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'defineServerActions: <Dependencies>(options: ServerActionsOptions<Dependencies>, ...entries: readonly ActionRegistration<Dependencies>[]) => ActionRegistry',
       typeOnly: true,
+      summary:
+        'Builds an {@link ActionRegistry} from a set of {@link ActionEntry}s (via {@link handleAction}),\nwiring up CSRF token issuance/verification (unless `options.csrf` is `false`), submission\nparsing (JSON or form-encoded), input validation, telemetry, and response negotiation\n(redirect vs. JSON envelope) for each action invocation.',
+      tags: {
+        param: [
+          'options - Dependencies to inject into handlers, plus CSRF configuration.',
+          'entries - The registered actions.',
+        ],
+        throws: ['{Error} If two entries share the same action ID.'],
+      },
     },
     {
       name: 'handleAction',
@@ -27071,12 +28883,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'handleAction: <Dependencies, Input extends Record<string, unknown>, Result = unknown>(descriptor: ActionDescriptor<Input>, handler: ActionHandler<Dependencies, Input, Result>) => ActionEntry<Dependencies, Input, Result>',
       typeOnly: true,
+      summary:
+        'Pairs an action descriptor (its ID and input schema) with a typed handler, ready to pass to\n{@link defineServerActions}.',
     },
     {
       name: 'ServerActionsOptions',
       anchor: 'server-actions-options',
       signature: 'ServerActionsOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link defineServerActions }.',
       members: [
         {
           name: 'dependencies',
@@ -27092,6 +28907,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'auth-credentials',
       signature: 'AuthCredentials: any',
       typeOnly: true,
+      summary:
+        'Email/password credentials submitted to the register or authenticate endpoints.',
       members: [
         {
           name: 'email',
@@ -27110,6 +28927,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'auth-route-error',
       signature: 'AuthRouteError: typeof AuthRouteError',
       typeOnly: true,
+      summary:
+        'Error thrown from `register`/`authenticate`/etc. callbacks to short-circuit an auth route with a specific status.',
       members: [
         {
           name: 'status',
@@ -27123,6 +28942,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'auth-route-options',
       signature: 'AuthRouteOptions: any',
       typeOnly: true,
+      summary: 'Configuration for {@link registerAuthRoutes}.',
       members: [
         {
           name: 'issuer',
@@ -27176,6 +28996,14 @@ export const apiSymbolSets: Readonly<
       signature:
         'registerAuthRoutes: <Dependencies, P extends Principal>(api: Pick<ApiDefinition<Dependencies>, "group">, options: AuthRouteOptions<P>) => void',
       typeOnly: true,
+      summary:
+        'Registers a standard set of authentication routes (`POST /auth/v1/accounts`,\n`GET/POST /auth/v1/session`, `DELETE /auth/v1/session`) on an OpenAPI-style API/group,\nhandling registration, login, session lookup, and logout with CSRF protection via a\nsame-origin `Origin` header check, per-attempt rate limiting, and cookie-based token storage.',
+      tags: {
+        param: [
+          'api - The API or group to register routes on (only its `group` method is used).',
+          'options - Issuer, cookie configuration, principal schema, and register/authenticate/\nallowAttempt/revoke/redirect callbacks.',
+        ],
+      },
     },
     {
       name: 'safeRedirect',
@@ -27183,16 +29011,30 @@ export const apiSymbolSets: Readonly<
       signature:
         'safeRedirect: (fallback: string, options?: SafeRedirectOptions) => (value: unknown) => string',
       typeOnly: true,
+      summary:
+        'Creates a validator that resolves an untrusted redirect target to a safe, same-origin,\nrelative path — or to `fallback` if the value is unsafe (absolute, protocol-relative,\ncontains a scheme, control characters, `..` traversal, backslashes, or an unwanted hash).',
+      tags: {
+        param: [
+          'fallback - The safe path to use when the requested value is not itself safe. Must\nitself pass the safety check, or this function throws.',
+          'options - Redirect validation options.',
+        ],
+        returns: [
+          'A function `(value) => path` that returns `value` if safe, otherwise `fallback`.',
+        ],
+        throws: ['{Error} If `fallback` is not itself a safe path.'],
+      },
     },
     {
       name: 'SafeRedirectOptions',
       anchor: 'safe-redirect-options',
       signature: 'SafeRedirectOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link safeRedirect}.',
       members: [
         {
           name: 'allowHash',
-          summary: '',
+          summary:
+            'Allow redirect targets that include a URL fragment (`#...`). Defaults to disallowed.',
           signature: 'readonly allowHash?: boolean;',
         },
       ],
@@ -27202,6 +29044,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'token-issuer',
       signature: 'TokenIssuer: any',
       typeOnly: true,
+      summary:
+        'Issues auth tokens for a principal, used by {@link registerAuthRoutes} to mint session tokens.',
       members: [
         {
           name: 'issue',
@@ -27218,6 +29062,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'api-definition',
       signature: 'ApiDefinition: any',
       typeOnly: true,
+      summary:
+        'The root API definition returned by {@link createApi }: a top-level {@link ApiGroup} that can\nalso register reusable named schemas, build a concrete {@link Router} from its routes, and\nrender an {@link OpenApiDocument}.',
       members: [
         {
           name: 'schema',
@@ -27243,6 +29089,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'api-group',
       signature: 'ApiGroup: any',
       typeOnly: true,
+      summary:
+        'A prefixed group of routes within an {@link ApiDefinition}, supporting nested sub-groups,\nshared tags/middleware/auth/params, and per-HTTP-method route registration.',
       members: [
         {
           name: 'tags',
@@ -27338,12 +29186,16 @@ export const apiSymbolSets: Readonly<
       anchor: 'api-handler',
       signature: 'ApiHandler: any',
       typeOnly: true,
+      summary:
+        'A plain route handler registered via an {@link ApiGroup } method, receiving the resolved `dependencies`.',
     },
     {
       name: 'ApiInfo',
       anchor: 'api-info',
       signature: 'ApiInfo: any',
       typeOnly: true,
+      summary:
+        'The OpenAPI `info` object: title, version, and descriptive metadata for the API.',
       members: [
         {
           name: 'title',
@@ -27387,6 +29239,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'api-input',
       signature: 'ApiInput: any',
       typeOnly: true,
+      summary:
+        "Declares the schemas for a route's inputs (path params, query, headers, body).",
       members: [
         {
           name: 'params',
@@ -27415,6 +29269,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'api-operation',
       signature: 'ApiOperation: any',
       typeOnly: true,
+      summary:
+        'A schema-typed route registered via an {@link ApiGroup } method: declares its `input` schemas\n(validated and bound before `handler` runs, with results typed via {@link InferApiInput}) and\noptional extra `documentation` for parameters/body not otherwise inferable.',
       members: [
         {
           name: 'input',
@@ -27439,6 +29295,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'api-options',
       signature: 'ApiOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link createApi }.',
       members: [
         {
           name: 'info',
@@ -27480,6 +29337,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'body-options',
       signature: 'BodyOptions: any',
       typeOnly: true,
+      summary:
+        'Metadata for a request body, used to enrich the generated OpenAPI document.',
       members: [
         {
           name: 'required',
@@ -27504,18 +29363,29 @@ export const apiSymbolSets: Readonly<
       signature:
         'createApi: <Dependencies = undefined>(options: ApiOptions) => ApiDefinition<Dependencies>',
       typeOnly: true,
+      summary:
+        'Creates an OpenAPI-aware {@link ApiDefinition}: a schema-typed route builder that records\noperation metadata and input/response schemas as routes are registered, then can render the\nroutes as a concrete {@link Router } (`createRouter`) or as an OpenAPI document\n(`toOpenApiDocument`).',
+      tags: {
+        param: [
+          'options - API-level metadata (title, version, servers, etc.) and validation settings.',
+        ],
+        returns: ['The root {@link ApiDefinition}.'],
+      },
     },
     {
       name: 'InferSchema',
       anchor: 'infer-schema',
       signature: 'InferSchema: any',
       typeOnly: true,
+      summary: 'Infers the parsed value type of a {@link Schema}.',
     },
     {
       name: 'OpenApiDocument',
       anchor: 'open-api-document',
       signature: 'OpenApiDocument: any',
       typeOnly: true,
+      summary:
+        'A complete OpenAPI 3.1 document, as produced by {@link ApiDefinition.toOpenApiDocument }.',
       members: [
         {
           name: 'openapi',
@@ -27555,6 +29425,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'parameter-options',
       signature: 'ParameterOptions: any',
       typeOnly: true,
+      summary:
+        'Metadata for a path/query/header/cookie parameter, used to enrich the generated OpenAPI document.',
       members: [
         {
           name: 'description',
@@ -27583,6 +29455,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'response-options',
       signature: 'ResponseOptions: any',
       typeOnly: true,
+      summary:
+        'Metadata for a response, used to enrich the generated OpenAPI document.',
       members: [
         {
           name: 'description',
@@ -27611,6 +29485,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'route-builder',
       signature: 'RouteBuilder: any',
       typeOnly: true,
+      summary:
+        "Fluent builder for describing a single route's OpenAPI operation: metadata (operation ID,\nsummary, tags), request inputs (path/query/header/cookie params and body), and possible\nresponses (both status-coded shorthand methods like `ok`/`notFound` and the generic `response`).",
       members: [
         {
           name: 'operationId',
@@ -27841,28 +29717,39 @@ export const apiSymbolSets: Readonly<
       name: 'schema',
       anchor: 'schema-2',
       signature:
-        'schema: Readonly<{ string: (options?: StringOptions) => Schema<string>; uuid: (options?: StringOptions) => Schema<string>; email: (options?: StringOptions) => Schema<string>; uri: (options?: StringOptions) => Schema<string>; date: (options?: StringOptions) => Schema<string>; dateTime: (options?: StringOptions) => Schema<string>; byte: (options?: StringOptions) => Schema<string>; binary: (options?: StringOptions) => Schema<string>; number: (options?: NumberOptions) => Schema<number>; integer: (options?: NumberOptions) => Schema<number>; boolean: (options?: CommonOptions) => Schema<boolean>; null: (options?: CommonOptions) => Schema<null>; object: <T extends Record<string, Schema>>(properties: T, options?: ObjectOptions) => ObjectSchema<ObjectValue<T>>; array: <T>(items: Schema<T>, options?: ArrayOptions) => Schema<T[]>; record: <T>(values: Schema<T>, options?: CommonOptions) => ObjectSchema<Record<string, T>>; enum: <const T extends readonly (string | number | boolean)[]>(values: T, options?: CommonOptions) => Schema<T[number]>; literal: <const T extends string | number | boolean | null>(value: T, options?: CommonOptions) => Schema<T>; optional: <T>(value: Schema<T>) => OptionalSchema<T>; nullable: <T>(value: Schema<T>) => Schema<T | null>; oneOf: <const T extends readonly Schema[]>(...values: T) => Schema<InferSchema<T[number]>>; anyOf: <const T extends readonly Schema[]>(...values: T) => Schema<InferSchema<T[number]>>; allOf: <const T extends readonly Schema[]>(...values: T) => Schema<UnionToIntersection<InferSchema<T[number]>>>; raw: <T>(jsonSchema: JsonSchema, safeParse: (value: unknown) => SafeParseResult<T>) => Schema<T>; }>',
+        'schema: Readonly<{ string: (options?: StringOptions) => Schema<string>; uuid: (options?: StringOptions) => Schema<string>; email: (options?: StringOptions) => Schema<string>; uri: (options?: StringOptions) => Schema<string>; date: (options?: StringOptions) => Schema<string>; dateTime: (options?: StringOptions) => Schema<string>; byte: (options?: StringOptions) => Schema<string>; binary: (options?: StringOptions) => Schema<string>; number: (options?: NumberOptions) => Schema<number>; integer: (options?: NumberOptions) => Schema<number>; boolean: (options?: CommonOptions) => Schema<boolean>; null: (options?: CommonOptions) => Schema<null>; object: <T extends Record<string, Schema>>(properties: T, options?: ObjectOptions) => ObjectSchema<ObjectValue<T>>; array: <T>(items: Schema<T>, options?: ArrayOptions) => Schema<T[]>; record: <T>(values: Schema<T>, options?: CommonOptions) => ObjectSchema<Record<string, T>>; enum: <const T extends readonly (string | number | boolean)[]>(values: T, options?: CommonOptions) => Schema<T[number]>; literal: <const T extends string | number | boolean | null>(value: T, options?: CommonOptions) => Schema<T>; optional: <T>(value: Schema<T>) => OptionalSchema<T>; nullable: <T extends Schema>(value: T) => NullableSchema<T>; oneOf: <const T extends readonly Schema[]>(...values: T) => Schema<InferSchema<T[number]>>; anyOf: <const T extends readonly Schema[]>(...values: T) => Schema<InferSchema<T[number]>>; allOf: <const T extends readonly Schema[]>(...values: T) => Schema<UnionToIntersection<InferSchema<T[number]>>>; raw: <T>(jsonSchema: JsonSchema, safeParse: (value: unknown) => SafeParseResult<T>) => Schema<T>; }>',
       typeOnly: true,
+      summary:
+        'The public schema builder namespace: create executable schemas whose {@link Schema.safeParse}\nvalidates a value and whose `jsonSchema` field is a deterministic JSON Schema (draft 2020-12)\nprojection suitable for OpenAPI documents.',
+      tags: {
+        example: [
+          'const user = schema.object({ id: schema.uuid(), name: schema.string({ minLength: 1 }) });\nconst result = user.safeParse({ id: "...", name: "Ada" });',
+        ],
+      },
     },
     {
       name: 'Schema',
       anchor: 'schema',
       signature: 'Schema: any',
       typeOnly: true,
+      summary:
+        'An executable schema: carries its JSON Schema projection and a runtime parser.',
       members: [
         {
           name: 'jsonSchema',
-          summary: '',
+          summary:
+            'The deterministic JSON Schema (draft 2020-12) projection of this schema.',
           signature: 'readonly jsonSchema: JsonSchema;',
         },
         {
           name: '__type',
-          summary: '',
+          summary: 'Phantom type marker only; never set at runtime.',
           signature: 'readonly __type?: T;',
         },
         {
           name: 'safeParse',
-          summary: '',
+          summary:
+            'Validates `value`, returning either the parsed data or a list of issues.',
           signature: 'safeParse(value: unknown): SafeParseResult<T>;',
         },
       ],
@@ -27873,18 +29760,24 @@ export const apiSymbolSets: Readonly<
       signature:
         'security: Readonly<{ httpBearer(options?: { bearerFormat?: string; description?: string; }): SecurityScheme; httpBasic(options?: { description?: string; }): SecurityScheme; apiKey(name: string, location?: "header" | "query" | "cookie", options?: { description?: string; }): SecurityScheme; oauth2(flows: Record<string, unknown>, description?: string): SecurityScheme; openIdConnect(openIdConnectUrl: string, description?: string): SecurityScheme; require(name: string, scopes?: readonly string[]): SecurityRequirement; any(...requirements: readonly SecurityRequirement[]): SecurityRequirement; none(): SecurityRequirement; }>',
       typeOnly: true,
+      summary:
+        "Helpers for building OpenAPI security schemes and requirements, used with\n`ApiGroup.access`/`RouteBuilder.access` to describe an operation's authentication needs.",
     },
     {
       name: 'SecurityRequirement',
       anchor: 'security-requirement',
       signature: 'SecurityRequirement: any',
       typeOnly: true,
+      summary:
+        'An OpenAPI security requirement (a list of alternative scheme+scopes requirements), as built by the {@link security } helpers.',
     },
     {
       name: 'SecurityScheme',
       anchor: 'security-scheme',
       signature: 'SecurityScheme: any',
       typeOnly: true,
+      summary:
+        'An OpenAPI security scheme definition, as built by the {@link security } helpers.',
     },
   ],
   symbols47: [
@@ -27894,12 +29787,27 @@ export const apiSymbolSets: Readonly<
       signature:
         'createMcpServer: <Dependencies = undefined>(options: McpServerOptions) => McpServer<Dependencies>',
       typeOnly: true,
+      summary:
+        'Creates a transport-neutral Model Context Protocol server: register tools, resources,\nresource templates, and prompts, then feed it JSON-RPC messages via `handle` (e.g. from\n{@link registerMcpRoutes }). Manages session negotiation, protocol version selection, and\nlist-changed notifications to subscribed clients.',
+      tags: {
+        param: [
+          'options - Server name/version/instructions and pagination settings.',
+        ],
+        returns: [
+          'An {@link McpServer} exposing registration methods, notification methods, and `handle`.',
+        ],
+        throws: [
+          '{TypeError} If `name`/`version` are blank, `pageSize` is invalid, or a duplicate\ntool/resource/template/prompt is registered.',
+        ],
+      },
     },
     {
       name: 'McpContent',
       anchor: 'mcp-content',
       signature: 'McpContent: any',
       typeOnly: true,
+      summary:
+        'A single piece of MCP content (text, image, resource link, etc.), keyed by `type`.',
       members: [
         {
           name: 'type',
@@ -27913,6 +29821,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'mcp-context',
       signature: 'McpContext: any',
       typeOnly: true,
+      summary:
+        'The per-request context passed to tool/resource/prompt handlers, exposing client info,\nnegotiated protocol/transport details, and `progress`/`log` callbacks for sending\nnotifications back to the client.',
       members: [
         {
           name: 'dependencies',
@@ -27975,12 +29885,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'mcp-log-level',
       signature: 'McpLogLevel: any',
       typeOnly: true,
+      summary:
+        'Severity level for {@link McpContext.log}, following syslog conventions.',
     },
     {
       name: 'McpPrimitiveOptions',
       anchor: 'mcp-primitive-options',
       signature: 'McpPrimitiveOptions: any',
       typeOnly: true,
+      summary: 'Metadata shared by tools, resources, and prompts.',
       members: [
         {
           name: 'title',
@@ -28009,6 +29922,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'mcp-prompt-options',
       signature: 'McpPromptOptions: any',
       typeOnly: true,
+      summary: 'Options for registering a prompt via {@link McpServer.prompt}.',
       members: [
         {
           name: 'arguments',
@@ -28022,12 +29936,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'mcp-protocol-revision',
       signature: 'McpProtocolRevision: any',
       typeOnly: true,
+      summary: 'MCP protocol version negotiated between client and server.',
     },
     {
       name: 'McpRequestEnvironment',
       anchor: 'mcp-request-environment',
       signature: 'McpRequestEnvironment: any',
       typeOnly: true,
+      summary:
+        'Transport-provided context for a single inbound MCP message, passed to\n{@link McpServer.handle}. `send` (if provided) delivers server-to-client notifications for\npush-capable transports.',
       members: [
         {
           name: 'dependencies',
@@ -28071,6 +29988,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'mcp-resource-options',
       signature: 'McpResourceOptions: any',
       typeOnly: true,
+      summary:
+        'Options for registering a resource via {@link McpServer.resource}.',
       members: [
         {
           name: 'name',
@@ -28089,6 +30008,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'mcp-server',
       signature: 'McpServer: any',
       typeOnly: true,
+      summary:
+        'A Model Context Protocol server, as created by {@link createMcpServer }: register tools,\nresources, resource templates, and prompts; push list-changed notifications; and dispatch\ninbound JSON-RPC messages via `handle`.',
       members: [
         {
           name: 'tool',
@@ -28147,6 +30068,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'mcp-server-options',
       signature: 'McpServerOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link createMcpServer }.',
       members: [
         {
           name: 'name',
@@ -28180,6 +30102,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'mcp-session-store',
       signature: 'McpSessionStore: any',
       typeOnly: true,
+      summary:
+        'Pluggable backing store for stateful MCP session IDs, used by the HTTP transport.',
       members: [
         {
           name: 'create',
@@ -28203,6 +30127,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'mcp-tool-options',
       signature: 'McpToolOptions: any',
       typeOnly: true,
+      summary: 'Options for registering a tool via {@link McpServer.tool}.',
       members: [
         {
           name: 'input',
@@ -28221,12 +30146,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'mcp-tool-result',
       signature: 'McpToolResult: any',
       typeOnly: true,
+      summary:
+        'The result returned by a tool handler: content blocks and/or a typed structured result.',
     },
     {
       name: 'McpTransportKind',
       anchor: 'mcp-transport-kind',
       signature: 'McpTransportKind: any',
       typeOnly: true,
+      summary: 'The transport an MCP session is communicating over.',
     },
     {
       name: 'protectedResourceMetadata',
@@ -28234,6 +30162,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'protectedResourceMetadata: (resource: string, authorizationServers?: readonly string[]) => Readonly<Record<string, unknown>>',
       typeOnly: true,
+      summary:
+        'Builds an OAuth 2.0 Protected Resource Metadata document (RFC 9728) advertising `resource`\nand its authorization servers, as served at `/.well-known/oauth-protected-resource` by\n{@link registerMcpRoutes} when `options.resource` is configured.',
     },
     {
       name: 'registerMcpRoutes',
@@ -28241,14 +30171,127 @@ export const apiSymbolSets: Readonly<
       signature:
         'registerMcpRoutes: <Dependencies>(router: Router, path: string, mcp: McpServer<Dependencies>, options: McpHttpOptions<Dependencies>) => Router',
       typeOnly: true,
+      summary:
+        'Registers the streamable-HTTP transport for an {@link McpServer} on a router: `POST` for\nJSON-RPC requests (with optional stateful session creation), `GET` for the Server-Sent\nEvents notification stream, and `DELETE` for session termination. Validates the `Origin` and\n`Host` headers against allowlists, enforces a max request size, and optionally serves\nOAuth protected-resource metadata.',
+      tags: {
+        param: [
+          'router - The router to register routes on.',
+          'path - The MCP endpoint path.',
+          'mcp - The MCP server instance to dispatch messages to.',
+          'options - Origin/host allowlists, statefulness, session store, and size/timing limits.',
+        ],
+        returns: ['The same `router`, for chaining.'],
+        throws: [
+          '{TypeError} If `heartbeatInterval`, `sessionTtlMs`, or `maxSessions` are invalid.',
+        ],
+      },
     },
   ],
   symbols48: [
+    {
+      name: 'AdapterConformanceError',
+      anchor: 'adapter-conformance-error',
+      signature: 'AdapterConformanceError: typeof AdapterConformanceError',
+      typeOnly: true,
+      summary:
+        'A failed adapter-conformance guarantee with a stable machine-readable {@link code}.',
+      members: [
+        {
+          name: 'code',
+          summary: '',
+          signature: 'readonly code: AdapterConformanceErrorCode;',
+        },
+        {
+          name: 'name',
+          summary: '',
+          signature: 'readonly name = "AdapterConformanceError";',
+        },
+      ],
+    },
+    {
+      name: 'AdapterConformanceErrorCode',
+      anchor: 'adapter-conformance-error-code',
+      signature: 'AdapterConformanceErrorCode: any',
+      typeOnly: true,
+      summary:
+        'Stable diagnostic codes produced by {@link runAdapterConformance}.',
+    },
+    {
+      name: 'AdapterConformanceExercises',
+      anchor: 'adapter-conformance-exercises',
+      signature: 'AdapterConformanceExercises: any',
+      typeOnly: true,
+      summary:
+        "Real-transport exercises supplied by an adapter's integration test.",
+      members: [
+        {
+          name: 'abortStreamingResponse',
+          summary:
+            'Write the supplied infinite response through the real adapter, observe a client chunk,\nthen close/reset the client. Resolve after the transport disconnect is observed.',
+          signature:
+            'abortStreamingResponse(response: Response, cleanup: AbortSignal): Promise<void>;',
+        },
+        {
+          name: 'enforceRequestTimeout',
+          summary:
+            'Run the supplied body-reading app through the real adapter with finite request/header\ntimeouts, send an incomplete request, and resolve after the transport terminates it.',
+          signature:
+            'enforceRequestTimeout(app: ServerApp, cleanup: AbortSignal): Promise<void>;',
+        },
+      ],
+    },
+    {
+      name: 'AdapterConformanceOptions',
+      anchor: 'adapter-conformance-options',
+      signature: 'AdapterConformanceOptions: any',
+      typeOnly: true,
+      summary: 'Options for {@link runAdapterConformance}.',
+      members: [
+        {
+          name: 'deadlineMs',
+          summary: 'Per-exercise deadline in milliseconds. Defaults to 1,000.',
+          signature: 'deadlineMs?: number;',
+        },
+      ],
+    },
+    {
+      name: 'AdapterConformanceReport',
+      anchor: 'adapter-conformance-report',
+      signature: 'AdapterConformanceReport: any',
+      typeOnly: true,
+      summary:
+        'Frozen success result returned by {@link runAdapterConformance}.',
+      members: [
+        {
+          name: 'streamingResponseCancellation',
+          summary: '',
+          signature: 'readonly streamingResponseCancellation: "passed";',
+        },
+        {
+          name: 'incompleteRequestTimeout',
+          summary: '',
+          signature: 'readonly incompleteRequestTimeout: "passed";',
+        },
+      ],
+    },
+    {
+      name: 'runAdapterConformance',
+      anchor: 'run-adapter-conformance',
+      signature:
+        'runAdapterConformance: (exercises: AdapterConformanceExercises, options?: AdapterConformanceOptions) => Promise<Readonly<AdapterConformanceReport>>',
+      typeOnly: true,
+      summary:
+        'Runs reusable adapter guardrails against real-transport exercises supplied by the adapter.\nValidation errors throw synchronously; runtime failures reject with {@link AdapterConformanceError}.\nExercise callbacks must honor the cleanup signal and close any sockets/servers they own.',
+    },
+  ],
+  symbols49: [
     {
       name: 'BodyRequestOptions',
       anchor: 'body-request-options',
       signature: 'BodyRequestOptions: any',
       typeOnly: true,
+      summary:
+        'Options for a request that may carry a body, restricted to methods that support one.',
     },
     {
       name: 'createTestClient',
@@ -28256,12 +30299,33 @@ export const apiSymbolSets: Readonly<
       signature:
         'createTestClient: (target: Injectable, options?: TestClientOptions) => TestClient',
       typeOnly: true,
+      summary:
+        'Create a {@link TestClient} bound to a target for repeated request injection.\n\nThe returned client applies shared defaults (base URL, headers, cookie jar,\nredirect behavior) to every request made through it, and follows redirects\nautomatically unless `redirect` is overridden.',
+      tags: {
+        param: [
+          'target - The handler or {@link RequestTarget} to inject requests into.',
+          'options - Default options applied to every request made by this client.',
+        ],
+        returns: [
+          'A {@link TestClient} with `request`, `get`, `post`, and other HTTP-method helpers.',
+        ],
+        example: [
+          'const client = createTestClient(app, { baseUrl: "https://example.com", cookies: true });\nconst response = await client.get("/users");',
+        ],
+      },
     },
     {
       name: 'createTestCookieJar',
       anchor: 'create-test-cookie-jar',
       signature: 'createTestCookieJar: () => TestCookieJar',
       typeOnly: true,
+      summary:
+        'Create an in-memory {@link TestCookieJar} backed by `tough-cookie`, suitable\nfor use as the `cookies` option of a {@link TestClient}.',
+      tags: {
+        returns: [
+          'A cookie jar that persists cookies across injected requests and\nenforces standard cookie-prefix security.',
+        ],
+      },
     },
     {
       name: 'createTestRequest',
@@ -28269,24 +30333,38 @@ export const apiSymbolSets: Readonly<
       signature:
         'createTestRequest: (input: string | URL, options?: InjectOptions) => Request',
       typeOnly: true,
+      summary:
+        "Build a `Request` for testing from a path or URL and a set of options.\n\nResolves `input` against `options.baseUrl` (defaulting to `https://askr.test/`),\nappends any `query` parameters, and serializes at most one of `body`, `json`,\nor `form` into the request body, setting an appropriate `content-type` header\nwhen one isn't already present. Throws a `TypeError` if more than one body\nmode is supplied, if `json` is `undefined`, or if a `GET`/`HEAD` request is\ngiven a body.",
+      tags: {
+        param: [
+          'input - The request path or URL.',
+          'options - Request options such as method, headers, query, and body.',
+        ],
+        returns: ['A `Request` ready to be dispatched to a test target.'],
+      },
     },
     {
       name: 'Form',
       anchor: 'form',
       signature: 'Form: any',
       typeOnly: true,
+      summary:
+        'URL-encoded form body data, accepted as `URLSearchParams`, an iterable of entries, or a plain record.',
     },
     {
       name: 'FormValue',
       anchor: 'form-value',
       signature: 'FormValue: any',
       typeOnly: true,
+      summary:
+        'A single form field value, coerced to `string` when serialized.',
     },
     {
       name: 'GetHeadOptions',
       anchor: 'get-head-options',
       signature: 'GetHeadOptions: any',
       typeOnly: true,
+      summary: 'Options for a body-less `GET` or `HEAD` request.',
     },
     {
       name: 'inject',
@@ -28294,42 +30372,73 @@ export const apiSymbolSets: Readonly<
       signature:
         'inject: { (target: Injectable, request: Request, options?: Pick<InjectOptions, "maxRedirects">): Promise<Response>; (target: Injectable, input: string | URL, options?: InjectOptions): Promise<Response>; }',
       typeOnly: true,
+      summary:
+        'Inject a single request into a target and return the resulting response,\nfollowing redirects up to `maxRedirects` hops.\nInject a request built from a path/URL and options into a target and return\nthe resulting response, following redirects up to `maxRedirects` hops.',
+      tags: {
+        param: [
+          'target - The handler or {@link RequestTarget} to inject the request into.',
+          'request - An existing `Request` to dispatch as-is.',
+          'options - Only `maxRedirects` is honored when a `Request` is passed directly.',
+          'target - The handler or {@link RequestTarget} to inject the request into.',
+          'input - The request path or URL, resolved against `options.baseUrl`.',
+          'options - Request options such as method, headers, query, and body.',
+        ],
+        returns: [
+          'The final `Response` after any redirects have been followed.',
+          'The final `Response` after any redirects have been followed.',
+        ],
+        example: [
+          'const response = await inject(app, "/users", { method: "GET" });',
+        ],
+      },
     },
     {
       name: 'Injectable',
       anchor: 'injectable',
       signature: 'Injectable: any',
       typeOnly: true,
+      summary:
+        'Anything that can receive an injected test request: a {@link RequestTarget} or a {@link RequestHandler}.',
     },
     {
       name: 'InjectOptions',
       anchor: 'inject-options',
       signature: 'InjectOptions: any',
       typeOnly: true,
+      summary:
+        'Options accepted when injecting a request, covering both body-less and body-carrying methods.',
     },
     {
       name: 'Query',
       anchor: 'query',
       signature: 'Query: any',
       typeOnly: true,
+      summary:
+        'Query string parameters, accepted as `URLSearchParams`, an iterable of entries, or a plain record.',
     },
     {
       name: 'QueryValue',
       anchor: 'query-value',
       signature: 'QueryValue: any',
       typeOnly: true,
+      summary:
+        'A single query string value, coerced to `string` when serialized.',
     },
     {
       name: 'RequestHandler',
       anchor: 'request-handler',
       signature: 'RequestHandler: any',
       typeOnly: true,
+      summary:
+        'A function that handles a `Request` and produces a `Response`, synchronously or asynchronously.',
     },
     {
       name: 'RequestTarget',
       anchor: 'request-target',
       signature: 'RequestTarget: any',
       typeOnly: true,
+      summary:
+        'A target that can receive an injected request directly via a `fetch`-style method.',
       members: [
         {
           name: 'fetch',
@@ -28343,6 +30452,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'test-client',
       signature: 'TestClient: any',
       typeOnly: true,
+      summary:
+        'A reusable HTTP client that injects requests into a target and follows redirects.',
       members: [
         {
           name: 'cookies',
@@ -28404,6 +30515,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'test-client-options',
       signature: 'TestClientOptions: any',
       typeOnly: true,
+      summary: 'Options for constructing a {@link TestClient}.',
       members: [
         {
           name: 'baseUrl',
@@ -28417,7 +30529,8 @@ export const apiSymbolSets: Readonly<
         },
         {
           name: 'cookies',
-          summary: '',
+          summary:
+            'Enable an automatically managed cookie jar (`true`), or supply an existing {@link TestCookieJar}.',
           signature: 'cookies?: true | TestCookieJar;',
         },
         {
@@ -28437,6 +30550,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'test-cookie',
       signature: 'TestCookie: any',
       typeOnly: true,
+      summary: 'A cookie as read back from a {@link TestCookieJar}.',
       members: [
         {
           name: 'name',
@@ -28485,6 +30599,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'test-cookie-jar',
       signature: 'TestCookieJar: any',
       typeOnly: true,
+      summary:
+        'A cookie jar used to persist and replay cookies across injected requests.',
       members: [
         {
           name: 'setCookie',
@@ -28505,13 +30621,14 @@ export const apiSymbolSets: Readonly<
       ],
     },
   ],
-  symbols49: [],
-  symbols50: [
+  symbols50: [],
+  symbols51: [
     {
       name: 'Accordion',
       anchor: 'accordion',
       signature: 'Accordion: (props: AccordionProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `accordion`.',
     },
     {
       name: 'AccordionContent',
@@ -28519,6 +30636,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'AccordionContent: { (props: AccordionContentProps): JSX.Element | null; (props: AccordionContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `accordion-content` part of `accordion` with `role="region"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AccordionHeader',
@@ -28526,12 +30645,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'AccordionHeader: { (props: AccordionHeaderProps): JSX.Element; (props: AccordionHeaderAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `accordion-header` part of `accordion`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AccordionItem',
       anchor: 'accordion-item',
       signature: 'AccordionItem: (props: AccordionItemProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the `accordion-item` part of `accordion`.',
     },
     {
       name: 'AccordionTrigger',
@@ -28539,12 +30661,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'AccordionTrigger: { (props: AccordionTriggerProps): JSX.Element; (props: AccordionTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `accordion-trigger` part of `accordion`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'Alert',
       anchor: 'alert',
       signature: 'Alert: (props: AlertProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders an alert/status banner with an optional icon, title, description,\nactions, and a dismiss button. Automatically picks an "alert" or "status"\nARIA role from `variant` unless `role` is set explicitly.',
     },
     {
       name: 'AlertDescription',
@@ -28552,12 +30678,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDescription: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `alert-description` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'AlertDialog',
       anchor: 'alert-dialog',
       signature: 'AlertDialog: (props: AlertDialogProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `alert-dialog`.',
     },
     {
       name: 'AlertDialogAction',
@@ -28565,6 +30694,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogAction: { (props: DialogCloseProps): JSX.Element; (props: DialogCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-close` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogCancel',
@@ -28572,6 +30703,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogCancel: { (props: DialogCloseProps): JSX.Element; (props: DialogCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-close` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogContent',
@@ -28579,6 +30712,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogContent: (props: AlertDialogContentProps | AlertDialogContentAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a part of `alert-dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogDescription',
@@ -28586,6 +30721,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogDescription: { (props: DialogDescriptionProps): JSX.Element; (props: DialogDescriptionAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-description` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogOverlay',
@@ -28593,6 +30730,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogOverlay: { (props: DialogOverlayProps): JSX.Element | null; (props: DialogOverlayAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-overlay` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogPortal',
@@ -28600,6 +30739,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogPortal: (props: DialogPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `dialog`.',
     },
     {
       name: 'AlertDialogTitle',
@@ -28607,6 +30747,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogTitle: { (props: DialogTitleProps): JSX.Element; (props: DialogTitleAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-title` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogTrigger',
@@ -28614,42 +30756,53 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogTrigger: (props: AlertDialogTriggerProps | AlertDialogTriggerAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a part of `alert-dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertHeadingTag',
       anchor: 'alert-heading-tag',
       signature: 'AlertHeadingTag: any',
       typeOnly: true,
+      summary: "Heading tag allowed for an alert's title via `titleAs`.",
     },
     {
       name: 'AlertProps',
       anchor: 'alert-props',
       signature: 'AlertProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link Alert } component.',
     },
     {
       name: 'AlertTitle',
       anchor: 'alert-title',
       signature: 'AlertTitle: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `alert-title` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'AlertVariant',
       anchor: 'alert-variant',
       signature: 'AlertVariant: any',
       typeOnly: true,
+      summary:
+        'Visual tone of an {@link AlertProps} alert; `"danger"`/`"warning"` render with `role="alert"`.',
     },
     {
       name: 'Aside',
       anchor: 'aside',
       signature: 'Aside: (props: AsideProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a `<aside>`-element {@link Block } tagged with `data-slot="aside"`.',
     },
     {
       name: 'AsideProps',
       anchor: 'aside-props',
       signature: 'AsideProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link Aside } component.',
     },
     {
       name: 'AspectRatio',
@@ -28657,18 +30810,24 @@ export const apiSymbolSets: Readonly<
       signature:
         'AspectRatio: { (props: AspectRatioProps): JSX.Element; (props: AspectRatioAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Constrains its content to a fixed width/height ratio (defaults to `1`)\nusing a computed `aspect-ratio` style, rendering as a `<div>` or, with\n`asChild`, merging its layout into the single child element.',
     },
     {
       name: 'AspectRatioAsChildProps',
       anchor: 'aspect-ratio-as-child-props',
       signature: 'AspectRatioAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link AspectRatio } rendered with `asChild`, merging layout onto a single child element.',
     },
     {
       name: 'AspectRatioProps',
       anchor: 'aspect-ratio-props',
       signature: 'AspectRatioProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link AspectRatio } rendered as its default `<div>` element.',
     },
     {
       name: 'Avatar',
@@ -28676,6 +30835,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'Avatar: { (props: AvatarProps): JSX.Element; (props: AvatarAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `avatar` part of `avatar`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AvatarFallback',
@@ -28683,12 +30844,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'AvatarFallback: { (props: AvatarFallbackProps): JSX.Element | null; (props: AvatarFallbackAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `avatar-fallback` part of `avatar`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AvatarImage',
       anchor: 'avatar-image',
       signature: 'AvatarImage: (props: AvatarImageProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the `avatar-image` part of `avatar`.',
     },
     {
       name: 'Badge',
@@ -28696,24 +30860,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'Badge: { (props: BadgeProps): JSX.Element; (props: BadgeAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a small status/label badge, defaulting to a `<span>` (or merging onto a child via `asChild`), with a `variant` color modifier.',
     },
     {
       name: 'BadgeAsChildProps',
       anchor: 'badge-as-child-props',
       signature: 'BadgeAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link Badge } rendered with `asChild`, merging its attributes onto a single child element.',
     },
     {
       name: 'BadgeOwnProps',
       anchor: 'badge-own-props',
       signature: 'BadgeOwnProps: any',
       typeOnly: true,
+      summary: 'Props shared by both {@link Badge } call signatures.',
     },
     {
       name: 'BadgeProps',
       anchor: 'badge-props',
       signature: 'BadgeProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link Badge } rendered as its default `<span>` element.',
     },
     {
       name: 'Block',
@@ -28721,6 +30892,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'Block: { (props: BlockNativeProps): JSX.Element; (props: BlockAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Low-level layout primitive: renders any element in {@link BlockElement }\n(default `<div>`) and turns layout-only props (spacing, alignment,\ndirection, sizing, etc.) into a generated utility class. With `asChild`,\nthe layout is merged onto a single child element instead of a wrapper.',
     },
     {
       name: 'BlockAlign',
@@ -28733,6 +30906,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'block-as-child-props',
       signature: 'BlockAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link Block } rendered with `asChild`, merging layout onto a single child element.',
     },
     {
       name: 'BlockBackground',
@@ -28751,18 +30926,22 @@ export const apiSymbolSets: Readonly<
       anchor: 'block-div-props',
       signature: 'BlockDivProps: any',
       typeOnly: true,
+      summary: '{@link Block } props specialized for a `<div>` element.',
     },
     {
       name: 'BlockElement',
       anchor: 'block-element',
       signature: 'BlockElement: any',
       typeOnly: true,
+      summary: 'Element tags {@link Block } can render as via its `as` prop.',
     },
     {
       name: 'BlockElementProps',
       anchor: 'block-element-props',
       signature: 'BlockElementProps: any',
       typeOnly: true,
+      summary:
+        '{@link Block } props specialized for a given {@link BlockElement} tag `TElement`.',
     },
     {
       name: 'BlockJustify',
@@ -28781,18 +30960,23 @@ export const apiSymbolSets: Readonly<
       anchor: 'block-native-props',
       signature: 'BlockNativeProps: any',
       typeOnly: true,
+      summary:
+        "Union of {@link BlockElementProps} across every {@link BlockElement}, used for {@link Block }'s native (non-`asChild`) overload.",
     },
     {
       name: 'BlockOwnProps',
       anchor: 'block-own-props',
       signature: 'BlockOwnProps: any',
       typeOnly: true,
+      summary:
+        'Layout and structural props accepted by {@link Block }, independent of the rendered element.',
     },
     {
       name: 'BlockProps',
       anchor: 'block-props',
       signature: 'BlockProps: any',
       typeOnly: true,
+      summary: 'Union of all prop shapes accepted by {@link Block }.',
     },
     {
       name: 'BlockRadius',
@@ -28835,6 +31019,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'block-span-props',
       signature: 'BlockSpanProps: any',
       typeOnly: true,
+      summary: '{@link Block } props specialized for a `<span>` element.',
     },
     {
       name: 'BlockZIndex',
@@ -28847,6 +31032,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'box',
       signature: 'Box: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Legacy `Box` layout alias for {@link Block } with no default direction.',
     },
     {
       name: 'Brand',
@@ -28854,24 +31041,30 @@ export const apiSymbolSets: Readonly<
       signature:
         'Brand: <TElement extends "div" | "a" | "span" = "div">(props: BrandProps<TElement>) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a brand/logo wrapper, defaulting to a `<div>` (or `<a>`/`<span>` via `as`), or merges onto a single child via `asChild`.',
     },
     {
       name: 'BrandLabel',
       anchor: 'brand-label',
       signature: 'BrandLabel: (props: BrandLabelProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the text label portion of a {@link Brand}.',
     },
     {
       name: 'BrandMark',
       anchor: 'brand-mark',
       signature: 'BrandMark: (props: BrandMarkProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the icon/mark portion of a {@link Brand}.',
     },
     {
       name: 'Breadcrumb',
       anchor: 'breadcrumb',
       signature: 'Breadcrumb: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `breadcrumb` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'BreadcrumbEllipsis',
@@ -28879,6 +31072,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'BreadcrumbEllipsis: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a non-interactive ellipsis marker in a breadcrumb trail.',
     },
     {
       name: 'BreadcrumbItem',
@@ -28886,6 +31081,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'BreadcrumbItem: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `breadcrumb-item` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'BreadcrumbLink',
@@ -28893,6 +31090,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'BreadcrumbLink: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `breadcrumb-link` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'BreadcrumbList',
@@ -28900,6 +31099,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'BreadcrumbList: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `breadcrumb-list` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'BreadcrumbPage',
@@ -28907,6 +31108,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'BreadcrumbPage: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the current (non-link) breadcrumb page, marked `aria-current="page"`.',
     },
     {
       name: 'BreadcrumbSeparator',
@@ -28914,6 +31117,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'BreadcrumbSeparator: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the separator between breadcrumb items (defaults to `"/"`).',
     },
     {
       name: 'Button',
@@ -28922,7 +31127,7 @@ export const apiSymbolSets: Readonly<
         'Button: { (props: ButtonNativeProps): JSX.Element; (props: ButtonAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'Headless Button component\n\n## Responsibilities\n- Compose pressable foundation for interaction behavior\n- Enforce type="button" default to prevent accidental form submission\n- Forward props and refs to native button or child element\n\n## Non-Responsibilities (delegated to pressable foundation)\n- Keyboard event handling (Enter/Space)\n- Pointer event handling\n- Disabled state enforcement\n- ARIA attribute application\n\n## Invariants\n- MUST NOT contain any event handler logic\n- MUST NOT check disabled prop directly\n- MUST use pressable() for ALL interaction behavior\n- MUST use mergeProps() for ALL prop composition',
+        'Headless Button component\n\n## Responsibilities\n- Compose pressable foundation for interaction behavior\n- Enforce type="button" default to prevent accidental form submission\n- Forward props and refs to native button or child element\n\n## Non-Responsibilities (delegated to pressable foundation)\n- Keyboard event handling (Enter/Space)\n- Pointer event handling\n- Disabled state enforcement\n- ARIA attribute application\n\n## Invariants\n- MUST NOT contain any event handler logic\n- MUST NOT check disabled prop directly\n- MUST use pressable() for ALL interaction behavior\n- MUST use mergeProps() for ALL prop composition\nRenders the `button` part of `button`.\n\nSupports polymorphic rendering via `asChild`.',
       tags: {
         example: [
           'Native button (prevents accidental submit)\n```tsx\n<Button onPress={handleSave}>Save</Button>\n```',
@@ -28936,6 +31141,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'button-as-child-element',
       signature: 'ButtonAsChildElement: any',
       typeOnly: true,
+      summary: 'Button As Child Element.',
     },
     {
       name: 'ButtonAsChildProps',
@@ -28949,18 +31155,22 @@ export const apiSymbolSets: Readonly<
       anchor: 'button-group',
       signature: 'ButtonGroup: (props: ButtonGroupProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Groups related buttons together, optionally visually attached, with a horizontal or vertical orientation and `role="group"` by default.',
     },
     {
       name: 'ButtonGroupOrientation',
       anchor: 'button-group-orientation',
       signature: 'ButtonGroupOrientation: any',
       typeOnly: true,
+      summary: 'Layout direction of a {@link ButtonGroup }.',
     },
     {
       name: 'ButtonGroupProps',
       anchor: 'button-group-props',
       signature: 'ButtonGroupProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link ButtonGroup } component.',
     },
     {
       name: 'ButtonNativeProps',
@@ -28981,30 +31191,37 @@ export const apiSymbolSets: Readonly<
       anchor: 'button-size',
       signature: 'ButtonSize: any',
       typeOnly: true,
+      summary: 'Button Size.',
     },
     {
       name: 'ButtonVariant',
       anchor: 'button-variant',
       signature: 'ButtonVariant: any',
       typeOnly: true,
+      summary: 'Button Variant.',
     },
     {
       name: 'ButtonWidth',
       anchor: 'button-width',
       signature: 'ButtonWidth: any',
       typeOnly: true,
+      summary: 'Button Width.',
     },
     {
       name: 'Calendar',
       anchor: 'calendar',
       signature: 'Calendar: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `calendar` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'CalendarBody',
       anchor: 'calendar-body',
       signature: 'CalendarBody: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `calendar-body` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'CalendarCaption',
@@ -29012,12 +31229,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'CalendarCaption: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `calendar-caption` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'CalendarCell',
       anchor: 'calendar-cell',
       signature: 'CalendarCell: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `calendar-cell` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'CalendarDay',
@@ -29025,18 +31246,24 @@ export const apiSymbolSets: Readonly<
       signature:
         'CalendarDay: (props: CatalogComponentProps & { disabled?: boolean; outside?: boolean; rangeEnd?: boolean; rangeMiddle?: boolean; rangeStart?: boolean; selected?: boolean; today?: boolean; }) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a single selectable day cell in the calendar grid, with selection/range/today state exposed as data attributes.',
     },
     {
       name: 'CalendarGrid',
       anchor: 'calendar-grid',
       signature: 'CalendarGrid: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `calendar-grid` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'CalendarHead',
       anchor: 'calendar-head',
       signature: 'CalendarHead: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `calendar-head` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'CalendarHeader',
@@ -29044,12 +31271,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'CalendarHeader: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `calendar-header` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'CalendarNav',
       anchor: 'calendar-nav',
       signature: 'CalendarNav: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `calendar-nav` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'CalendarNextButton',
@@ -29057,6 +31288,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'CalendarNextButton: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Button that navigates the calendar to the next month.',
     },
     {
       name: 'CalendarPreviousButton',
@@ -29064,42 +31296,52 @@ export const apiSymbolSets: Readonly<
       signature:
         'CalendarPreviousButton: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Button that navigates the calendar to the previous month.',
     },
     {
       name: 'CalendarRow',
       anchor: 'calendar-row',
       signature: 'CalendarRow: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `calendar-row` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'Card',
       anchor: 'card',
       signature: 'Card: (props: CardProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Root card container; applies the `card` class and an optional `variant` modifier.',
     },
     {
       name: 'CardAction',
       anchor: 'card-action',
       signature: 'CardAction: (props: CardActionProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders an action/control region of a {@link Card}, typically positioned alongside the header.',
     },
     {
       name: 'CardActionProps',
       anchor: 'card-action-props',
       signature: 'CardActionProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link CardAction } component.',
     },
     {
       name: 'CardContent',
       anchor: 'card-content',
       signature: 'CardContent: (props: CardContentProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the main content region of a {@link Card}.',
     },
     {
       name: 'CardContentProps',
       anchor: 'card-content-props',
       signature: 'CardContentProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link CardContent } component.',
     },
     {
       name: 'CardDescription',
@@ -29107,72 +31349,86 @@ export const apiSymbolSets: Readonly<
       signature:
         'CardDescription: (props: CardDescriptionProps) => JSX.Element',
       typeOnly: true,
+      summary: "Renders a {@link Card}'s supporting description text.",
     },
     {
       name: 'CardDescriptionProps',
       anchor: 'card-description-props',
       signature: 'CardDescriptionProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link CardDescription } component.',
     },
     {
       name: 'CardFooter',
       anchor: 'card-footer',
       signature: 'CardFooter: (props: CardFooterProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the footer region of a {@link Card}.',
     },
     {
       name: 'CardFooterProps',
       anchor: 'card-footer-props',
       signature: 'CardFooterProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link CardFooter } component.',
     },
     {
       name: 'CardHeader',
       anchor: 'card-header',
       signature: 'CardHeader: (props: CardHeaderProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the header region of a {@link Card}.',
     },
     {
       name: 'CardHeaderProps',
       anchor: 'card-header-props',
       signature: 'CardHeaderProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link CardHeader } component.',
     },
     {
       name: 'CardProps',
       anchor: 'card-props',
       signature: 'CardProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link Card } component.',
     },
     {
       name: 'CardTitle',
       anchor: 'card-title',
       signature: 'CardTitle: (props: CardTitleProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        "Renders a {@link Card}'s title, defaulting to an `<h3>` (override with `titleAs`).",
     },
     {
       name: 'CardTitleHeadingTag',
       anchor: 'card-title-heading-tag',
       signature: 'CardTitleHeadingTag: any',
       typeOnly: true,
+      summary: "Heading tag allowed for a card's title via `titleAs`.",
     },
     {
       name: 'CardTitleProps',
       anchor: 'card-title-props',
       signature: 'CardTitleProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link CardTitle } component.',
     },
     {
       name: 'CardVariant',
       anchor: 'card-variant',
       signature: 'CardVariant: any',
       typeOnly: true,
+      summary: 'Visual style of a {@link CardProps} card.',
     },
     {
       name: 'Carousel',
       anchor: 'carousel',
       signature: 'Carousel: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `carousel` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'CarouselContent',
@@ -29180,18 +31436,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'CarouselContent: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `carousel-content` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'CarouselItem',
       anchor: 'carousel-item',
       signature: 'CarouselItem: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `carousel-item` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'CarouselNext',
       anchor: 'carousel-next',
       signature: 'CarouselNext: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Button that navigates the carousel to the next item.',
     },
     {
       name: 'CarouselPrevious',
@@ -29199,6 +31460,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'CarouselPrevious: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Button that navigates the carousel to the previous item.',
     },
     {
       name: 'CAT_THEME_NAMES',
@@ -29206,24 +31468,30 @@ export const apiSymbolSets: Readonly<
       signature:
         'CAT_THEME_NAMES: readonly ["tabby", "ginger", "tuxedo", "calico", "torty"]',
       typeOnly: true,
+      summary: 'Names of the built-in "cat" theme presets.',
     },
     {
       name: 'CAT_THEME_OPTIONS',
       anchor: 'cat-theme-options',
       signature: 'CAT_THEME_OPTIONS: readonly ThemeOption[]',
       typeOnly: true,
+      summary:
+        'Theme options for the built-in "cat" theme presets, keyed to {@link CAT_THEME_NAMES}.',
     },
     {
       name: 'CatalogComponentProps',
       anchor: 'catalog-component-props',
       signature: 'CatalogComponentProps: any',
       typeOnly: true,
+      summary:
+        'Shared prop shape for the shadcn-compatible catalog primitives below: a\npolymorphic `as`/`asChild` element plus passthrough attributes.',
     },
     {
       name: 'CatThemeName',
       anchor: 'cat-theme-name',
       signature: 'CatThemeName: any',
       typeOnly: true,
+      summary: 'A built-in "cat" theme name, one of {@link CAT_THEME_NAMES}.',
     },
     {
       name: 'Checkbox',
@@ -29232,7 +31500,7 @@ export const apiSymbolSets: Readonly<
         'Checkbox: { (props: CheckboxInputProps): JSX.Element; (props: CheckboxAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'Headless Checkbox component\n\n## Responsibilities\n- Apply aria-checked for checkbox state signaling\n- Handle indeterminate state for native and asChild hosts\n- Support controlled and uncontrolled checked state\n- Forward props and refs to native input or child element\n- Preserve native checkbox semantics and apply checkbox behavior to asChild hosts\n\n## Non-Responsibilities\n- Form submission orchestration beyond native input props\n\n## Invariants\n- MUST NOT add role="button" (native inputs are role="checkbox")\n- checked state may be controlled or uncontrolled\n- indeterminate overrides checked for state signaling\n- For asChild, consumer MUST provide role="checkbox"',
+        'Headless Checkbox component\n\n## Responsibilities\n- Apply aria-checked for checkbox state signaling\n- Handle indeterminate state for native and asChild hosts\n- Support controlled and uncontrolled checked state\n- Forward props and refs to native input or child element\n- Preserve native checkbox semantics and apply checkbox behavior to asChild hosts\n\n## Non-Responsibilities\n- Form submission orchestration beyond native input props\n\n## Invariants\n- MUST NOT add role="button" (native inputs are role="checkbox")\n- checked state may be controlled or uncontrolled\n- indeterminate overrides checked for state signaling\n- For asChild, consumer MUST provide role="checkbox"\nRenders the `checkbox` part of `checkbox` with `role="checkbox"`.\n\nSupports polymorphic rendering via `asChild`.',
       tags: {
         example: [
           'Native checkbox input\n```tsx\nconst checked = state(false);\n<Checkbox checked={checked()} onPress={() => checked.set(!checked())} />\n```',
@@ -29246,24 +31514,30 @@ export const apiSymbolSets: Readonly<
       anchor: 'close',
       signature: 'Close: (props: CloseNativeProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a dismiss ("×") icon button, built on top of `Button`, defaulting to an icon-sized ghost variant with an accessible `label`.',
     },
     {
       name: 'CloseNativeProps',
       anchor: 'close-native-props',
       signature: 'CloseNativeProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link Close } component.',
     },
     {
       name: 'CloseOwnProps',
       anchor: 'close-own-props',
       signature: 'CloseOwnProps: any',
       typeOnly: true,
+      summary:
+        'Props specific to {@link Close }, layered on top of {@link ButtonNativeProps}.',
     },
     {
       name: 'Collapsible',
       anchor: 'collapsible',
       signature: 'Collapsible: (props: CollapsibleProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `collapsible`.',
     },
     {
       name: 'CollapsibleContent',
@@ -29271,6 +31545,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'CollapsibleContent: { (props: CollapsibleContentProps): JSX.Element | null; (props: CollapsibleContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `collapsible-content` part of `collapsible`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'CollapsibleTrigger',
@@ -29278,24 +31554,32 @@ export const apiSymbolSets: Readonly<
       signature:
         'CollapsibleTrigger: { (props: CollapsibleTriggerProps): JSX.Element; (props: CollapsibleTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `collapsible-trigger` part of `collapsible`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'Combobox',
       anchor: 'combobox',
       signature: 'Combobox: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `combobox` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'ComboboxInput',
       anchor: 'combobox-input',
       signature: 'ComboboxInput: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the combobox\'s text input, wired up with `role="combobox"`.',
     },
     {
       name: 'ComboboxList',
       anchor: 'combobox-list',
       signature: 'ComboboxList: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `combobox-list` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'ComboboxOption',
@@ -29303,30 +31587,40 @@ export const apiSymbolSets: Readonly<
       signature:
         'ComboboxOption: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `combobox-option` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'Command',
       anchor: 'command',
       signature: 'Command: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `command` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'CommandDialog',
       anchor: 'command-dialog',
       signature: 'CommandDialog: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `command-dialog` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'CommandEmpty',
       anchor: 'command-empty',
       signature: 'CommandEmpty: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `command-empty` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'CommandGroup',
       anchor: 'command-group',
       signature: 'CommandGroup: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `command-group` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'CommandGroupHeading',
@@ -29334,18 +31628,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'CommandGroupHeading: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `command-group-heading` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'CommandHeader',
       anchor: 'command-header',
       signature: 'CommandHeader: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `command-header` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'CommandInput',
       anchor: 'command-input',
       signature: 'CommandInput: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary: "Renders the command palette's search `<input>`.",
     },
     {
       name: 'CommandItem',
@@ -29353,18 +31652,24 @@ export const apiSymbolSets: Readonly<
       signature:
         'CommandItem: (props: CatalogComponentProps & { active?: boolean; disabled?: boolean; selected?: boolean; }) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a selectable command list entry, exposing `active`/`disabled`/`selected` as ARIA and data attributes.',
     },
     {
       name: 'CommandList',
       anchor: 'command-list',
       signature: 'CommandList: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `command-list` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'CommandPalette',
       anchor: 'command-palette',
       signature: 'CommandPalette: (props: CommandPaletteProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Root dialog wrapper for a searchable command palette. Manages open state\n(controlled or uncontrolled), tracks the triggering element, and restores\nfocus to it after the palette closes.',
     },
     {
       name: 'CommandPaletteContent',
@@ -29372,12 +31677,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'CommandPaletteContent: (props: CommandPaletteContentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Dialog content for a {@link CommandPalette}: renders the overlay, an\naccessible (visually hidden) title/description, and a `Command` list,\nmoving initial focus to `initialFocus` (defaults to the search input) once\nmounted, and optionally suppressing dismiss-on-escape/backdrop.',
     },
     {
       name: 'CommandPaletteContentProps',
       anchor: 'command-palette-content-props',
       signature: 'CommandPaletteContentProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link CommandPaletteContent } component.',
     },
     {
       name: 'CommandPaletteLink',
@@ -29385,12 +31693,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'CommandPaletteLink: (props: CommandPaletteLinkProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'A navigable result row that closes the palette on selection (unless `closeOnSelect` is `false`) and supports cancelling navigation via `onBeforeNavigate`.',
     },
     {
       name: 'CommandPaletteLinkProps',
       anchor: 'command-palette-link-props',
       signature: 'CommandPaletteLinkProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link CommandPaletteLink } component.',
     },
     {
       name: 'CommandPaletteList',
@@ -29398,18 +31709,22 @@ export const apiSymbolSets: Readonly<
       signature:
         'CommandPaletteList: (props: CommandPaletteListProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `<ul>` list wrapper for {@link CommandPalette} results.',
     },
     {
       name: 'CommandPaletteListProps',
       anchor: 'command-palette-list-props',
       signature: 'CommandPaletteListProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link CommandPaletteList } component.',
     },
     {
       name: 'CommandPaletteProps',
       anchor: 'command-palette-props',
       signature: 'CommandPaletteProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link CommandPalette } component.',
     },
     {
       name: 'CommandPaletteTrigger',
@@ -29417,18 +31732,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'CommandPaletteTrigger: { (props: CommandPaletteTriggerProps): JSX.Element; (props: CommandPaletteTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Trigger that opens the {@link CommandPalette}, registering itself so focus returns here on close.',
     },
     {
       name: 'CommandPaletteTriggerAsChildProps',
       anchor: 'command-palette-trigger-as-child-props',
       signature: 'CommandPaletteTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link CommandPaletteTrigger } rendered with `asChild`.',
     },
     {
       name: 'CommandPaletteTriggerProps',
       anchor: 'command-palette-trigger-props',
       signature: 'CommandPaletteTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link CommandPaletteTrigger } component.',
     },
     {
       name: 'CommandSeparator',
@@ -29436,6 +31756,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'CommandSeparator: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `command-separator` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'CommandShortcut',
@@ -29443,24 +31765,30 @@ export const apiSymbolSets: Readonly<
       signature:
         'CommandShortcut: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `command-shortcut` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'Container',
       anchor: 'container',
       signature: 'Container: (props: ContainerProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Centers content in a max-width column with page gutters (defaults to the `"page"` {@link BlockSize }).',
     },
     {
       name: 'ContainerProps',
       anchor: 'container-props',
       signature: 'ContainerProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link Container } component.',
     },
     {
       name: 'ContextMenu',
       anchor: 'context-menu',
       signature: 'ContextMenu: (props: DropdownProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `dropdown`.',
     },
     {
       name: 'ContextMenuContent',
@@ -29468,6 +31796,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ContextMenuContent: { (props: DropdownContentProps): JSX.Element | null; (props: DropdownContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        "Dropdown/context-menu content wrapper around `@askrjs/ui`'s `DropdownContent`.\nNon-`asChild` usage lazily evaluates `children` inside a body component so\nthey're only rendered once the dropdown is actually open.",
     },
     {
       name: 'ContextMenuGroup',
@@ -29475,6 +31805,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ContextMenuGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-group` part of `dropdown` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ContextMenuItem',
@@ -29482,6 +31814,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ContextMenuItem: { (props: DropdownItemProps): JSX.Element | null; (props: DropdownItemAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ContextMenuLabel',
@@ -29489,6 +31823,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ContextMenuLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-label` part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ContextMenuPortal',
@@ -29496,6 +31832,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'ContextMenuPortal: (props: DropdownPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `dropdown`.',
     },
     {
       name: 'ContextMenuSeparator',
@@ -29503,6 +31840,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ContextMenuSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-separator` part of `dropdown` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ContextMenuTrigger',
@@ -29510,18 +31849,24 @@ export const apiSymbolSets: Readonly<
       signature:
         'ContextMenuTrigger: { (props: DropdownTriggerProps): JSX.Element | null; (props: DropdownTriggerAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-trigger` part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DataTable',
       anchor: 'data-table',
       signature: 'DataTable: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Styling-only container for the `data-table` catalog slot. It does not sort, filter, select, or paginate data.\nCompose semantic `Table`/`VirtualTable` primitives with application-owned data state for those behaviors.',
     },
     {
       name: 'DatePicker',
       anchor: 'date-picker',
       signature: 'DatePicker: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `date-picker` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'DatePickerInput',
@@ -29529,6 +31874,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'DatePickerInput: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the date picker\'s `<input type="date">` by default.',
     },
     {
       name: 'DebouncedInput',
@@ -29543,12 +31889,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'default-theme-options',
       signature: 'DEFAULT_THEME_OPTIONS: readonly ThemeOption[]',
       typeOnly: true,
+      summary:
+        'Default light/dark/system theme options used by {@link ThemeScope} and {@link ThemePicker}.',
     },
     {
       name: 'Dialog',
       anchor: 'dialog',
       signature: 'Dialog: (props: DialogProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `dialog`.',
     },
     {
       name: 'DialogClose',
@@ -29556,6 +31905,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogClose: { (props: DialogCloseProps): JSX.Element; (props: DialogCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-close` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogContent',
@@ -29563,6 +31914,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogContent: { (props: DialogContentProps): JSX.Element | null; (props: DialogContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-content` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogDescription',
@@ -29570,6 +31923,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogDescription: { (props: DialogDescriptionProps): JSX.Element; (props: DialogDescriptionAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-description` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogOverlay',
@@ -29577,6 +31932,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogOverlay: { (props: DialogOverlayProps): JSX.Element | null; (props: DialogOverlayAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-overlay` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogPortal',
@@ -29584,12 +31941,14 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogPortal: (props: DialogPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `dialog`.',
     },
     {
       name: 'DialogProps',
       anchor: 'dialog-props',
       signature: 'DialogProps: any',
       typeOnly: true,
+      summary: 'Props for Dialog.',
     },
     {
       name: 'DialogTitle',
@@ -29597,6 +31956,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogTitle: { (props: DialogTitleProps): JSX.Element; (props: DialogTitleAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-title` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogTrigger',
@@ -29604,6 +31965,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogTrigger: { (props: DialogTriggerProps): JSX.Element; (props: DialogTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-trigger` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'Direction',
@@ -29611,12 +31974,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'Direction: (props: CatalogComponentProps & { dir?: "ltr" | "rtl"; }) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Sets the `dir` attribute (defaulting to `"ltr"`) on its wrapping element for RTL/LTR scoping.',
     },
     {
       name: 'Drawer',
       anchor: 'drawer',
       signature: 'Drawer: (props: DialogProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `dialog`.',
     },
     {
       name: 'DrawerClose',
@@ -29624,6 +31990,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DrawerClose: { (props: DialogCloseProps): JSX.Element; (props: DialogCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-close` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DrawerContent',
@@ -29631,6 +31999,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DrawerContent: { (props: DialogContentProps): JSX.Element | null; (props: DialogContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-content` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DrawerDescription',
@@ -29638,6 +32008,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DrawerDescription: { (props: DialogDescriptionProps): JSX.Element; (props: DialogDescriptionAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-description` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DrawerOverlay',
@@ -29645,6 +32017,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DrawerOverlay: { (props: DialogOverlayProps): JSX.Element | null; (props: DialogOverlayAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-overlay` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DrawerPortal',
@@ -29652,6 +32026,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'DrawerPortal: (props: DialogPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `dialog`.',
     },
     {
       name: 'DrawerTitle',
@@ -29659,6 +32034,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DrawerTitle: { (props: DialogTitleProps): JSX.Element; (props: DialogTitleAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-title` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DrawerTrigger',
@@ -29666,12 +32043,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'DrawerTrigger: { (props: DialogTriggerProps): JSX.Element; (props: DialogTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-trigger` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'Dropdown',
       anchor: 'dropdown',
       signature: 'Dropdown: (props: DropdownProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `dropdown`.',
     },
     {
       name: 'DropdownContent',
@@ -29679,6 +32059,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownContent: { (props: DropdownContentProps): JSX.Element | null; (props: DropdownContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        "Dropdown/context-menu content wrapper around `@askrjs/ui`'s `DropdownContent`.\nNon-`asChild` usage lazily evaluates `children` inside a body component so\nthey're only rendered once the dropdown is actually open.",
     },
     {
       name: 'DropdownGroup',
@@ -29686,6 +32068,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-group` part of `dropdown` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownItem',
@@ -29693,12 +32077,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownItem: { (props: DropdownItemProps): JSX.Element | null; (props: DropdownItemAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownItemVariant',
       anchor: 'dropdown-item-variant',
       signature: 'DropdownItemVariant: any',
       typeOnly: true,
+      summary: 'Dropdown Item Variant.',
     },
     {
       name: 'DropdownLabel',
@@ -29706,12 +32093,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-label` part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownMenu',
       anchor: 'dropdown-menu',
       signature: 'DropdownMenu: (props: DropdownProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `dropdown`.',
     },
     {
       name: 'DropdownMenuContent',
@@ -29719,6 +32109,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownMenuContent: { (props: DropdownContentProps): JSX.Element | null; (props: DropdownContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        "Dropdown/context-menu content wrapper around `@askrjs/ui`'s `DropdownContent`.\nNon-`asChild` usage lazily evaluates `children` inside a body component so\nthey're only rendered once the dropdown is actually open.",
     },
     {
       name: 'DropdownMenuGroup',
@@ -29726,6 +32118,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownMenuGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-group` part of `dropdown` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownMenuItem',
@@ -29733,6 +32127,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownMenuItem: { (props: DropdownItemProps): JSX.Element | null; (props: DropdownItemAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownMenuLabel',
@@ -29740,6 +32136,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownMenuLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-label` part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownMenuPortal',
@@ -29747,6 +32145,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownMenuPortal: (props: DropdownPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `dropdown`.',
     },
     {
       name: 'DropdownMenuSeparator',
@@ -29754,6 +32153,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownMenuSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-separator` part of `dropdown` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownMenuTrigger',
@@ -29761,6 +32162,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownMenuTrigger: { (props: DropdownTriggerProps): JSX.Element | null; (props: DropdownTriggerAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-trigger` part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownPortal',
@@ -29768,6 +32171,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownPortal: (props: DropdownPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `dropdown`.',
     },
     {
       name: 'DropdownSeparator',
@@ -29775,6 +32179,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-separator` part of `dropdown` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownTrigger',
@@ -29782,30 +32188,38 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownTrigger: { (props: DropdownTriggerProps): JSX.Element | null; (props: DropdownTriggerAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-trigger` part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownTriggerSize',
       anchor: 'dropdown-trigger-size',
       signature: 'DropdownTriggerSize: any',
       typeOnly: true,
+      summary: 'Dropdown Trigger Size.',
     },
     {
       name: 'DropdownTriggerVariant',
       anchor: 'dropdown-trigger-variant',
       signature: 'DropdownTriggerVariant: any',
       typeOnly: true,
+      summary: 'Dropdown Trigger Variant.',
     },
     {
       name: 'Empty',
       anchor: 'empty',
       signature: 'Empty: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `empty` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'EmptyContent',
       anchor: 'empty-content',
       signature: 'EmptyContent: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `empty-content` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'EmptyDescription',
@@ -29813,54 +32227,70 @@ export const apiSymbolSets: Readonly<
       signature:
         'EmptyDescription: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `empty-description` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'EmptyHeader',
       anchor: 'empty-header',
       signature: 'EmptyHeader: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `empty-header` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'EmptyMedia',
       anchor: 'empty-media',
       signature: 'EmptyMedia: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `empty-media` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'EmptyState',
       anchor: 'empty-state',
       signature: 'EmptyState: (props: EmptyStateProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Centered placeholder for empty lists/views: an icon, title (default `<h2>`), description, extra content, and an action row.',
     },
     {
       name: 'EmptyStateHeadingTag',
       anchor: 'empty-state-heading-tag',
       signature: 'EmptyStateHeadingTag: any',
       typeOnly: true,
+      summary: "Heading tag allowed for an empty state's title via `titleAs`.",
     },
     {
       name: 'EmptyStateProps',
       anchor: 'empty-state-props',
       signature: 'EmptyStateProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link EmptyState } component.',
     },
     {
       name: 'EmptyTitle',
       anchor: 'empty-title',
       signature: 'EmptyTitle: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `empty-title` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'Field',
       anchor: 'field',
       signature: 'Field: (props: FieldProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Groups a form control with its hint/error text, marking `data-invalid` when `invalid` is set.',
     },
     {
       name: 'FieldContent',
       anchor: 'field-content',
       signature: 'FieldContent: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `field-content` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'FieldDescription',
@@ -29868,54 +32298,68 @@ export const apiSymbolSets: Readonly<
       signature:
         'FieldDescription: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `field-description` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'FieldError',
       anchor: 'field-error',
       signature: 'FieldError: (props: FieldErrorProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders validation error text for a {@link Field}, exposed with `role="alert"`.',
     },
     {
       name: 'FieldErrorProps',
       anchor: 'field-error-props',
       signature: 'FieldErrorProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link FieldError } component.',
     },
     {
       name: 'FieldGroup',
       anchor: 'field-group',
       signature: 'FieldGroup: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `field-group` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'FieldHint',
       anchor: 'field-hint',
       signature: 'FieldHint: (props: FieldHintProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders supporting hint text for a {@link Field}.',
     },
     {
       name: 'FieldHintProps',
       anchor: 'field-hint-props',
       signature: 'FieldHintProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link FieldHint } component.',
     },
     {
       name: 'FieldLabel',
       anchor: 'field-label',
       signature: 'FieldLabel: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `field-label` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'FieldLegend',
       anchor: 'field-legend',
       signature: 'FieldLegend: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `field-legend` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'FieldProps',
       anchor: 'field-props',
       signature: 'FieldProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link Field } component.',
     },
     {
       name: 'FieldSeparator',
@@ -29923,36 +32367,46 @@ export const apiSymbolSets: Readonly<
       signature:
         'FieldSeparator: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `field-separator` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'FieldSet',
       anchor: 'field-set',
       signature: 'FieldSet: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `field-set` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'FieldTitle',
       anchor: 'field-title',
       signature: 'FieldTitle: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `field-title` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'Footer',
       anchor: 'footer',
       signature: 'Footer: (props: FooterProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a `<footer>`-element {@link Block } with a muted background and top border.',
     },
     {
       name: 'FooterContent',
       anchor: 'footer-content',
       signature: 'FooterContent: (props: FooterContentProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the main content wrapper of a {@link Footer}.',
     },
     {
       name: 'FooterContentProps',
       anchor: 'footer-content-props',
       signature: 'FooterContentProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link FooterContent } component.',
     },
     {
       name: 'FooterDescription',
@@ -29960,66 +32414,77 @@ export const apiSymbolSets: Readonly<
       signature:
         'FooterDescription: (props: FooterDescriptionProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders supporting description text within a {@link Footer}.',
     },
     {
       name: 'FooterDescriptionProps',
       anchor: 'footer-description-props',
       signature: 'FooterDescriptionProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link FooterDescription } component.',
     },
     {
       name: 'FooterLink',
       anchor: 'footer-link',
       signature: 'FooterLink: (props: FooterLinkProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a single link within a {@link Footer}.',
     },
     {
       name: 'FooterLinkProps',
       anchor: 'footer-link-props',
       signature: 'FooterLinkProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link FooterLink } component.',
     },
     {
       name: 'FooterLinks',
       anchor: 'footer-links',
       signature: 'FooterLinks: (props: FooterLinksProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a `<nav>` wrapper for a group of {@link FooterLink}s.',
     },
     {
       name: 'FooterLinksProps',
       anchor: 'footer-links-props',
       signature: 'FooterLinksProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link FooterLinks } component.',
     },
     {
       name: 'FooterProps',
       anchor: 'footer-props',
       signature: 'FooterProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link Footer } component.',
     },
     {
       name: 'FooterSection',
       anchor: 'footer-section',
       signature: 'FooterSection: (props: FooterSectionProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a grouped section within a {@link Footer}.',
     },
     {
       name: 'FooterSectionProps',
       anchor: 'footer-section-props',
       signature: 'FooterSectionProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link FooterSection } component.',
     },
     {
       name: 'FooterTitle',
       anchor: 'footer-title',
       signature: 'FooterTitle: (props: FooterTitleProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a section title (`<h2>`) within a {@link Footer}.',
     },
     {
       name: 'FooterTitleProps',
       anchor: 'footer-title-props',
       signature: 'FooterTitleProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link FooterTitle } component.',
     },
     {
       name: 'Form',
@@ -30027,6 +32492,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'Form: { (props: FormProps): JSX.Element; (props: FormAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `form`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'Grid',
@@ -30034,48 +32501,60 @@ export const apiSymbolSets: Readonly<
       signature:
         'Grid: <TElement extends GridElement = "div">(props: GridProps<TElement>) => JSX.Element',
       typeOnly: true,
+      summary:
+        'CSS grid layout primitive: turns `columns`/`gap`/`align` (each optionally responsive) into generated grid-template styles, rendering as `<div>` by default.',
     },
     {
       name: 'GridAlign',
       anchor: 'grid-align',
       signature: 'GridAlign: any',
       typeOnly: true,
+      summary: '`align-items` value applied to a {@link Grid }.',
     },
     {
       name: 'GridColumns',
       anchor: 'grid-columns',
       signature: 'GridColumns: any',
       typeOnly: true,
+      summary:
+        'Column definition for {@link Grid }: a track count or a raw `grid-template-columns` string.',
     },
     {
       name: 'GridElement',
       anchor: 'grid-element',
       signature: 'GridElement: any',
       typeOnly: true,
+      summary: 'Element tags {@link Grid } can render as via its `as` prop.',
     },
     {
       name: 'GridProps',
       anchor: 'grid-props',
       signature: 'GridProps: any',
       typeOnly: true,
+      summary:
+        'Props for the {@link Grid } component, specialized for a given {@link GridElement} `TElement`.',
     },
     {
       name: 'Header',
       anchor: 'header',
       signature: 'Header: (props: HeaderProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a `<header>`-element {@link Block } with a surface background and bottom border, optionally sticky-positioned via `position`/`sticky`.',
     },
     {
       name: 'HeaderProps',
       anchor: 'header-props',
       signature: 'HeaderProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link Header } component.',
     },
     {
       name: 'HoverCard',
       anchor: 'hover-card',
       signature: 'HoverCard: (props: HoverCardProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `hover-card`.',
     },
     {
       name: 'HoverCardContent',
@@ -30083,6 +32562,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'HoverCardContent: { (props: HoverCardContentProps): JSX.Element | null; (props: HoverCardContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `hover-card-content` part of `hover-card` with `role="dialog"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'HoverCardPortal',
@@ -30090,6 +32571,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'HoverCardPortal: (props: HoverCardPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `hover-card`.',
     },
     {
       name: 'HoverCardTrigger',
@@ -30097,12 +32579,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'HoverCardTrigger: { (props: HoverCardTriggerProps): JSX.Element; (props: HoverCardTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `hover-card-trigger` part of `hover-card`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'Inline',
       anchor: 'inline',
       signature: 'Inline: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Legacy `Inline` layout alias for {@link Block } that defaults to a row direction.',
     },
     {
       name: 'Input',
@@ -30110,24 +32596,30 @@ export const apiSymbolSets: Readonly<
       signature:
         'Input: { (props: InputInputProps): JSX.Element; (props: InputAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `input` part of `input`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'InputGroup',
       anchor: 'input-group',
       signature: 'InputGroup: (props: InputGroupProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Groups related inputs/addons together, optionally visually attached, with a horizontal or vertical orientation and `role="group"` by default.',
     },
     {
       name: 'InputGroupOrientation',
       anchor: 'input-group-orientation',
       signature: 'InputGroupOrientation: any',
       typeOnly: true,
+      summary: 'Layout direction of an {@link InputGroup }.',
     },
     {
       name: 'InputGroupProps',
       anchor: 'input-group-props',
       signature: 'InputGroupProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link InputGroup } component.',
     },
     {
       name: 'InputGroupText',
@@ -30135,30 +32627,40 @@ export const apiSymbolSets: Readonly<
       signature:
         'InputGroupText: { (props: InputGroupTextProps): JSX.Element; (props: InputGroupTextAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders static text/label content within an {@link InputGroup}.',
     },
     {
       name: 'InputGroupTextAsChildProps',
       anchor: 'input-group-text-as-child-props',
       signature: 'InputGroupTextAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link InputGroupText } rendered with `asChild`, merging its attributes onto a single child element.',
     },
     {
       name: 'InputGroupTextProps',
       anchor: 'input-group-text-props',
       signature: 'InputGroupTextProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link InputGroupText } rendered as its default `<span>` element.',
     },
     {
       name: 'InputOTP',
       anchor: 'input-otp',
       signature: 'InputOTP: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `input-otp` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'InputOTPGroup',
       anchor: 'input-otpgroup',
       signature: 'InputOTPGroup: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `input-otp-group` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'InputOTPSeparator',
@@ -30166,12 +32668,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'InputOTPSeparator: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the visual separator between InputOTP groups (defaults to `"-"`).',
     },
     {
       name: 'InputOTPSlot',
       anchor: 'input-otpslot',
       signature: 'InputOTPSlot: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `input-otp-slot` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'Item',
@@ -30179,18 +32685,24 @@ export const apiSymbolSets: Readonly<
       signature:
         'Item: (props: CatalogComponentProps & { active?: boolean; size?: "default" | "sm" | "xs"; variant?: "default" | "outline" | "muted"; }) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a generic list item part, exposing `active`/`size`/`variant` as data attributes.',
     },
     {
       name: 'ItemActions',
       anchor: 'item-actions',
       signature: 'ItemActions: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `item-actions` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'ItemContent',
       anchor: 'item-content',
       signature: 'ItemContent: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `item-content` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'ItemDescription',
@@ -30198,42 +32710,56 @@ export const apiSymbolSets: Readonly<
       signature:
         'ItemDescription: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `item-description` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'ItemFooter',
       anchor: 'item-footer',
       signature: 'ItemFooter: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `item-footer` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'ItemGroup',
       anchor: 'item-group',
       signature: 'ItemGroup: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `item-group` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'ItemHeader',
       anchor: 'item-header',
       signature: 'ItemHeader: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `item-header` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'ItemMedia',
       anchor: 'item-media',
       signature: 'ItemMedia: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `item-media` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'ItemTitle',
       anchor: 'item-title',
       signature: 'ItemTitle: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `item-title` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'Kbd',
       anchor: 'kbd',
       signature: 'Kbd: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `kbd` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'Label',
@@ -30241,24 +32767,30 @@ export const apiSymbolSets: Readonly<
       signature:
         'Label: { (props: LabelLabelProps): JSXElement; (props: LabelAsChildProps): JSXElement; }',
       typeOnly: true,
+      summary:
+        'Renders the `label` part of `label`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'Main',
       anchor: 'main',
       signature: 'Main: (props: MainProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a `<main>`-element {@link Block } that grows to fill available space.',
     },
     {
       name: 'MainProps',
       anchor: 'main-props',
       signature: 'MainProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link Main } component.',
     },
     {
       name: 'Menubar',
       anchor: 'menubar',
       signature: 'Menubar: (props: MenubarProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `menubar`.',
     },
     {
       name: 'MenubarContent',
@@ -30266,6 +32798,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarContent: { (props: MenubarContentProps): JSX.Element | null; (props: MenubarContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary: 'Renders a part of `menubar`.',
     },
     {
       name: 'MenubarGroup',
@@ -30273,6 +32806,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarGroup: (props: MenubarGroupProps | MenubarGroupAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `menubar-group` part of `menubar` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenubarItem',
@@ -30280,6 +32815,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarItem: { (props: MenubarItemProps): JSX.Element | null; (props: MenubarItemAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `menubar`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenubarLabel',
@@ -30287,12 +32824,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarLabel: (props: MenubarLabelProps | MenubarLabelAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `menubar-label` part of `menubar`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenubarMenu',
       anchor: 'menubar-menu',
       signature: 'MenubarMenu: (props: MenubarMenuProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `menubar`.',
     },
     {
       name: 'MenubarPortal',
@@ -30300,6 +32840,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarPortal: (props: MenubarPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `menubar`.',
     },
     {
       name: 'MenubarSeparator',
@@ -30307,12 +32848,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarSeparator: (props: MenubarSeparatorProps | MenubarSeparatorAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `menubar-separator` part of `menubar` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenubarSub',
       anchor: 'menubar-sub',
       signature: 'MenubarSub: (props: MenubarSubProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `menubar`.',
     },
     {
       name: 'MenubarSubContent',
@@ -30320,6 +32864,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarSubContent: { (props: MenubarSubContentProps): JSX.Element | null; (props: MenubarSubContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary: 'Renders a part of `menubar`.',
     },
     {
       name: 'MenubarSubTrigger',
@@ -30327,6 +32872,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarSubTrigger: { (props: MenubarSubTriggerProps): JSX.Element | null; (props: MenubarSubTriggerAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `menubar`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenubarTrigger',
@@ -30334,72 +32881,90 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarTrigger: { (props: MenubarTriggerProps): JSX.Element | null; (props: MenubarTriggerAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `menubar`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'NativeSelect',
       anchor: 'native-select',
       signature: 'NativeSelect: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a styled native `<select>` element.',
     },
     {
       name: 'Nav',
       anchor: 'nav',
       signature: 'Nav: (props: NavbarProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Horizontal navigation bar. Below `collapseAt`/`breakpoint`, non-brand\nchildren are grouped behind a collapsible toggle so brand content stays\nvisible while the rest collapses on small screens.',
     },
     {
       name: 'Navbar',
       anchor: 'navbar',
       signature: 'Navbar: (props: NavbarProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Horizontal navigation bar. Below `collapseAt`/`breakpoint`, non-brand\nchildren are grouped behind a collapsible toggle so brand content stays\nvisible while the rest collapses on small screens.',
     },
     {
       name: 'NavbarCollapseBreakpoint',
       anchor: 'navbar-collapse-breakpoint',
       signature: 'NavbarCollapseBreakpoint: any',
       typeOnly: true,
+      summary:
+        'Breakpoint at which a {@link Navbar } collapses non-brand content behind a toggle.',
     },
     {
       name: 'NavbarProps',
       anchor: 'navbar-props',
       signature: 'NavbarProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link Navbar } component.',
     },
     {
       name: 'NavBrand',
       anchor: 'nav-brand',
       signature: 'NavBrand: (props: NavBrandProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the brand/logo slot of a {@link Navbar}; excluded from the collapsible section.',
     },
     {
       name: 'NavBrandProps',
       anchor: 'nav-brand-props',
       signature: 'NavBrandProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link NavBrand } component.',
     },
     {
       name: 'NavDropdown',
       anchor: 'nav-dropdown',
       signature: 'NavDropdown: (props: NavDropdownProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a dropdown menu triggered from within a {@link Navbar}.',
     },
     {
       name: 'NavDropdownProps',
       anchor: 'nav-dropdown-props',
       signature: 'NavDropdownProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link NavDropdown } component.',
     },
     {
       name: 'NavGroup',
       anchor: 'nav-group',
       signature: 'NavGroup: (props: NavGroupProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Groups related {@link Navbar} items under an optional label.',
     },
     {
       name: 'NavGroupProps',
       anchor: 'nav-group-props',
       signature: 'NavGroupProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link NavGroup } component.',
     },
     {
       name: 'NavigationMenu',
@@ -30407,6 +32972,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'NavigationMenu: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `navigation-menu` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'NavigationMenuContent',
@@ -30414,6 +32981,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'NavigationMenuContent: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `navigation-menu-content` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'NavigationMenuIndicator',
@@ -30421,6 +32990,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'NavigationMenuIndicator: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `navigation-menu-indicator` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'NavigationMenuItem',
@@ -30428,6 +32999,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'NavigationMenuItem: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `navigation-menu-item` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'NavigationMenuLink',
@@ -30435,6 +33008,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'NavigationMenuLink: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `navigation-menu-link` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'NavigationMenuList',
@@ -30442,6 +33017,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'NavigationMenuList: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `navigation-menu-list` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'NavigationMenuTrigger',
@@ -30449,6 +33026,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'NavigationMenuTrigger: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `navigation-menu-content` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'NavigationMenuViewport',
@@ -30456,6 +33035,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'NavigationMenuViewport: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `navigation-menu-viewport` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'NavItem',
@@ -30463,60 +33044,77 @@ export const apiSymbolSets: Readonly<
       signature:
         'NavItem: { (props: NavItemProps): JSX.Element; (props: NavItemAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'A generic navigation item, rendered as an `<a>` (or, with `asChild`, merged onto a child), highlighted when `active`.',
     },
     {
       name: 'NavItemAsChildProps',
       anchor: 'nav-item-as-child-props',
       signature: 'NavItemAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link NavItem } rendered with `asChild`, merging onto a single child element.',
     },
     {
       name: 'NavItemProps',
       anchor: 'nav-item-props',
       signature: 'NavItemProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link NavItem } rendered as its default `<a>` element.',
     },
     {
       name: 'NavLink',
       anchor: 'nav-link',
       signature: 'NavLink: (props: NavLinkProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'A router-aware navigation link that highlights itself when its route matches the current location.',
     },
     {
       name: 'NavLinkProps',
       anchor: 'nav-link-props',
       signature: 'NavLinkProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link NavLink } component.',
     },
     {
       name: 'Page',
       anchor: 'page',
       signature: 'Page: (props: PageProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Top-level page wrapper: a growing `<main>` containing a {@link Container } with vertical page padding and content spacing.',
     },
     {
       name: 'PageHeader',
       anchor: 'page-header',
       signature: 'PageHeader: (props: PageHeaderProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Page-level header with a title, optional description, and an actions row that wraps to a new line on small screens.',
     },
     {
       name: 'PageHeaderProps',
       anchor: 'page-header-props',
       signature: 'PageHeaderProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link PageHeader } component.',
     },
     {
       name: 'PageProps',
       anchor: 'page-props',
       signature: 'PageProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link Page } component.',
     },
     {
       name: 'Pagination',
       anchor: 'pagination',
       signature: 'Pagination: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `pagination` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'PaginationContent',
@@ -30524,6 +33122,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'PaginationContent: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `pagination-content` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'PaginationEllipsis',
@@ -30531,6 +33131,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'PaginationEllipsis: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a non-interactive ellipsis marker between pagination links.',
     },
     {
       name: 'PaginationItem',
@@ -30538,6 +33140,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'PaginationItem: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `pagination-item` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'PaginationLink',
@@ -30545,6 +33149,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'PaginationLink: (props: CatalogComponentProps & { active?: boolean; }) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a pagination page link, marking it `aria-current="page"` when `active`.',
     },
     {
       name: 'PaginationNext',
@@ -30552,6 +33158,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'PaginationNext: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Pagination link that moves to the next page.',
     },
     {
       name: 'PaginationPrevious',
@@ -30559,18 +33166,22 @@ export const apiSymbolSets: Readonly<
       signature:
         'PaginationPrevious: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Pagination link that moves to the previous page.',
     },
     {
       name: 'Pill',
       anchor: 'pill',
       signature: 'Pill: (props: PillProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'A router-aware link styled as a pill, auto-marked active by matching the current route, with an active background highlight.',
     },
     {
       name: 'PillProps',
       anchor: 'pill-props',
       signature: 'PillProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link Pill } component.',
     },
     {
       name: 'Pills',
@@ -30578,24 +33189,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'Pills: { (props: PillsProps): JSX.Element; (props: PillsAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a `<nav>` wrapper (or, with `asChild`, merges onto a child) for a set of {@link Pill} links.',
     },
     {
       name: 'PillsAsChildProps',
       anchor: 'pills-as-child-props',
       signature: 'PillsAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link Pills } rendered with `asChild`, merging onto a single child element.',
     },
     {
       name: 'PillsProps',
       anchor: 'pills-props',
       signature: 'PillsProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link Pills } rendered as its default `<nav>` element.',
     },
     {
       name: 'Popover',
       anchor: 'popover',
       signature: 'Popover: (props: PopoverProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `popover`.',
     },
     {
       name: 'PopoverClose',
@@ -30603,6 +33221,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'PopoverClose: { (props: PopoverCloseProps): JSX.Element; (props: PopoverCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `popover-close` part of `popover`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'PopoverContent',
@@ -30610,12 +33230,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'PopoverContent: { (props: PopoverContentProps): JSX.Element | null; (props: PopoverContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `popover-content` part of `popover` with `role="dialog"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'PopoverContentWidth',
       anchor: 'popover-content-width',
       signature: 'PopoverContentWidth: any',
       typeOnly: true,
+      summary: 'Popover Content Width.',
     },
     {
       name: 'PopoverPortal',
@@ -30623,6 +33246,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'PopoverPortal: (props: PopoverPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `popover`.',
     },
     {
       name: 'PopoverTrigger',
@@ -30630,18 +33254,24 @@ export const apiSymbolSets: Readonly<
       signature:
         'PopoverTrigger: { (props: PopoverTriggerProps): JSX.Element; (props: PopoverTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `popover-trigger` part of `popover`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'Progress',
       anchor: 'progress',
       signature: 'Progress: (props: ProgressProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `progress` part of `progress` with `role="progressbar"`.',
     },
     {
       name: 'ProgressCircle',
       anchor: 'progress-circle',
       signature: 'ProgressCircle: (props: ProgressCircleProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Headless circular progress indicator root.\n\nNormalizes value/max, computes percentage, exposes `--ak-progress-percentage`\nas a dynamically injected CSS custom property, and provides progress state\nto `ProgressCircleIndicator` via context.',
     },
     {
       name: 'ProgressCircleIndicator',
@@ -30649,6 +33279,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ProgressCircleIndicator: { (props: ProgressCircleIndicatorProps): JSX.Element; (props: ProgressCircleIndicatorAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Visual indicator for `ProgressCircle`, rendering the fill/arc element.\nMust be used within a `ProgressCircle`; reads progress state from context\nand exposes it as `data-state`/`data-value`/`data-max`/`data-percentage`.',
     },
     {
       name: 'ProgressIndicator',
@@ -30656,12 +33288,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'ProgressIndicator: { (props: ProgressIndicatorProps): JSX.Element; (props: ProgressIndicatorAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `progress-indicator` part of `progress`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'RadioGroup',
       anchor: 'radio-group',
       signature: 'RadioGroup: (props: RadioGroupProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `radio-group`.',
     },
     {
       name: 'RadioGroupItem',
@@ -30669,6 +33304,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'RadioGroupItem: { (props: RadioGroupItemProps): JSX.Element; (props: RadioGroupItemAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `radio-group-item` part of `radio-group` with `role="radio"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ResizableHandle',
@@ -30676,6 +33313,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ResizableHandle: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Styling-only separator slot; it does not implement resizing, pointer dragging, or keyboard controls.',
     },
     {
       name: 'ResizablePanel',
@@ -30683,6 +33322,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ResizablePanel: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Styling-only `resizable-panel` slot; it does not implement resizing or manage panel dimensions.',
     },
     {
       name: 'ResizablePanelGroup',
@@ -30690,6 +33331,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ResizablePanelGroup: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Styling-only container for the `resizable-panel-group` catalog slot. It does not implement resizing.\nConsumers own pointer, keyboard, sizing, and ARIA state until a behavior primitive exists in `@askrjs/ui`.',
     },
     {
       name: 'ScrollArea',
@@ -30697,6 +33340,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'ScrollArea: { (props: ScrollAreaProps): JSX.Element; (props: ScrollAreaAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary: 'Renders a part of `scroll-area`.',
     },
     {
       name: 'ScrollAreaCorner',
@@ -30704,6 +33348,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'ScrollAreaCorner: (props: ScrollAreaCornerProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the `scroll-area-corner` part of `scroll-area`.',
     },
     {
       name: 'ScrollAreaScrollbar',
@@ -30711,6 +33356,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ScrollAreaScrollbar: (props: ScrollAreaScrollbarProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `scroll-area-scrollbar` part of `scroll-area` with `role="scrollbar"`.',
     },
     {
       name: 'ScrollAreaThumb',
@@ -30718,6 +33365,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'ScrollAreaThumb: (props: ScrollAreaThumbProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the `scroll-area-thumb` part of `scroll-area`.',
     },
     {
       name: 'ScrollAreaViewport',
@@ -30725,24 +33373,29 @@ export const apiSymbolSets: Readonly<
       signature:
         'ScrollAreaViewport: { (props: ScrollAreaViewportProps): JSX.Element; (props: ScrollAreaViewportAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary: 'Renders a part of `scroll-area`.',
     },
     {
       name: 'Section',
       anchor: 'section',
       signature: 'Section: (props: SectionProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a `<section>`-element {@link Block } with vertical spacing between children and page padding.',
     },
     {
       name: 'SectionProps',
       anchor: 'section-props',
       signature: 'SectionProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link Section } component.',
     },
     {
       name: 'Select',
       anchor: 'select',
       signature: 'Select: (props: SelectProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `select`.',
     },
     {
       name: 'SelectContent',
@@ -30750,6 +33403,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectContent: { (props: SelectContentProps): JSX.Element | null; (props: SelectContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `select` with `role="listbox"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectGroup',
@@ -30757,6 +33412,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectGroup: { (props: SelectGroupProps): JSX.Element; (props: SelectGroupAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `select-group` part of `select` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectItem',
@@ -30764,6 +33421,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectItem: { (props: SelectItemProps): JSX.Element | null; (props: SelectItemAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `select`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectItemText',
@@ -30772,7 +33431,7 @@ export const apiSymbolSets: Readonly<
         'SelectItemText: { (props: SelectItemTextProps): JSX.Element; (props: SelectItemTextAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'SelectItemText marks the item text node so Select can resolve labels and\nstyle the text slot directly.',
+        'SelectItemText marks the item text node so Select can resolve labels and\nstyle the text slot directly.\nRenders the `select-item-text` part of `select`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectLabel',
@@ -30780,6 +33439,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectLabel: { (props: SelectLabelProps): JSX.Element | null; (props: SelectLabelAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `select-label` part of `select`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectPortal',
@@ -30787,6 +33448,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectPortal: (props: SelectPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `select`.',
     },
     {
       name: 'SelectSeparator',
@@ -30794,6 +33456,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectSeparator: { (props: SelectSeparatorProps): JSX.Element | null; (props: SelectSeparatorAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `select-separator` part of `select` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectTrigger',
@@ -30801,12 +33465,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectTrigger: { (props: SelectTriggerProps): JSX.Element | null; (props: SelectTriggerAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `select-trigger` part of `select`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectTriggerSize',
       anchor: 'select-trigger-size',
       signature: 'SelectTriggerSize: any',
       typeOnly: true,
+      summary: 'Select Trigger Size.',
     },
     {
       name: 'SelectValue',
@@ -30814,6 +33481,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectValue: { (props: SelectValueProps): JSX.Element | null; (props: SelectValueAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `select-value` part of `select`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'Separator',
@@ -30821,36 +33490,45 @@ export const apiSymbolSets: Readonly<
       signature:
         'Separator: { (props: SeparatorNativeProps): JSX.Element; (props: SeparatorAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Visual divider, defaulting to horizontal `role="separator"`; pass\n`decorative` to drop the semantic role, or `asChild` to merge onto a\nsingle child element.',
     },
     {
       name: 'SeparatorAsChildProps',
       anchor: 'separator-as-child-props',
       signature: 'SeparatorAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link Separator } rendered with `asChild`, merging its attributes onto a single child element.',
     },
     {
       name: 'SeparatorNativeProps',
       anchor: 'separator-native-props',
       signature: 'SeparatorNativeProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link Separator } rendered as its default `<div>` element.',
     },
     {
       name: 'SeparatorOwnProps',
       anchor: 'separator-own-props',
       signature: 'SeparatorOwnProps: any',
       typeOnly: true,
+      summary: 'Props shared by both {@link Separator } call signatures.',
     },
     {
       name: 'SeparatorProps',
       anchor: 'separator-props',
       signature: 'SeparatorProps: any',
       typeOnly: true,
+      summary: 'Union of all prop shapes accepted by {@link Separator }.',
     },
     {
       name: 'Sheet',
       anchor: 'sheet',
       signature: 'Sheet: (props: DialogProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `dialog`.',
     },
     {
       name: 'SheetClose',
@@ -30858,6 +33536,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'SheetClose: { (props: DialogCloseProps): JSX.Element; (props: DialogCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-close` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SheetContent',
@@ -30865,6 +33545,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'SheetContent: (props: CatalogComponentProps & { side?: "top" | "right" | "bottom" | "left"; }) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Sheet variant of the dialog content part; defaults to sliding in from the right.',
     },
     {
       name: 'SheetDescription',
@@ -30872,18 +33554,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'SheetDescription: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Sheet variant of the dialog description part.',
     },
     {
       name: 'SheetFooter',
       anchor: 'sheet-footer',
       signature: 'SheetFooter: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `sheet-footer` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'SheetHeader',
       anchor: 'sheet-header',
       signature: 'SheetHeader: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `sheet-header` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'SheetOverlay',
@@ -30891,6 +33578,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'SheetOverlay: { (props: DialogOverlayProps): JSX.Element | null; (props: DialogOverlayAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-overlay` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SheetPortal',
@@ -30898,12 +33587,14 @@ export const apiSymbolSets: Readonly<
       signature:
         'SheetPortal: (props: DialogPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `dialog`.',
     },
     {
       name: 'SheetTitle',
       anchor: 'sheet-title',
       signature: 'SheetTitle: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Sheet variant of the dialog title part.',
     },
     {
       name: 'SheetTrigger',
@@ -30911,6 +33602,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'SheetTrigger: { (props: DialogTriggerProps): JSX.Element; (props: DialogTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-trigger` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'Shell',
@@ -30918,54 +33611,68 @@ export const apiSymbolSets: Readonly<
       signature:
         'Shell: (props: CatalogComponentProps & { variant?: unknown; }) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Legacy `Shell` layout alias for {@link Block }; the `variant` prop is accepted but ignored.',
     },
     {
       name: 'ShellMain',
       anchor: 'shell-main',
       signature: 'ShellMain: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Legacy `ShellMain` layout alias for {@link Block } that renders a growing `<main>` element.',
     },
     {
       name: 'ShellNav',
       anchor: 'shell-nav',
       signature: 'ShellNav: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Legacy `ShellNav` layout alias for {@link Block }.',
     },
     {
       name: 'Sidebar',
       anchor: 'sidebar',
       signature: 'Sidebar: (props: SidebarProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Root `<aside>` sidebar layout with configurable width, side, collapse behavior, and visual variant, exposed as data attributes for CSS.',
     },
     {
       name: 'SidebarButtonProps',
       anchor: 'sidebar-button-props',
       signature: 'SidebarButtonProps: any',
       typeOnly: true,
+      summary:
+        'Props shared by the interactive {@link Sidebar } button parts (menu button, action, trigger).',
     },
     {
       name: 'SidebarCollapsible',
       anchor: 'sidebar-collapsible',
       signature: 'SidebarCollapsible: any',
       typeOnly: true,
+      summary:
+        'How a {@link Sidebar } collapses: fully off-canvas, down to icons only, or not at all.',
     },
     {
       name: 'SidebarContent',
       anchor: 'sidebar-content',
       signature: 'SidebarContent: (props: SidebarPartProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the scrollable content region of a {@link Sidebar}.',
     },
     {
       name: 'SidebarFooter',
       anchor: 'sidebar-footer',
       signature: 'SidebarFooter: (props: SidebarPartProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the footer region of a {@link Sidebar}.',
     },
     {
       name: 'SidebarGroup',
       anchor: 'sidebar-group',
       signature: 'SidebarGroup: (props: SidebarPartProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Groups related {@link SidebarMenu} items together.',
     },
     {
       name: 'SidebarGroupContent',
@@ -30973,30 +33680,35 @@ export const apiSymbolSets: Readonly<
       signature:
         'SidebarGroupContent: (props: SidebarPartProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the content region of a {@link SidebarGroup}.',
     },
     {
       name: 'SidebarGroupLabel',
       anchor: 'sidebar-group-label',
       signature: 'SidebarGroupLabel: (props: SidebarPartProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the label for a {@link SidebarGroup}.',
     },
     {
       name: 'SidebarHeader',
       anchor: 'sidebar-header',
       signature: 'SidebarHeader: (props: SidebarPartProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the header region of a {@link Sidebar}.',
     },
     {
       name: 'SidebarInset',
       anchor: 'sidebar-inset',
       signature: 'SidebarInset: (props: SidebarPartProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the `<main>` content area beside the {@link Sidebar}.',
     },
     {
       name: 'SidebarMenu',
       anchor: 'sidebar-menu',
       signature: 'SidebarMenu: (props: SidebarPartProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a `<ul>` list of {@link SidebarMenuItem}s.',
     },
     {
       name: 'SidebarMenuAction',
@@ -31004,12 +33716,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'SidebarMenuAction: (props: SidebarButtonProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a secondary action button attached to a {@link SidebarMenuItem}, with an optional tooltip.',
     },
     {
       name: 'SidebarMenuBadge',
       anchor: 'sidebar-menu-badge',
       signature: 'SidebarMenuBadge: (props: SidebarPartProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a status badge attached to a {@link SidebarMenuItem}.',
     },
     {
       name: 'SidebarMenuButton',
@@ -31017,66 +33732,82 @@ export const apiSymbolSets: Readonly<
       signature:
         'SidebarMenuButton: (props: SidebarButtonProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Clickable menu button within a {@link SidebarMenuItem}; supports `active`/`size`/`variant` state and an optional tooltip.',
     },
     {
       name: 'SidebarMenuItem',
       anchor: 'sidebar-menu-item',
       signature: 'SidebarMenuItem: (props: SidebarPartProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a single `<li>` entry within a {@link SidebarMenu}.',
     },
     {
       name: 'SidebarPartProps',
       anchor: 'sidebar-part-props',
       signature: 'SidebarPartProps: any',
       typeOnly: true,
+      summary:
+        'Props shared by the generic {@link Sidebar } structural parts (content, header, footer, group, etc.).',
     },
     {
       name: 'SidebarProps',
       anchor: 'sidebar-props',
       signature: 'SidebarProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link Sidebar } component.',
     },
     {
       name: 'SidebarRail',
       anchor: 'sidebar-rail',
       signature: 'SidebarRail: (props: SidebarButtonProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        "Renders a draggable/clickable rail along the sidebar's edge for resizing or toggling it.",
     },
     {
       name: 'SidebarRailProps',
       anchor: 'sidebar-rail-props',
       signature: 'SidebarRailProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link SidebarRail } component.',
     },
     {
       name: 'SidebarScope',
       anchor: 'sidebar-scope',
       signature: 'SidebarScope: (props: SidebarPartProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        "Scoping wrapper that establishes the sidebar's CSS/context boundary.",
     },
     {
       name: 'SidebarSide',
       anchor: 'sidebar-side',
       signature: 'SidebarSide: any',
       typeOnly: true,
+      summary: 'Which edge of the viewport a {@link Sidebar } is docked to.',
     },
     {
       name: 'SidebarTooltipSide',
       anchor: 'sidebar-tooltip-side',
       signature: 'SidebarTooltipSide: any',
       typeOnly: true,
+      summary: "Side a sidebar button's tooltip is positioned on.",
     },
     {
       name: 'SidebarTrigger',
       anchor: 'sidebar-trigger',
       signature: 'SidebarTrigger: (props: SidebarButtonProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        "Icon button that toggles the {@link Sidebar}'s open/collapsed state, with an optional tooltip.",
     },
     {
       name: 'SidebarVariant',
       anchor: 'sidebar-variant',
       signature: 'SidebarVariant: any',
       typeOnly: true,
+      summary: 'Visual style of a {@link Sidebar }.',
     },
     {
       name: 'Skeleton',
@@ -31084,30 +33815,38 @@ export const apiSymbolSets: Readonly<
       signature:
         'Skeleton: { (props: SkeletonProps): JSX.Element; (props: SkeletonAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Loading placeholder block with configurable `width`/`height`, hidden from assistive tech via `aria-hidden`, rendered as a `<div>` or merged onto a child via `asChild`.',
     },
     {
       name: 'SkeletonAsChildProps',
       anchor: 'skeleton-as-child-props',
       signature: 'SkeletonAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link Skeleton } rendered with `asChild`, merging its attributes onto a single child element.',
     },
     {
       name: 'SkeletonOwnProps',
       anchor: 'skeleton-own-props',
       signature: 'SkeletonOwnProps: any',
       typeOnly: true,
+      summary: 'Props shared by both {@link Skeleton } call signatures.',
     },
     {
       name: 'SkeletonProps',
       anchor: 'skeleton-props',
       signature: 'SkeletonProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link Skeleton } rendered as its default `<div>` element.',
     },
     {
       name: 'Slider',
       anchor: 'slider',
       signature: 'Slider: (props: SliderProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the `slider` part of `slider`.',
     },
     {
       name: 'SliderRange',
@@ -31115,6 +33854,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'SliderRange: { (props: SliderRangeProps): JSX.Element; (props: SliderRangeAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `slider-range` part of `slider`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SliderThumb',
@@ -31122,6 +33863,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'SliderThumb: { (props: SliderThumbProps): JSX.Element; (props: SliderThumbAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `slider-thumb` part of `slider` with `role="slider"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SliderTrack',
@@ -31129,48 +33872,61 @@ export const apiSymbolSets: Readonly<
       signature:
         'SliderTrack: { (props: SliderTrackProps): JSX.Element; (props: SliderTrackAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `slider-track` part of `slider`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'Sonner',
       anchor: 'sonner',
       signature: 'Sonner: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Alias of {@link Toaster} kept for shadcn/sonner API compatibility.',
     },
     {
       name: 'Spinner',
       anchor: 'spinner',
       signature: 'Spinner: (props: SpinnerProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Indeterminate loading spinner built on `ProgressCircle`, with an accessible label (defaults to `"Loading"`) and a `size` modifier.',
     },
     {
       name: 'SpinnerOwnProps',
       anchor: 'spinner-own-props',
       signature: 'SpinnerOwnProps: any',
       typeOnly: true,
+      summary:
+        'Props specific to {@link Spinner }, layered on top of `ProgressCircleProps`.',
     },
     {
       name: 'SpinnerProps',
       anchor: 'spinner-props',
       signature: 'SpinnerProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link Spinner } component.',
     },
     {
       name: 'SpinnerSize',
       anchor: 'spinner-size',
       signature: 'SpinnerSize: any',
       typeOnly: true,
+      summary: 'Size modifier for {@link Spinner }.',
     },
     {
       name: 'Stack',
       anchor: 'stack',
       signature: 'Stack: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Legacy `Stack` layout alias for {@link Block } that defaults to a column direction.',
     },
     {
       name: 'Stat',
       anchor: 'stat',
       signature: 'Stat: (props: StatProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Container for a labeled statistic (label, value, description).',
     },
     {
       name: 'StatDescription',
@@ -31178,18 +33934,21 @@ export const apiSymbolSets: Readonly<
       signature:
         'StatDescription: (props: StatDescriptionProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders supporting description text for a {@link Stat}.',
     },
     {
       name: 'StatLabel',
       anchor: 'stat-label',
       signature: 'StatLabel: (props: StatLabelProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the label of a {@link Stat}.',
     },
     {
       name: 'StatValue',
       anchor: 'stat-value',
       signature: 'StatValue: (props: StatValueProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the primary value of a {@link Stat}.',
     },
     {
       name: 'Switch',
@@ -31197,12 +33956,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'Switch: { (props: SwitchButtonProps): JSX.Element; (props: SwitchAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `switch` part of `switch` with `role="switch"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'Tab',
       anchor: 'tab',
       signature: 'Tab: (props: TabProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'A router-aware link styled as a tab, auto-marked active by matching the current route (see {@link NavLinkProps.match}).',
     },
     {
       name: 'Table',
@@ -31210,7 +33973,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'Table: { (props: TableProps): JSX.Element; (props: TableAsChildProps): JSX.Element; }',
       typeOnly: true,
-      summary: 'Semantic table primitive family.',
+      summary:
+        'Semantic table primitive family.\nRenders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableBody',
@@ -31218,6 +33982,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableBody: { (props: TableBodyProps): JSX.Element; (props: TableBodyAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableCaption',
@@ -31225,6 +33991,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableCaption: { (props: TableCaptionProps): JSX.Element; (props: TableCaptionAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableCell',
@@ -31232,6 +34000,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableCell: { (props: TableCellProps): JSX.Element; (props: TableCellAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableFoot',
@@ -31239,6 +34009,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableFoot: { (props: TableFootProps): JSX.Element; (props: TableFootAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableHead',
@@ -31246,6 +34018,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableHead: { (props: TableHeadProps): JSX.Element; (props: TableHeadAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableHeaderCell',
@@ -31253,6 +34027,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableHeaderCell: { (props: TableHeaderCellProps): JSX.Element; (props: TableHeaderCellAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableRow',
@@ -31260,12 +34036,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableRow: { (props: TableRowProps): JSX.Element; (props: TableRowAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TabProps',
       anchor: 'tab-props',
       signature: 'TabProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link Tab } component.',
     },
     {
       name: 'Tabs',
@@ -31273,36 +34052,48 @@ export const apiSymbolSets: Readonly<
       signature:
         'Tabs: { (props: TabsProps): JSX.Element; (props: TabsAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a `<nav>` wrapper (or, with `asChild`, merges onto a child) for a set of {@link Tab} links.',
     },
     {
       name: 'TabsAsChildProps',
       anchor: 'tabs-as-child-props',
       signature: 'TabsAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link Tabs } rendered with `asChild`, merging onto a single child element.',
     },
     {
       name: 'TabsContent',
       anchor: 'tabs-content',
       signature: 'TabsContent: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `tabs-content` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'TabsList',
       anchor: 'tabs-list',
       signature: 'TabsList: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `tabs-list` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'TabsProps',
       anchor: 'tabs-props',
       signature: 'TabsProps: any',
       typeOnly: true,
+      summary:
+        'Props for {@link Tabs } rendered as its default `<nav>` element.',
     },
     {
       name: 'TabsTrigger',
       anchor: 'tabs-trigger',
       signature: 'TabsTrigger: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `tabs-content` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'Text',
@@ -31310,6 +34101,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'Text: <TElement extends TextElement = "p">(props: TextProps<TElement>) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Typography primitive: renders any {@link TextElement} (default `<p>`) and turns `size`/`tone`/`weight`/`font`/`numeric`/`wrap`/`truncate` into data attributes for CSS styling.',
     },
     {
       name: 'Textarea',
@@ -31317,120 +34110,150 @@ export const apiSymbolSets: Readonly<
       signature:
         'Textarea: { (props: TextareaElementProps): JSX.Element; (props: TextareaAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `textarea` part of `textarea`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TextElement',
       anchor: 'text-element',
       signature: 'TextElement: any',
       typeOnly: true,
+      summary: 'Element tags {@link Text} can render as via its `as` prop.',
     },
     {
       name: 'TextFont',
       anchor: 'text-font',
       signature: 'TextFont: any',
       typeOnly: true,
+      summary: 'Font family modifier for {@link Text}.',
     },
     {
       name: 'TextNumeric',
       anchor: 'text-numeric',
       signature: 'TextNumeric: any',
       typeOnly: true,
+      summary: 'Numeric glyph variant (e.g. tabular figures) for {@link Text}.',
     },
     {
       name: 'TextProps',
       anchor: 'text-props',
       signature: 'TextProps: any',
       typeOnly: true,
+      summary:
+        'Props for the {@link Text} component, specialized for a given {@link TextElement} `TElement`.',
     },
     {
       name: 'TextSize',
       anchor: 'text-size',
       signature: 'TextSize: any',
       typeOnly: true,
+      summary: 'Font size modifier for {@link Text}.',
     },
     {
       name: 'TextTone',
       anchor: 'text-tone',
       signature: 'TextTone: any',
       typeOnly: true,
+      summary: 'Color tone modifier for {@link Text}.',
     },
     {
       name: 'TextWeight',
       anchor: 'text-weight',
       signature: 'TextWeight: any',
       typeOnly: true,
+      summary: 'Font weight modifier for {@link Text}.',
     },
     {
       name: 'TextWrap',
       anchor: 'text-wrap',
       signature: 'TextWrap: any',
       typeOnly: true,
+      summary: 'White-space wrapping behavior for {@link Text}.',
     },
     {
       name: 'theme',
       anchor: 'theme',
       signature: 'theme: () => ThemeScopeValue',
       typeOnly: true,
+      summary:
+        'Reads the current {@link ThemeScopeValue} from the nearest enclosing {@link ThemeScope}.',
     },
     {
       name: 'ThemeName',
       anchor: 'theme-name',
       signature: 'ThemeName: any',
       typeOnly: true,
+      summary:
+        'Any theme identifier accepted by {@link ThemeScope}: `"light"`, `"dark"`, `"system"`, a {@link CatThemeName}, or a custom string.',
     },
     {
       name: 'ThemeOption',
       anchor: 'theme-option',
       signature: 'ThemeOption: any',
       typeOnly: true,
+      summary:
+        'A theme choice offered by {@link ThemePicker}/{@link ThemeToggle}: a `value` paired with a display `label`.',
     },
     {
       name: 'ThemePicker',
       anchor: 'theme-picker',
       signature: 'ThemePicker: (props: ThemePickerProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        "A `<select>` bound to the current {@link theme}, listing `themes` (defaults to the enclosing scope's options).",
     },
     {
       name: 'ThemePickerProps',
       anchor: 'theme-picker-props',
       signature: 'ThemePickerProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link ThemePicker} component.',
     },
     {
       name: 'ThemeScope',
       anchor: 'theme-scope',
       signature: 'ThemeScope: (props: ThemeScopeProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Establishes a theme boundary: tracks the active theme (persisted to\n`localStorage` under `storageKey` and synced across tabs/scopes), resolves\nthe OS `"system"` preference, and reflects the choice onto the DOM via\n`data-theme`/`data-theme-choice` attributes. Nested scopes cooperate\nthrough a shared coordinator so the deepest explicitly-set scope wins.',
     },
     {
       name: 'ThemeScopeProps',
       anchor: 'theme-scope-props',
       signature: 'ThemeScopeProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link ThemeScope} component.',
     },
     {
       name: 'ThemeScopeValue',
       anchor: 'theme-scope-value',
       signature: 'ThemeScopeValue: any',
       typeOnly: true,
+      summary:
+        'Value read from {@link theme}: the active theme, its resolved system value, a setter, and the available theme options.',
     },
     {
       name: 'ThemeToggle',
       anchor: 'theme-toggle',
       signature: 'ThemeToggle: (props: ThemeToggleProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'A button that cycles through `themes` (defaults to `["light", "dark"]`) on\npress. Supports icon props per theme, or a function-as-children render\nprop receiving {@link ThemeToggleRenderContext}.',
     },
     {
       name: 'ThemeToggleProps',
       anchor: 'theme-toggle-props',
       signature: 'ThemeToggleProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link ThemeToggle} component.',
     },
     {
       name: 'ThemeToggleRenderContext',
       anchor: 'theme-toggle-render-context',
       signature: 'ThemeToggleRenderContext: any',
       typeOnly: true,
+      summary:
+        'Render context passed to a function-as-children {@link ThemeToggleProps.children}.',
     },
     {
       name: 'Toast',
@@ -31447,7 +34270,7 @@ export const apiSymbolSets: Readonly<
         'ToastAction: { (props: ToastActionProps): JSX.Element; (props: ToastActionAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'ToastAction closes the toast after handling a user-triggered action.',
+        'ToastAction closes the toast after handling a user-triggered action.\nRenders the `toast-action` part of `toast`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ToastClose',
@@ -31455,7 +34278,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastClose: { (props: ToastCloseProps): JSX.Element; (props: ToastCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
-      summary: 'ToastClose is the dedicated dismiss control for a toast entry.',
+      summary:
+        'ToastClose is the dedicated dismiss control for a toast entry.\nRenders the `toast-close` part of `toast`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ToastDescription',
@@ -31464,13 +34288,15 @@ export const apiSymbolSets: Readonly<
         'ToastDescription: { (props: ToastDescriptionProps): JSX.Element; (props: ToastDescriptionAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'ToastDescription marks the accessible description slot for a toast entry.',
+        'ToastDescription marks the accessible description slot for a toast entry.\nRenders the `toast-description` part of `toast`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'Toaster',
       anchor: 'toaster',
       signature: 'Toaster: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `sonner` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'ToastHost',
@@ -31486,7 +34312,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastTitle: { (props: ToastTitleProps): JSX.Element; (props: ToastTitleAsChildProps): JSX.Element; }',
       typeOnly: true,
-      summary: 'ToastTitle marks the accessible title slot for a toast entry.',
+      summary:
+        'ToastTitle marks the accessible title slot for a toast entry.\nRenders the `toast-title` part of `toast`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ToastViewport',
@@ -31495,7 +34322,7 @@ export const apiSymbolSets: Readonly<
         'ToastViewport: { (props: ToastViewportProps): JSX.Element; (props: ToastViewportAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'ToastViewport renders the live toast stack and the notification region.',
+        'ToastViewport renders the live toast stack and the notification region.\nRenders the `toast-viewport` part of `toast` with `role="region"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'Toggle',
@@ -31504,7 +34331,7 @@ export const apiSymbolSets: Readonly<
         'Toggle: { (props: ToggleButtonProps): JSX.Element; (props: ToggleAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'Headless Toggle component\n\n## Responsibilities\n- Compose pressable foundation for interaction behavior\n- Apply aria-pressed for toggle state signaling\n- Enforce type="button" default to prevent accidental form submission\n- Forward props and refs to native button or child element\n\n## Non-Responsibilities (delegated to pressable foundation)\n- Keyboard event handling (Enter/Space)\n- Pointer event handling\n- Disabled state enforcement\n- Role attribute application (for non-native elements)\n\n## Invariants\n- MUST NOT contain any event handler logic\n- MUST NOT check disabled or pressed props directly\n- MUST use pressable() for ALL interaction behavior\n- MUST use mergeProps() for ALL prop composition\n- pressed state is CONTROLLED (consumer manages state)',
+        'Headless Toggle component\n\n## Responsibilities\n- Compose pressable foundation for interaction behavior\n- Apply aria-pressed for toggle state signaling\n- Enforce type="button" default to prevent accidental form submission\n- Forward props and refs to native button or child element\n\n## Non-Responsibilities (delegated to pressable foundation)\n- Keyboard event handling (Enter/Space)\n- Pointer event handling\n- Disabled state enforcement\n- Role attribute application (for non-native elements)\n\n## Invariants\n- MUST NOT contain any event handler logic\n- MUST NOT check disabled or pressed props directly\n- MUST use pressable() for ALL interaction behavior\n- MUST use mergeProps() for ALL prop composition\n- pressed state is CONTROLLED (consumer manages state)\nRenders the `toggle` part of `toggle`.\n\nSupports polymorphic rendering via `asChild`.',
       tags: {
         example: [
           'Native toggle button\n```tsx\nconst pressed = state(false);\n<Toggle pressed={pressed()} onPress={() => pressed.set(!pressed())}>\nMute\n</Toggle>\n```',
@@ -31517,6 +34344,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'toggle-group',
       signature: 'ToggleGroup: (props: ToggleGroupProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `toggle-group`.',
     },
     {
       name: 'ToggleGroupItem',
@@ -31524,24 +34352,30 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToggleGroupItem: { (props: ToggleGroupItemProps): JSX.Element; (props: ToggleGroupItemAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `toggle-group`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'Toolbar',
       anchor: 'toolbar',
       signature: 'Toolbar: (props: ToolbarProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Titled toolbar row with an actions area, wrapping to a new line on small screens.',
     },
     {
       name: 'ToolbarProps',
       anchor: 'toolbar-props',
       signature: 'ToolbarProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link Toolbar } component.',
     },
     {
       name: 'Tooltip',
       anchor: 'tooltip',
       signature: 'Tooltip: (props: TooltipProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `tooltip`.',
     },
     {
       name: 'TooltipContent',
@@ -31549,6 +34383,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'TooltipContent: { (props: TooltipContentProps): JSX.Element | null; (props: TooltipContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `tooltip-content` part of `tooltip` with `role="tooltip"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TooltipPortal',
@@ -31556,6 +34392,7 @@ export const apiSymbolSets: Readonly<
       signature:
         'TooltipPortal: (props: TooltipPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `tooltip`.',
     },
     {
       name: 'TooltipTrigger',
@@ -31563,12 +34400,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'TooltipTrigger: { (props: TooltipTriggerProps): JSX.Element; (props: TooltipTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `tooltip-trigger` part of `tooltip`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'Typography',
       anchor: 'typography',
       signature: 'Typography: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `typography` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'TypographyBlockquote',
@@ -31576,30 +34417,40 @@ export const apiSymbolSets: Readonly<
       signature:
         'TypographyBlockquote: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `typography-blockquote` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'TypographyH1',
       anchor: 'typography-h1',
       signature: 'TypographyH1: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `typography-h1` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'TypographyH2',
       anchor: 'typography-h2',
       signature: 'TypographyH2: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `typography-h2` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'TypographyH3',
       anchor: 'typography-h3',
       signature: 'TypographyH3: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `typography-h3` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'TypographyH4',
       anchor: 'typography-h4',
       signature: 'TypographyH4: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `typography-h4` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'TypographyLead',
@@ -31607,6 +34458,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'TypographyLead: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `typography-lead` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'TypographyList',
@@ -31614,6 +34467,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'TypographyList: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `typography-list` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'TypographyMuted',
@@ -31621,12 +34476,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'TypographyMuted: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `typography-muted` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'TypographyP',
       anchor: 'typography-p',
       signature: 'TypographyP: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `typography-p` part of the shadcn-compatible catalog primitives.',
     },
     {
       name: 'VirtualList',
@@ -31634,54 +34493,65 @@ export const apiSymbolSets: Readonly<
       signature:
         'VirtualList: { <Item>(props: VirtualListProps<Item>): JSX.Element; <Item>(props: VirtualListAsChildProps<Item>): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `virtual-list`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'VirtualListApi',
       anchor: 'virtual-list-api',
       signature: 'VirtualListApi: any',
       typeOnly: true,
+      summary: 'Virtual List Api.',
     },
     {
       name: 'VirtualListAsChildProps',
       anchor: 'virtual-list-as-child-props',
       signature: 'VirtualListAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Virtual List.',
     },
     {
       name: 'VirtualListProps',
       anchor: 'virtual-list-props',
       signature: 'VirtualListProps: any',
       typeOnly: true,
+      summary: 'Props for Virtual List.',
     },
     {
       name: 'VirtualListRowComponent',
       anchor: 'virtual-list-row-component',
       signature: 'VirtualListRowComponent: any',
       typeOnly: true,
+      summary: 'Virtual List Row Component.',
     },
     {
       name: 'VirtualListRowComponentProps',
       anchor: 'virtual-list-row-component-props',
       signature: 'VirtualListRowComponentProps: any',
       typeOnly: true,
+      summary: 'Props for Virtual List Row Component.',
     },
     {
       name: 'VirtualListRowElement',
       anchor: 'virtual-list-row-element',
       signature: 'VirtualListRowElement: any',
       typeOnly: true,
+      summary: 'Virtual List Row Element.',
     },
     {
       name: 'VirtualListState',
       anchor: 'virtual-list-state',
       signature: 'VirtualListState: any',
       typeOnly: true,
+      summary: 'Virtual List State.',
     },
     {
       name: 'VirtualListViewport',
       anchor: 'virtual-list-viewport',
       signature: 'VirtualListViewport: any',
       typeOnly: true,
+      summary: 'Virtual List Viewport.',
     },
     {
       name: 'VirtualTable',
@@ -31689,66 +34559,79 @@ export const apiSymbolSets: Readonly<
       signature:
         'VirtualTable: { <Row>(props: VirtualTableProps<Row>): JSX.Element; <Row>(props: VirtualTableAsChildProps<Row>): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `virtual-table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'VirtualTableApi',
       anchor: 'virtual-table-api',
       signature: 'VirtualTableApi: any',
       typeOnly: true,
+      summary: 'Virtual Table Api.',
     },
     {
       name: 'VirtualTableAsChildProps',
       anchor: 'virtual-table-as-child-props',
       signature: 'VirtualTableAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Virtual Table.',
     },
     {
       name: 'VirtualTableCellComponent',
       anchor: 'virtual-table-cell-component',
       signature: 'VirtualTableCellComponent: any',
       typeOnly: true,
+      summary: 'Virtual Table Cell Component.',
     },
     {
       name: 'VirtualTableCellComponentProps',
       anchor: 'virtual-table-cell-component-props',
       signature: 'VirtualTableCellComponentProps: any',
       typeOnly: true,
+      summary: 'Props for Virtual Table Cell Component.',
     },
     {
       name: 'VirtualTableCellElement',
       anchor: 'virtual-table-cell-element',
       signature: 'VirtualTableCellElement: any',
       typeOnly: true,
+      summary: 'Virtual Table Cell Element.',
     },
     {
       name: 'VirtualTableColumn',
       anchor: 'virtual-table-column',
       signature: 'VirtualTableColumn: any',
       typeOnly: true,
+      summary: 'Virtual Table Column.',
     },
     {
       name: 'VirtualTableProps',
       anchor: 'virtual-table-props',
       signature: 'VirtualTableProps: any',
       typeOnly: true,
+      summary: 'Props for Virtual Table.',
     },
     {
       name: 'VirtualTableState',
       anchor: 'virtual-table-state',
       signature: 'VirtualTableState: any',
       typeOnly: true,
+      summary: 'Virtual Table State.',
     },
     {
       name: 'VirtualTableViewport',
       anchor: 'virtual-table-viewport',
       signature: 'VirtualTableViewport: any',
       typeOnly: true,
+      summary: 'Virtual Table Viewport.',
     },
     {
       name: 'VirtualTableWidth',
       anchor: 'virtual-table-width',
       signature: 'VirtualTableWidth: any',
       typeOnly: true,
+      summary: 'Virtual Table Width.',
     },
     {
       name: 'VisuallyHidden',
@@ -31756,102 +34639,129 @@ export const apiSymbolSets: Readonly<
       signature:
         'VisuallyHidden: { (props: VisuallyHiddenSpanProps): JSX.Element; (props: VisuallyHiddenAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `visually-hidden`.\n\nSupports polymorphic rendering via `asChild`.',
     },
   ],
-  symbols51: [
+  symbols52: [
     {
       name: 'CAT_THEME_NAMES',
       anchor: 'cat-theme-names',
       signature:
         'CAT_THEME_NAMES: readonly ["tabby", "ginger", "tuxedo", "calico", "torty"]',
       typeOnly: true,
+      summary: 'Names of the built-in "cat" theme presets.',
     },
     {
       name: 'CAT_THEME_OPTIONS',
       anchor: 'cat-theme-options',
       signature: 'CAT_THEME_OPTIONS: readonly ThemeOption[]',
       typeOnly: true,
+      summary:
+        'Theme options for the built-in "cat" theme presets, keyed to {@link CAT_THEME_NAMES}.',
     },
     {
       name: 'CatThemeName',
       anchor: 'cat-theme-name',
       signature: 'CatThemeName: any',
       typeOnly: true,
+      summary: 'A built-in "cat" theme name, one of {@link CAT_THEME_NAMES}.',
     },
     {
       name: 'DEFAULT_THEME_OPTIONS',
       anchor: 'default-theme-options',
       signature: 'DEFAULT_THEME_OPTIONS: readonly ThemeOption[]',
       typeOnly: true,
+      summary:
+        'Default light/dark/system theme options used by {@link ThemeScope} and {@link ThemePicker}.',
     },
     {
       name: 'theme',
       anchor: 'theme',
       signature: 'theme: () => ThemeScopeValue',
       typeOnly: true,
+      summary:
+        'Reads the current {@link ThemeScopeValue} from the nearest enclosing {@link ThemeScope}.',
     },
     {
       name: 'ThemeName',
       anchor: 'theme-name',
       signature: 'ThemeName: any',
       typeOnly: true,
+      summary:
+        'Any theme identifier accepted by {@link ThemeScope}: `"light"`, `"dark"`, `"system"`, a {@link CatThemeName}, or a custom string.',
     },
     {
       name: 'ThemeOption',
       anchor: 'theme-option',
       signature: 'ThemeOption: any',
       typeOnly: true,
+      summary:
+        'A theme choice offered by {@link ThemePicker}/{@link ThemeToggle}: a `value` paired with a display `label`.',
     },
     {
       name: 'ThemePicker',
       anchor: 'theme-picker',
       signature: 'ThemePicker: (props: ThemePickerProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        "A `<select>` bound to the current {@link theme}, listing `themes` (defaults to the enclosing scope's options).",
     },
     {
       name: 'ThemePickerProps',
       anchor: 'theme-picker-props',
       signature: 'ThemePickerProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link ThemePicker} component.',
     },
     {
       name: 'ThemeScope',
       anchor: 'theme-scope',
       signature: 'ThemeScope: (props: ThemeScopeProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Establishes a theme boundary: tracks the active theme (persisted to\n`localStorage` under `storageKey` and synced across tabs/scopes), resolves\nthe OS `"system"` preference, and reflects the choice onto the DOM via\n`data-theme`/`data-theme-choice` attributes. Nested scopes cooperate\nthrough a shared coordinator so the deepest explicitly-set scope wins.',
     },
     {
       name: 'ThemeScopeProps',
       anchor: 'theme-scope-props',
       signature: 'ThemeScopeProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link ThemeScope} component.',
     },
     {
       name: 'ThemeScopeValue',
       anchor: 'theme-scope-value',
       signature: 'ThemeScopeValue: any',
       typeOnly: true,
+      summary:
+        'Value read from {@link theme}: the active theme, its resolved system value, a setter, and the available theme options.',
     },
     {
       name: 'ThemeToggle',
       anchor: 'theme-toggle',
       signature: 'ThemeToggle: (props: ThemeToggleProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'A button that cycles through `themes` (defaults to `["light", "dark"]`) on\npress. Supports icon props per theme, or a function-as-children render\nprop receiving {@link ThemeToggleRenderContext}.',
     },
     {
       name: 'ThemeToggleProps',
       anchor: 'theme-toggle-props',
       signature: 'ThemeToggleProps: any',
       typeOnly: true,
+      summary: 'Props for the {@link ThemeToggle} component.',
     },
     {
       name: 'ThemeToggleRenderContext',
       anchor: 'theme-toggle-render-context',
       signature: 'ThemeToggleRenderContext: any',
       typeOnly: true,
+      summary:
+        'Render context passed to a function-as-children {@link ThemeToggleProps.children}.',
     },
   ],
-  symbols52: [
+  symbols53: [
     {
       name: 'withThemeStyles',
       anchor: 'with-theme-styles',
@@ -31862,12 +34772,13 @@ export const apiSymbolSets: Readonly<
         'Wrap an Askr SSR/SSG document renderer so generated theme rules used by the\nrendered app are available before hydration.',
     },
   ],
-  symbols53: [
+  symbols54: [
     {
       name: 'Accordion',
       anchor: 'accordion',
       signature: 'Accordion: (props: AccordionProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `accordion`.',
     },
     {
       name: 'ACCORDION_A11Y_CONTRACT',
@@ -31882,6 +34793,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'accordion-a11y-contract',
       signature: 'AccordionA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Accordion A11y Contract object.',
     },
     {
       name: 'AccordionContent',
@@ -31889,24 +34801,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'AccordionContent: { (props: AccordionContentProps): JSX.Element | null; (props: AccordionContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `accordion-content` part of `accordion` with `role="region"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AccordionContentAsChildProps',
       anchor: 'accordion-content-as-child-props',
       signature: 'AccordionContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Accordion Content.',
     },
     {
       name: 'AccordionContentOwnProps',
       anchor: 'accordion-content-own-props',
       signature: 'AccordionContentOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Accordion Content, before merging with native element attributes.',
     },
     {
       name: 'AccordionContentProps',
       anchor: 'accordion-content-props',
       signature: 'AccordionContentProps: any',
       typeOnly: true,
+      summary: 'Props for Accordion Content.',
     },
     {
       name: 'AccordionHeader',
@@ -31914,60 +34833,73 @@ export const apiSymbolSets: Readonly<
       signature:
         'AccordionHeader: { (props: AccordionHeaderProps): JSX.Element; (props: AccordionHeaderAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `accordion-header` part of `accordion`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AccordionHeaderAsChildProps',
       anchor: 'accordion-header-as-child-props',
       signature: 'AccordionHeaderAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Accordion Header.',
     },
     {
       name: 'AccordionHeaderProps',
       anchor: 'accordion-header-props',
       signature: 'AccordionHeaderProps: any',
       typeOnly: true,
+      summary: 'Props for Accordion Header.',
     },
     {
       name: 'AccordionItem',
       anchor: 'accordion-item',
       signature: 'AccordionItem: (props: AccordionItemProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the `accordion-item` part of `accordion`.',
     },
     {
       name: 'AccordionItemOwnProps',
       anchor: 'accordion-item-own-props',
       signature: 'AccordionItemOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Accordion Item, before merging with native element attributes.',
     },
     {
       name: 'AccordionItemProps',
       anchor: 'accordion-item-props',
       signature: 'AccordionItemProps: any',
       typeOnly: true,
+      summary: 'Props for Accordion Item.',
     },
     {
       name: 'AccordionMultipleProps',
       anchor: 'accordion-multiple-props',
       signature: 'AccordionMultipleProps: any',
       typeOnly: true,
+      summary: 'Props for Accordion Multiple.',
     },
     {
       name: 'AccordionOrientation',
       anchor: 'accordion-orientation',
       signature: 'AccordionOrientation: any',
       typeOnly: true,
+      summary: 'Accordion Orientation.',
     },
     {
       name: 'AccordionProps',
       anchor: 'accordion-props',
       signature: 'AccordionProps: any',
       typeOnly: true,
+      summary: 'Props for Accordion.',
     },
     {
       name: 'AccordionSingleProps',
       anchor: 'accordion-single-props',
       signature: 'AccordionSingleProps: any',
       typeOnly: true,
+      summary: 'Props for Accordion Single.',
     },
     {
       name: 'AccordionTrigger',
@@ -31975,18 +34907,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'AccordionTrigger: { (props: AccordionTriggerProps): JSX.Element; (props: AccordionTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `accordion-trigger` part of `accordion`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AccordionTriggerAsChildProps',
       anchor: 'accordion-trigger-as-child-props',
       signature: 'AccordionTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Accordion Trigger.',
     },
     {
       name: 'AccordionTriggerProps',
       anchor: 'accordion-trigger-props',
       signature: 'AccordionTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Accordion Trigger.',
     },
     {
       name: 'ALERT_DIALOG_A11Y_CONTRACT',
@@ -32001,12 +34938,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'alert-dialog',
       signature: 'AlertDialog: (props: AlertDialogProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `alert-dialog`.',
     },
     {
       name: 'AlertDialogA11yContract',
       anchor: 'alert-dialog-a11y-contract',
       signature: 'AlertDialogA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Alert Dialog A11y Contract object.',
     },
     {
       name: 'AlertDialogAction',
@@ -32014,18 +34953,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogAction: { (props: DialogCloseProps): JSX.Element; (props: DialogCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-close` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogActionAsChildProps',
       anchor: 'alert-dialog-action-as-child-props',
       signature: 'AlertDialogActionAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Alert Dialog Action.',
     },
     {
       name: 'AlertDialogActionProps',
       anchor: 'alert-dialog-action-props',
       signature: 'AlertDialogActionProps: any',
       typeOnly: true,
+      summary: 'Props for Alert Dialog Action.',
     },
     {
       name: 'AlertDialogCancel',
@@ -32033,18 +34977,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogCancel: { (props: DialogCloseProps): JSX.Element; (props: DialogCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-close` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogCancelAsChildProps',
       anchor: 'alert-dialog-cancel-as-child-props',
       signature: 'AlertDialogCancelAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Alert Dialog Cancel.',
     },
     {
       name: 'AlertDialogCancelProps',
       anchor: 'alert-dialog-cancel-props',
       signature: 'AlertDialogCancelProps: any',
       typeOnly: true,
+      summary: 'Props for Alert Dialog Cancel.',
     },
     {
       name: 'AlertDialogContent',
@@ -32052,24 +35001,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogContent: (props: AlertDialogContentProps | AlertDialogContentAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a part of `alert-dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogContentAsChildProps',
       anchor: 'alert-dialog-content-as-child-props',
       signature: 'AlertDialogContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Alert Dialog Content.',
     },
     {
       name: 'AlertDialogContentOwnProps',
       anchor: 'alert-dialog-content-own-props',
       signature: 'AlertDialogContentOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Alert Dialog Content, before merging with native element attributes.',
     },
     {
       name: 'AlertDialogContentProps',
       anchor: 'alert-dialog-content-props',
       signature: 'AlertDialogContentProps: any',
       typeOnly: true,
+      summary: 'Props for Alert Dialog Content.',
     },
     {
       name: 'AlertDialogDescription',
@@ -32077,18 +35033,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogDescription: { (props: DialogDescriptionProps): JSX.Element; (props: DialogDescriptionAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-description` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogDescriptionAsChildProps',
       anchor: 'alert-dialog-description-as-child-props',
       signature: 'AlertDialogDescriptionAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Alert Dialog Description.',
     },
     {
       name: 'AlertDialogDescriptionProps',
       anchor: 'alert-dialog-description-props',
       signature: 'AlertDialogDescriptionProps: any',
       typeOnly: true,
+      summary: 'Props for Alert Dialog Description.',
     },
     {
       name: 'AlertDialogOverlay',
@@ -32096,30 +35057,39 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogOverlay: { (props: DialogOverlayProps): JSX.Element | null; (props: DialogOverlayAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-overlay` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogOverlayAsChildProps',
       anchor: 'alert-dialog-overlay-as-child-props',
       signature: 'AlertDialogOverlayAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Alert Dialog Overlay.',
     },
     {
       name: 'AlertDialogOverlayOwnProps',
       anchor: 'alert-dialog-overlay-own-props',
       signature: 'AlertDialogOverlayOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Alert Dialog Overlay, before merging with native element attributes.',
     },
     {
       name: 'AlertDialogOverlayProps',
       anchor: 'alert-dialog-overlay-props',
       signature: 'AlertDialogOverlayProps: any',
       typeOnly: true,
+      summary: 'Props for Alert Dialog Overlay.',
     },
     {
       name: 'AlertDialogOwnProps',
       anchor: 'alert-dialog-own-props',
       signature: 'AlertDialogOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Alert Dialog, before merging with native element attributes.',
     },
     {
       name: 'AlertDialogPortal',
@@ -32127,18 +35097,21 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogPortal: (props: DialogPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `dialog`.',
     },
     {
       name: 'AlertDialogPortalProps',
       anchor: 'alert-dialog-portal-props',
       signature: 'AlertDialogPortalProps: any',
       typeOnly: true,
+      summary: 'Props for Alert Dialog Portal.',
     },
     {
       name: 'AlertDialogProps',
       anchor: 'alert-dialog-props',
       signature: 'AlertDialogProps: any',
       typeOnly: true,
+      summary: 'Props for Alert Dialog.',
     },
     {
       name: 'AlertDialogTitle',
@@ -32146,18 +35119,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogTitle: { (props: DialogTitleProps): JSX.Element; (props: DialogTitleAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-title` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogTitleAsChildProps',
       anchor: 'alert-dialog-title-as-child-props',
       signature: 'AlertDialogTitleAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Alert Dialog Title.',
     },
     {
       name: 'AlertDialogTitleProps',
       anchor: 'alert-dialog-title-props',
       signature: 'AlertDialogTitleProps: any',
       typeOnly: true,
+      summary: 'Props for Alert Dialog Title.',
     },
     {
       name: 'AlertDialogTrigger',
@@ -32165,18 +35143,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogTrigger: (props: AlertDialogTriggerProps | AlertDialogTriggerAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a part of `alert-dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogTriggerAsChildProps',
       anchor: 'alert-dialog-trigger-as-child-props',
       signature: 'AlertDialogTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Alert Dialog Trigger.',
     },
     {
       name: 'AlertDialogTriggerProps',
       anchor: 'alert-dialog-trigger-props',
       signature: 'AlertDialogTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Alert Dialog Trigger.',
     },
     {
       name: 'Avatar',
@@ -32184,6 +35167,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'Avatar: { (props: AvatarProps): JSX.Element; (props: AvatarAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `avatar` part of `avatar`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AVATAR_A11Y_CONTRACT',
@@ -32198,12 +35183,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'avatar-a11y-contract',
       signature: 'AvatarA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Avatar A11y Contract object.',
     },
     {
       name: 'AvatarAsChildProps',
       anchor: 'avatar-as-child-props',
       signature: 'AvatarAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Avatar.',
     },
     {
       name: 'AvatarFallback',
@@ -32211,60 +35198,75 @@ export const apiSymbolSets: Readonly<
       signature:
         'AvatarFallback: { (props: AvatarFallbackProps): JSX.Element | null; (props: AvatarFallbackAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `avatar-fallback` part of `avatar`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AvatarFallbackAsChildProps',
       anchor: 'avatar-fallback-as-child-props',
       signature: 'AvatarFallbackAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Avatar Fallback.',
     },
     {
       name: 'AvatarFallbackOwnProps',
       anchor: 'avatar-fallback-own-props',
       signature: 'AvatarFallbackOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Avatar Fallback, before merging with native element attributes.',
     },
     {
       name: 'AvatarFallbackProps',
       anchor: 'avatar-fallback-props',
       signature: 'AvatarFallbackProps: any',
       typeOnly: true,
+      summary: 'Props for Avatar Fallback.',
     },
     {
       name: 'AvatarImage',
       anchor: 'avatar-image',
       signature: 'AvatarImage: (props: AvatarImageProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the `avatar-image` part of `avatar`.',
     },
     {
       name: 'AvatarImageOwnProps',
       anchor: 'avatar-image-own-props',
       signature: 'AvatarImageOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Avatar Image, before merging with native element attributes.',
     },
     {
       name: 'AvatarImageProps',
       anchor: 'avatar-image-props',
       signature: 'AvatarImageProps: any',
       typeOnly: true,
+      summary: 'Props for Avatar Image.',
     },
     {
       name: 'AvatarLoadingStatus',
       anchor: 'avatar-loading-status',
       signature: 'AvatarLoadingStatus: any',
       typeOnly: true,
+      summary: 'Avatar Loading Status.',
     },
     {
       name: 'AvatarOwnProps',
       anchor: 'avatar-own-props',
       signature: 'AvatarOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Avatar, before merging with native element attributes.',
     },
     {
       name: 'AvatarProps',
       anchor: 'avatar-props',
       signature: 'AvatarProps: any',
       typeOnly: true,
+      summary: 'Props for Avatar.',
     },
     {
       name: 'Button',
@@ -32273,7 +35275,7 @@ export const apiSymbolSets: Readonly<
         'Button: { (props: ButtonNativeProps): JSX.Element; (props: ButtonAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'Headless Button component\n\n## Responsibilities\n- Compose pressable foundation for interaction behavior\n- Enforce type="button" default to prevent accidental form submission\n- Forward props and refs to native button or child element\n\n## Non-Responsibilities (delegated to pressable foundation)\n- Keyboard event handling (Enter/Space)\n- Pointer event handling\n- Disabled state enforcement\n- ARIA attribute application\n\n## Invariants\n- MUST NOT contain any event handler logic\n- MUST NOT check disabled prop directly\n- MUST use pressable() for ALL interaction behavior\n- MUST use mergeProps() for ALL prop composition',
+        'Headless Button component\n\n## Responsibilities\n- Compose pressable foundation for interaction behavior\n- Enforce type="button" default to prevent accidental form submission\n- Forward props and refs to native button or child element\n\n## Non-Responsibilities (delegated to pressable foundation)\n- Keyboard event handling (Enter/Space)\n- Pointer event handling\n- Disabled state enforcement\n- ARIA attribute application\n\n## Invariants\n- MUST NOT contain any event handler logic\n- MUST NOT check disabled prop directly\n- MUST use pressable() for ALL interaction behavior\n- MUST use mergeProps() for ALL prop composition\nRenders the `button` part of `button`.\n\nSupports polymorphic rendering via `asChild`.',
       tags: {
         example: [
           'Native button (prevents accidental submit)\n```tsx\n<Button onPress={handleSave}>Save</Button>\n```',
@@ -32303,6 +35305,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'button-as-child-element',
       signature: 'ButtonAsChildElement: any',
       typeOnly: true,
+      summary: 'Button As Child Element.',
     },
     {
       name: 'ButtonAsChildProps',
@@ -32337,18 +35340,21 @@ export const apiSymbolSets: Readonly<
       anchor: 'button-size',
       signature: 'ButtonSize: any',
       typeOnly: true,
+      summary: 'Button Size.',
     },
     {
       name: 'ButtonVariant',
       anchor: 'button-variant',
       signature: 'ButtonVariant: any',
       typeOnly: true,
+      summary: 'Button Variant.',
     },
     {
       name: 'ButtonWidth',
       anchor: 'button-width',
       signature: 'ButtonWidth: any',
       typeOnly: true,
+      summary: 'Button Width.',
     },
     {
       name: 'Checkbox',
@@ -32357,7 +35363,7 @@ export const apiSymbolSets: Readonly<
         'Checkbox: { (props: CheckboxInputProps): JSX.Element; (props: CheckboxAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'Headless Checkbox component\n\n## Responsibilities\n- Apply aria-checked for checkbox state signaling\n- Handle indeterminate state for native and asChild hosts\n- Support controlled and uncontrolled checked state\n- Forward props and refs to native input or child element\n- Preserve native checkbox semantics and apply checkbox behavior to asChild hosts\n\n## Non-Responsibilities\n- Form submission orchestration beyond native input props\n\n## Invariants\n- MUST NOT add role="button" (native inputs are role="checkbox")\n- checked state may be controlled or uncontrolled\n- indeterminate overrides checked for state signaling\n- For asChild, consumer MUST provide role="checkbox"',
+        'Headless Checkbox component\n\n## Responsibilities\n- Apply aria-checked for checkbox state signaling\n- Handle indeterminate state for native and asChild hosts\n- Support controlled and uncontrolled checked state\n- Forward props and refs to native input or child element\n- Preserve native checkbox semantics and apply checkbox behavior to asChild hosts\n\n## Non-Responsibilities\n- Form submission orchestration beyond native input props\n\n## Invariants\n- MUST NOT add role="button" (native inputs are role="checkbox")\n- checked state may be controlled or uncontrolled\n- indeterminate overrides checked for state signaling\n- For asChild, consumer MUST provide role="checkbox"\nRenders the `checkbox` part of `checkbox` with `role="checkbox"`.\n\nSupports polymorphic rendering via `asChild`.',
       tags: {
         example: [
           'Native checkbox input\n```tsx\nconst checked = state(false);\n<Checkbox checked={checked()} onPress={() => checked.set(!checked())} />\n```',
@@ -32380,6 +35386,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'checkbox-a11y-contract',
       signature: 'CheckboxA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Checkbox A11y Contract object.',
     },
     {
       name: 'CheckboxAsChildProps',
@@ -32415,6 +35422,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'collapsible',
       signature: 'Collapsible: (props: CollapsibleProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `collapsible`.',
     },
     {
       name: 'COLLAPSIBLE_A11Y_CONTRACT',
@@ -32431,12 +35439,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'CollapsibleContent: { (props: CollapsibleContentProps): JSX.Element | null; (props: CollapsibleContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `collapsible-content` part of `collapsible`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'CollapsibleContentAsChildProps',
       anchor: 'collapsible-content-as-child-props',
       signature: 'CollapsibleContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Collapsible Content.',
       members: [
         {
           name: 'asChild',
@@ -32535,12 +35547,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'CollapsibleTrigger: { (props: CollapsibleTriggerProps): JSX.Element; (props: CollapsibleTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `collapsible-trigger` part of `collapsible`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'CollapsibleTriggerAsChildProps',
       anchor: 'collapsible-trigger-as-child-props',
       signature: 'CollapsibleTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Collapsible Trigger.',
       members: [
         {
           name: 'asChild',
@@ -32596,12 +35612,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'debounced-input-props',
       signature: 'DebouncedInputProps: any',
       typeOnly: true,
+      summary: 'Props for Debounced Input.',
     },
     {
       name: 'Dialog',
       anchor: 'dialog',
       signature: 'Dialog: (props: DialogProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `dialog`.',
     },
     {
       name: 'DIALOG_A11Y_CONTRACT',
@@ -32616,6 +35634,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'dialog-a11y-contract',
       signature: 'DialogA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Dialog A11y Contract object.',
     },
     {
       name: 'DialogClose',
@@ -32623,18 +35642,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogClose: { (props: DialogCloseProps): JSX.Element; (props: DialogCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-close` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogCloseAsChildProps',
       anchor: 'dialog-close-as-child-props',
       signature: 'DialogCloseAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dialog Close.',
     },
     {
       name: 'DialogCloseProps',
       anchor: 'dialog-close-props',
       signature: 'DialogCloseProps: any',
       typeOnly: true,
+      summary: 'Props for Dialog Close.',
     },
     {
       name: 'DialogContent',
@@ -32642,24 +35666,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogContent: { (props: DialogContentProps): JSX.Element | null; (props: DialogContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-content` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogContentAsChildProps',
       anchor: 'dialog-content-as-child-props',
       signature: 'DialogContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dialog Content.',
     },
     {
       name: 'DialogContentOwnProps',
       anchor: 'dialog-content-own-props',
       signature: 'DialogContentOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Dialog Content, before merging with native element attributes.',
     },
     {
       name: 'DialogContentProps',
       anchor: 'dialog-content-props',
       signature: 'DialogContentProps: any',
       typeOnly: true,
+      summary: 'Props for Dialog Content.',
     },
     {
       name: 'DialogDescription',
@@ -32667,18 +35698,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogDescription: { (props: DialogDescriptionProps): JSX.Element; (props: DialogDescriptionAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-description` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogDescriptionAsChildProps',
       anchor: 'dialog-description-as-child-props',
       signature: 'DialogDescriptionAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dialog Description.',
     },
     {
       name: 'DialogDescriptionProps',
       anchor: 'dialog-description-props',
       signature: 'DialogDescriptionProps: any',
       typeOnly: true,
+      summary: 'Props for Dialog Description.',
     },
     {
       name: 'DialogOverlay',
@@ -32686,30 +35722,39 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogOverlay: { (props: DialogOverlayProps): JSX.Element | null; (props: DialogOverlayAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-overlay` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogOverlayAsChildProps',
       anchor: 'dialog-overlay-as-child-props',
       signature: 'DialogOverlayAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dialog Overlay.',
     },
     {
       name: 'DialogOverlayOwnProps',
       anchor: 'dialog-overlay-own-props',
       signature: 'DialogOverlayOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Dialog Overlay, before merging with native element attributes.',
     },
     {
       name: 'DialogOverlayProps',
       anchor: 'dialog-overlay-props',
       signature: 'DialogOverlayProps: any',
       typeOnly: true,
+      summary: 'Props for Dialog Overlay.',
     },
     {
       name: 'DialogOwnProps',
       anchor: 'dialog-own-props',
       signature: 'DialogOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Dialog, before merging with native element attributes.',
     },
     {
       name: 'DialogPortal',
@@ -32717,18 +35762,21 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogPortal: (props: DialogPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `dialog`.',
     },
     {
       name: 'DialogPortalProps',
       anchor: 'dialog-portal-props',
       signature: 'DialogPortalProps: any',
       typeOnly: true,
+      summary: 'Props for Dialog Portal.',
     },
     {
       name: 'DialogProps',
       anchor: 'dialog-props',
       signature: 'DialogProps: any',
       typeOnly: true,
+      summary: 'Props for Dialog.',
     },
     {
       name: 'DialogTitle',
@@ -32736,18 +35784,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogTitle: { (props: DialogTitleProps): JSX.Element; (props: DialogTitleAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-title` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogTitleAsChildProps',
       anchor: 'dialog-title-as-child-props',
       signature: 'DialogTitleAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dialog Title.',
     },
     {
       name: 'DialogTitleProps',
       anchor: 'dialog-title-props',
       signature: 'DialogTitleProps: any',
       typeOnly: true,
+      summary: 'Props for Dialog Title.',
     },
     {
       name: 'DialogTrigger',
@@ -32755,18 +35808,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogTrigger: { (props: DialogTriggerProps): JSX.Element; (props: DialogTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-trigger` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogTriggerAsChildProps',
       anchor: 'dialog-trigger-as-child-props',
       signature: 'DialogTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dialog Trigger.',
     },
     {
       name: 'DialogTriggerProps',
       anchor: 'dialog-trigger-props',
       signature: 'DialogTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Dialog Trigger.',
     },
     {
       name: 'DISMISSABLE_LAYER_A11Y_CONTRACT',
@@ -32782,36 +35840,45 @@ export const apiSymbolSets: Readonly<
       signature:
         'DismissableLayer: { (props: DismissableLayerProps): JSX.Element; (props: DismissableLayerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `dismissable-layer`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DismissableLayerA11yContract',
       anchor: 'dismissable-layer-a11y-contract',
       signature: 'DismissableLayerA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Dismissable Layer A11y Contract object.',
     },
     {
       name: 'DismissableLayerAsChildProps',
       anchor: 'dismissable-layer-as-child-props',
       signature: 'DismissableLayerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dismissable Layer.',
     },
     {
       name: 'DismissableLayerOwnProps',
       anchor: 'dismissable-layer-own-props',
       signature: 'DismissableLayerOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Dismissable Layer, before merging with native element attributes.',
     },
     {
       name: 'DismissableLayerProps',
       anchor: 'dismissable-layer-props',
       signature: 'DismissableLayerProps: any',
       typeOnly: true,
+      summary: 'Props for Dismissable Layer.',
     },
     {
       name: 'Dropdown',
       anchor: 'dropdown',
       signature: 'Dropdown: (props: DropdownProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `dropdown`.',
     },
     {
       name: 'DROPDOWN_A11Y_CONTRACT',
@@ -32826,6 +35893,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'dropdown-a11y-contract',
       signature: 'DropdownA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Dropdown A11y Contract object.',
     },
     {
       name: 'DropdownContent',
@@ -32833,24 +35901,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownContent: { (props: DropdownContentProps): JSX.Element | null; (props: DropdownContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownContentAsChildProps',
       anchor: 'dropdown-content-as-child-props',
       signature: 'DropdownContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dropdown Content.',
     },
     {
       name: 'DropdownContentOwnProps',
       anchor: 'dropdown-content-own-props',
       signature: 'DropdownContentOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Dropdown Content, before merging with native element attributes.',
     },
     {
       name: 'DropdownContentProps',
       anchor: 'dropdown-content-props',
       signature: 'DropdownContentProps: any',
       typeOnly: true,
+      summary: 'Props for Dropdown Content.',
     },
     {
       name: 'DropdownGroup',
@@ -32858,18 +35933,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-group` part of `dropdown` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownGroupAsChildProps',
       anchor: 'dropdown-group-as-child-props',
       signature: 'DropdownGroupAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dropdown Group.',
     },
     {
       name: 'DropdownGroupProps',
       anchor: 'dropdown-group-props',
       signature: 'DropdownGroupProps: any',
       typeOnly: true,
+      summary: 'Props for Dropdown Group.',
     },
     {
       name: 'DropdownItem',
@@ -32877,30 +35957,38 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownItem: { (props: DropdownItemProps): JSX.Element | null; (props: DropdownItemAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownItemAsChildProps',
       anchor: 'dropdown-item-as-child-props',
       signature: 'DropdownItemAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dropdown Item.',
     },
     {
       name: 'DropdownItemOwnProps',
       anchor: 'dropdown-item-own-props',
       signature: 'DropdownItemOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Dropdown Item, before merging with native element attributes.',
     },
     {
       name: 'DropdownItemProps',
       anchor: 'dropdown-item-props',
       signature: 'DropdownItemProps: any',
       typeOnly: true,
+      summary: 'Props for Dropdown Item.',
     },
     {
       name: 'DropdownItemVariant',
       anchor: 'dropdown-item-variant',
       signature: 'DropdownItemVariant: any',
       typeOnly: true,
+      summary: 'Dropdown Item Variant.',
     },
     {
       name: 'DropdownLabel',
@@ -32908,24 +35996,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-label` part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownLabelAsChildProps',
       anchor: 'dropdown-label-as-child-props',
       signature: 'DropdownLabelAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dropdown Label.',
     },
     {
       name: 'DropdownLabelProps',
       anchor: 'dropdown-label-props',
       signature: 'DropdownLabelProps: any',
       typeOnly: true,
+      summary: 'Props for Dropdown Label.',
     },
     {
       name: 'DropdownOwnProps',
       anchor: 'dropdown-own-props',
       signature: 'DropdownOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Dropdown, before merging with native element attributes.',
     },
     {
       name: 'DropdownPortal',
@@ -32933,18 +36028,21 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownPortal: (props: DropdownPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `dropdown`.',
     },
     {
       name: 'DropdownPortalProps',
       anchor: 'dropdown-portal-props',
       signature: 'DropdownPortalProps: any',
       typeOnly: true,
+      summary: 'Props for Dropdown Portal.',
     },
     {
       name: 'DropdownProps',
       anchor: 'dropdown-props',
       signature: 'DropdownProps: any',
       typeOnly: true,
+      summary: 'Props for `Dropdown`.',
     },
     {
       name: 'DropdownSeparator',
@@ -32952,18 +36050,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-separator` part of `dropdown` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownSeparatorAsChildProps',
       anchor: 'dropdown-separator-as-child-props',
       signature: 'DropdownSeparatorAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dropdown Separator.',
     },
     {
       name: 'DropdownSeparatorProps',
       anchor: 'dropdown-separator-props',
       signature: 'DropdownSeparatorProps: any',
       typeOnly: true,
+      summary: 'Props for Dropdown Separator.',
     },
     {
       name: 'DropdownTrigger',
@@ -32971,36 +36074,45 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownTrigger: { (props: DropdownTriggerProps): JSX.Element | null; (props: DropdownTriggerAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-trigger` part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownTriggerAsChildProps',
       anchor: 'dropdown-trigger-as-child-props',
       signature: 'DropdownTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dropdown Trigger.',
     },
     {
       name: 'DropdownTriggerOwnProps',
       anchor: 'dropdown-trigger-own-props',
       signature: 'DropdownTriggerOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Dropdown Trigger, before merging with native element attributes.',
     },
     {
       name: 'DropdownTriggerProps',
       anchor: 'dropdown-trigger-props',
       signature: 'DropdownTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Dropdown Trigger.',
     },
     {
       name: 'DropdownTriggerSize',
       anchor: 'dropdown-trigger-size',
       signature: 'DropdownTriggerSize: any',
       typeOnly: true,
+      summary: 'Dropdown Trigger Size.',
     },
     {
       name: 'DropdownTriggerVariant',
       anchor: 'dropdown-trigger-variant',
       signature: 'DropdownTriggerVariant: any',
       typeOnly: true,
+      summary: 'Dropdown Trigger Variant.',
     },
     {
       name: 'FOCUS_SCOPE_A11Y_CONTRACT',
@@ -33016,30 +36128,38 @@ export const apiSymbolSets: Readonly<
       signature:
         'FocusScope: { (props: FocusScopeProps): JSX.Element; (props: FocusScopeAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `focus-scope`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'FocusScopeA11yContract',
       anchor: 'focus-scope-a11y-contract',
       signature: 'FocusScopeA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Focus Scope A11y Contract object.',
     },
     {
       name: 'FocusScopeAsChildProps',
       anchor: 'focus-scope-as-child-props',
       signature: 'FocusScopeAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Focus Scope.',
     },
     {
       name: 'FocusScopeOwnProps',
       anchor: 'focus-scope-own-props',
       signature: 'FocusScopeOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Focus Scope, before merging with native element attributes.',
     },
     {
       name: 'FocusScopeProps',
       anchor: 'focus-scope-props',
       signature: 'FocusScopeProps: any',
       typeOnly: true,
+      summary: 'Props for Focus Scope.',
     },
     {
       name: 'Form',
@@ -33047,6 +36167,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'Form: { (props: FormProps): JSX.Element; (props: FormAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `form`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'FormAsChildProps',
@@ -33061,18 +36183,21 @@ export const apiSymbolSets: Readonly<
       anchor: 'form-props',
       signature: 'FormProps: any',
       typeOnly: true,
+      summary: 'Props for Form.',
     },
     {
       name: 'HoverCard',
       anchor: 'hover-card',
       signature: 'HoverCard: (props: HoverCardProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `hover-card`.',
     },
     {
       name: 'HoverCardAsChildProps',
       anchor: 'hover-card-as-child-props',
       signature: 'HoverCardAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Hover Card.',
     },
     {
       name: 'HoverCardContent',
@@ -33080,24 +36205,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'HoverCardContent: { (props: HoverCardContentProps): JSX.Element | null; (props: HoverCardContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `hover-card-content` part of `hover-card` with `role="dialog"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'HoverCardContentAsChildProps',
       anchor: 'hover-card-content-as-child-props',
       signature: 'HoverCardContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Hover Card Content.',
     },
     {
       name: 'HoverCardContentProps',
       anchor: 'hover-card-content-props',
       signature: 'HoverCardContentProps: any',
       typeOnly: true,
+      summary: 'Props for Hover Card Content.',
     },
     {
       name: 'HoverCardOwnProps',
       anchor: 'hover-card-own-props',
       signature: 'HoverCardOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Hover Card, before merging with native element attributes.',
     },
     {
       name: 'HoverCardPortal',
@@ -33105,18 +36237,21 @@ export const apiSymbolSets: Readonly<
       signature:
         'HoverCardPortal: (props: HoverCardPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `hover-card`.',
     },
     {
       name: 'HoverCardPortalProps',
       anchor: 'hover-card-portal-props',
       signature: 'HoverCardPortalProps: any',
       typeOnly: true,
+      summary: 'Props for Hover Card Portal.',
     },
     {
       name: 'HoverCardProps',
       anchor: 'hover-card-props',
       signature: 'HoverCardProps: any',
       typeOnly: true,
+      summary: 'Props for Hover Card.',
     },
     {
       name: 'HoverCardTrigger',
@@ -33124,18 +36259,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'HoverCardTrigger: { (props: HoverCardTriggerProps): JSX.Element; (props: HoverCardTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `hover-card-trigger` part of `hover-card`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'HoverCardTriggerAsChildProps',
       anchor: 'hover-card-trigger-as-child-props',
       signature: 'HoverCardTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Hover Card Trigger.',
     },
     {
       name: 'HoverCardTriggerProps',
       anchor: 'hover-card-trigger-props',
       signature: 'HoverCardTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Hover Card Trigger.',
     },
     {
       name: 'Input',
@@ -33143,6 +36283,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'Input: { (props: InputInputProps): JSX.Element; (props: InputAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `input` part of `input`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'INPUT_A11Y_CONTRACT',
@@ -33157,36 +36299,43 @@ export const apiSymbolSets: Readonly<
       anchor: 'input-a11y-contract',
       signature: 'InputA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Input A11y Contract object.',
     },
     {
       name: 'InputAsChildProps',
       anchor: 'input-as-child-props',
       signature: 'InputAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Input.',
     },
     {
       name: 'InputEvent',
       anchor: 'input-event',
       signature: 'InputEvent: any',
       typeOnly: true,
+      summary: 'Input Event.',
     },
     {
       name: 'InputInputProps',
       anchor: 'input-input-props',
       signature: 'InputInputProps: any',
       typeOnly: true,
+      summary: 'Props for Input Input.',
     },
     {
       name: 'InputOwnProps',
       anchor: 'input-own-props',
       signature: 'InputOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Input, before merging with native element attributes.',
     },
     {
       name: 'InputProps',
       anchor: 'input-props',
       signature: 'InputProps: any',
       typeOnly: true,
+      summary: 'Props for Input.',
     },
     {
       name: 'Label',
@@ -33194,6 +36343,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'Label: { (props: LabelLabelProps): JSXElement; (props: LabelAsChildProps): JSXElement; }',
       typeOnly: true,
+      summary:
+        'Renders the `label` part of `label`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'LABEL_A11Y_CONTRACT',
@@ -33208,36 +36359,43 @@ export const apiSymbolSets: Readonly<
       anchor: 'label-a11y-contract',
       signature: 'LabelA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Label A11y Contract object.',
     },
     {
       name: 'LabelAsChildProps',
       anchor: 'label-as-child-props',
       signature: 'LabelAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Label.',
     },
     {
       name: 'LabelLabelProps',
       anchor: 'label-label-props',
       signature: 'LabelLabelProps: any',
       typeOnly: true,
+      summary: 'Props for Label Label.',
     },
     {
       name: 'LabelOwnProps',
       anchor: 'label-own-props',
       signature: 'LabelOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Label, before merging with native element attributes.',
     },
     {
       name: 'LabelProps',
       anchor: 'label-props',
       signature: 'LabelProps: any',
       typeOnly: true,
+      summary: 'Props for Label.',
     },
     {
       name: 'Menu',
       anchor: 'menu',
       signature: 'Menu: (props: MenuProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `menu`.',
     },
     {
       name: 'MENU_A11Y_CONTRACT',
@@ -33252,12 +36410,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'menu-a11y-contract',
       signature: 'MenuA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Menu A11y Contract object.',
     },
     {
       name: 'Menubar',
       anchor: 'menubar',
       signature: 'Menubar: (props: MenubarProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `menubar`.',
     },
     {
       name: 'MENUBAR_A11Y_CONTRACT',
@@ -33272,6 +36432,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'menubar-a11y-contract',
       signature: 'MenubarA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Menubar A11y Contract object.',
     },
     {
       name: 'MenubarContent',
@@ -33279,24 +36440,30 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarContent: { (props: MenubarContentProps): JSX.Element | null; (props: MenubarContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary: 'Renders a part of `menubar`.',
     },
     {
       name: 'MenubarContentAsChildProps',
       anchor: 'menubar-content-as-child-props',
       signature: 'MenubarContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menubar Content.',
     },
     {
       name: 'MenubarContentOwnProps',
       anchor: 'menubar-content-own-props',
       signature: 'MenubarContentOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Menubar Content, before merging with native element attributes.',
     },
     {
       name: 'MenubarContentProps',
       anchor: 'menubar-content-props',
       signature: 'MenubarContentProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Content.',
     },
     {
       name: 'MenubarGroup',
@@ -33304,18 +36471,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarGroup: (props: MenubarGroupProps | MenubarGroupAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `menubar-group` part of `menubar` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenubarGroupAsChildProps',
       anchor: 'menubar-group-as-child-props',
       signature: 'MenubarGroupAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menubar Group.',
     },
     {
       name: 'MenubarGroupProps',
       anchor: 'menubar-group-props',
       signature: 'MenubarGroupProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Group.',
     },
     {
       name: 'MenubarItem',
@@ -33323,18 +36495,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarItem: { (props: MenubarItemProps): JSX.Element | null; (props: MenubarItemAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `menubar`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenubarItemAsChildProps',
       anchor: 'menubar-item-as-child-props',
       signature: 'MenubarItemAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menubar Item.',
     },
     {
       name: 'MenubarItemProps',
       anchor: 'menubar-item-props',
       signature: 'MenubarItemProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Item.',
     },
     {
       name: 'MenubarLabel',
@@ -33342,36 +36519,45 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarLabel: (props: MenubarLabelProps | MenubarLabelAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `menubar-label` part of `menubar`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenubarLabelAsChildProps',
       anchor: 'menubar-label-as-child-props',
       signature: 'MenubarLabelAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menubar Label.',
     },
     {
       name: 'MenubarLabelProps',
       anchor: 'menubar-label-props',
       signature: 'MenubarLabelProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Label.',
     },
     {
       name: 'MenubarMenu',
       anchor: 'menubar-menu',
       signature: 'MenubarMenu: (props: MenubarMenuProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `menubar`.',
     },
     {
       name: 'MenubarMenuProps',
       anchor: 'menubar-menu-props',
       signature: 'MenubarMenuProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Menu.',
     },
     {
       name: 'MenubarOwnProps',
       anchor: 'menubar-own-props',
       signature: 'MenubarOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Menubar, before merging with native element attributes.',
     },
     {
       name: 'MenubarPortal',
@@ -33379,18 +36565,21 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarPortal: (props: MenubarPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `menubar`.',
     },
     {
       name: 'MenubarPortalProps',
       anchor: 'menubar-portal-props',
       signature: 'MenubarPortalProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Portal.',
     },
     {
       name: 'MenubarProps',
       anchor: 'menubar-props',
       signature: 'MenubarProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar.',
     },
     {
       name: 'MenubarSeparator',
@@ -33398,24 +36587,30 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarSeparator: (props: MenubarSeparatorProps | MenubarSeparatorAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `menubar-separator` part of `menubar` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenubarSeparatorAsChildProps',
       anchor: 'menubar-separator-as-child-props',
       signature: 'MenubarSeparatorAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menubar Separator.',
     },
     {
       name: 'MenubarSeparatorProps',
       anchor: 'menubar-separator-props',
       signature: 'MenubarSeparatorProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Separator.',
     },
     {
       name: 'MenubarSub',
       anchor: 'menubar-sub',
       signature: 'MenubarSub: (props: MenubarSubProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `menubar`.',
     },
     {
       name: 'MenubarSubContent',
@@ -33423,24 +36618,29 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarSubContent: { (props: MenubarSubContentProps): JSX.Element | null; (props: MenubarSubContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary: 'Renders a part of `menubar`.',
     },
     {
       name: 'MenubarSubContentAsChildProps',
       anchor: 'menubar-sub-content-as-child-props',
       signature: 'MenubarSubContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menubar Sub Content.',
     },
     {
       name: 'MenubarSubContentProps',
       anchor: 'menubar-sub-content-props',
       signature: 'MenubarSubContentProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Sub Content.',
     },
     {
       name: 'MenubarSubProps',
       anchor: 'menubar-sub-props',
       signature: 'MenubarSubProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Sub.',
     },
     {
       name: 'MenubarSubTrigger',
@@ -33448,18 +36648,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarSubTrigger: { (props: MenubarSubTriggerProps): JSX.Element | null; (props: MenubarSubTriggerAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `menubar`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenubarSubTriggerAsChildProps',
       anchor: 'menubar-sub-trigger-as-child-props',
       signature: 'MenubarSubTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menubar Sub Trigger.',
     },
     {
       name: 'MenubarSubTriggerProps',
       anchor: 'menubar-sub-trigger-props',
       signature: 'MenubarSubTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Sub Trigger.',
     },
     {
       name: 'MenubarTrigger',
@@ -33467,18 +36672,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarTrigger: { (props: MenubarTriggerProps): JSX.Element | null; (props: MenubarTriggerAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `menubar`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenubarTriggerAsChildProps',
       anchor: 'menubar-trigger-as-child-props',
       signature: 'MenubarTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menubar Trigger.',
     },
     {
       name: 'MenubarTriggerProps',
       anchor: 'menubar-trigger-props',
       signature: 'MenubarTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Trigger.',
     },
     {
       name: 'MenuContent',
@@ -33486,18 +36696,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenuContent: { (props: MenuContentProps): JSX.Element; (props: MenuContentAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `menu-content` part of `menu` with `role="menu"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenuContentAsChildProps',
       anchor: 'menu-content-as-child-props',
       signature: 'MenuContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menu Content.',
     },
     {
       name: 'MenuContentProps',
       anchor: 'menu-content-props',
       signature: 'MenuContentProps: any',
       typeOnly: true,
+      summary: 'Props for Menu Content.',
     },
     {
       name: 'MenuGroup',
@@ -33505,18 +36720,22 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenuGroup: { (props: MenuGroupProps): JSX.Element; (props: MenuGroupAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `menu-group` part of `menu` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenuGroupAsChildProps',
       anchor: 'menu-group-as-child-props',
       signature: 'MenuGroupAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Menu Group.',
     },
     {
       name: 'MenuGroupProps',
       anchor: 'menu-group-props',
       signature: 'MenuGroupProps: any',
       typeOnly: true,
+      summary: 'Props for Menu Group.',
     },
     {
       name: 'MenuItem',
@@ -33524,24 +36743,30 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenuItem: { (props: MenuItemProps): JSX.Element | null; (props: MenuItemAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `menu-item` part of `menu` with `role="menuitem"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenuItemAsChildProps',
       anchor: 'menu-item-as-child-props',
       signature: 'MenuItemAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Menu Item.',
     },
     {
       name: 'MenuItemOwnProps',
       anchor: 'menu-item-own-props',
       signature: 'MenuItemOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Menu Item, before merging with native element attributes.',
     },
     {
       name: 'MenuItemProps',
       anchor: 'menu-item-props',
       signature: 'MenuItemProps: any',
       typeOnly: true,
+      summary: 'Props for Menu Item.',
     },
     {
       name: 'MenuLabel',
@@ -33549,30 +36774,37 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenuLabel: { (props: MenuLabelProps): JSX.Element | null; (props: MenuLabelAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `menu-label` part of `menu`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenuLabelAsChildProps',
       anchor: 'menu-label-as-child-props',
       signature: 'MenuLabelAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Menu Label.',
     },
     {
       name: 'MenuLabelProps',
       anchor: 'menu-label-props',
       signature: 'MenuLabelProps: any',
       typeOnly: true,
+      summary: 'Props for Menu Label.',
     },
     {
       name: 'MenuOwnProps',
       anchor: 'menu-own-props',
       signature: 'MenuOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Menu, before merging with native element attributes.',
     },
     {
       name: 'MenuProps',
       anchor: 'menu-props',
       signature: 'MenuProps: any',
       typeOnly: true,
+      summary: 'Props for Menu.',
     },
     {
       name: 'MenuSeparator',
@@ -33580,24 +36812,30 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenuSeparator: { (props: MenuSeparatorProps): JSX.Element | null; (props: MenuSeparatorAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `menu-separator` part of `menu` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenuSeparatorAsChildProps',
       anchor: 'menu-separator-as-child-props',
       signature: 'MenuSeparatorAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menu Separator.',
     },
     {
       name: 'MenuSeparatorProps',
       anchor: 'menu-separator-props',
       signature: 'MenuSeparatorProps: any',
       typeOnly: true,
+      summary: 'Props for Menu Separator.',
     },
     {
       name: 'Popover',
       anchor: 'popover',
       signature: 'Popover: (props: PopoverProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `popover`.',
     },
     {
       name: 'POPOVER_A11Y_CONTRACT',
@@ -33612,6 +36850,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'popover-a11y-contract',
       signature: 'PopoverA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Popover A11y Contract object.',
     },
     {
       name: 'PopoverClose',
@@ -33619,18 +36858,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'PopoverClose: { (props: PopoverCloseProps): JSX.Element; (props: PopoverCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `popover-close` part of `popover`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'PopoverCloseAsChildProps',
       anchor: 'popover-close-as-child-props',
       signature: 'PopoverCloseAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Popover Close.',
     },
     {
       name: 'PopoverCloseProps',
       anchor: 'popover-close-props',
       signature: 'PopoverCloseProps: any',
       typeOnly: true,
+      summary: 'Props for Popover Close.',
     },
     {
       name: 'PopoverContent',
@@ -33638,36 +36882,46 @@ export const apiSymbolSets: Readonly<
       signature:
         'PopoverContent: { (props: PopoverContentProps): JSX.Element | null; (props: PopoverContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `popover-content` part of `popover` with `role="dialog"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'PopoverContentAsChildProps',
       anchor: 'popover-content-as-child-props',
       signature: 'PopoverContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Popover Content.',
     },
     {
       name: 'PopoverContentOwnProps',
       anchor: 'popover-content-own-props',
       signature: 'PopoverContentOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Popover Content, before merging with native element attributes.',
     },
     {
       name: 'PopoverContentProps',
       anchor: 'popover-content-props',
       signature: 'PopoverContentProps: any',
       typeOnly: true,
+      summary: 'Props for Popover Content.',
     },
     {
       name: 'PopoverContentWidth',
       anchor: 'popover-content-width',
       signature: 'PopoverContentWidth: any',
       typeOnly: true,
+      summary: 'Popover Content Width.',
     },
     {
       name: 'PopoverOwnProps',
       anchor: 'popover-own-props',
       signature: 'PopoverOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Popover, before merging with native element attributes.',
     },
     {
       name: 'PopoverPortal',
@@ -33675,18 +36929,21 @@ export const apiSymbolSets: Readonly<
       signature:
         'PopoverPortal: (props: PopoverPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `popover`.',
     },
     {
       name: 'PopoverPortalProps',
       anchor: 'popover-portal-props',
       signature: 'PopoverPortalProps: any',
       typeOnly: true,
+      summary: 'Props for Popover Portal.',
     },
     {
       name: 'PopoverProps',
       anchor: 'popover-props',
       signature: 'PopoverProps: any',
       typeOnly: true,
+      summary: 'Props for Popover.',
     },
     {
       name: 'PopoverTrigger',
@@ -33694,18 +36951,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'PopoverTrigger: { (props: PopoverTriggerProps): JSX.Element; (props: PopoverTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `popover-trigger` part of `popover`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'PopoverTriggerAsChildProps',
       anchor: 'popover-trigger-as-child-props',
       signature: 'PopoverTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Popover Trigger.',
     },
     {
       name: 'PopoverTriggerProps',
       anchor: 'popover-trigger-props',
       signature: 'PopoverTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Popover Trigger.',
     },
     {
       name: 'PressEvent',
@@ -33720,6 +36982,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'progress',
       signature: 'Progress: (props: ProgressProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `progress` part of `progress` with `role="progressbar"`.',
     },
     {
       name: 'PROGRESS_A11Y_CONTRACT',
@@ -33742,18 +37006,22 @@ export const apiSymbolSets: Readonly<
       anchor: 'progress-a11y-contract',
       signature: 'ProgressA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Progress A11y Contract object.',
     },
     {
       name: 'ProgressCircle',
       anchor: 'progress-circle',
       signature: 'ProgressCircle: (props: ProgressCircleProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Headless circular progress indicator root.\n\nNormalizes value/max, computes percentage, exposes `--ak-progress-percentage`\nas a dynamically injected CSS custom property, and provides progress state\nto `ProgressCircleIndicator` via context.',
     },
     {
       name: 'ProgressCircleA11yContract',
       anchor: 'progress-circle-a11y-contract',
       signature: 'ProgressCircleA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Progress Circle A11y Contract object.',
     },
     {
       name: 'ProgressCircleIndicator',
@@ -33761,30 +37029,40 @@ export const apiSymbolSets: Readonly<
       signature:
         'ProgressCircleIndicator: { (props: ProgressCircleIndicatorProps): JSX.Element; (props: ProgressCircleIndicatorAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Visual indicator for `ProgressCircle`, rendering the fill/arc element.\nMust be used within a `ProgressCircle`; reads progress state from context\nand exposes it as `data-state`/`data-value`/`data-max`/`data-percentage`.',
     },
     {
       name: 'ProgressCircleIndicatorAsChildProps',
       anchor: 'progress-circle-indicator-as-child-props',
       signature: 'ProgressCircleIndicatorAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for `ProgressCircleIndicator` rendered polymorphically via `asChild`.',
     },
     {
       name: 'ProgressCircleIndicatorProps',
       anchor: 'progress-circle-indicator-props',
       signature: 'ProgressCircleIndicatorProps: any',
       typeOnly: true,
+      summary:
+        'Props for `ProgressCircleIndicator` rendered as a native `div`.',
     },
     {
       name: 'ProgressCircleOwnProps',
       anchor: 'progress-circle-own-props',
       signature: 'ProgressCircleOwnProps: any',
       typeOnly: true,
+      summary:
+        'Props specific to `ProgressCircle`, before merging with native `div` attributes.',
     },
     {
       name: 'ProgressCircleProps',
       anchor: 'progress-circle-props',
       signature: 'ProgressCircleProps: any',
       typeOnly: true,
+      summary:
+        'Props for `ProgressCircle`, combining native `div` attributes with `ProgressCircleOwnProps`.',
     },
     {
       name: 'ProgressIndicator',
@@ -33792,30 +37070,38 @@ export const apiSymbolSets: Readonly<
       signature:
         'ProgressIndicator: { (props: ProgressIndicatorProps): JSX.Element; (props: ProgressIndicatorAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `progress-indicator` part of `progress`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ProgressIndicatorAsChildProps',
       anchor: 'progress-indicator-as-child-props',
       signature: 'ProgressIndicatorAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Progress Indicator.',
     },
     {
       name: 'ProgressIndicatorProps',
       anchor: 'progress-indicator-props',
       signature: 'ProgressIndicatorProps: any',
       typeOnly: true,
+      summary: 'Props for Progress Indicator.',
     },
     {
       name: 'ProgressOwnProps',
       anchor: 'progress-own-props',
       signature: 'ProgressOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Progress, before merging with native element attributes.',
     },
     {
       name: 'ProgressProps',
       anchor: 'progress-props',
       signature: 'ProgressProps: any',
       typeOnly: true,
+      summary: 'Props for Progress.',
     },
     {
       name: 'RADIO_GROUP_A11Y_CONTRACT',
@@ -33831,12 +37117,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'radio-group',
       signature: 'RadioGroup: (props: RadioGroupProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `radio-group`.',
     },
     {
       name: 'RadioGroupA11yContract',
       anchor: 'radio-group-a11y-contract',
       signature: 'RadioGroupA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Radio Group A11y Contract object.',
     },
     {
       name: 'RadioGroupItem',
@@ -33844,36 +37132,46 @@ export const apiSymbolSets: Readonly<
       signature:
         'RadioGroupItem: { (props: RadioGroupItemProps): JSX.Element; (props: RadioGroupItemAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `radio-group-item` part of `radio-group` with `role="radio"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'RadioGroupItemAsChildProps',
       anchor: 'radio-group-item-as-child-props',
       signature: 'RadioGroupItemAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Radio Group Item.',
     },
     {
       name: 'RadioGroupItemOwnProps',
       anchor: 'radio-group-item-own-props',
       signature: 'RadioGroupItemOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Radio Group Item, before merging with native element attributes.',
     },
     {
       name: 'RadioGroupItemProps',
       anchor: 'radio-group-item-props',
       signature: 'RadioGroupItemProps: any',
       typeOnly: true,
+      summary: 'Props for Radio Group Item.',
     },
     {
       name: 'RadioGroupOwnProps',
       anchor: 'radio-group-own-props',
       signature: 'RadioGroupOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Radio Group, before merging with native element attributes.',
     },
     {
       name: 'RadioGroupProps',
       anchor: 'radio-group-props',
       signature: 'RadioGroupProps: any',
       typeOnly: true,
+      summary: 'Props for Radio Group.',
     },
     {
       name: 'ScrollArea',
@@ -33881,12 +37179,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'ScrollArea: { (props: ScrollAreaProps): JSX.Element; (props: ScrollAreaAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary: 'Renders a part of `scroll-area`.',
     },
     {
       name: 'ScrollAreaAsChildProps',
       anchor: 'scroll-area-as-child-props',
       signature: 'ScrollAreaAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Scroll Area.',
     },
     {
       name: 'ScrollAreaCorner',
@@ -33894,24 +37195,29 @@ export const apiSymbolSets: Readonly<
       signature:
         'ScrollAreaCorner: (props: ScrollAreaCornerProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the `scroll-area-corner` part of `scroll-area`.',
     },
     {
       name: 'ScrollAreaCornerProps',
       anchor: 'scroll-area-corner-props',
       signature: 'ScrollAreaCornerProps: any',
       typeOnly: true,
+      summary: 'Props for Scroll Area Corner.',
     },
     {
       name: 'ScrollAreaOwnProps',
       anchor: 'scroll-area-own-props',
       signature: 'ScrollAreaOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Scroll Area, before merging with native element attributes.',
     },
     {
       name: 'ScrollAreaProps',
       anchor: 'scroll-area-props',
       signature: 'ScrollAreaProps: any',
       typeOnly: true,
+      summary: 'Props for Scroll Area.',
     },
     {
       name: 'ScrollAreaScrollbar',
@@ -33919,12 +37225,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'ScrollAreaScrollbar: (props: ScrollAreaScrollbarProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `scroll-area-scrollbar` part of `scroll-area` with `role="scrollbar"`.',
     },
     {
       name: 'ScrollAreaScrollbarProps',
       anchor: 'scroll-area-scrollbar-props',
       signature: 'ScrollAreaScrollbarProps: any',
       typeOnly: true,
+      summary: 'Props for Scroll Area Scrollbar.',
     },
     {
       name: 'ScrollAreaThumb',
@@ -33932,12 +37241,14 @@ export const apiSymbolSets: Readonly<
       signature:
         'ScrollAreaThumb: (props: ScrollAreaThumbProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the `scroll-area-thumb` part of `scroll-area`.',
     },
     {
       name: 'ScrollAreaThumbProps',
       anchor: 'scroll-area-thumb-props',
       signature: 'ScrollAreaThumbProps: any',
       typeOnly: true,
+      summary: 'Props for Scroll Area Thumb.',
     },
     {
       name: 'ScrollAreaViewport',
@@ -33945,24 +37256,29 @@ export const apiSymbolSets: Readonly<
       signature:
         'ScrollAreaViewport: { (props: ScrollAreaViewportProps): JSX.Element; (props: ScrollAreaViewportAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary: 'Renders a part of `scroll-area`.',
     },
     {
       name: 'ScrollAreaViewportAsChildProps',
       anchor: 'scroll-area-viewport-as-child-props',
       signature: 'ScrollAreaViewportAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Scroll Area Viewport.',
     },
     {
       name: 'ScrollAreaViewportProps',
       anchor: 'scroll-area-viewport-props',
       signature: 'ScrollAreaViewportProps: any',
       typeOnly: true,
+      summary: 'Props for Scroll Area Viewport.',
     },
     {
       name: 'Select',
       anchor: 'select',
       signature: 'Select: (props: SelectProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `select`.',
     },
     {
       name: 'SELECT_A11Y_CONTRACT',
@@ -33977,6 +37293,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'select-a11y-contract',
       signature: 'SelectA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Select A11y Contract object.',
     },
     {
       name: 'SelectContent',
@@ -33984,24 +37301,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectContent: { (props: SelectContentProps): JSX.Element | null; (props: SelectContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `select` with `role="listbox"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectContentAsChildProps',
       anchor: 'select-content-as-child-props',
       signature: 'SelectContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Select Content.',
     },
     {
       name: 'SelectContentOwnProps',
       anchor: 'select-content-own-props',
       signature: 'SelectContentOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Select Content, before merging with native element attributes.',
     },
     {
       name: 'SelectContentProps',
       anchor: 'select-content-props',
       signature: 'SelectContentProps: any',
       typeOnly: true,
+      summary: 'Props for Select Content.',
     },
     {
       name: 'SelectGroup',
@@ -34009,18 +37333,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectGroup: { (props: SelectGroupProps): JSX.Element; (props: SelectGroupAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `select-group` part of `select` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectGroupAsChildProps',
       anchor: 'select-group-as-child-props',
       signature: 'SelectGroupAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Select Group.',
     },
     {
       name: 'SelectGroupProps',
       anchor: 'select-group-props',
       signature: 'SelectGroupProps: any',
       typeOnly: true,
+      summary: 'Props for Select Group.',
     },
     {
       name: 'SelectItem',
@@ -34028,24 +37357,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectItem: { (props: SelectItemProps): JSX.Element | null; (props: SelectItemAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `select`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectItemAsChildProps',
       anchor: 'select-item-as-child-props',
       signature: 'SelectItemAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Select Item.',
     },
     {
       name: 'SelectItemOwnProps',
       anchor: 'select-item-own-props',
       signature: 'SelectItemOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Select Item, before merging with native element attributes.',
     },
     {
       name: 'SelectItemProps',
       anchor: 'select-item-props',
       signature: 'SelectItemProps: any',
       typeOnly: true,
+      summary: 'Props for Select Item.',
     },
     {
       name: 'SelectItemText',
@@ -34054,19 +37390,22 @@ export const apiSymbolSets: Readonly<
         'SelectItemText: { (props: SelectItemTextProps): JSX.Element; (props: SelectItemTextAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'SelectItemText marks the item text node so Select can resolve labels and\nstyle the text slot directly.',
+        'SelectItemText marks the item text node so Select can resolve labels and\nstyle the text slot directly.\nRenders the `select-item-text` part of `select`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectItemTextAsChildProps',
       anchor: 'select-item-text-as-child-props',
       signature: 'SelectItemTextAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Select Item Text.',
     },
     {
       name: 'SelectItemTextProps',
       anchor: 'select-item-text-props',
       signature: 'SelectItemTextProps: any',
       typeOnly: true,
+      summary: 'Props for Select Item Text.',
     },
     {
       name: 'SelectLabel',
@@ -34074,24 +37413,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectLabel: { (props: SelectLabelProps): JSX.Element | null; (props: SelectLabelAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `select-label` part of `select`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectLabelAsChildProps',
       anchor: 'select-label-as-child-props',
       signature: 'SelectLabelAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Select Label.',
     },
     {
       name: 'SelectLabelProps',
       anchor: 'select-label-props',
       signature: 'SelectLabelProps: any',
       typeOnly: true,
+      summary: 'Props for Select Label.',
     },
     {
       name: 'SelectOwnProps',
       anchor: 'select-own-props',
       signature: 'SelectOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Select, before merging with native element attributes.',
     },
     {
       name: 'SelectPortal',
@@ -34099,18 +37445,21 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectPortal: (props: SelectPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `select`.',
     },
     {
       name: 'SelectPortalProps',
       anchor: 'select-portal-props',
       signature: 'SelectPortalProps: any',
       typeOnly: true,
+      summary: 'Props for Select Portal.',
     },
     {
       name: 'SelectProps',
       anchor: 'select-props',
       signature: 'SelectProps: any',
       typeOnly: true,
+      summary: 'Props for Select.',
     },
     {
       name: 'SelectSeparator',
@@ -34118,18 +37467,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectSeparator: { (props: SelectSeparatorProps): JSX.Element | null; (props: SelectSeparatorAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `select-separator` part of `select` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectSeparatorAsChildProps',
       anchor: 'select-separator-as-child-props',
       signature: 'SelectSeparatorAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Select Separator.',
     },
     {
       name: 'SelectSeparatorProps',
       anchor: 'select-separator-props',
       signature: 'SelectSeparatorProps: any',
       typeOnly: true,
+      summary: 'Props for Select Separator.',
     },
     {
       name: 'SelectTrigger',
@@ -34137,30 +37491,38 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectTrigger: { (props: SelectTriggerProps): JSX.Element | null; (props: SelectTriggerAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `select-trigger` part of `select`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectTriggerAsChildProps',
       anchor: 'select-trigger-as-child-props',
       signature: 'SelectTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Select Trigger.',
     },
     {
       name: 'SelectTriggerOwnProps',
       anchor: 'select-trigger-own-props',
       signature: 'SelectTriggerOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Select Trigger, before merging with native element attributes.',
     },
     {
       name: 'SelectTriggerProps',
       anchor: 'select-trigger-props',
       signature: 'SelectTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Select Trigger.',
     },
     {
       name: 'SelectTriggerSize',
       anchor: 'select-trigger-size',
       signature: 'SelectTriggerSize: any',
       typeOnly: true,
+      summary: 'Select Trigger Size.',
     },
     {
       name: 'SelectValue',
@@ -34168,30 +37530,38 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectValue: { (props: SelectValueProps): JSX.Element | null; (props: SelectValueAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `select-value` part of `select`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectValueAsChildProps',
       anchor: 'select-value-as-child-props',
       signature: 'SelectValueAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Select Value.',
     },
     {
       name: 'SelectValueOwnProps',
       anchor: 'select-value-own-props',
       signature: 'SelectValueOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Select Value, before merging with native element attributes.',
     },
     {
       name: 'SelectValueProps',
       anchor: 'select-value-props',
       signature: 'SelectValueProps: any',
       typeOnly: true,
+      summary: 'Props for Select Value.',
     },
     {
       name: 'Slider',
       anchor: 'slider',
       signature: 'Slider: (props: SliderProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the `slider` part of `slider`.',
     },
     {
       name: 'SLIDER_A11Y_CONTRACT',
@@ -34206,24 +37576,29 @@ export const apiSymbolSets: Readonly<
       anchor: 'slider-a11y-contract',
       signature: 'SliderA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Slider A11y Contract object.',
     },
     {
       name: 'SliderOrientation',
       anchor: 'slider-orientation',
       signature: 'SliderOrientation: any',
       typeOnly: true,
+      summary: 'Slider Orientation.',
     },
     {
       name: 'SliderOwnProps',
       anchor: 'slider-own-props',
       signature: 'SliderOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Slider, before merging with native element attributes.',
     },
     {
       name: 'SliderProps',
       anchor: 'slider-props',
       signature: 'SliderProps: any',
       typeOnly: true,
+      summary: 'Props for Slider.',
     },
     {
       name: 'SliderRange',
@@ -34231,18 +37606,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'SliderRange: { (props: SliderRangeProps): JSX.Element; (props: SliderRangeAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `slider-range` part of `slider`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SliderRangeAsChildProps',
       anchor: 'slider-range-as-child-props',
       signature: 'SliderRangeAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Slider Range.',
     },
     {
       name: 'SliderRangeProps',
       anchor: 'slider-range-props',
       signature: 'SliderRangeProps: any',
       typeOnly: true,
+      summary: 'Props for Slider Range.',
     },
     {
       name: 'SliderThumb',
@@ -34250,18 +37630,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'SliderThumb: { (props: SliderThumbProps): JSX.Element; (props: SliderThumbAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `slider-thumb` part of `slider` with `role="slider"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SliderThumbAsChildProps',
       anchor: 'slider-thumb-as-child-props',
       signature: 'SliderThumbAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Slider Thumb.',
     },
     {
       name: 'SliderThumbProps',
       anchor: 'slider-thumb-props',
       signature: 'SliderThumbProps: any',
       typeOnly: true,
+      summary: 'Props for Slider Thumb.',
     },
     {
       name: 'SliderTrack',
@@ -34269,18 +37654,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'SliderTrack: { (props: SliderTrackProps): JSX.Element; (props: SliderTrackAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `slider-track` part of `slider`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SliderTrackAsChildProps',
       anchor: 'slider-track-as-child-props',
       signature: 'SliderTrackAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Slider Track.',
     },
     {
       name: 'SliderTrackProps',
       anchor: 'slider-track-props',
       signature: 'SliderTrackProps: any',
       typeOnly: true,
+      summary: 'Props for Slider Track.',
     },
     {
       name: 'Switch',
@@ -34288,6 +37678,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'Switch: { (props: SwitchButtonProps): JSX.Element; (props: SwitchAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `switch` part of `switch` with `role="switch"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SWITCH_A11Y_CONTRACT',
@@ -34303,30 +37695,36 @@ export const apiSymbolSets: Readonly<
       anchor: 'switch-a11y-contract',
       signature: 'SwitchA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Switch A11y Contract object.',
     },
     {
       name: 'SwitchAsChildProps',
       anchor: 'switch-as-child-props',
       signature: 'SwitchAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Switch.',
     },
     {
       name: 'SwitchButtonProps',
       anchor: 'switch-button-props',
       signature: 'SwitchButtonProps: any',
       typeOnly: true,
+      summary: 'Props for Switch Button.',
     },
     {
       name: 'SwitchOwnProps',
       anchor: 'switch-own-props',
       signature: 'SwitchOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Switch, before merging with native element attributes.',
     },
     {
       name: 'SwitchProps',
       anchor: 'switch-props',
       signature: 'SwitchProps: any',
       typeOnly: true,
+      summary: 'Props for Switch.',
     },
     {
       name: 'Table',
@@ -34334,13 +37732,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'Table: { (props: TableProps): JSX.Element; (props: TableAsChildProps): JSX.Element; }',
       typeOnly: true,
-      summary: 'Semantic table primitive family.',
+      summary:
+        'Semantic table primitive family.\nRenders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableAsChildProps',
       anchor: 'table-as-child-props',
       signature: 'TableAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Table.',
     },
     {
       name: 'TableBody',
@@ -34348,18 +37748,22 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableBody: { (props: TableBodyProps): JSX.Element; (props: TableBodyAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableBodyAsChildProps',
       anchor: 'table-body-as-child-props',
       signature: 'TableBodyAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Table Body.',
     },
     {
       name: 'TableBodyProps',
       anchor: 'table-body-props',
       signature: 'TableBodyProps: any',
       typeOnly: true,
+      summary: 'Props for Table Body.',
     },
     {
       name: 'TableCaption',
@@ -34367,18 +37771,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableCaption: { (props: TableCaptionProps): JSX.Element; (props: TableCaptionAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableCaptionAsChildProps',
       anchor: 'table-caption-as-child-props',
       signature: 'TableCaptionAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Table Caption.',
     },
     {
       name: 'TableCaptionProps',
       anchor: 'table-caption-props',
       signature: 'TableCaptionProps: any',
       typeOnly: true,
+      summary: 'Props for Table Caption.',
     },
     {
       name: 'TableCell',
@@ -34386,18 +37795,22 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableCell: { (props: TableCellProps): JSX.Element; (props: TableCellAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableCellAsChildProps',
       anchor: 'table-cell-as-child-props',
       signature: 'TableCellAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Table Cell.',
     },
     {
       name: 'TableCellProps',
       anchor: 'table-cell-props',
       signature: 'TableCellProps: any',
       typeOnly: true,
+      summary: 'Props for Table Cell.',
     },
     {
       name: 'TableFoot',
@@ -34405,18 +37818,22 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableFoot: { (props: TableFootProps): JSX.Element; (props: TableFootAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableFootAsChildProps',
       anchor: 'table-foot-as-child-props',
       signature: 'TableFootAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Table Foot.',
     },
     {
       name: 'TableFootProps',
       anchor: 'table-foot-props',
       signature: 'TableFootProps: any',
       typeOnly: true,
+      summary: 'Props for Table Foot.',
     },
     {
       name: 'TableHead',
@@ -34424,12 +37841,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableHead: { (props: TableHeadProps): JSX.Element; (props: TableHeadAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableHeadAsChildProps',
       anchor: 'table-head-as-child-props',
       signature: 'TableHeadAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Table Head.',
     },
     {
       name: 'TableHeaderCell',
@@ -34437,30 +37857,37 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableHeaderCell: { (props: TableHeaderCellProps): JSX.Element; (props: TableHeaderCellAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableHeaderCellAsChildProps',
       anchor: 'table-header-cell-as-child-props',
       signature: 'TableHeaderCellAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Table Header Cell.',
     },
     {
       name: 'TableHeaderCellProps',
       anchor: 'table-header-cell-props',
       signature: 'TableHeaderCellProps: any',
       typeOnly: true,
+      summary: 'Props for Table Header Cell.',
     },
     {
       name: 'TableHeadProps',
       anchor: 'table-head-props',
       signature: 'TableHeadProps: any',
       typeOnly: true,
+      summary: 'Props for Table Head.',
     },
     {
       name: 'TableProps',
       anchor: 'table-props',
       signature: 'TableProps: any',
       typeOnly: true,
+      summary: 'Props for Table.',
     },
     {
       name: 'TableRow',
@@ -34468,18 +37895,22 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableRow: { (props: TableRowProps): JSX.Element; (props: TableRowAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableRowAsChildProps',
       anchor: 'table-row-as-child-props',
       signature: 'TableRowAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Table Row.',
     },
     {
       name: 'TableRowProps',
       anchor: 'table-row-props',
       signature: 'TableRowProps: any',
       typeOnly: true,
+      summary: 'Props for Table Row.',
     },
     {
       name: 'Textarea',
@@ -34487,6 +37918,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'Textarea: { (props: TextareaElementProps): JSX.Element; (props: TextareaAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `textarea` part of `textarea`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TEXTAREA_A11Y_CONTRACT',
@@ -34501,30 +37934,36 @@ export const apiSymbolSets: Readonly<
       anchor: 'textarea-a11y-contract',
       signature: 'TextareaA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Textarea A11y Contract object.',
     },
     {
       name: 'TextareaAsChildProps',
       anchor: 'textarea-as-child-props',
       signature: 'TextareaAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Textarea.',
     },
     {
       name: 'TextareaElementProps',
       anchor: 'textarea-element-props',
       signature: 'TextareaElementProps: any',
       typeOnly: true,
+      summary: 'Props for Textarea Element.',
     },
     {
       name: 'TextareaOwnProps',
       anchor: 'textarea-own-props',
       signature: 'TextareaOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Textarea, before merging with native element attributes.',
     },
     {
       name: 'TextareaProps',
       anchor: 'textarea-props',
       signature: 'TextareaProps: any',
       typeOnly: true,
+      summary: 'Props for Textarea.',
     },
     {
       name: 'Toast',
@@ -34547,6 +37986,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'toast-a11y-contract',
       signature: 'ToastA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Toast A11y Contract object.',
     },
     {
       name: 'ToastAction',
@@ -34555,19 +37995,22 @@ export const apiSymbolSets: Readonly<
         'ToastAction: { (props: ToastActionProps): JSX.Element; (props: ToastActionAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'ToastAction closes the toast after handling a user-triggered action.',
+        'ToastAction closes the toast after handling a user-triggered action.\nRenders the `toast-action` part of `toast`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ToastActionAsChildProps',
       anchor: 'toast-action-as-child-props',
       signature: 'ToastActionAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Toast Action.',
     },
     {
       name: 'ToastActionProps',
       anchor: 'toast-action-props',
       signature: 'ToastActionProps: any',
       typeOnly: true,
+      summary: 'Props for Toast Action.',
     },
     {
       name: 'ToastClose',
@@ -34575,19 +38018,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastClose: { (props: ToastCloseProps): JSX.Element; (props: ToastCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
-      summary: 'ToastClose is the dedicated dismiss control for a toast entry.',
+      summary:
+        'ToastClose is the dedicated dismiss control for a toast entry.\nRenders the `toast-close` part of `toast`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ToastCloseAsChildProps',
       anchor: 'toast-close-as-child-props',
       signature: 'ToastCloseAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Toast Close.',
     },
     {
       name: 'ToastCloseProps',
       anchor: 'toast-close-props',
       signature: 'ToastCloseProps: any',
       typeOnly: true,
+      summary: 'Props for Toast Close.',
     },
     {
       name: 'ToastDescription',
@@ -34596,19 +38043,22 @@ export const apiSymbolSets: Readonly<
         'ToastDescription: { (props: ToastDescriptionProps): JSX.Element; (props: ToastDescriptionAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'ToastDescription marks the accessible description slot for a toast entry.',
+        'ToastDescription marks the accessible description slot for a toast entry.\nRenders the `toast-description` part of `toast`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ToastDescriptionAsChildProps',
       anchor: 'toast-description-as-child-props',
       signature: 'ToastDescriptionAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Toast Description.',
     },
     {
       name: 'ToastDescriptionProps',
       anchor: 'toast-description-props',
       signature: 'ToastDescriptionProps: any',
       typeOnly: true,
+      summary: 'Props for Toast Description.',
     },
     {
       name: 'ToastHost',
@@ -34631,6 +38081,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'toast-host-props',
       signature: 'ToastHostProps: any',
       typeOnly: true,
+      summary: 'Props for Toast Host.',
     },
     {
       name: 'ToastOwnProps',
@@ -34644,6 +38095,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'toast-props',
       signature: 'ToastProps: any',
       typeOnly: true,
+      summary: 'Props for Toast.',
     },
     {
       name: 'ToastTitle',
@@ -34651,19 +38103,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastTitle: { (props: ToastTitleProps): JSX.Element; (props: ToastTitleAsChildProps): JSX.Element; }',
       typeOnly: true,
-      summary: 'ToastTitle marks the accessible title slot for a toast entry.',
+      summary:
+        'ToastTitle marks the accessible title slot for a toast entry.\nRenders the `toast-title` part of `toast`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ToastTitleAsChildProps',
       anchor: 'toast-title-as-child-props',
       signature: 'ToastTitleAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Toast Title.',
     },
     {
       name: 'ToastTitleProps',
       anchor: 'toast-title-props',
       signature: 'ToastTitleProps: any',
       typeOnly: true,
+      summary: 'Props for Toast Title.',
     },
     {
       name: 'ToastViewport',
@@ -34672,19 +38128,22 @@ export const apiSymbolSets: Readonly<
         'ToastViewport: { (props: ToastViewportProps): JSX.Element; (props: ToastViewportAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'ToastViewport renders the live toast stack and the notification region.',
+        'ToastViewport renders the live toast stack and the notification region.\nRenders the `toast-viewport` part of `toast` with `role="region"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ToastViewportAsChildProps',
       anchor: 'toast-viewport-as-child-props',
       signature: 'ToastViewportAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Toast Viewport.',
     },
     {
       name: 'ToastViewportProps',
       anchor: 'toast-viewport-props',
       signature: 'ToastViewportProps: any',
       typeOnly: true,
+      summary: 'Props for Toast Viewport.',
     },
     {
       name: 'Toggle',
@@ -34693,7 +38152,7 @@ export const apiSymbolSets: Readonly<
         'Toggle: { (props: ToggleButtonProps): JSX.Element; (props: ToggleAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'Headless Toggle component\n\n## Responsibilities\n- Compose pressable foundation for interaction behavior\n- Apply aria-pressed for toggle state signaling\n- Enforce type="button" default to prevent accidental form submission\n- Forward props and refs to native button or child element\n\n## Non-Responsibilities (delegated to pressable foundation)\n- Keyboard event handling (Enter/Space)\n- Pointer event handling\n- Disabled state enforcement\n- Role attribute application (for non-native elements)\n\n## Invariants\n- MUST NOT contain any event handler logic\n- MUST NOT check disabled or pressed props directly\n- MUST use pressable() for ALL interaction behavior\n- MUST use mergeProps() for ALL prop composition\n- pressed state is CONTROLLED (consumer manages state)',
+        'Headless Toggle component\n\n## Responsibilities\n- Compose pressable foundation for interaction behavior\n- Apply aria-pressed for toggle state signaling\n- Enforce type="button" default to prevent accidental form submission\n- Forward props and refs to native button or child element\n\n## Non-Responsibilities (delegated to pressable foundation)\n- Keyboard event handling (Enter/Space)\n- Pointer event handling\n- Disabled state enforcement\n- Role attribute application (for non-native elements)\n\n## Invariants\n- MUST NOT contain any event handler logic\n- MUST NOT check disabled or pressed props directly\n- MUST use pressable() for ALL interaction behavior\n- MUST use mergeProps() for ALL prop composition\n- pressed state is CONTROLLED (consumer manages state)\nRenders the `toggle` part of `toggle`.\n\nSupports polymorphic rendering via `asChild`.',
       tags: {
         example: [
           'Native toggle button\n```tsx\nconst pressed = state(false);\n<Toggle pressed={pressed()} onPress={() => pressed.set(!pressed())}>\nMute\n</Toggle>\n```',
@@ -34723,6 +38182,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'toggle-a11y-contract',
       signature: 'ToggleA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Toggle A11y Contract object.',
     },
     {
       name: 'ToggleAsChildProps',
@@ -34743,12 +38203,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'toggle-group',
       signature: 'ToggleGroup: (props: ToggleGroupProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `toggle-group`.',
     },
     {
       name: 'ToggleGroupA11yContract',
       anchor: 'toggle-group-a11y-contract',
       signature: 'ToggleGroupA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Toggle Group A11y Contract object.',
     },
     {
       name: 'ToggleGroupItem',
@@ -34756,48 +38218,59 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToggleGroupItem: { (props: ToggleGroupItemProps): JSX.Element; (props: ToggleGroupItemAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `toggle-group`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ToggleGroupItemAsChildProps',
       anchor: 'toggle-group-item-as-child-props',
       signature: 'ToggleGroupItemAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Toggle Group Item.',
     },
     {
       name: 'ToggleGroupItemOwnProps',
       anchor: 'toggle-group-item-own-props',
       signature: 'ToggleGroupItemOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Toggle Group Item, before merging with native element attributes.',
     },
     {
       name: 'ToggleGroupItemProps',
       anchor: 'toggle-group-item-props',
       signature: 'ToggleGroupItemProps: any',
       typeOnly: true,
+      summary: 'Props for Toggle Group Item.',
     },
     {
       name: 'ToggleGroupMultipleProps',
       anchor: 'toggle-group-multiple-props',
       signature: 'ToggleGroupMultipleProps: any',
       typeOnly: true,
+      summary: 'Props for Toggle Group Multiple.',
     },
     {
       name: 'ToggleGroupOrientation',
       anchor: 'toggle-group-orientation',
       signature: 'ToggleGroupOrientation: any',
       typeOnly: true,
+      summary: 'Toggle Group Orientation.',
     },
     {
       name: 'ToggleGroupProps',
       anchor: 'toggle-group-props',
       signature: 'ToggleGroupProps: any',
       typeOnly: true,
+      summary: 'Props for Toggle Group.',
     },
     {
       name: 'ToggleGroupSingleProps',
       anchor: 'toggle-group-single-props',
       signature: 'ToggleGroupSingleProps: any',
       typeOnly: true,
+      summary: 'Props for Toggle Group Single.',
     },
     {
       name: 'ToggleOwnProps',
@@ -34818,6 +38291,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'tooltip',
       signature: 'Tooltip: (props: TooltipProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `tooltip`.',
     },
     {
       name: 'TOOLTIP_A11Y_CONTRACT',
@@ -34832,6 +38306,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'tooltip-a11y-contract',
       signature: 'TooltipA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Tooltip A11y Contract object.',
     },
     {
       name: 'TooltipContent',
@@ -34839,30 +38314,39 @@ export const apiSymbolSets: Readonly<
       signature:
         'TooltipContent: { (props: TooltipContentProps): JSX.Element | null; (props: TooltipContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `tooltip-content` part of `tooltip` with `role="tooltip"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TooltipContentAsChildProps',
       anchor: 'tooltip-content-as-child-props',
       signature: 'TooltipContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Tooltip Content.',
     },
     {
       name: 'TooltipContentOwnProps',
       anchor: 'tooltip-content-own-props',
       signature: 'TooltipContentOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Tooltip Content, before merging with native element attributes.',
     },
     {
       name: 'TooltipContentProps',
       anchor: 'tooltip-content-props',
       signature: 'TooltipContentProps: any',
       typeOnly: true,
+      summary: 'Props for Tooltip Content.',
     },
     {
       name: 'TooltipOwnProps',
       anchor: 'tooltip-own-props',
       signature: 'TooltipOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Tooltip, before merging with native element attributes.',
     },
     {
       name: 'TooltipPortal',
@@ -34870,18 +38354,21 @@ export const apiSymbolSets: Readonly<
       signature:
         'TooltipPortal: (props: TooltipPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `tooltip`.',
     },
     {
       name: 'TooltipPortalProps',
       anchor: 'tooltip-portal-props',
       signature: 'TooltipPortalProps: any',
       typeOnly: true,
+      summary: 'Props for Tooltip Portal.',
     },
     {
       name: 'TooltipProps',
       anchor: 'tooltip-props',
       signature: 'TooltipProps: any',
       typeOnly: true,
+      summary: 'Props for Tooltip.',
     },
     {
       name: 'TooltipTrigger',
@@ -34889,18 +38376,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'TooltipTrigger: { (props: TooltipTriggerProps): JSX.Element; (props: TooltipTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `tooltip-trigger` part of `tooltip`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TooltipTriggerAsChildProps',
       anchor: 'tooltip-trigger-as-child-props',
       signature: 'TooltipTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Tooltip Trigger.',
     },
     {
       name: 'TooltipTriggerProps',
       anchor: 'tooltip-trigger-props',
       signature: 'TooltipTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Tooltip Trigger.',
     },
     {
       name: 'VirtualList',
@@ -34908,54 +38400,65 @@ export const apiSymbolSets: Readonly<
       signature:
         'VirtualList: { <Item>(props: VirtualListProps<Item>): JSX.Element; <Item>(props: VirtualListAsChildProps<Item>): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `virtual-list`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'VirtualListApi',
       anchor: 'virtual-list-api',
       signature: 'VirtualListApi: any',
       typeOnly: true,
+      summary: 'Virtual List Api.',
     },
     {
       name: 'VirtualListAsChildProps',
       anchor: 'virtual-list-as-child-props',
       signature: 'VirtualListAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Virtual List.',
     },
     {
       name: 'VirtualListProps',
       anchor: 'virtual-list-props',
       signature: 'VirtualListProps: any',
       typeOnly: true,
+      summary: 'Props for Virtual List.',
     },
     {
       name: 'VirtualListRowComponent',
       anchor: 'virtual-list-row-component',
       signature: 'VirtualListRowComponent: any',
       typeOnly: true,
+      summary: 'Virtual List Row Component.',
     },
     {
       name: 'VirtualListRowComponentProps',
       anchor: 'virtual-list-row-component-props',
       signature: 'VirtualListRowComponentProps: any',
       typeOnly: true,
+      summary: 'Props for Virtual List Row Component.',
     },
     {
       name: 'VirtualListRowElement',
       anchor: 'virtual-list-row-element',
       signature: 'VirtualListRowElement: any',
       typeOnly: true,
+      summary: 'Virtual List Row Element.',
     },
     {
       name: 'VirtualListState',
       anchor: 'virtual-list-state',
       signature: 'VirtualListState: any',
       typeOnly: true,
+      summary: 'Virtual List State.',
     },
     {
       name: 'VirtualListViewport',
       anchor: 'virtual-list-viewport',
       signature: 'VirtualListViewport: any',
       typeOnly: true,
+      summary: 'Virtual List Viewport.',
     },
     {
       name: 'VirtualTable',
@@ -34963,66 +38466,79 @@ export const apiSymbolSets: Readonly<
       signature:
         'VirtualTable: { <Row>(props: VirtualTableProps<Row>): JSX.Element; <Row>(props: VirtualTableAsChildProps<Row>): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `virtual-table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'VirtualTableApi',
       anchor: 'virtual-table-api',
       signature: 'VirtualTableApi: any',
       typeOnly: true,
+      summary: 'Virtual Table Api.',
     },
     {
       name: 'VirtualTableAsChildProps',
       anchor: 'virtual-table-as-child-props',
       signature: 'VirtualTableAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Virtual Table.',
     },
     {
       name: 'VirtualTableCellComponent',
       anchor: 'virtual-table-cell-component',
       signature: 'VirtualTableCellComponent: any',
       typeOnly: true,
+      summary: 'Virtual Table Cell Component.',
     },
     {
       name: 'VirtualTableCellComponentProps',
       anchor: 'virtual-table-cell-component-props',
       signature: 'VirtualTableCellComponentProps: any',
       typeOnly: true,
+      summary: 'Props for Virtual Table Cell Component.',
     },
     {
       name: 'VirtualTableCellElement',
       anchor: 'virtual-table-cell-element',
       signature: 'VirtualTableCellElement: any',
       typeOnly: true,
+      summary: 'Virtual Table Cell Element.',
     },
     {
       name: 'VirtualTableColumn',
       anchor: 'virtual-table-column',
       signature: 'VirtualTableColumn: any',
       typeOnly: true,
+      summary: 'Virtual Table Column.',
     },
     {
       name: 'VirtualTableProps',
       anchor: 'virtual-table-props',
       signature: 'VirtualTableProps: any',
       typeOnly: true,
+      summary: 'Props for Virtual Table.',
     },
     {
       name: 'VirtualTableState',
       anchor: 'virtual-table-state',
       signature: 'VirtualTableState: any',
       typeOnly: true,
+      summary: 'Virtual Table State.',
     },
     {
       name: 'VirtualTableViewport',
       anchor: 'virtual-table-viewport',
       signature: 'VirtualTableViewport: any',
       typeOnly: true,
+      summary: 'Virtual Table Viewport.',
     },
     {
       name: 'VirtualTableWidth',
       anchor: 'virtual-table-width',
       signature: 'VirtualTableWidth: any',
       typeOnly: true,
+      summary: 'Virtual Table Width.',
     },
     {
       name: 'VISUALLY_HIDDEN_A11Y_CONTRACT',
@@ -35038,137 +38554,165 @@ export const apiSymbolSets: Readonly<
       signature:
         'VisuallyHidden: { (props: VisuallyHiddenSpanProps): JSX.Element; (props: VisuallyHiddenAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `visually-hidden`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'VisuallyHiddenA11yContract',
       anchor: 'visually-hidden-a11y-contract',
       signature: 'VisuallyHiddenA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Visually Hidden A11y Contract object.',
     },
     {
       name: 'VisuallyHiddenAsChildProps',
       anchor: 'visually-hidden-as-child-props',
       signature: 'VisuallyHiddenAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Visually Hidden.',
     },
     {
       name: 'VisuallyHiddenOwnProps',
       anchor: 'visually-hidden-own-props',
       signature: 'VisuallyHiddenOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Visually Hidden, before merging with native element attributes.',
     },
     {
       name: 'VisuallyHiddenProps',
       anchor: 'visually-hidden-props',
       signature: 'VisuallyHiddenProps: any',
       typeOnly: true,
+      summary: 'Props for Visually Hidden.',
     },
     {
       name: 'VisuallyHiddenSpanProps',
       anchor: 'visually-hidden-span-props',
       signature: 'VisuallyHiddenSpanProps: any',
       typeOnly: true,
-    },
-  ],
-  symbols54: [
-    {
-      name: 'Avatar',
-      anchor: 'avatar',
-      signature:
-        'Avatar: { (props: AvatarProps): JSX.Element; (props: AvatarAsChildProps): JSX.Element; }',
-      typeOnly: true,
-    },
-    {
-      name: 'AVATAR_A11Y_CONTRACT',
-      anchor: 'avatar-a11-y-contract',
-      signature:
-        'AVATAR_A11Y_CONTRACT: { readonly ROOT: { readonly slot: "data-slot"; readonly marker: "data-avatar"; }; readonly IMAGE: { readonly slot: "data-slot"; readonly marker: "data-avatar-image"; readonly requiresAlt: true; }; readonly FALLBACK: { readonly slot: "data-slot"; readonly marker: "data-avatar-fallback"; readonly visibleBeforeImageLoad: true; }; }',
-      typeOnly: true,
-      summary: 'Accessibility contract for Avatar primitives.',
-    },
-    {
-      name: 'AvatarA11yContract',
-      anchor: 'avatar-a11y-contract',
-      signature: 'AvatarA11yContract: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarAsChildProps',
-      anchor: 'avatar-as-child-props',
-      signature: 'AvatarAsChildProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarFallback',
-      anchor: 'avatar-fallback',
-      signature:
-        'AvatarFallback: { (props: AvatarFallbackProps): JSX.Element | null; (props: AvatarFallbackAsChildProps): JSX.Element | null; }',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarFallbackAsChildProps',
-      anchor: 'avatar-fallback-as-child-props',
-      signature: 'AvatarFallbackAsChildProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarFallbackOwnProps',
-      anchor: 'avatar-fallback-own-props',
-      signature: 'AvatarFallbackOwnProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarFallbackProps',
-      anchor: 'avatar-fallback-props',
-      signature: 'AvatarFallbackProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarImage',
-      anchor: 'avatar-image',
-      signature: 'AvatarImage: (props: AvatarImageProps) => JSX.Element',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarImageOwnProps',
-      anchor: 'avatar-image-own-props',
-      signature: 'AvatarImageOwnProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarImageProps',
-      anchor: 'avatar-image-props',
-      signature: 'AvatarImageProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarLoadingStatus',
-      anchor: 'avatar-loading-status',
-      signature: 'AvatarLoadingStatus: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarOwnProps',
-      anchor: 'avatar-own-props',
-      signature: 'AvatarOwnProps: any',
-      typeOnly: true,
-    },
-    {
-      name: 'AvatarProps',
-      anchor: 'avatar-props',
-      signature: 'AvatarProps: any',
-      typeOnly: true,
+      summary: 'Props for Visually Hidden Span.',
     },
   ],
   symbols55: [
     {
+      name: 'Avatar',
+      anchor: 'avatar',
+      signature:
+        'Avatar: { (props: AvatarProps): JSX.Element; (props: AvatarAsChildProps): JSX.Element; }',
+      typeOnly: true,
+      summary:
+        'Renders the `avatar` part of `avatar`.\n\nSupports polymorphic rendering via `asChild`.',
+    },
+    {
+      name: 'AVATAR_A11Y_CONTRACT',
+      anchor: 'avatar-a11-y-contract',
+      signature:
+        'AVATAR_A11Y_CONTRACT: { readonly ROOT: { readonly slot: "data-slot"; readonly marker: "data-avatar"; }; readonly IMAGE: { readonly slot: "data-slot"; readonly marker: "data-avatar-image"; readonly requiresAlt: true; }; readonly FALLBACK: { readonly slot: "data-slot"; readonly marker: "data-avatar-fallback"; readonly visibleBeforeImageLoad: true; }; }',
+      typeOnly: true,
+      summary: 'Accessibility contract for Avatar primitives.',
+    },
+    {
+      name: 'AvatarA11yContract',
+      anchor: 'avatar-a11y-contract',
+      signature: 'AvatarA11yContract: any',
+      typeOnly: true,
+      summary: 'Type of the Avatar A11y Contract object.',
+    },
+    {
+      name: 'AvatarAsChildProps',
+      anchor: 'avatar-as-child-props',
+      signature: 'AvatarAsChildProps: any',
+      typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Avatar.',
+    },
+    {
+      name: 'AvatarFallback',
+      anchor: 'avatar-fallback',
+      signature:
+        'AvatarFallback: { (props: AvatarFallbackProps): JSX.Element | null; (props: AvatarFallbackAsChildProps): JSX.Element | null; }',
+      typeOnly: true,
+      summary:
+        'Renders the `avatar-fallback` part of `avatar`.\n\nSupports polymorphic rendering via `asChild`.',
+    },
+    {
+      name: 'AvatarFallbackAsChildProps',
+      anchor: 'avatar-fallback-as-child-props',
+      signature: 'AvatarFallbackAsChildProps: any',
+      typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Avatar Fallback.',
+    },
+    {
+      name: 'AvatarFallbackOwnProps',
+      anchor: 'avatar-fallback-own-props',
+      signature: 'AvatarFallbackOwnProps: any',
+      typeOnly: true,
+      summary:
+        'Own props for Avatar Fallback, before merging with native element attributes.',
+    },
+    {
+      name: 'AvatarFallbackProps',
+      anchor: 'avatar-fallback-props',
+      signature: 'AvatarFallbackProps: any',
+      typeOnly: true,
+      summary: 'Props for Avatar Fallback.',
+    },
+    {
+      name: 'AvatarImage',
+      anchor: 'avatar-image',
+      signature: 'AvatarImage: (props: AvatarImageProps) => JSX.Element',
+      typeOnly: true,
+      summary: 'Renders the `avatar-image` part of `avatar`.',
+    },
+    {
+      name: 'AvatarImageOwnProps',
+      anchor: 'avatar-image-own-props',
+      signature: 'AvatarImageOwnProps: any',
+      typeOnly: true,
+      summary:
+        'Own props for Avatar Image, before merging with native element attributes.',
+    },
+    {
+      name: 'AvatarImageProps',
+      anchor: 'avatar-image-props',
+      signature: 'AvatarImageProps: any',
+      typeOnly: true,
+      summary: 'Props for Avatar Image.',
+    },
+    {
+      name: 'AvatarLoadingStatus',
+      anchor: 'avatar-loading-status',
+      signature: 'AvatarLoadingStatus: any',
+      typeOnly: true,
+      summary: 'Avatar Loading Status.',
+    },
+    {
+      name: 'AvatarOwnProps',
+      anchor: 'avatar-own-props',
+      signature: 'AvatarOwnProps: any',
+      typeOnly: true,
+      summary:
+        'Own props for Avatar, before merging with native element attributes.',
+    },
+    {
+      name: 'AvatarProps',
+      anchor: 'avatar-props',
+      signature: 'AvatarProps: any',
+      typeOnly: true,
+      summary: 'Props for Avatar.',
+    },
+  ],
+  symbols56: [
+    {
       name: 'Button',
       anchor: 'button',
       signature:
         'Button: { (props: ButtonNativeProps): JSX.Element; (props: ButtonAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'Headless Button component\n\n## Responsibilities\n- Compose pressable foundation for interaction behavior\n- Enforce type="button" default to prevent accidental form submission\n- Forward props and refs to native button or child element\n\n## Non-Responsibilities (delegated to pressable foundation)\n- Keyboard event handling (Enter/Space)\n- Pointer event handling\n- Disabled state enforcement\n- ARIA attribute application\n\n## Invariants\n- MUST NOT contain any event handler logic\n- MUST NOT check disabled prop directly\n- MUST use pressable() for ALL interaction behavior\n- MUST use mergeProps() for ALL prop composition',
+        'Headless Button component\n\n## Responsibilities\n- Compose pressable foundation for interaction behavior\n- Enforce type="button" default to prevent accidental form submission\n- Forward props and refs to native button or child element\n\n## Non-Responsibilities (delegated to pressable foundation)\n- Keyboard event handling (Enter/Space)\n- Pointer event handling\n- Disabled state enforcement\n- ARIA attribute application\n\n## Invariants\n- MUST NOT contain any event handler logic\n- MUST NOT check disabled prop directly\n- MUST use pressable() for ALL interaction behavior\n- MUST use mergeProps() for ALL prop composition\nRenders the `button` part of `button`.\n\nSupports polymorphic rendering via `asChild`.',
       tags: {
         example: [
           'Native button (prevents accidental submit)\n```tsx\n<Button onPress={handleSave}>Save</Button>\n```',
@@ -35198,6 +38742,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'button-as-child-element',
       signature: 'ButtonAsChildElement: any',
       typeOnly: true,
+      summary: 'Button As Child Element.',
     },
     {
       name: 'ButtonAsChildProps',
@@ -35232,21 +38777,24 @@ export const apiSymbolSets: Readonly<
       anchor: 'button-size',
       signature: 'ButtonSize: any',
       typeOnly: true,
+      summary: 'Button Size.',
     },
     {
       name: 'ButtonVariant',
       anchor: 'button-variant',
       signature: 'ButtonVariant: any',
       typeOnly: true,
+      summary: 'Button Variant.',
     },
     {
       name: 'ButtonWidth',
       anchor: 'button-width',
       signature: 'ButtonWidth: any',
       typeOnly: true,
+      summary: 'Button Width.',
     },
   ],
-  symbols56: [
+  symbols57: [
     {
       name: 'Checkbox',
       anchor: 'checkbox',
@@ -35254,7 +38802,7 @@ export const apiSymbolSets: Readonly<
         'Checkbox: { (props: CheckboxInputProps): JSX.Element; (props: CheckboxAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'Headless Checkbox component\n\n## Responsibilities\n- Apply aria-checked for checkbox state signaling\n- Handle indeterminate state for native and asChild hosts\n- Support controlled and uncontrolled checked state\n- Forward props and refs to native input or child element\n- Preserve native checkbox semantics and apply checkbox behavior to asChild hosts\n\n## Non-Responsibilities\n- Form submission orchestration beyond native input props\n\n## Invariants\n- MUST NOT add role="button" (native inputs are role="checkbox")\n- checked state may be controlled or uncontrolled\n- indeterminate overrides checked for state signaling\n- For asChild, consumer MUST provide role="checkbox"',
+        'Headless Checkbox component\n\n## Responsibilities\n- Apply aria-checked for checkbox state signaling\n- Handle indeterminate state for native and asChild hosts\n- Support controlled and uncontrolled checked state\n- Forward props and refs to native input or child element\n- Preserve native checkbox semantics and apply checkbox behavior to asChild hosts\n\n## Non-Responsibilities\n- Form submission orchestration beyond native input props\n\n## Invariants\n- MUST NOT add role="button" (native inputs are role="checkbox")\n- checked state may be controlled or uncontrolled\n- indeterminate overrides checked for state signaling\n- For asChild, consumer MUST provide role="checkbox"\nRenders the `checkbox` part of `checkbox` with `role="checkbox"`.\n\nSupports polymorphic rendering via `asChild`.',
       tags: {
         example: [
           'Native checkbox input\n```tsx\nconst checked = state(false);\n<Checkbox checked={checked()} onPress={() => checked.set(!checked())} />\n```',
@@ -35277,6 +38825,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'checkbox-a11y-contract',
       signature: 'CheckboxA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Checkbox A11y Contract object.',
     },
     {
       name: 'CheckboxAsChildProps',
@@ -35308,7 +38857,7 @@ export const apiSymbolSets: Readonly<
       summary: 'Discriminated union of Checkbox prop types',
     },
   ],
-  symbols57: [
+  symbols58: [
     {
       name: 'DebouncedInput',
       anchor: 'debounced-input',
@@ -35322,6 +38871,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'debounced-input-props',
       signature: 'DebouncedInputProps: any',
       typeOnly: true,
+      summary: 'Props for Debounced Input.',
     },
     {
       name: 'Input',
@@ -35329,6 +38879,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'Input: { (props: InputInputProps): JSX.Element; (props: InputAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `input` part of `input`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'INPUT_A11Y_CONTRACT',
@@ -35343,45 +38895,54 @@ export const apiSymbolSets: Readonly<
       anchor: 'input-a11y-contract',
       signature: 'InputA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Input A11y Contract object.',
     },
     {
       name: 'InputAsChildProps',
       anchor: 'input-as-child-props',
       signature: 'InputAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Input.',
     },
     {
       name: 'InputEvent',
       anchor: 'input-event',
       signature: 'InputEvent: any',
       typeOnly: true,
+      summary: 'Input Event.',
     },
     {
       name: 'InputInputProps',
       anchor: 'input-input-props',
       signature: 'InputInputProps: any',
       typeOnly: true,
+      summary: 'Props for Input Input.',
     },
     {
       name: 'InputOwnProps',
       anchor: 'input-own-props',
       signature: 'InputOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Input, before merging with native element attributes.',
     },
     {
       name: 'InputProps',
       anchor: 'input-props',
       signature: 'InputProps: any',
       typeOnly: true,
+      summary: 'Props for Input.',
     },
   ],
-  symbols58: [
+  symbols59: [
     {
       name: 'Form',
       anchor: 'form',
       signature:
         'Form: { (props: FormProps): JSX.Element; (props: FormAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `form`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'FormAsChildProps',
@@ -35396,15 +38957,18 @@ export const apiSymbolSets: Readonly<
       anchor: 'form-props',
       signature: 'FormProps: any',
       typeOnly: true,
+      summary: 'Props for Form.',
     },
   ],
-  symbols59: [
+  symbols60: [
     {
       name: 'Label',
       anchor: 'label',
       signature:
         'Label: { (props: LabelLabelProps): JSXElement; (props: LabelAsChildProps): JSXElement; }',
       typeOnly: true,
+      summary:
+        'Renders the `label` part of `label`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'LABEL_A11Y_CONTRACT',
@@ -35419,38 +38983,46 @@ export const apiSymbolSets: Readonly<
       anchor: 'label-a11y-contract',
       signature: 'LabelA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Label A11y Contract object.',
     },
     {
       name: 'LabelAsChildProps',
       anchor: 'label-as-child-props',
       signature: 'LabelAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Label.',
     },
     {
       name: 'LabelLabelProps',
       anchor: 'label-label-props',
       signature: 'LabelLabelProps: any',
       typeOnly: true,
+      summary: 'Props for Label Label.',
     },
     {
       name: 'LabelOwnProps',
       anchor: 'label-own-props',
       signature: 'LabelOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Label, before merging with native element attributes.',
     },
     {
       name: 'LabelProps',
       anchor: 'label-props',
       signature: 'LabelProps: any',
       typeOnly: true,
+      summary: 'Props for Label.',
     },
   ],
-  symbols60: [
+  symbols61: [
     {
       name: 'Progress',
       anchor: 'progress',
       signature: 'Progress: (props: ProgressProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `progress` part of `progress` with `role="progressbar"`.',
     },
     {
       name: 'PROGRESS_A11Y_CONTRACT',
@@ -35465,6 +39037,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'progress-a11y-contract',
       signature: 'ProgressA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Progress A11y Contract object.',
     },
     {
       name: 'ProgressIndicator',
@@ -35472,33 +39045,41 @@ export const apiSymbolSets: Readonly<
       signature:
         'ProgressIndicator: { (props: ProgressIndicatorProps): JSX.Element; (props: ProgressIndicatorAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `progress-indicator` part of `progress`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ProgressIndicatorAsChildProps',
       anchor: 'progress-indicator-as-child-props',
       signature: 'ProgressIndicatorAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Progress Indicator.',
     },
     {
       name: 'ProgressIndicatorProps',
       anchor: 'progress-indicator-props',
       signature: 'ProgressIndicatorProps: any',
       typeOnly: true,
+      summary: 'Props for Progress Indicator.',
     },
     {
       name: 'ProgressOwnProps',
       anchor: 'progress-own-props',
       signature: 'ProgressOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Progress, before merging with native element attributes.',
     },
     {
       name: 'ProgressProps',
       anchor: 'progress-props',
       signature: 'ProgressProps: any',
       typeOnly: true,
+      summary: 'Props for Progress.',
     },
   ],
-  symbols61: [
+  symbols62: [
     {
       name: 'PROGRESS_CIRCLE_A11Y_CONTRACT',
       anchor: 'progress-circle-a11-y-contract',
@@ -35512,12 +39093,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'progress-circle',
       signature: 'ProgressCircle: (props: ProgressCircleProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Headless circular progress indicator root.\n\nNormalizes value/max, computes percentage, exposes `--ak-progress-percentage`\nas a dynamically injected CSS custom property, and provides progress state\nto `ProgressCircleIndicator` via context.',
     },
     {
       name: 'ProgressCircleA11yContract',
       anchor: 'progress-circle-a11y-contract',
       signature: 'ProgressCircleA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Progress Circle A11y Contract object.',
     },
     {
       name: 'ProgressCircleIndicator',
@@ -35525,33 +39109,43 @@ export const apiSymbolSets: Readonly<
       signature:
         'ProgressCircleIndicator: { (props: ProgressCircleIndicatorProps): JSX.Element; (props: ProgressCircleIndicatorAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Visual indicator for `ProgressCircle`, rendering the fill/arc element.\nMust be used within a `ProgressCircle`; reads progress state from context\nand exposes it as `data-state`/`data-value`/`data-max`/`data-percentage`.',
     },
     {
       name: 'ProgressCircleIndicatorAsChildProps',
       anchor: 'progress-circle-indicator-as-child-props',
       signature: 'ProgressCircleIndicatorAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for `ProgressCircleIndicator` rendered polymorphically via `asChild`.',
     },
     {
       name: 'ProgressCircleIndicatorProps',
       anchor: 'progress-circle-indicator-props',
       signature: 'ProgressCircleIndicatorProps: any',
       typeOnly: true,
+      summary:
+        'Props for `ProgressCircleIndicator` rendered as a native `div`.',
     },
     {
       name: 'ProgressCircleOwnProps',
       anchor: 'progress-circle-own-props',
       signature: 'ProgressCircleOwnProps: any',
       typeOnly: true,
+      summary:
+        'Props specific to `ProgressCircle`, before merging with native `div` attributes.',
     },
     {
       name: 'ProgressCircleProps',
       anchor: 'progress-circle-props',
       signature: 'ProgressCircleProps: any',
       typeOnly: true,
+      summary:
+        'Props for `ProgressCircle`, combining native `div` attributes with `ProgressCircleOwnProps`.',
     },
   ],
-  symbols62: [
+  symbols63: [
     {
       name: 'RADIO_GROUP_A11Y_CONTRACT',
       anchor: 'radio-group-a11-y-contract',
@@ -35566,12 +39160,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'radio-group',
       signature: 'RadioGroup: (props: RadioGroupProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `radio-group`.',
     },
     {
       name: 'RadioGroupA11yContract',
       anchor: 'radio-group-a11y-contract',
       signature: 'RadioGroupA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Radio Group A11y Contract object.',
     },
     {
       name: 'RadioGroupItem',
@@ -35579,44 +39175,55 @@ export const apiSymbolSets: Readonly<
       signature:
         'RadioGroupItem: { (props: RadioGroupItemProps): JSX.Element; (props: RadioGroupItemAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `radio-group-item` part of `radio-group` with `role="radio"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'RadioGroupItemAsChildProps',
       anchor: 'radio-group-item-as-child-props',
       signature: 'RadioGroupItemAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Radio Group Item.',
     },
     {
       name: 'RadioGroupItemOwnProps',
       anchor: 'radio-group-item-own-props',
       signature: 'RadioGroupItemOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Radio Group Item, before merging with native element attributes.',
     },
     {
       name: 'RadioGroupItemProps',
       anchor: 'radio-group-item-props',
       signature: 'RadioGroupItemProps: any',
       typeOnly: true,
+      summary: 'Props for Radio Group Item.',
     },
     {
       name: 'RadioGroupOwnProps',
       anchor: 'radio-group-own-props',
       signature: 'RadioGroupOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Radio Group, before merging with native element attributes.',
     },
     {
       name: 'RadioGroupProps',
       anchor: 'radio-group-props',
       signature: 'RadioGroupProps: any',
       typeOnly: true,
+      summary: 'Props for Radio Group.',
     },
   ],
-  symbols63: [
+  symbols64: [
     {
       name: 'Select',
       anchor: 'select',
       signature: 'Select: (props: SelectProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `select`.',
     },
     {
       name: 'SELECT_A11Y_CONTRACT',
@@ -35631,6 +39238,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'select-a11y-contract',
       signature: 'SelectA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Select A11y Contract object.',
     },
     {
       name: 'SelectContent',
@@ -35638,24 +39246,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectContent: { (props: SelectContentProps): JSX.Element | null; (props: SelectContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `select` with `role="listbox"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectContentAsChildProps',
       anchor: 'select-content-as-child-props',
       signature: 'SelectContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Select Content.',
     },
     {
       name: 'SelectContentOwnProps',
       anchor: 'select-content-own-props',
       signature: 'SelectContentOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Select Content, before merging with native element attributes.',
     },
     {
       name: 'SelectContentProps',
       anchor: 'select-content-props',
       signature: 'SelectContentProps: any',
       typeOnly: true,
+      summary: 'Props for Select Content.',
     },
     {
       name: 'SelectGroup',
@@ -35663,18 +39278,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectGroup: { (props: SelectGroupProps): JSX.Element; (props: SelectGroupAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `select-group` part of `select` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectGroupAsChildProps',
       anchor: 'select-group-as-child-props',
       signature: 'SelectGroupAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Select Group.',
     },
     {
       name: 'SelectGroupProps',
       anchor: 'select-group-props',
       signature: 'SelectGroupProps: any',
       typeOnly: true,
+      summary: 'Props for Select Group.',
     },
     {
       name: 'SelectItem',
@@ -35682,24 +39302,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectItem: { (props: SelectItemProps): JSX.Element | null; (props: SelectItemAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `select`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectItemAsChildProps',
       anchor: 'select-item-as-child-props',
       signature: 'SelectItemAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Select Item.',
     },
     {
       name: 'SelectItemOwnProps',
       anchor: 'select-item-own-props',
       signature: 'SelectItemOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Select Item, before merging with native element attributes.',
     },
     {
       name: 'SelectItemProps',
       anchor: 'select-item-props',
       signature: 'SelectItemProps: any',
       typeOnly: true,
+      summary: 'Props for Select Item.',
     },
     {
       name: 'SelectItemText',
@@ -35708,19 +39335,22 @@ export const apiSymbolSets: Readonly<
         'SelectItemText: { (props: SelectItemTextProps): JSX.Element; (props: SelectItemTextAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'SelectItemText marks the item text node so Select can resolve labels and\nstyle the text slot directly.',
+        'SelectItemText marks the item text node so Select can resolve labels and\nstyle the text slot directly.\nRenders the `select-item-text` part of `select`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectItemTextAsChildProps',
       anchor: 'select-item-text-as-child-props',
       signature: 'SelectItemTextAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Select Item Text.',
     },
     {
       name: 'SelectItemTextProps',
       anchor: 'select-item-text-props',
       signature: 'SelectItemTextProps: any',
       typeOnly: true,
+      summary: 'Props for Select Item Text.',
     },
     {
       name: 'SelectLabel',
@@ -35728,24 +39358,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectLabel: { (props: SelectLabelProps): JSX.Element | null; (props: SelectLabelAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `select-label` part of `select`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectLabelAsChildProps',
       anchor: 'select-label-as-child-props',
       signature: 'SelectLabelAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Select Label.',
     },
     {
       name: 'SelectLabelProps',
       anchor: 'select-label-props',
       signature: 'SelectLabelProps: any',
       typeOnly: true,
+      summary: 'Props for Select Label.',
     },
     {
       name: 'SelectOwnProps',
       anchor: 'select-own-props',
       signature: 'SelectOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Select, before merging with native element attributes.',
     },
     {
       name: 'SelectPortal',
@@ -35753,18 +39390,21 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectPortal: (props: SelectPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `select`.',
     },
     {
       name: 'SelectPortalProps',
       anchor: 'select-portal-props',
       signature: 'SelectPortalProps: any',
       typeOnly: true,
+      summary: 'Props for Select Portal.',
     },
     {
       name: 'SelectProps',
       anchor: 'select-props',
       signature: 'SelectProps: any',
       typeOnly: true,
+      summary: 'Props for Select.',
     },
     {
       name: 'SelectSeparator',
@@ -35772,18 +39412,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectSeparator: { (props: SelectSeparatorProps): JSX.Element | null; (props: SelectSeparatorAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `select-separator` part of `select` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectSeparatorAsChildProps',
       anchor: 'select-separator-as-child-props',
       signature: 'SelectSeparatorAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Select Separator.',
     },
     {
       name: 'SelectSeparatorProps',
       anchor: 'select-separator-props',
       signature: 'SelectSeparatorProps: any',
       typeOnly: true,
+      summary: 'Props for Select Separator.',
     },
     {
       name: 'SelectTrigger',
@@ -35791,30 +39436,38 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectTrigger: { (props: SelectTriggerProps): JSX.Element | null; (props: SelectTriggerAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `select-trigger` part of `select`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectTriggerAsChildProps',
       anchor: 'select-trigger-as-child-props',
       signature: 'SelectTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Select Trigger.',
     },
     {
       name: 'SelectTriggerOwnProps',
       anchor: 'select-trigger-own-props',
       signature: 'SelectTriggerOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Select Trigger, before merging with native element attributes.',
     },
     {
       name: 'SelectTriggerProps',
       anchor: 'select-trigger-props',
       signature: 'SelectTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Select Trigger.',
     },
     {
       name: 'SelectTriggerSize',
       anchor: 'select-trigger-size',
       signature: 'SelectTriggerSize: any',
       typeOnly: true,
+      summary: 'Select Trigger Size.',
     },
     {
       name: 'SelectValue',
@@ -35822,32 +39475,40 @@ export const apiSymbolSets: Readonly<
       signature:
         'SelectValue: { (props: SelectValueProps): JSX.Element | null; (props: SelectValueAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `select-value` part of `select`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SelectValueAsChildProps',
       anchor: 'select-value-as-child-props',
       signature: 'SelectValueAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Select Value.',
     },
     {
       name: 'SelectValueOwnProps',
       anchor: 'select-value-own-props',
       signature: 'SelectValueOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Select Value, before merging with native element attributes.',
     },
     {
       name: 'SelectValueProps',
       anchor: 'select-value-props',
       signature: 'SelectValueProps: any',
       typeOnly: true,
+      summary: 'Props for Select Value.',
     },
   ],
-  symbols64: [
+  symbols65: [
     {
       name: 'Slider',
       anchor: 'slider',
       signature: 'Slider: (props: SliderProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the `slider` part of `slider`.',
     },
     {
       name: 'SLIDER_A11Y_CONTRACT',
@@ -35862,24 +39523,29 @@ export const apiSymbolSets: Readonly<
       anchor: 'slider-a11y-contract',
       signature: 'SliderA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Slider A11y Contract object.',
     },
     {
       name: 'SliderOrientation',
       anchor: 'slider-orientation',
       signature: 'SliderOrientation: any',
       typeOnly: true,
+      summary: 'Slider Orientation.',
     },
     {
       name: 'SliderOwnProps',
       anchor: 'slider-own-props',
       signature: 'SliderOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Slider, before merging with native element attributes.',
     },
     {
       name: 'SliderProps',
       anchor: 'slider-props',
       signature: 'SliderProps: any',
       typeOnly: true,
+      summary: 'Props for Slider.',
     },
     {
       name: 'SliderRange',
@@ -35887,18 +39553,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'SliderRange: { (props: SliderRangeProps): JSX.Element; (props: SliderRangeAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `slider-range` part of `slider`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SliderRangeAsChildProps',
       anchor: 'slider-range-as-child-props',
       signature: 'SliderRangeAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Slider Range.',
     },
     {
       name: 'SliderRangeProps',
       anchor: 'slider-range-props',
       signature: 'SliderRangeProps: any',
       typeOnly: true,
+      summary: 'Props for Slider Range.',
     },
     {
       name: 'SliderThumb',
@@ -35906,18 +39577,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'SliderThumb: { (props: SliderThumbProps): JSX.Element; (props: SliderThumbAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `slider-thumb` part of `slider` with `role="slider"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SliderThumbAsChildProps',
       anchor: 'slider-thumb-as-child-props',
       signature: 'SliderThumbAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Slider Thumb.',
     },
     {
       name: 'SliderThumbProps',
       anchor: 'slider-thumb-props',
       signature: 'SliderThumbProps: any',
       typeOnly: true,
+      summary: 'Props for Slider Thumb.',
     },
     {
       name: 'SliderTrack',
@@ -35925,27 +39601,34 @@ export const apiSymbolSets: Readonly<
       signature:
         'SliderTrack: { (props: SliderTrackProps): JSX.Element; (props: SliderTrackAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `slider-track` part of `slider`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SliderTrackAsChildProps',
       anchor: 'slider-track-as-child-props',
       signature: 'SliderTrackAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Slider Track.',
     },
     {
       name: 'SliderTrackProps',
       anchor: 'slider-track-props',
       signature: 'SliderTrackProps: any',
       typeOnly: true,
+      summary: 'Props for Slider Track.',
     },
   ],
-  symbols65: [
+  symbols66: [
     {
       name: 'Switch',
       anchor: 'switch',
       signature:
         'Switch: { (props: SwitchButtonProps): JSX.Element; (props: SwitchAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `switch` part of `switch` with `role="switch"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SWITCH_A11Y_CONTRACT',
@@ -35961,46 +39644,54 @@ export const apiSymbolSets: Readonly<
       anchor: 'switch-a11y-contract',
       signature: 'SwitchA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Switch A11y Contract object.',
     },
     {
       name: 'SwitchAsChildProps',
       anchor: 'switch-as-child-props',
       signature: 'SwitchAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Switch.',
     },
     {
       name: 'SwitchButtonProps',
       anchor: 'switch-button-props',
       signature: 'SwitchButtonProps: any',
       typeOnly: true,
+      summary: 'Props for Switch Button.',
     },
     {
       name: 'SwitchOwnProps',
       anchor: 'switch-own-props',
       signature: 'SwitchOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Switch, before merging with native element attributes.',
     },
     {
       name: 'SwitchProps',
       anchor: 'switch-props',
       signature: 'SwitchProps: any',
       typeOnly: true,
+      summary: 'Props for Switch.',
     },
   ],
-  symbols66: [
+  symbols67: [
     {
       name: 'Table',
       anchor: 'table',
       signature:
         'Table: { (props: TableProps): JSX.Element; (props: TableAsChildProps): JSX.Element; }',
       typeOnly: true,
-      summary: 'Semantic table primitive family.',
+      summary:
+        'Semantic table primitive family.\nRenders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableAsChildProps',
       anchor: 'table-as-child-props',
       signature: 'TableAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Table.',
     },
     {
       name: 'TableBody',
@@ -36008,18 +39699,22 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableBody: { (props: TableBodyProps): JSX.Element; (props: TableBodyAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableBodyAsChildProps',
       anchor: 'table-body-as-child-props',
       signature: 'TableBodyAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Table Body.',
     },
     {
       name: 'TableBodyProps',
       anchor: 'table-body-props',
       signature: 'TableBodyProps: any',
       typeOnly: true,
+      summary: 'Props for Table Body.',
     },
     {
       name: 'TableCaption',
@@ -36027,18 +39722,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableCaption: { (props: TableCaptionProps): JSX.Element; (props: TableCaptionAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableCaptionAsChildProps',
       anchor: 'table-caption-as-child-props',
       signature: 'TableCaptionAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Table Caption.',
     },
     {
       name: 'TableCaptionProps',
       anchor: 'table-caption-props',
       signature: 'TableCaptionProps: any',
       typeOnly: true,
+      summary: 'Props for Table Caption.',
     },
     {
       name: 'TableCell',
@@ -36046,18 +39746,22 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableCell: { (props: TableCellProps): JSX.Element; (props: TableCellAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableCellAsChildProps',
       anchor: 'table-cell-as-child-props',
       signature: 'TableCellAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Table Cell.',
     },
     {
       name: 'TableCellProps',
       anchor: 'table-cell-props',
       signature: 'TableCellProps: any',
       typeOnly: true,
+      summary: 'Props for Table Cell.',
     },
     {
       name: 'TableFoot',
@@ -36065,18 +39769,22 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableFoot: { (props: TableFootProps): JSX.Element; (props: TableFootAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableFootAsChildProps',
       anchor: 'table-foot-as-child-props',
       signature: 'TableFootAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Table Foot.',
     },
     {
       name: 'TableFootProps',
       anchor: 'table-foot-props',
       signature: 'TableFootProps: any',
       typeOnly: true,
+      summary: 'Props for Table Foot.',
     },
     {
       name: 'TableHead',
@@ -36084,12 +39792,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableHead: { (props: TableHeadProps): JSX.Element; (props: TableHeadAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableHeadAsChildProps',
       anchor: 'table-head-as-child-props',
       signature: 'TableHeadAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Table Head.',
     },
     {
       name: 'TableHeaderCell',
@@ -36097,30 +39808,37 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableHeaderCell: { (props: TableHeaderCellProps): JSX.Element; (props: TableHeaderCellAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableHeaderCellAsChildProps',
       anchor: 'table-header-cell-as-child-props',
       signature: 'TableHeaderCellAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Table Header Cell.',
     },
     {
       name: 'TableHeaderCellProps',
       anchor: 'table-header-cell-props',
       signature: 'TableHeaderCellProps: any',
       typeOnly: true,
+      summary: 'Props for Table Header Cell.',
     },
     {
       name: 'TableHeadProps',
       anchor: 'table-head-props',
       signature: 'TableHeadProps: any',
       typeOnly: true,
+      summary: 'Props for Table Head.',
     },
     {
       name: 'TableProps',
       anchor: 'table-props',
       signature: 'TableProps: any',
       typeOnly: true,
+      summary: 'Props for Table.',
     },
     {
       name: 'TableRow',
@@ -36128,153 +39846,183 @@ export const apiSymbolSets: Readonly<
       signature:
         'TableRow: { (props: TableRowProps): JSX.Element; (props: TableRowAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TableRowAsChildProps',
       anchor: 'table-row-as-child-props',
       signature: 'TableRowAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Table Row.',
     },
     {
       name: 'TableRowProps',
       anchor: 'table-row-props',
       signature: 'TableRowProps: any',
       typeOnly: true,
+      summary: 'Props for Table Row.',
     },
   ],
-  symbols67: [
+  symbols68: [
     {
       name: 'VirtualList',
       anchor: 'virtual-list',
       signature:
         'VirtualList: { <Item>(props: VirtualListProps<Item>): JSX.Element; <Item>(props: VirtualListAsChildProps<Item>): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `virtual-list`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'VirtualListApi',
       anchor: 'virtual-list-api',
       signature: 'VirtualListApi: any',
       typeOnly: true,
+      summary: 'Virtual List Api.',
     },
     {
       name: 'VirtualListAsChildProps',
       anchor: 'virtual-list-as-child-props',
       signature: 'VirtualListAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Virtual List.',
     },
     {
       name: 'VirtualListProps',
       anchor: 'virtual-list-props',
       signature: 'VirtualListProps: any',
       typeOnly: true,
+      summary: 'Props for Virtual List.',
     },
     {
       name: 'VirtualListRowComponent',
       anchor: 'virtual-list-row-component',
       signature: 'VirtualListRowComponent: any',
       typeOnly: true,
+      summary: 'Virtual List Row Component.',
     },
     {
       name: 'VirtualListRowComponentProps',
       anchor: 'virtual-list-row-component-props',
       signature: 'VirtualListRowComponentProps: any',
       typeOnly: true,
+      summary: 'Props for Virtual List Row Component.',
     },
     {
       name: 'VirtualListRowElement',
       anchor: 'virtual-list-row-element',
       signature: 'VirtualListRowElement: any',
       typeOnly: true,
+      summary: 'Virtual List Row Element.',
     },
     {
       name: 'VirtualListState',
       anchor: 'virtual-list-state',
       signature: 'VirtualListState: any',
       typeOnly: true,
+      summary: 'Virtual List State.',
     },
     {
       name: 'VirtualListViewport',
       anchor: 'virtual-list-viewport',
       signature: 'VirtualListViewport: any',
       typeOnly: true,
+      summary: 'Virtual List Viewport.',
     },
   ],
-  symbols68: [
+  symbols69: [
     {
       name: 'VirtualTable',
       anchor: 'virtual-table',
       signature:
         'VirtualTable: { <Row>(props: VirtualTableProps<Row>): JSX.Element; <Row>(props: VirtualTableAsChildProps<Row>): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `virtual-table`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'VirtualTableApi',
       anchor: 'virtual-table-api',
       signature: 'VirtualTableApi: any',
       typeOnly: true,
+      summary: 'Virtual Table Api.',
     },
     {
       name: 'VirtualTableAsChildProps',
       anchor: 'virtual-table-as-child-props',
       signature: 'VirtualTableAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Virtual Table.',
     },
     {
       name: 'VirtualTableCellComponent',
       anchor: 'virtual-table-cell-component',
       signature: 'VirtualTableCellComponent: any',
       typeOnly: true,
+      summary: 'Virtual Table Cell Component.',
     },
     {
       name: 'VirtualTableCellComponentProps',
       anchor: 'virtual-table-cell-component-props',
       signature: 'VirtualTableCellComponentProps: any',
       typeOnly: true,
+      summary: 'Props for Virtual Table Cell Component.',
     },
     {
       name: 'VirtualTableCellElement',
       anchor: 'virtual-table-cell-element',
       signature: 'VirtualTableCellElement: any',
       typeOnly: true,
+      summary: 'Virtual Table Cell Element.',
     },
     {
       name: 'VirtualTableColumn',
       anchor: 'virtual-table-column',
       signature: 'VirtualTableColumn: any',
       typeOnly: true,
+      summary: 'Virtual Table Column.',
     },
     {
       name: 'VirtualTableProps',
       anchor: 'virtual-table-props',
       signature: 'VirtualTableProps: any',
       typeOnly: true,
+      summary: 'Props for Virtual Table.',
     },
     {
       name: 'VirtualTableState',
       anchor: 'virtual-table-state',
       signature: 'VirtualTableState: any',
       typeOnly: true,
+      summary: 'Virtual Table State.',
     },
     {
       name: 'VirtualTableViewport',
       anchor: 'virtual-table-viewport',
       signature: 'VirtualTableViewport: any',
       typeOnly: true,
+      summary: 'Virtual Table Viewport.',
     },
     {
       name: 'VirtualTableWidth',
       anchor: 'virtual-table-width',
       signature: 'VirtualTableWidth: any',
       typeOnly: true,
+      summary: 'Virtual Table Width.',
     },
   ],
-  symbols69: [
+  symbols70: [
     {
       name: 'Textarea',
       anchor: 'textarea',
       signature:
         'Textarea: { (props: TextareaElementProps): JSX.Element; (props: TextareaAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `textarea` part of `textarea`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TEXTAREA_A11Y_CONTRACT',
@@ -36289,33 +40037,39 @@ export const apiSymbolSets: Readonly<
       anchor: 'textarea-a11y-contract',
       signature: 'TextareaA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Textarea A11y Contract object.',
     },
     {
       name: 'TextareaAsChildProps',
       anchor: 'textarea-as-child-props',
       signature: 'TextareaAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Textarea.',
     },
     {
       name: 'TextareaElementProps',
       anchor: 'textarea-element-props',
       signature: 'TextareaElementProps: any',
       typeOnly: true,
+      summary: 'Props for Textarea Element.',
     },
     {
       name: 'TextareaOwnProps',
       anchor: 'textarea-own-props',
       signature: 'TextareaOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Textarea, before merging with native element attributes.',
     },
     {
       name: 'TextareaProps',
       anchor: 'textarea-props',
       signature: 'TextareaProps: any',
       typeOnly: true,
+      summary: 'Props for Textarea.',
     },
   ],
-  symbols70: [
+  symbols71: [
     {
       name: 'PressEvent',
       anchor: 'press-event',
@@ -36331,7 +40085,7 @@ export const apiSymbolSets: Readonly<
         'Toggle: { (props: ToggleButtonProps): JSX.Element; (props: ToggleAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'Headless Toggle component\n\n## Responsibilities\n- Compose pressable foundation for interaction behavior\n- Apply aria-pressed for toggle state signaling\n- Enforce type="button" default to prevent accidental form submission\n- Forward props and refs to native button or child element\n\n## Non-Responsibilities (delegated to pressable foundation)\n- Keyboard event handling (Enter/Space)\n- Pointer event handling\n- Disabled state enforcement\n- Role attribute application (for non-native elements)\n\n## Invariants\n- MUST NOT contain any event handler logic\n- MUST NOT check disabled or pressed props directly\n- MUST use pressable() for ALL interaction behavior\n- MUST use mergeProps() for ALL prop composition\n- pressed state is CONTROLLED (consumer manages state)',
+        'Headless Toggle component\n\n## Responsibilities\n- Compose pressable foundation for interaction behavior\n- Apply aria-pressed for toggle state signaling\n- Enforce type="button" default to prevent accidental form submission\n- Forward props and refs to native button or child element\n\n## Non-Responsibilities (delegated to pressable foundation)\n- Keyboard event handling (Enter/Space)\n- Pointer event handling\n- Disabled state enforcement\n- Role attribute application (for non-native elements)\n\n## Invariants\n- MUST NOT contain any event handler logic\n- MUST NOT check disabled or pressed props directly\n- MUST use pressable() for ALL interaction behavior\n- MUST use mergeProps() for ALL prop composition\n- pressed state is CONTROLLED (consumer manages state)\nRenders the `toggle` part of `toggle`.\n\nSupports polymorphic rendering via `asChild`.',
       tags: {
         example: [
           'Native toggle button\n```tsx\nconst pressed = state(false);\n<Toggle pressed={pressed()} onPress={() => pressed.set(!pressed())}>\nMute\n</Toggle>\n```',
@@ -36353,6 +40107,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'toggle-a11y-contract',
       signature: 'ToggleA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Toggle A11y Contract object.',
     },
     {
       name: 'ToggleAsChildProps',
@@ -36383,7 +40138,7 @@ export const apiSymbolSets: Readonly<
       summary: 'Discriminated union of Toggle prop types',
     },
   ],
-  symbols71: [
+  symbols72: [
     {
       name: 'TOGGLE_GROUP_A11Y_CONTRACT',
       anchor: 'toggle-group-a11-y-contract',
@@ -36397,12 +40152,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'toggle-group',
       signature: 'ToggleGroup: (props: ToggleGroupProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `toggle-group`.',
     },
     {
       name: 'ToggleGroupA11yContract',
       anchor: 'toggle-group-a11y-contract',
       signature: 'ToggleGroupA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Toggle Group A11y Contract object.',
     },
     {
       name: 'ToggleGroupItem',
@@ -36410,51 +40167,62 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToggleGroupItem: { (props: ToggleGroupItemProps): JSX.Element; (props: ToggleGroupItemAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `toggle-group`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ToggleGroupItemAsChildProps',
       anchor: 'toggle-group-item-as-child-props',
       signature: 'ToggleGroupItemAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Toggle Group Item.',
     },
     {
       name: 'ToggleGroupItemOwnProps',
       anchor: 'toggle-group-item-own-props',
       signature: 'ToggleGroupItemOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Toggle Group Item, before merging with native element attributes.',
     },
     {
       name: 'ToggleGroupItemProps',
       anchor: 'toggle-group-item-props',
       signature: 'ToggleGroupItemProps: any',
       typeOnly: true,
+      summary: 'Props for Toggle Group Item.',
     },
     {
       name: 'ToggleGroupMultipleProps',
       anchor: 'toggle-group-multiple-props',
       signature: 'ToggleGroupMultipleProps: any',
       typeOnly: true,
+      summary: 'Props for Toggle Group Multiple.',
     },
     {
       name: 'ToggleGroupOrientation',
       anchor: 'toggle-group-orientation',
       signature: 'ToggleGroupOrientation: any',
       typeOnly: true,
+      summary: 'Toggle Group Orientation.',
     },
     {
       name: 'ToggleGroupProps',
       anchor: 'toggle-group-props',
       signature: 'ToggleGroupProps: any',
       typeOnly: true,
+      summary: 'Props for Toggle Group.',
     },
     {
       name: 'ToggleGroupSingleProps',
       anchor: 'toggle-group-single-props',
       signature: 'ToggleGroupSingleProps: any',
       typeOnly: true,
+      summary: 'Props for Toggle Group Single.',
     },
   ],
-  symbols72: [
+  symbols73: [
     {
       name: 'VISUALLY_HIDDEN_A11Y_CONTRACT',
       anchor: 'visually-hidden-a11-y-contract',
@@ -36469,44 +40237,54 @@ export const apiSymbolSets: Readonly<
       signature:
         'VisuallyHidden: { (props: VisuallyHiddenSpanProps): JSX.Element; (props: VisuallyHiddenAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `visually-hidden`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'VisuallyHiddenA11yContract',
       anchor: 'visually-hidden-a11y-contract',
       signature: 'VisuallyHiddenA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Visually Hidden A11y Contract object.',
     },
     {
       name: 'VisuallyHiddenAsChildProps',
       anchor: 'visually-hidden-as-child-props',
       signature: 'VisuallyHiddenAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Visually Hidden.',
     },
     {
       name: 'VisuallyHiddenOwnProps',
       anchor: 'visually-hidden-own-props',
       signature: 'VisuallyHiddenOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Visually Hidden, before merging with native element attributes.',
     },
     {
       name: 'VisuallyHiddenProps',
       anchor: 'visually-hidden-props',
       signature: 'VisuallyHiddenProps: any',
       typeOnly: true,
+      summary: 'Props for Visually Hidden.',
     },
     {
       name: 'VisuallyHiddenSpanProps',
       anchor: 'visually-hidden-span-props',
       signature: 'VisuallyHiddenSpanProps: any',
       typeOnly: true,
+      summary: 'Props for Visually Hidden Span.',
     },
   ],
-  symbols73: [
+  symbols74: [
     {
       name: 'Accordion',
       anchor: 'accordion',
       signature: 'Accordion: (props: AccordionProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `accordion`.',
     },
     {
       name: 'ACCORDION_A11Y_CONTRACT',
@@ -36521,6 +40299,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'accordion-a11y-contract',
       signature: 'AccordionA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Accordion A11y Contract object.',
     },
     {
       name: 'AccordionContent',
@@ -36528,24 +40307,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'AccordionContent: { (props: AccordionContentProps): JSX.Element | null; (props: AccordionContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `accordion-content` part of `accordion` with `role="region"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AccordionContentAsChildProps',
       anchor: 'accordion-content-as-child-props',
       signature: 'AccordionContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Accordion Content.',
     },
     {
       name: 'AccordionContentOwnProps',
       anchor: 'accordion-content-own-props',
       signature: 'AccordionContentOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Accordion Content, before merging with native element attributes.',
     },
     {
       name: 'AccordionContentProps',
       anchor: 'accordion-content-props',
       signature: 'AccordionContentProps: any',
       typeOnly: true,
+      summary: 'Props for Accordion Content.',
     },
     {
       name: 'AccordionHeader',
@@ -36553,60 +40339,73 @@ export const apiSymbolSets: Readonly<
       signature:
         'AccordionHeader: { (props: AccordionHeaderProps): JSX.Element; (props: AccordionHeaderAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `accordion-header` part of `accordion`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AccordionHeaderAsChildProps',
       anchor: 'accordion-header-as-child-props',
       signature: 'AccordionHeaderAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Accordion Header.',
     },
     {
       name: 'AccordionHeaderProps',
       anchor: 'accordion-header-props',
       signature: 'AccordionHeaderProps: any',
       typeOnly: true,
+      summary: 'Props for Accordion Header.',
     },
     {
       name: 'AccordionItem',
       anchor: 'accordion-item',
       signature: 'AccordionItem: (props: AccordionItemProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the `accordion-item` part of `accordion`.',
     },
     {
       name: 'AccordionItemOwnProps',
       anchor: 'accordion-item-own-props',
       signature: 'AccordionItemOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Accordion Item, before merging with native element attributes.',
     },
     {
       name: 'AccordionItemProps',
       anchor: 'accordion-item-props',
       signature: 'AccordionItemProps: any',
       typeOnly: true,
+      summary: 'Props for Accordion Item.',
     },
     {
       name: 'AccordionMultipleProps',
       anchor: 'accordion-multiple-props',
       signature: 'AccordionMultipleProps: any',
       typeOnly: true,
+      summary: 'Props for Accordion Multiple.',
     },
     {
       name: 'AccordionOrientation',
       anchor: 'accordion-orientation',
       signature: 'AccordionOrientation: any',
       typeOnly: true,
+      summary: 'Accordion Orientation.',
     },
     {
       name: 'AccordionProps',
       anchor: 'accordion-props',
       signature: 'AccordionProps: any',
       typeOnly: true,
+      summary: 'Props for Accordion.',
     },
     {
       name: 'AccordionSingleProps',
       anchor: 'accordion-single-props',
       signature: 'AccordionSingleProps: any',
       typeOnly: true,
+      summary: 'Props for Accordion Single.',
     },
     {
       name: 'AccordionTrigger',
@@ -36614,21 +40413,26 @@ export const apiSymbolSets: Readonly<
       signature:
         'AccordionTrigger: { (props: AccordionTriggerProps): JSX.Element; (props: AccordionTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `accordion-trigger` part of `accordion`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AccordionTriggerAsChildProps',
       anchor: 'accordion-trigger-as-child-props',
       signature: 'AccordionTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Accordion Trigger.',
     },
     {
       name: 'AccordionTriggerProps',
       anchor: 'accordion-trigger-props',
       signature: 'AccordionTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Accordion Trigger.',
     },
   ],
-  symbols74: [
+  symbols75: [
     {
       name: 'ALERT_DIALOG_A11Y_CONTRACT',
       anchor: 'alert-dialog-a11-y-contract',
@@ -36642,12 +40446,14 @@ export const apiSymbolSets: Readonly<
       anchor: 'alert-dialog',
       signature: 'AlertDialog: (props: AlertDialogProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `alert-dialog`.',
     },
     {
       name: 'AlertDialogA11yContract',
       anchor: 'alert-dialog-a11y-contract',
       signature: 'AlertDialogA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Alert Dialog A11y Contract object.',
     },
     {
       name: 'AlertDialogAction',
@@ -36655,18 +40461,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogAction: { (props: DialogCloseProps): JSX.Element; (props: DialogCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-close` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogActionAsChildProps',
       anchor: 'alert-dialog-action-as-child-props',
       signature: 'AlertDialogActionAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Alert Dialog Action.',
     },
     {
       name: 'AlertDialogActionProps',
       anchor: 'alert-dialog-action-props',
       signature: 'AlertDialogActionProps: any',
       typeOnly: true,
+      summary: 'Props for Alert Dialog Action.',
     },
     {
       name: 'AlertDialogCancel',
@@ -36674,18 +40485,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogCancel: { (props: DialogCloseProps): JSX.Element; (props: DialogCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-close` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogCancelAsChildProps',
       anchor: 'alert-dialog-cancel-as-child-props',
       signature: 'AlertDialogCancelAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Alert Dialog Cancel.',
     },
     {
       name: 'AlertDialogCancelProps',
       anchor: 'alert-dialog-cancel-props',
       signature: 'AlertDialogCancelProps: any',
       typeOnly: true,
+      summary: 'Props for Alert Dialog Cancel.',
     },
     {
       name: 'AlertDialogContent',
@@ -36693,24 +40509,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogContent: (props: AlertDialogContentProps | AlertDialogContentAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a part of `alert-dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogContentAsChildProps',
       anchor: 'alert-dialog-content-as-child-props',
       signature: 'AlertDialogContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Alert Dialog Content.',
     },
     {
       name: 'AlertDialogContentOwnProps',
       anchor: 'alert-dialog-content-own-props',
       signature: 'AlertDialogContentOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Alert Dialog Content, before merging with native element attributes.',
     },
     {
       name: 'AlertDialogContentProps',
       anchor: 'alert-dialog-content-props',
       signature: 'AlertDialogContentProps: any',
       typeOnly: true,
+      summary: 'Props for Alert Dialog Content.',
     },
     {
       name: 'AlertDialogDescription',
@@ -36718,18 +40541,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogDescription: { (props: DialogDescriptionProps): JSX.Element; (props: DialogDescriptionAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-description` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogDescriptionAsChildProps',
       anchor: 'alert-dialog-description-as-child-props',
       signature: 'AlertDialogDescriptionAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Alert Dialog Description.',
     },
     {
       name: 'AlertDialogDescriptionProps',
       anchor: 'alert-dialog-description-props',
       signature: 'AlertDialogDescriptionProps: any',
       typeOnly: true,
+      summary: 'Props for Alert Dialog Description.',
     },
     {
       name: 'AlertDialogOverlay',
@@ -36737,30 +40565,39 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogOverlay: { (props: DialogOverlayProps): JSX.Element | null; (props: DialogOverlayAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-overlay` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogOverlayAsChildProps',
       anchor: 'alert-dialog-overlay-as-child-props',
       signature: 'AlertDialogOverlayAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Alert Dialog Overlay.',
     },
     {
       name: 'AlertDialogOverlayOwnProps',
       anchor: 'alert-dialog-overlay-own-props',
       signature: 'AlertDialogOverlayOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Alert Dialog Overlay, before merging with native element attributes.',
     },
     {
       name: 'AlertDialogOverlayProps',
       anchor: 'alert-dialog-overlay-props',
       signature: 'AlertDialogOverlayProps: any',
       typeOnly: true,
+      summary: 'Props for Alert Dialog Overlay.',
     },
     {
       name: 'AlertDialogOwnProps',
       anchor: 'alert-dialog-own-props',
       signature: 'AlertDialogOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Alert Dialog, before merging with native element attributes.',
     },
     {
       name: 'AlertDialogPortal',
@@ -36768,18 +40605,21 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogPortal: (props: DialogPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `dialog`.',
     },
     {
       name: 'AlertDialogPortalProps',
       anchor: 'alert-dialog-portal-props',
       signature: 'AlertDialogPortalProps: any',
       typeOnly: true,
+      summary: 'Props for Alert Dialog Portal.',
     },
     {
       name: 'AlertDialogProps',
       anchor: 'alert-dialog-props',
       signature: 'AlertDialogProps: any',
       typeOnly: true,
+      summary: 'Props for Alert Dialog.',
     },
     {
       name: 'AlertDialogTitle',
@@ -36787,18 +40627,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogTitle: { (props: DialogTitleProps): JSX.Element; (props: DialogTitleAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-title` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogTitleAsChildProps',
       anchor: 'alert-dialog-title-as-child-props',
       signature: 'AlertDialogTitleAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Alert Dialog Title.',
     },
     {
       name: 'AlertDialogTitleProps',
       anchor: 'alert-dialog-title-props',
       signature: 'AlertDialogTitleProps: any',
       typeOnly: true,
+      summary: 'Props for Alert Dialog Title.',
     },
     {
       name: 'AlertDialogTrigger',
@@ -36806,26 +40651,32 @@ export const apiSymbolSets: Readonly<
       signature:
         'AlertDialogTrigger: (props: AlertDialogTriggerProps | AlertDialogTriggerAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders a part of `alert-dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogTriggerAsChildProps',
       anchor: 'alert-dialog-trigger-as-child-props',
       signature: 'AlertDialogTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Alert Dialog Trigger.',
     },
     {
       name: 'AlertDialogTriggerProps',
       anchor: 'alert-dialog-trigger-props',
       signature: 'AlertDialogTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Alert Dialog Trigger.',
     },
   ],
-  symbols75: [
+  symbols76: [
     {
       name: 'Collapsible',
       anchor: 'collapsible',
       signature: 'Collapsible: (props: CollapsibleProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `collapsible`.',
     },
     {
       name: 'COLLAPSIBLE_A11Y_CONTRACT',
@@ -36842,12 +40693,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'CollapsibleContent: { (props: CollapsibleContentProps): JSX.Element | null; (props: CollapsibleContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `collapsible-content` part of `collapsible`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'CollapsibleContentAsChildProps',
       anchor: 'collapsible-content-as-child-props',
       signature: 'CollapsibleContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Collapsible Content.',
       members: [
         {
           name: 'asChild',
@@ -36946,12 +40801,16 @@ export const apiSymbolSets: Readonly<
       signature:
         'CollapsibleTrigger: { (props: CollapsibleTriggerProps): JSX.Element; (props: CollapsibleTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `collapsible-trigger` part of `collapsible`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'CollapsibleTriggerAsChildProps',
       anchor: 'collapsible-trigger-as-child-props',
       signature: 'CollapsibleTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Collapsible Trigger.',
       members: [
         {
           name: 'asChild',
@@ -36995,12 +40854,13 @@ export const apiSymbolSets: Readonly<
       ],
     },
   ],
-  symbols76: [
+  symbols77: [
     {
       name: 'Dialog',
       anchor: 'dialog',
       signature: 'Dialog: (props: DialogProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `dialog`.',
     },
     {
       name: 'DIALOG_A11Y_CONTRACT',
@@ -37015,6 +40875,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'dialog-a11y-contract',
       signature: 'DialogA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Dialog A11y Contract object.',
     },
     {
       name: 'DialogClose',
@@ -37022,18 +40883,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogClose: { (props: DialogCloseProps): JSX.Element; (props: DialogCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-close` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogCloseAsChildProps',
       anchor: 'dialog-close-as-child-props',
       signature: 'DialogCloseAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dialog Close.',
     },
     {
       name: 'DialogCloseProps',
       anchor: 'dialog-close-props',
       signature: 'DialogCloseProps: any',
       typeOnly: true,
+      summary: 'Props for Dialog Close.',
     },
     {
       name: 'DialogContent',
@@ -37041,24 +40907,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogContent: { (props: DialogContentProps): JSX.Element | null; (props: DialogContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-content` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogContentAsChildProps',
       anchor: 'dialog-content-as-child-props',
       signature: 'DialogContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dialog Content.',
     },
     {
       name: 'DialogContentOwnProps',
       anchor: 'dialog-content-own-props',
       signature: 'DialogContentOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Dialog Content, before merging with native element attributes.',
     },
     {
       name: 'DialogContentProps',
       anchor: 'dialog-content-props',
       signature: 'DialogContentProps: any',
       typeOnly: true,
+      summary: 'Props for Dialog Content.',
     },
     {
       name: 'DialogDescription',
@@ -37066,18 +40939,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogDescription: { (props: DialogDescriptionProps): JSX.Element; (props: DialogDescriptionAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-description` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogDescriptionAsChildProps',
       anchor: 'dialog-description-as-child-props',
       signature: 'DialogDescriptionAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dialog Description.',
     },
     {
       name: 'DialogDescriptionProps',
       anchor: 'dialog-description-props',
       signature: 'DialogDescriptionProps: any',
       typeOnly: true,
+      summary: 'Props for Dialog Description.',
     },
     {
       name: 'DialogOverlay',
@@ -37085,30 +40963,39 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogOverlay: { (props: DialogOverlayProps): JSX.Element | null; (props: DialogOverlayAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-overlay` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogOverlayAsChildProps',
       anchor: 'dialog-overlay-as-child-props',
       signature: 'DialogOverlayAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dialog Overlay.',
     },
     {
       name: 'DialogOverlayOwnProps',
       anchor: 'dialog-overlay-own-props',
       signature: 'DialogOverlayOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Dialog Overlay, before merging with native element attributes.',
     },
     {
       name: 'DialogOverlayProps',
       anchor: 'dialog-overlay-props',
       signature: 'DialogOverlayProps: any',
       typeOnly: true,
+      summary: 'Props for Dialog Overlay.',
     },
     {
       name: 'DialogOwnProps',
       anchor: 'dialog-own-props',
       signature: 'DialogOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Dialog, before merging with native element attributes.',
     },
     {
       name: 'DialogPortal',
@@ -37116,18 +41003,21 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogPortal: (props: DialogPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `dialog`.',
     },
     {
       name: 'DialogPortalProps',
       anchor: 'dialog-portal-props',
       signature: 'DialogPortalProps: any',
       typeOnly: true,
+      summary: 'Props for Dialog Portal.',
     },
     {
       name: 'DialogProps',
       anchor: 'dialog-props',
       signature: 'DialogProps: any',
       typeOnly: true,
+      summary: 'Props for Dialog.',
     },
     {
       name: 'DialogTitle',
@@ -37135,18 +41025,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogTitle: { (props: DialogTitleProps): JSX.Element; (props: DialogTitleAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-title` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogTitleAsChildProps',
       anchor: 'dialog-title-as-child-props',
       signature: 'DialogTitleAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dialog Title.',
     },
     {
       name: 'DialogTitleProps',
       anchor: 'dialog-title-props',
       signature: 'DialogTitleProps: any',
       typeOnly: true,
+      summary: 'Props for Dialog Title.',
     },
     {
       name: 'DialogTrigger',
@@ -37154,21 +41049,26 @@ export const apiSymbolSets: Readonly<
       signature:
         'DialogTrigger: { (props: DialogTriggerProps): JSX.Element; (props: DialogTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `dialog-trigger` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogTriggerAsChildProps',
       anchor: 'dialog-trigger-as-child-props',
       signature: 'DialogTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dialog Trigger.',
     },
     {
       name: 'DialogTriggerProps',
       anchor: 'dialog-trigger-props',
       signature: 'DialogTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Dialog Trigger.',
     },
   ],
-  symbols77: [
+  symbols78: [
     {
       name: 'DISMISSABLE_LAYER_A11Y_CONTRACT',
       anchor: 'dismissable-layer-a11-y-contract',
@@ -37183,38 +41083,47 @@ export const apiSymbolSets: Readonly<
       signature:
         'DismissableLayer: { (props: DismissableLayerProps): JSX.Element; (props: DismissableLayerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `dismissable-layer`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DismissableLayerA11yContract',
       anchor: 'dismissable-layer-a11y-contract',
       signature: 'DismissableLayerA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Dismissable Layer A11y Contract object.',
     },
     {
       name: 'DismissableLayerAsChildProps',
       anchor: 'dismissable-layer-as-child-props',
       signature: 'DismissableLayerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dismissable Layer.',
     },
     {
       name: 'DismissableLayerOwnProps',
       anchor: 'dismissable-layer-own-props',
       signature: 'DismissableLayerOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Dismissable Layer, before merging with native element attributes.',
     },
     {
       name: 'DismissableLayerProps',
       anchor: 'dismissable-layer-props',
       signature: 'DismissableLayerProps: any',
       typeOnly: true,
+      summary: 'Props for Dismissable Layer.',
     },
   ],
-  symbols78: [
+  symbols79: [
     {
       name: 'Dropdown',
       anchor: 'dropdown',
       signature: 'Dropdown: (props: DropdownProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `dropdown`.',
     },
     {
       name: 'DROPDOWN_A11Y_CONTRACT',
@@ -37229,6 +41138,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'dropdown-a11y-contract',
       signature: 'DropdownA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Dropdown A11y Contract object.',
     },
     {
       name: 'DropdownContent',
@@ -37236,24 +41146,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownContent: { (props: DropdownContentProps): JSX.Element | null; (props: DropdownContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownContentAsChildProps',
       anchor: 'dropdown-content-as-child-props',
       signature: 'DropdownContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dropdown Content.',
     },
     {
       name: 'DropdownContentOwnProps',
       anchor: 'dropdown-content-own-props',
       signature: 'DropdownContentOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Dropdown Content, before merging with native element attributes.',
     },
     {
       name: 'DropdownContentProps',
       anchor: 'dropdown-content-props',
       signature: 'DropdownContentProps: any',
       typeOnly: true,
+      summary: 'Props for Dropdown Content.',
     },
     {
       name: 'DropdownGroup',
@@ -37261,18 +41178,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-group` part of `dropdown` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownGroupAsChildProps',
       anchor: 'dropdown-group-as-child-props',
       signature: 'DropdownGroupAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dropdown Group.',
     },
     {
       name: 'DropdownGroupProps',
       anchor: 'dropdown-group-props',
       signature: 'DropdownGroupProps: any',
       typeOnly: true,
+      summary: 'Props for Dropdown Group.',
     },
     {
       name: 'DropdownItem',
@@ -37280,30 +41202,38 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownItem: { (props: DropdownItemProps): JSX.Element | null; (props: DropdownItemAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownItemAsChildProps',
       anchor: 'dropdown-item-as-child-props',
       signature: 'DropdownItemAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dropdown Item.',
     },
     {
       name: 'DropdownItemOwnProps',
       anchor: 'dropdown-item-own-props',
       signature: 'DropdownItemOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Dropdown Item, before merging with native element attributes.',
     },
     {
       name: 'DropdownItemProps',
       anchor: 'dropdown-item-props',
       signature: 'DropdownItemProps: any',
       typeOnly: true,
+      summary: 'Props for Dropdown Item.',
     },
     {
       name: 'DropdownItemVariant',
       anchor: 'dropdown-item-variant',
       signature: 'DropdownItemVariant: any',
       typeOnly: true,
+      summary: 'Dropdown Item Variant.',
     },
     {
       name: 'DropdownLabel',
@@ -37311,24 +41241,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-label` part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownLabelAsChildProps',
       anchor: 'dropdown-label-as-child-props',
       signature: 'DropdownLabelAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dropdown Label.',
     },
     {
       name: 'DropdownLabelProps',
       anchor: 'dropdown-label-props',
       signature: 'DropdownLabelProps: any',
       typeOnly: true,
+      summary: 'Props for Dropdown Label.',
     },
     {
       name: 'DropdownOwnProps',
       anchor: 'dropdown-own-props',
       signature: 'DropdownOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Dropdown, before merging with native element attributes.',
     },
     {
       name: 'DropdownPortal',
@@ -37336,18 +41273,21 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownPortal: (props: DropdownPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `dropdown`.',
     },
     {
       name: 'DropdownPortalProps',
       anchor: 'dropdown-portal-props',
       signature: 'DropdownPortalProps: any',
       typeOnly: true,
+      summary: 'Props for Dropdown Portal.',
     },
     {
       name: 'DropdownProps',
       anchor: 'dropdown-props',
       signature: 'DropdownProps: any',
       typeOnly: true,
+      summary: 'Props for `Dropdown`.',
     },
     {
       name: 'DropdownSeparator',
@@ -37355,18 +41295,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-separator` part of `dropdown` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownSeparatorAsChildProps',
       anchor: 'dropdown-separator-as-child-props',
       signature: 'DropdownSeparatorAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dropdown Separator.',
     },
     {
       name: 'DropdownSeparatorProps',
       anchor: 'dropdown-separator-props',
       signature: 'DropdownSeparatorProps: any',
       typeOnly: true,
+      summary: 'Props for Dropdown Separator.',
     },
     {
       name: 'DropdownTrigger',
@@ -37374,39 +41319,48 @@ export const apiSymbolSets: Readonly<
       signature:
         'DropdownTrigger: { (props: DropdownTriggerProps): JSX.Element | null; (props: DropdownTriggerAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `dropdown-trigger` part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DropdownTriggerAsChildProps',
       anchor: 'dropdown-trigger-as-child-props',
       signature: 'DropdownTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Dropdown Trigger.',
     },
     {
       name: 'DropdownTriggerOwnProps',
       anchor: 'dropdown-trigger-own-props',
       signature: 'DropdownTriggerOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Dropdown Trigger, before merging with native element attributes.',
     },
     {
       name: 'DropdownTriggerProps',
       anchor: 'dropdown-trigger-props',
       signature: 'DropdownTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Dropdown Trigger.',
     },
     {
       name: 'DropdownTriggerSize',
       anchor: 'dropdown-trigger-size',
       signature: 'DropdownTriggerSize: any',
       typeOnly: true,
+      summary: 'Dropdown Trigger Size.',
     },
     {
       name: 'DropdownTriggerVariant',
       anchor: 'dropdown-trigger-variant',
       signature: 'DropdownTriggerVariant: any',
       typeOnly: true,
+      summary: 'Dropdown Trigger Variant.',
     },
   ],
-  symbols79: [
+  symbols80: [
     {
       name: 'FOCUS_SCOPE_A11Y_CONTRACT',
       anchor: 'focus-scope-a11-y-contract',
@@ -37421,44 +41375,54 @@ export const apiSymbolSets: Readonly<
       signature:
         'FocusScope: { (props: FocusScopeProps): JSX.Element; (props: FocusScopeAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `focus-scope`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'FocusScopeA11yContract',
       anchor: 'focus-scope-a11y-contract',
       signature: 'FocusScopeA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Focus Scope A11y Contract object.',
     },
     {
       name: 'FocusScopeAsChildProps',
       anchor: 'focus-scope-as-child-props',
       signature: 'FocusScopeAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Focus Scope.',
     },
     {
       name: 'FocusScopeOwnProps',
       anchor: 'focus-scope-own-props',
       signature: 'FocusScopeOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Focus Scope, before merging with native element attributes.',
     },
     {
       name: 'FocusScopeProps',
       anchor: 'focus-scope-props',
       signature: 'FocusScopeProps: any',
       typeOnly: true,
+      summary: 'Props for Focus Scope.',
     },
   ],
-  symbols80: [
+  symbols81: [
     {
       name: 'HoverCard',
       anchor: 'hover-card',
       signature: 'HoverCard: (props: HoverCardProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `hover-card`.',
     },
     {
       name: 'HoverCardAsChildProps',
       anchor: 'hover-card-as-child-props',
       signature: 'HoverCardAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Hover Card.',
     },
     {
       name: 'HoverCardContent',
@@ -37466,24 +41430,31 @@ export const apiSymbolSets: Readonly<
       signature:
         'HoverCardContent: { (props: HoverCardContentProps): JSX.Element | null; (props: HoverCardContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `hover-card-content` part of `hover-card` with `role="dialog"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'HoverCardContentAsChildProps',
       anchor: 'hover-card-content-as-child-props',
       signature: 'HoverCardContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Hover Card Content.',
     },
     {
       name: 'HoverCardContentProps',
       anchor: 'hover-card-content-props',
       signature: 'HoverCardContentProps: any',
       typeOnly: true,
+      summary: 'Props for Hover Card Content.',
     },
     {
       name: 'HoverCardOwnProps',
       anchor: 'hover-card-own-props',
       signature: 'HoverCardOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Hover Card, before merging with native element attributes.',
     },
     {
       name: 'HoverCardPortal',
@@ -37491,18 +41462,21 @@ export const apiSymbolSets: Readonly<
       signature:
         'HoverCardPortal: (props: HoverCardPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `hover-card`.',
     },
     {
       name: 'HoverCardPortalProps',
       anchor: 'hover-card-portal-props',
       signature: 'HoverCardPortalProps: any',
       typeOnly: true,
+      summary: 'Props for Hover Card Portal.',
     },
     {
       name: 'HoverCardProps',
       anchor: 'hover-card-props',
       signature: 'HoverCardProps: any',
       typeOnly: true,
+      summary: 'Props for Hover Card.',
     },
     {
       name: 'HoverCardTrigger',
@@ -37510,26 +41484,32 @@ export const apiSymbolSets: Readonly<
       signature:
         'HoverCardTrigger: { (props: HoverCardTriggerProps): JSX.Element; (props: HoverCardTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `hover-card-trigger` part of `hover-card`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'HoverCardTriggerAsChildProps',
       anchor: 'hover-card-trigger-as-child-props',
       signature: 'HoverCardTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Hover Card Trigger.',
     },
     {
       name: 'HoverCardTriggerProps',
       anchor: 'hover-card-trigger-props',
       signature: 'HoverCardTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Hover Card Trigger.',
     },
   ],
-  symbols81: [
+  symbols82: [
     {
       name: 'Menu',
       anchor: 'menu',
       signature: 'Menu: (props: MenuProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `menu`.',
     },
     {
       name: 'MENU_A11Y_CONTRACT',
@@ -37544,6 +41524,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'menu-a11y-contract',
       signature: 'MenuA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Menu A11y Contract object.',
     },
     {
       name: 'MenuContent',
@@ -37551,18 +41532,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenuContent: { (props: MenuContentProps): JSX.Element; (props: MenuContentAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `menu-content` part of `menu` with `role="menu"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenuContentAsChildProps',
       anchor: 'menu-content-as-child-props',
       signature: 'MenuContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menu Content.',
     },
     {
       name: 'MenuContentProps',
       anchor: 'menu-content-props',
       signature: 'MenuContentProps: any',
       typeOnly: true,
+      summary: 'Props for Menu Content.',
     },
     {
       name: 'MenuGroup',
@@ -37570,18 +41556,22 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenuGroup: { (props: MenuGroupProps): JSX.Element; (props: MenuGroupAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `menu-group` part of `menu` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenuGroupAsChildProps',
       anchor: 'menu-group-as-child-props',
       signature: 'MenuGroupAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Menu Group.',
     },
     {
       name: 'MenuGroupProps',
       anchor: 'menu-group-props',
       signature: 'MenuGroupProps: any',
       typeOnly: true,
+      summary: 'Props for Menu Group.',
     },
     {
       name: 'MenuItem',
@@ -37589,24 +41579,30 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenuItem: { (props: MenuItemProps): JSX.Element | null; (props: MenuItemAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `menu-item` part of `menu` with `role="menuitem"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenuItemAsChildProps',
       anchor: 'menu-item-as-child-props',
       signature: 'MenuItemAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Menu Item.',
     },
     {
       name: 'MenuItemOwnProps',
       anchor: 'menu-item-own-props',
       signature: 'MenuItemOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Menu Item, before merging with native element attributes.',
     },
     {
       name: 'MenuItemProps',
       anchor: 'menu-item-props',
       signature: 'MenuItemProps: any',
       typeOnly: true,
+      summary: 'Props for Menu Item.',
     },
     {
       name: 'MenuLabel',
@@ -37614,30 +41610,37 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenuLabel: { (props: MenuLabelProps): JSX.Element | null; (props: MenuLabelAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `menu-label` part of `menu`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenuLabelAsChildProps',
       anchor: 'menu-label-as-child-props',
       signature: 'MenuLabelAsChildProps: any',
       typeOnly: true,
+      summary: 'Props for the `asChild` (polymorphic) rendering of Menu Label.',
     },
     {
       name: 'MenuLabelProps',
       anchor: 'menu-label-props',
       signature: 'MenuLabelProps: any',
       typeOnly: true,
+      summary: 'Props for Menu Label.',
     },
     {
       name: 'MenuOwnProps',
       anchor: 'menu-own-props',
       signature: 'MenuOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Menu, before merging with native element attributes.',
     },
     {
       name: 'MenuProps',
       anchor: 'menu-props',
       signature: 'MenuProps: any',
       typeOnly: true,
+      summary: 'Props for Menu.',
     },
     {
       name: 'MenuSeparator',
@@ -37645,26 +41648,32 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenuSeparator: { (props: MenuSeparatorProps): JSX.Element | null; (props: MenuSeparatorAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `menu-separator` part of `menu` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenuSeparatorAsChildProps',
       anchor: 'menu-separator-as-child-props',
       signature: 'MenuSeparatorAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menu Separator.',
     },
     {
       name: 'MenuSeparatorProps',
       anchor: 'menu-separator-props',
       signature: 'MenuSeparatorProps: any',
       typeOnly: true,
+      summary: 'Props for Menu Separator.',
     },
   ],
-  symbols82: [
+  symbols83: [
     {
       name: 'Menubar',
       anchor: 'menubar',
       signature: 'Menubar: (props: MenubarProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `menubar`.',
     },
     {
       name: 'MENUBAR_A11Y_CONTRACT',
@@ -37679,6 +41688,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'menubar-a11y-contract',
       signature: 'MenubarA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Menubar A11y Contract object.',
     },
     {
       name: 'MenubarContent',
@@ -37686,24 +41696,30 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarContent: { (props: MenubarContentProps): JSX.Element | null; (props: MenubarContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary: 'Renders a part of `menubar`.',
     },
     {
       name: 'MenubarContentAsChildProps',
       anchor: 'menubar-content-as-child-props',
       signature: 'MenubarContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menubar Content.',
     },
     {
       name: 'MenubarContentOwnProps',
       anchor: 'menubar-content-own-props',
       signature: 'MenubarContentOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Menubar Content, before merging with native element attributes.',
     },
     {
       name: 'MenubarContentProps',
       anchor: 'menubar-content-props',
       signature: 'MenubarContentProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Content.',
     },
     {
       name: 'MenubarGroup',
@@ -37711,18 +41727,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarGroup: (props: MenubarGroupProps | MenubarGroupAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `menubar-group` part of `menubar` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenubarGroupAsChildProps',
       anchor: 'menubar-group-as-child-props',
       signature: 'MenubarGroupAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menubar Group.',
     },
     {
       name: 'MenubarGroupProps',
       anchor: 'menubar-group-props',
       signature: 'MenubarGroupProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Group.',
     },
     {
       name: 'MenubarItem',
@@ -37730,18 +41751,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarItem: { (props: MenubarItemProps): JSX.Element | null; (props: MenubarItemAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `menubar`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenubarItemAsChildProps',
       anchor: 'menubar-item-as-child-props',
       signature: 'MenubarItemAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menubar Item.',
     },
     {
       name: 'MenubarItemProps',
       anchor: 'menubar-item-props',
       signature: 'MenubarItemProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Item.',
     },
     {
       name: 'MenubarLabel',
@@ -37749,36 +41775,45 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarLabel: (props: MenubarLabelProps | MenubarLabelAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `menubar-label` part of `menubar`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenubarLabelAsChildProps',
       anchor: 'menubar-label-as-child-props',
       signature: 'MenubarLabelAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menubar Label.',
     },
     {
       name: 'MenubarLabelProps',
       anchor: 'menubar-label-props',
       signature: 'MenubarLabelProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Label.',
     },
     {
       name: 'MenubarMenu',
       anchor: 'menubar-menu',
       signature: 'MenubarMenu: (props: MenubarMenuProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `menubar`.',
     },
     {
       name: 'MenubarMenuProps',
       anchor: 'menubar-menu-props',
       signature: 'MenubarMenuProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Menu.',
     },
     {
       name: 'MenubarOwnProps',
       anchor: 'menubar-own-props',
       signature: 'MenubarOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Menubar, before merging with native element attributes.',
     },
     {
       name: 'MenubarPortal',
@@ -37786,18 +41821,21 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarPortal: (props: MenubarPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `menubar`.',
     },
     {
       name: 'MenubarPortalProps',
       anchor: 'menubar-portal-props',
       signature: 'MenubarPortalProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Portal.',
     },
     {
       name: 'MenubarProps',
       anchor: 'menubar-props',
       signature: 'MenubarProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar.',
     },
     {
       name: 'MenubarSeparator',
@@ -37805,24 +41843,30 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarSeparator: (props: MenubarSeparatorProps | MenubarSeparatorAsChildProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `menubar-separator` part of `menubar` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenubarSeparatorAsChildProps',
       anchor: 'menubar-separator-as-child-props',
       signature: 'MenubarSeparatorAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menubar Separator.',
     },
     {
       name: 'MenubarSeparatorProps',
       anchor: 'menubar-separator-props',
       signature: 'MenubarSeparatorProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Separator.',
     },
     {
       name: 'MenubarSub',
       anchor: 'menubar-sub',
       signature: 'MenubarSub: (props: MenubarSubProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `menubar`.',
     },
     {
       name: 'MenubarSubContent',
@@ -37830,24 +41874,29 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarSubContent: { (props: MenubarSubContentProps): JSX.Element | null; (props: MenubarSubContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary: 'Renders a part of `menubar`.',
     },
     {
       name: 'MenubarSubContentAsChildProps',
       anchor: 'menubar-sub-content-as-child-props',
       signature: 'MenubarSubContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menubar Sub Content.',
     },
     {
       name: 'MenubarSubContentProps',
       anchor: 'menubar-sub-content-props',
       signature: 'MenubarSubContentProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Sub Content.',
     },
     {
       name: 'MenubarSubProps',
       anchor: 'menubar-sub-props',
       signature: 'MenubarSubProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Sub.',
     },
     {
       name: 'MenubarSubTrigger',
@@ -37855,18 +41904,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarSubTrigger: { (props: MenubarSubTriggerProps): JSX.Element | null; (props: MenubarSubTriggerAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `menubar`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenubarSubTriggerAsChildProps',
       anchor: 'menubar-sub-trigger-as-child-props',
       signature: 'MenubarSubTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menubar Sub Trigger.',
     },
     {
       name: 'MenubarSubTriggerProps',
       anchor: 'menubar-sub-trigger-props',
       signature: 'MenubarSubTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Sub Trigger.',
     },
     {
       name: 'MenubarTrigger',
@@ -37874,26 +41928,32 @@ export const apiSymbolSets: Readonly<
       signature:
         'MenubarTrigger: { (props: MenubarTriggerProps): JSX.Element | null; (props: MenubarTriggerAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders a part of `menubar`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'MenubarTriggerAsChildProps',
       anchor: 'menubar-trigger-as-child-props',
       signature: 'MenubarTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Menubar Trigger.',
     },
     {
       name: 'MenubarTriggerProps',
       anchor: 'menubar-trigger-props',
       signature: 'MenubarTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Menubar Trigger.',
     },
   ],
-  symbols83: [
+  symbols84: [
     {
       name: 'Popover',
       anchor: 'popover',
       signature: 'Popover: (props: PopoverProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `popover`.',
     },
     {
       name: 'POPOVER_A11Y_CONTRACT',
@@ -37908,6 +41968,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'popover-a11y-contract',
       signature: 'PopoverA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Popover A11y Contract object.',
     },
     {
       name: 'PopoverClose',
@@ -37915,18 +41976,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'PopoverClose: { (props: PopoverCloseProps): JSX.Element; (props: PopoverCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `popover-close` part of `popover`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'PopoverCloseAsChildProps',
       anchor: 'popover-close-as-child-props',
       signature: 'PopoverCloseAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Popover Close.',
     },
     {
       name: 'PopoverCloseProps',
       anchor: 'popover-close-props',
       signature: 'PopoverCloseProps: any',
       typeOnly: true,
+      summary: 'Props for Popover Close.',
     },
     {
       name: 'PopoverContent',
@@ -37934,36 +42000,46 @@ export const apiSymbolSets: Readonly<
       signature:
         'PopoverContent: { (props: PopoverContentProps): JSX.Element | null; (props: PopoverContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `popover-content` part of `popover` with `role="dialog"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'PopoverContentAsChildProps',
       anchor: 'popover-content-as-child-props',
       signature: 'PopoverContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Popover Content.',
     },
     {
       name: 'PopoverContentOwnProps',
       anchor: 'popover-content-own-props',
       signature: 'PopoverContentOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Popover Content, before merging with native element attributes.',
     },
     {
       name: 'PopoverContentProps',
       anchor: 'popover-content-props',
       signature: 'PopoverContentProps: any',
       typeOnly: true,
+      summary: 'Props for Popover Content.',
     },
     {
       name: 'PopoverContentWidth',
       anchor: 'popover-content-width',
       signature: 'PopoverContentWidth: any',
       typeOnly: true,
+      summary: 'Popover Content Width.',
     },
     {
       name: 'PopoverOwnProps',
       anchor: 'popover-own-props',
       signature: 'PopoverOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Popover, before merging with native element attributes.',
     },
     {
       name: 'PopoverPortal',
@@ -37971,18 +42047,21 @@ export const apiSymbolSets: Readonly<
       signature:
         'PopoverPortal: (props: PopoverPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `popover`.',
     },
     {
       name: 'PopoverPortalProps',
       anchor: 'popover-portal-props',
       signature: 'PopoverPortalProps: any',
       typeOnly: true,
+      summary: 'Props for Popover Portal.',
     },
     {
       name: 'PopoverProps',
       anchor: 'popover-props',
       signature: 'PopoverProps: any',
       typeOnly: true,
+      summary: 'Props for Popover.',
     },
     {
       name: 'PopoverTrigger',
@@ -37990,33 +42069,41 @@ export const apiSymbolSets: Readonly<
       signature:
         'PopoverTrigger: { (props: PopoverTriggerProps): JSX.Element; (props: PopoverTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `popover-trigger` part of `popover`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'PopoverTriggerAsChildProps',
       anchor: 'popover-trigger-as-child-props',
       signature: 'PopoverTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Popover Trigger.',
     },
     {
       name: 'PopoverTriggerProps',
       anchor: 'popover-trigger-props',
       signature: 'PopoverTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Popover Trigger.',
     },
   ],
-  symbols84: [
+  symbols85: [
     {
       name: 'ScrollArea',
       anchor: 'scroll-area',
       signature:
         'ScrollArea: { (props: ScrollAreaProps): JSX.Element; (props: ScrollAreaAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary: 'Renders a part of `scroll-area`.',
     },
     {
       name: 'ScrollAreaAsChildProps',
       anchor: 'scroll-area-as-child-props',
       signature: 'ScrollAreaAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Scroll Area.',
     },
     {
       name: 'ScrollAreaCorner',
@@ -38024,24 +42111,29 @@ export const apiSymbolSets: Readonly<
       signature:
         'ScrollAreaCorner: (props: ScrollAreaCornerProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the `scroll-area-corner` part of `scroll-area`.',
     },
     {
       name: 'ScrollAreaCornerProps',
       anchor: 'scroll-area-corner-props',
       signature: 'ScrollAreaCornerProps: any',
       typeOnly: true,
+      summary: 'Props for Scroll Area Corner.',
     },
     {
       name: 'ScrollAreaOwnProps',
       anchor: 'scroll-area-own-props',
       signature: 'ScrollAreaOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Scroll Area, before merging with native element attributes.',
     },
     {
       name: 'ScrollAreaProps',
       anchor: 'scroll-area-props',
       signature: 'ScrollAreaProps: any',
       typeOnly: true,
+      summary: 'Props for Scroll Area.',
     },
     {
       name: 'ScrollAreaScrollbar',
@@ -38049,12 +42141,15 @@ export const apiSymbolSets: Readonly<
       signature:
         'ScrollAreaScrollbar: (props: ScrollAreaScrollbarProps) => JSX.Element',
       typeOnly: true,
+      summary:
+        'Renders the `scroll-area-scrollbar` part of `scroll-area` with `role="scrollbar"`.',
     },
     {
       name: 'ScrollAreaScrollbarProps',
       anchor: 'scroll-area-scrollbar-props',
       signature: 'ScrollAreaScrollbarProps: any',
       typeOnly: true,
+      summary: 'Props for Scroll Area Scrollbar.',
     },
     {
       name: 'ScrollAreaThumb',
@@ -38062,12 +42157,14 @@ export const apiSymbolSets: Readonly<
       signature:
         'ScrollAreaThumb: (props: ScrollAreaThumbProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders the `scroll-area-thumb` part of `scroll-area`.',
     },
     {
       name: 'ScrollAreaThumbProps',
       anchor: 'scroll-area-thumb-props',
       signature: 'ScrollAreaThumbProps: any',
       typeOnly: true,
+      summary: 'Props for Scroll Area Thumb.',
     },
     {
       name: 'ScrollAreaViewport',
@@ -38075,21 +42172,25 @@ export const apiSymbolSets: Readonly<
       signature:
         'ScrollAreaViewport: { (props: ScrollAreaViewportProps): JSX.Element; (props: ScrollAreaViewportAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary: 'Renders a part of `scroll-area`.',
     },
     {
       name: 'ScrollAreaViewportAsChildProps',
       anchor: 'scroll-area-viewport-as-child-props',
       signature: 'ScrollAreaViewportAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Scroll Area Viewport.',
     },
     {
       name: 'ScrollAreaViewportProps',
       anchor: 'scroll-area-viewport-props',
       signature: 'ScrollAreaViewportProps: any',
       typeOnly: true,
+      summary: 'Props for Scroll Area Viewport.',
     },
   ],
-  symbols85: [
+  symbols86: [
     {
       name: 'Toast',
       anchor: 'toast',
@@ -38111,6 +42212,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'toast-a11y-contract',
       signature: 'ToastA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Toast A11y Contract object.',
     },
     {
       name: 'ToastAction',
@@ -38119,19 +42221,22 @@ export const apiSymbolSets: Readonly<
         'ToastAction: { (props: ToastActionProps): JSX.Element; (props: ToastActionAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'ToastAction closes the toast after handling a user-triggered action.',
+        'ToastAction closes the toast after handling a user-triggered action.\nRenders the `toast-action` part of `toast`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ToastActionAsChildProps',
       anchor: 'toast-action-as-child-props',
       signature: 'ToastActionAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Toast Action.',
     },
     {
       name: 'ToastActionProps',
       anchor: 'toast-action-props',
       signature: 'ToastActionProps: any',
       typeOnly: true,
+      summary: 'Props for Toast Action.',
     },
     {
       name: 'ToastClose',
@@ -38139,19 +42244,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastClose: { (props: ToastCloseProps): JSX.Element; (props: ToastCloseAsChildProps): JSX.Element; }',
       typeOnly: true,
-      summary: 'ToastClose is the dedicated dismiss control for a toast entry.',
+      summary:
+        'ToastClose is the dedicated dismiss control for a toast entry.\nRenders the `toast-close` part of `toast`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ToastCloseAsChildProps',
       anchor: 'toast-close-as-child-props',
       signature: 'ToastCloseAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Toast Close.',
     },
     {
       name: 'ToastCloseProps',
       anchor: 'toast-close-props',
       signature: 'ToastCloseProps: any',
       typeOnly: true,
+      summary: 'Props for Toast Close.',
     },
     {
       name: 'ToastDescription',
@@ -38160,19 +42269,22 @@ export const apiSymbolSets: Readonly<
         'ToastDescription: { (props: ToastDescriptionProps): JSX.Element; (props: ToastDescriptionAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'ToastDescription marks the accessible description slot for a toast entry.',
+        'ToastDescription marks the accessible description slot for a toast entry.\nRenders the `toast-description` part of `toast`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ToastDescriptionAsChildProps',
       anchor: 'toast-description-as-child-props',
       signature: 'ToastDescriptionAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Toast Description.',
     },
     {
       name: 'ToastDescriptionProps',
       anchor: 'toast-description-props',
       signature: 'ToastDescriptionProps: any',
       typeOnly: true,
+      summary: 'Props for Toast Description.',
     },
     {
       name: 'ToastHost',
@@ -38195,6 +42307,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'toast-host-props',
       signature: 'ToastHostProps: any',
       typeOnly: true,
+      summary: 'Props for Toast Host.',
     },
     {
       name: 'ToastOwnProps',
@@ -38208,6 +42321,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'toast-props',
       signature: 'ToastProps: any',
       typeOnly: true,
+      summary: 'Props for Toast.',
     },
     {
       name: 'ToastTitle',
@@ -38215,19 +42329,23 @@ export const apiSymbolSets: Readonly<
       signature:
         'ToastTitle: { (props: ToastTitleProps): JSX.Element; (props: ToastTitleAsChildProps): JSX.Element; }',
       typeOnly: true,
-      summary: 'ToastTitle marks the accessible title slot for a toast entry.',
+      summary:
+        'ToastTitle marks the accessible title slot for a toast entry.\nRenders the `toast-title` part of `toast`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ToastTitleAsChildProps',
       anchor: 'toast-title-as-child-props',
       signature: 'ToastTitleAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Toast Title.',
     },
     {
       name: 'ToastTitleProps',
       anchor: 'toast-title-props',
       signature: 'ToastTitleProps: any',
       typeOnly: true,
+      summary: 'Props for Toast Title.',
     },
     {
       name: 'ToastViewport',
@@ -38236,27 +42354,31 @@ export const apiSymbolSets: Readonly<
         'ToastViewport: { (props: ToastViewportProps): JSX.Element; (props: ToastViewportAsChildProps): JSX.Element; }',
       typeOnly: true,
       summary:
-        'ToastViewport renders the live toast stack and the notification region.',
+        'ToastViewport renders the live toast stack and the notification region.\nRenders the `toast-viewport` part of `toast` with `role="region"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'ToastViewportAsChildProps',
       anchor: 'toast-viewport-as-child-props',
       signature: 'ToastViewportAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Toast Viewport.',
     },
     {
       name: 'ToastViewportProps',
       anchor: 'toast-viewport-props',
       signature: 'ToastViewportProps: any',
       typeOnly: true,
+      summary: 'Props for Toast Viewport.',
     },
   ],
-  symbols86: [
+  symbols87: [
     {
       name: 'Tooltip',
       anchor: 'tooltip',
       signature: 'Tooltip: (props: TooltipProps) => JSX.Element',
       typeOnly: true,
+      summary: 'Renders a part of `tooltip`.',
     },
     {
       name: 'TOOLTIP_A11Y_CONTRACT',
@@ -38271,6 +42393,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'tooltip-a11y-contract',
       signature: 'TooltipA11yContract: any',
       typeOnly: true,
+      summary: 'Type of the Tooltip A11y Contract object.',
     },
     {
       name: 'TooltipContent',
@@ -38278,30 +42401,39 @@ export const apiSymbolSets: Readonly<
       signature:
         'TooltipContent: { (props: TooltipContentProps): JSX.Element | null; (props: TooltipContentAsChildProps): JSX.Element | null; }',
       typeOnly: true,
+      summary:
+        'Renders the `tooltip-content` part of `tooltip` with `role="tooltip"`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TooltipContentAsChildProps',
       anchor: 'tooltip-content-as-child-props',
       signature: 'TooltipContentAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Tooltip Content.',
     },
     {
       name: 'TooltipContentOwnProps',
       anchor: 'tooltip-content-own-props',
       signature: 'TooltipContentOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Tooltip Content, before merging with native element attributes.',
     },
     {
       name: 'TooltipContentProps',
       anchor: 'tooltip-content-props',
       signature: 'TooltipContentProps: any',
       typeOnly: true,
+      summary: 'Props for Tooltip Content.',
     },
     {
       name: 'TooltipOwnProps',
       anchor: 'tooltip-own-props',
       signature: 'TooltipOwnProps: any',
       typeOnly: true,
+      summary:
+        'Own props for Tooltip, before merging with native element attributes.',
     },
     {
       name: 'TooltipPortal',
@@ -38309,18 +42441,21 @@ export const apiSymbolSets: Readonly<
       signature:
         'TooltipPortal: (props: TooltipPortalProps) => JSX.Element | null',
       typeOnly: true,
+      summary: 'Renders a part of `tooltip`.',
     },
     {
       name: 'TooltipPortalProps',
       anchor: 'tooltip-portal-props',
       signature: 'TooltipPortalProps: any',
       typeOnly: true,
+      summary: 'Props for Tooltip Portal.',
     },
     {
       name: 'TooltipProps',
       anchor: 'tooltip-props',
       signature: 'TooltipProps: any',
       typeOnly: true,
+      summary: 'Props for Tooltip.',
     },
     {
       name: 'TooltipTrigger',
@@ -38328,26 +42463,39 @@ export const apiSymbolSets: Readonly<
       signature:
         'TooltipTrigger: { (props: TooltipTriggerProps): JSX.Element; (props: TooltipTriggerAsChildProps): JSX.Element; }',
       typeOnly: true,
+      summary:
+        'Renders the `tooltip-trigger` part of `tooltip`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'TooltipTriggerAsChildProps',
       anchor: 'tooltip-trigger-as-child-props',
       signature: 'TooltipTriggerAsChildProps: any',
       typeOnly: true,
+      summary:
+        'Props for the `asChild` (polymorphic) rendering of Tooltip Trigger.',
     },
     {
       name: 'TooltipTriggerProps',
       anchor: 'tooltip-trigger-props',
       signature: 'TooltipTriggerProps: any',
       typeOnly: true,
+      summary: 'Props for Tooltip Trigger.',
     },
   ],
-  symbols87: [
+  symbols88: [
     {
       name: 'askr',
       anchor: 'askr',
       signature: 'askr: (options?: AskrVitePluginOptions) => AskrVitePlugin',
       typeOnly: true,
+      summary:
+        'Create the Askr Vite plugin, which transforms Askr JSX/TSX with oxc, wires\nup dependency pre-bundling and aliasing for `@askrjs/askr`, and optionally\nruns the responsive image pipeline and template optimizer.\nJSX transform failures are reported through the active Vite/Rollup plugin\ncontext with the source file and original transform detail.',
+      tags: {
+        param: ['options Plugin configuration; all fields are optional.'],
+        returns: [
+          'A Vite-compatible plugin object exposing the `askr:vite` name.',
+        ],
+      },
     },
     {
       name: 'askrVitePlugin',
@@ -38355,6 +42503,14 @@ export const apiSymbolSets: Readonly<
       signature:
         'askrVitePlugin: (options?: AskrVitePluginOptions) => AskrVitePlugin',
       typeOnly: true,
+      summary:
+        'Create the Askr Vite plugin, which transforms Askr JSX/TSX with oxc, wires\nup dependency pre-bundling and aliasing for `@askrjs/askr`, and optionally\nruns the responsive image pipeline and template optimizer.\nJSX transform failures are reported through the active Vite/Rollup plugin\ncontext with the source file and original transform detail.',
+      tags: {
+        param: ['options Plugin configuration; all fields are optional.'],
+        returns: [
+          'A Vite-compatible plugin object exposing the `askr:vite` name.',
+        ],
+      },
     },
     {
       name: 'AskrVitePlugin',
@@ -38376,15 +42532,18 @@ export const apiSymbolSets: Readonly<
       anchor: 'askr-vite-plugin-options',
       signature: 'AskrVitePluginOptions: any',
       typeOnly: true,
+      summary: 'Options accepted by {@link askrVitePlugin}.',
       members: [
         {
           name: 'transformJsx',
-          summary: '',
+          summary:
+            'Transform `.jsx`/`.tsx` files with the Askr JSX runtime. Defaults to `true`.',
           signature: 'transformJsx?: boolean;',
         },
         {
           name: 'optimizeTemplates',
-          summary: '',
+          summary:
+            'Hoist repeated JSX class/style literals using parsed compiled output. Defaults to `false`.',
           signature: 'optimizeTemplates?: boolean;',
         },
         {
@@ -38404,6 +42563,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'image-pipeline-options',
       signature: 'ImagePipelineOptions: any',
       typeOnly: true,
+      summary: 'Plugin-level defaults applied to every `image()` declaration.',
       members: [
         {
           name: 'widths',
@@ -38423,30 +42583,38 @@ export const apiSymbolSets: Readonly<
       ],
     },
   ],
-  symbols88: [
+  symbols89: [
     {
       name: 'ASKR_APP_MARKER',
       anchor: 'askr-app-marker',
       signature: 'ASKR_APP_MARKER: "<!--askr-app-->"',
       typeOnly: true,
+      summary:
+        'Placeholder marker in `index.html` replaced with the rendered app fragment.',
     },
     {
       name: 'ASKR_HEAD_MARKER',
       anchor: 'askr-head-marker',
       signature: 'ASKR_HEAD_MARKER: "<!--askr-head-->"',
       typeOnly: true,
+      summary:
+        'Placeholder marker in `index.html` replaced with rendered `<head>` content.',
     },
     {
       name: 'ASKR_SERVER_MODULE_ID',
       anchor: 'askr-server-module-id',
       signature: 'ASKR_SERVER_MODULE_ID: "virtual:askr-server"',
       typeOnly: true,
+      summary:
+        'Virtual module id that resolves to the generated server document app.',
     },
     {
       name: 'AskrDocumentOptions',
       anchor: 'askr-document-options',
       signature: 'AskrDocumentOptions: any',
       typeOnly: true,
+      summary:
+        'Options for composing a rendered Askr fragment into the HTML document.',
       members: [
         {
           name: 'telemetry',
@@ -38460,26 +42628,38 @@ export const apiSymbolSets: Readonly<
       anchor: 'askr-server',
       signature: 'askrServer: (options: AskrServerOptions) => AskrServerPlugin',
       typeOnly: true,
+      summary:
+        "Create the Vite plugin that serves Askr's server-rendered document during\ndevelopment and generates the {@link ASKR_SERVER_MODULE_ID} virtual module\nthat composes the built server app with the HTML document.",
+      tags: {
+        param: ['options Server entry and document configuration.'],
+        returns: [
+          'A Vite-compatible plugin object exposing the `askr:server` name.',
+        ],
+      },
     },
     {
       name: 'AskrServerOptions',
       anchor: 'askr-server-options',
       signature: 'AskrServerOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link askrServer}.',
       members: [
         {
           name: 'entry',
-          summary: '',
+          summary:
+            'Path to the server entry module, resolved relative to the Vite root.',
           signature: 'entry: string;',
         },
         {
           name: 'exportName',
-          summary: '',
+          summary:
+            'Named export on `entry` providing the `ServerApp`. Defaults to `"app"`, falling back to the default export.',
           signature: 'exportName?: string;',
         },
         {
           name: 'indexHtml',
-          summary: '',
+          summary:
+            'Path to the HTML document template, resolved relative to the Vite root. Defaults to `"index.html"`.',
           signature: 'indexHtml?: string;',
         },
       ],
@@ -38504,6 +42684,18 @@ export const apiSymbolSets: Readonly<
       signature:
         'composeAskrDocumentResponse: (response: Response, transformedDocument: string, options?: AskrDocumentOptions) => Promise<Response>',
       typeOnly: true,
+      summary:
+        "Compose an Askr fragment response into the full `transformedDocument` HTML,\nstreaming the fragment's body between the document prefix and suffix.\nNon-fragment responses are returned unchanged.",
+      tags: {
+        param: [
+          'response The upstream response, expected to be an Askr fragment.',
+          'transformedDocument The `index.html` document with app/head markers.',
+          'options Optional telemetry hook wrapping the compose work.',
+        ],
+        returns: [
+          'The composed full-document `Response`, or `response` unchanged.',
+        ],
+      },
     },
     {
       name: 'composeAskrHead',
@@ -38511,6 +42703,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'composeAskrHead: (document: string, head: string, lang?: string, dir?: string) => string',
       typeOnly: true,
+      summary:
+        "Replace the {@link ASKR_HEAD_MARKER} in `document` with normalized `head`\nmarkup, and patch the `<html>` tag's `lang`/`dir` attributes when given.",
     },
     {
       name: 'createDocumentApp',
@@ -38518,6 +42712,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'createDocumentApp: (app: ServerApp, transformedDocument: string, options?: AskrDocumentOptions) => ServerApp',
       typeOnly: true,
+      summary:
+        'Wrap `app` so every response is composed into `transformedDocument` via\n{@link composeAskrDocumentResponse}.',
     },
     {
       name: 'insertAskrFragment',
@@ -38525,15 +42721,22 @@ export const apiSymbolSets: Readonly<
       signature:
         'insertAskrFragment: (document: string, fragment: string) => string',
       typeOnly: true,
+      summary:
+        'Replace the single {@link ASKR_APP_MARKER} in `document` with `fragment`.',
+      tags: {
+        throws: ['If `document` does not contain exactly one app marker.'],
+      },
     },
     {
       name: 'isAskrFragment',
       anchor: 'is-askr-fragment',
       signature: 'isAskrFragment: (response: Response) => boolean',
       typeOnly: true,
+      summary:
+        'Whether `response` carries the `askr-fragment=1` content-type marker.',
     },
   ],
-  symbols89: [
+  symbols90: [
     {
       name: 'image',
       anchor: 'image-2',
@@ -38559,12 +42762,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'image-fit',
       signature: 'ImageFit: any',
       typeOnly: true,
+      summary:
+        'Resize strategy: `"inside"` fits within bounds, `"cover"` crops to fill.',
     },
     {
       name: 'ImageOptions',
       anchor: 'image-options',
       signature: 'ImageOptions: any',
       typeOnly: true,
+      summary: 'Per-declaration overrides for a single `image()` call.',
       members: [
         {
           name: 'widths',
@@ -38604,12 +42810,15 @@ export const apiSymbolSets: Readonly<
       anchor: 'image-output-format',
       signature: 'ImageOutputFormat: any',
       typeOnly: true,
+      summary:
+        'Output image formats the pipeline can emit; `"source"` keeps the original format.',
     },
     {
       name: 'ImagePipelineOptions',
       anchor: 'image-pipeline-options',
       signature: 'ImagePipelineOptions: any',
       typeOnly: true,
+      summary: 'Plugin-level defaults applied to every `image()` declaration.',
       members: [
         {
           name: 'widths',
@@ -38633,6 +42842,7 @@ export const apiSymbolSets: Readonly<
       anchor: 'image-props',
       signature: 'ImageProps: any',
       typeOnly: true,
+      summary: 'Props accepted by the {@link Image} component.',
       members: [
         {
           name: 'image',
@@ -38656,6 +42866,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'image-quality-options',
       signature: 'ImageQualityOptions: any',
       typeOnly: true,
+      summary:
+        'Per-format quality settings (0-100) used when encoding output images.',
       members: [
         {
           name: 'avif',
@@ -38684,6 +42896,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'responsive-image',
       signature: 'ResponsiveImage: any',
       typeOnly: true,
+      summary:
+        'Build-time-resolved metadata for a declared image, ready to render.',
       members: [
         {
           name: '__askrImage',
@@ -38722,6 +42936,8 @@ export const apiSymbolSets: Readonly<
       anchor: 'responsive-image-source',
       signature: 'ResponsiveImageSource: any',
       typeOnly: true,
+      summary:
+        'A single `<source>` candidate within a {@link ResponsiveImage}.',
       members: [
         {
           name: 'type',
