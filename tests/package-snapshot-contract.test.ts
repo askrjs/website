@@ -159,17 +159,24 @@ function deriveInstalledContract(): MutableContract {
   const symbolSetNames = new Map<string, string>();
 
   function signatureFor(symbol: ts.Symbol): string {
-    const declaration = symbol.valueDeclaration ?? symbol.declarations?.[0];
+    const resolved =
+      symbol.flags & ts.SymbolFlags.Alias
+        ? checker.getAliasedSymbol(symbol)
+        : symbol;
+    const declaration = resolved.valueDeclaration ?? resolved.declarations?.[0];
     if (!declaration) return symbol.name;
     try {
-      const type = checker.getTypeOfSymbolAtLocation(symbol, declaration);
+      if (ts.isTypeAliasDeclaration(declaration)) {
+        return `${resolved.name}: ${declaration.type.getText(declaration.getSourceFile())}`;
+      }
+      const type = checker.getTypeOfSymbolAtLocation(resolved, declaration);
       const rendered = checker.typeToString(
         type,
         declaration,
         ts.TypeFormatFlags.NoTruncation |
           ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope
       );
-      return `${symbol.name}: ${rendered}`;
+      return `${resolved.name}: ${rendered}`;
     } catch {
       return symbol.name;
     }
@@ -210,7 +217,7 @@ function deriveInstalledContract(): MutableContract {
         ts.isTypeLiteralNode(declaration))
         ? declaration
         : undefined;
-    const members = memberDeclaration
+    const directMembers = memberDeclaration
       ? memberDeclaration.members.flatMap((member) => {
           const memberName = member.name;
           if (!memberName || !ts.isIdentifier(memberName)) return [];
@@ -238,6 +245,68 @@ function deriveInstalledContract(): MutableContract {
           ];
         })
       : undefined;
+    const packageDirectoryMatch = declaration
+      ?.getSourceFile()
+      .fileName.match(/node_modules[\\/](@askrjs[\\/][^\\/]+)/);
+    const resolvedProps =
+      declaration && resolved.name.endsWith('Props')
+        ? checker
+            .getPropertiesOfType(
+              ts.isTypeAliasDeclaration(declaration)
+                ? checker.getTypeFromTypeNode(declaration.type)
+                : checker.getDeclaredTypeOfSymbol(resolved)
+            )
+            .flatMap((property) => {
+              const propertyDeclaration = property.declarations?.[0];
+              if (!propertyDeclaration || !packageDirectoryMatch) return [];
+              const propertySource =
+                propertyDeclaration.getSourceFile().fileName;
+              const normalizedSource = propertySource.replaceAll('\\', '/');
+              const normalizedPackage = packageDirectoryMatch[1]!.replaceAll(
+                '\\',
+                '/'
+              );
+              if (
+                !normalizedSource.includes(
+                  `/node_modules/${normalizedPackage}/`
+                )
+              )
+                return [];
+              const propertySummary = ts
+                .displayPartsToString(property.getDocumentationComment(checker))
+                .trim();
+              const propertyTags: Record<string, string[]> = {};
+              for (const tag of property.getJsDocTags(checker)) {
+                const value =
+                  typeof tag.text === 'string'
+                    ? tag.text
+                    : ts.displayPartsToString([...(tag.text ?? [])]);
+                (propertyTags[tag.name] ??= []).push(value.trim());
+              }
+              const propertyType = checker.getTypeOfSymbolAtLocation(
+                property,
+                propertyDeclaration
+              );
+              const renderedType = checker.typeToString(
+                propertyType,
+                declaration,
+                ts.TypeFormatFlags.NoTruncation |
+                  ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope
+              );
+              return [
+                {
+                  name: property.name,
+                  summary: propertySummary,
+                  signature: `${property.name}${property.flags & ts.SymbolFlags.Optional ? '?' : ''}: ${renderedType};`,
+                  ...(Object.keys(propertyTags).length
+                    ? { tags: propertyTags }
+                    : {}),
+                },
+              ];
+            })
+            .sort((left, right) => left.name.localeCompare(right.name))
+        : undefined;
+    const members = resolvedProps?.length ? resolvedProps : directMembers;
     return {
       ...(summary ? { summary } : {}),
       ...(tags.remarks?.length ? { remarks: tags.remarks.join('\n') } : {}),

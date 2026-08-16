@@ -3,6 +3,7 @@ import { ArrowLeftIcon, ArrowRightIcon, CopyIcon } from '@askrjs/lucide';
 import { docsByRoute, docsSections, resolveDocsRoute } from './catalog';
 import { cliSnapshot } from './cli-snapshot';
 import { componentDemoFor } from './component-demos';
+import { componentPropReferences } from './component-props';
 import { upgradeGuidance } from './release-notes';
 import type { DocsHeadingDefinition, DocsPageDefinition } from './types';
 import { buildUsageGuide, routeExampleFor } from './usage-guide';
@@ -131,6 +132,60 @@ function ComponentDemo({ page }: { page: DocsPageDefinition }) {
   );
 }
 
+function ComponentPropsReference({ page }: { page: DocsPageDefinition }) {
+  const references = componentPropReferences(page);
+  if (references.length === 0) return null;
+  return (
+    <section aria-labelledby="published-props">
+      <h2 id="published-props" class="anchored-heading">
+        <a href="#published-props">Published props</a>
+      </h2>
+      <p>
+        Generated from the TypeScript declarations shipped by the installed
+        package. Named types in the Type column define the accepted values.
+      </p>
+      {references.map((reference) => (
+        <div class="component-props" key={reference.name}>
+          <h3>
+            <code>{reference.name}</code>
+          </h3>
+          <p>
+            Import from <code>{reference.importName}</code>.
+          </p>
+          <div class="api-table-wrap">
+            <table class="api-table">
+              <thead>
+                <tr>
+                  <th>Prop</th>
+                  <th>Type</th>
+                  <th>Default</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {reference.members.map((member) => (
+                  <tr key={member.name}>
+                    <td>
+                      <code>{member.name}</code>
+                    </td>
+                    <td>
+                      <code>{member.signature}</code>
+                    </td>
+                    <td>
+                      <code>{member.tags?.default?.join(' ') || '—'}</code>
+                    </td>
+                    <td>{member.summary || '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ))}
+    </section>
+  );
+}
+
 function HeadingContent({
   item,
   page,
@@ -223,6 +278,14 @@ export default function DocsPage() {
         <h1>{page.title}</h1>
         <p>{page.description}</p>
       </header>
+      <aside class="docs-callout" data-tone="authority">
+        <strong>Published packages are authoritative</strong>
+        <p>
+          Examples may lag behind a published contract. When guidance differs,
+          verify the exports and TypeScript declarations in your installed
+          package, then file an issue so the example can be corrected.
+        </p>
+      </aside>
       {page.status !== 'stable' && (
         <aside class="docs-callout" data-tone="warning">
           <strong>
@@ -239,6 +302,7 @@ export default function DocsPage() {
       )}
       <UsageGuide page={page} />
       <ComponentDemo page={page} />
+      <ComponentPropsReference page={page} />
       <HeadingContentList headings={page.headings} page={page} />
       {page.route === '/docs' && <DocsLandingDetails />}
       {page.route === '/docs/tooling/cli-overview' && <CliReferenceSection />}

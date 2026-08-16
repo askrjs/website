@@ -29,6 +29,9 @@ export type DocsPageDefinition = {
   navSection?: string;
   status: DocsStatus;
   packages: readonly PackageReference[];
+  /** Generated published prop types to show on this page. When omitted, all
+   * exported `*Props` types from the listed component entrypoints are shown. */
+  propTypes?: readonly string[];
   headings: readonly DocsHeadingDefinition[];
   keywords: readonly string[];
   aliases?: readonly string[];
