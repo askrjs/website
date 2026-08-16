@@ -23,8 +23,50 @@ import {
   componentDemoFor,
   componentDemoTitles,
 } from '../src/pages/docs/component-demos';
+import { componentPropReferences } from '../src/pages/docs/component-props';
 
 describe('documentation catalog', () => {
+  it('should present published declarations as the authority when guidance disagrees', () => {
+    const source = readFileSync('src/pages/docs/page.tsx', 'utf8');
+    expect(source).toContain('Published packages are authoritative');
+    expect(source).toContain('Examples may lag behind a published contract');
+  });
+
+  it('should provide a Block-first layout guide with exact generated prop values', () => {
+    const page = docsByRoute.get('/docs/components/application-layout');
+    expect(page?.title).toBe('Layout Primitives');
+    expect(page?.description).toContain('Start here for layout');
+    expect(page?.propTypes).toEqual([
+      'BlockOwnProps',
+      'ContainerProps',
+      'TextProps',
+    ]);
+
+    const references = componentPropReferences(page!);
+    const block = references.find(
+      (reference) => reference.name === 'BlockOwnProps'
+    );
+    const container = references.find(
+      (reference) => reference.name === 'ContainerProps'
+    );
+    const text = references.find((reference) => reference.name === 'TextProps');
+    expect(
+      block?.members.find((member) => member.name === 'gap')?.signature
+    ).toContain('ResponsiveValue<BlockSpace>');
+    expect(
+      container?.members.some((member) => member.name === 'paddingY')
+    ).toBe(true);
+    expect(container?.members.some((member) => member.name === 'py')).toBe(
+      false
+    );
+    expect(
+      text?.members.find((member) => member.name === 'as')?.signature
+    ).toContain('TextElement');
+    expect(
+      text?.members.find((member) => member.name === 'size')?.signature
+    ).toContain('TextSize');
+  });
+
   it('should use one browser registry for marketing and documentation routes', () => {
     const paths = new Set(
       routeRegistry.manifest.records.map((record) => record.path)
@@ -102,7 +144,7 @@ describe('documentation catalog', () => {
       '/docs/components/virtual-table': 'VirtualTable',
       '/docs/components/application-chrome': 'Sidebar',
       '/docs/components/avatar-and-item': 'Avatar',
-      '/docs/components/application-layout': 'PageHeader',
+      '/docs/components/application-layout': 'Block',
       '/docs/components/advanced-layout': 'Grid',
     } as const;
 
@@ -123,7 +165,7 @@ describe('documentation catalog', () => {
     expect(
       buildUsageGuide(docsByRoute.get('/docs/components/application-layout')!)
         ?.code
-    ).toContain('<PageHeader title=');
+    ).toContain('<Block direction=');
   });
 
   it('should have unique routes, valid groups, anchors, and complete ordering', () => {

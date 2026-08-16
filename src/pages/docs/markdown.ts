@@ -2,6 +2,7 @@ import { apiManifest } from './api-manifest';
 import { apiSymbolSets } from './api-snapshot';
 import { docsCatalog, docsSections } from './catalog';
 import { cliSnapshot } from './cli-snapshot';
+import { componentPropReferences } from './component-props';
 import { upgradeGuidance } from './release-notes';
 import type { DocsPageDefinition } from './types';
 import { buildUsageGuide, routeExampleFor } from './usage-guide';
@@ -62,6 +63,36 @@ function pageHeader(page: DocsPageDefinition): string[] {
     `Source: [${canonical}](${canonical})`,
     '',
     `Status: ${page.status}. Packages: ${packages}.`,
+    '',
+    '**Published packages are authoritative.** Examples may lag behind a published contract. When guidance differs, verify the exports and TypeScript declarations in your installed package, then file an issue.',
+  ];
+}
+
+function componentPropsMarkdown(page: DocsPageDefinition): string[] {
+  const references = componentPropReferences(page);
+  if (references.length === 0) return [];
+  return [
+    '',
+    '## Published props',
+    '',
+    'Generated from the TypeScript declarations shipped by the installed package.',
+    ...references.flatMap((reference) => [
+      '',
+      `### \`${reference.name}\``,
+      '',
+      `Import from \`${reference.importName}\`.`,
+      '',
+      ...reference.members.map((member) => {
+        const description = member.summary
+          ? ` — ${markdownProse(member.summary)}`
+          : '';
+        const defaultValue = member.tags?.default?.join(' ');
+        const defaultText = defaultValue
+          ? ` Default: \`${defaultValue}\`.`
+          : '';
+        return `- \`${member.signature}\`${description}${defaultText}`;
+      }),
+    ]),
   ];
 }
 
@@ -204,6 +235,8 @@ export function renderDocsPageMarkdown(page: DocsPageDefinition): string {
     if (guide.intro) lines.push(markdownProse(guide.intro), '');
     lines.push(codeFence(guide.code, exampleLanguage(guide.code)));
   }
+
+  lines.push(...componentPropsMarkdown(page));
 
   for (const heading of page.headings) {
     lines.push(

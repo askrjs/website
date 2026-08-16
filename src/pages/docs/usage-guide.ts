@@ -615,13 +615,16 @@ const columns: readonly VirtualTableColumn<Project>[] = [
 </>`,
     ],
     [
-      /^Application Layout$/,
-      `import { Container, Main, Page, PageHeader, Section } from '@askrjs/themes/components';
+      /^Layout Primitives$/,
+      `import { Block, Container, Text } from '@askrjs/themes/components';
 
-<Page>
-  <PageHeader title="Projects" description="Active work in this workspace." />
-  <Main><Container><Section><ProjectList /></Section></Container></Main>
-</Page>`,
+<Container paddingY="lg">
+  <Block direction="column" gap="md">
+    <Text as="strong" size="lg">Projects</Text>
+    <Text tone="muted">Active work in this workspace.</Text>
+    <ProjectList />
+  </Block>
+</Container>`,
     ],
     [
       /^Advanced Layout$/,
