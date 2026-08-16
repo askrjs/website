@@ -43,6 +43,7 @@ type PageInput = {
   keywords?: readonly string[];
   aliases?: readonly string[];
   packages?: readonly PackageReference[];
+  propTypes?: readonly string[];
   status?: DocsStatus;
   loader?: DocsPageDefinition['loader'];
 };
@@ -150,6 +151,7 @@ function definePage(
     navSection: section,
     status: input.status ?? 'stable',
     packages: input.packages ?? [packageReference('askr')],
+    propTypes: input.propTypes,
     headings,
     keywords: input.keywords ?? [],
     aliases: input.aliases,
@@ -1093,7 +1095,15 @@ const dataLayout = componentPages('Data and layout', [
     ui: [],
     themes: ['typography'],
   },
-  { title: 'Application Layout', ui: [], themes: [] },
+  {
+    title: 'Layout Primitives',
+    path: 'application-layout',
+    description:
+      'Start here for layout: use Block as the general-purpose primitive, then compose Container and Text with exact published prop values.',
+    ui: [],
+    themes: ['components'],
+    propTypes: ['BlockOwnProps', 'ContainerProps', 'TextProps'],
+  },
   {
     title: 'Advanced Layout',
     // SidebarScope is a pure styling wrapper — it carries no open/closed/rail
