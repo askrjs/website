@@ -393,6 +393,14 @@ const routing = sectionPages('Routing & Data', 'Routing', 'routing', [
   },
   {
     title: 'Route Metadata',
+    // resolveRouteMeta/serializeRouteMeta/reconcileRouteMeta are real,
+    // working functions, but they're only ever called from the router's
+    // client-side navigation path — nothing in @askrjs/askr/ssr or
+    // @askrjs/askr/ssg calls them, so there's no automatic wiring of
+    // RouteMeta into a server-rendered or statically generated <head>.
+    // That's a real gap between what the primitives can do and what SSR/SSG
+    // do with them automatically, not just a docs omission.
+    status: 'limited',
     headings: [
       'Static metadata',
       'Dynamic metadata',
@@ -1086,7 +1094,16 @@ const dataLayout = componentPages('Data and layout', [
     themes: ['typography'],
   },
   { title: 'Application Layout', ui: [], themes: [] },
-  { title: 'Advanced Layout', ui: [], themes: [] },
+  {
+    title: 'Advanced Layout',
+    // SidebarScope is a pure styling wrapper — it carries no open/closed/rail
+    // state of its own. State management for these patterns is entirely the
+    // consuming application's responsibility, not something this package
+    // coordinates.
+    status: 'limited',
+    ui: [],
+    themes: [],
+  },
 ]);
 const feedback = componentPages('Disclosure and feedback', [
   {
@@ -1099,7 +1116,18 @@ const feedback = componentPages('Disclosure and feedback', [
     ui: ['progress', 'progress-circle'],
     themes: ['progress'],
   },
-  { title: 'Toast and Sonner', ui: ['toast'], themes: ['toast', 'sonner'] },
+  {
+    title: 'Toast and Sonner',
+    // Toast (from @askrjs/ui) is a real, working headless primitive. Sonner
+    // (themes/sonner, aliasing Toaster) is not a queueing/stacking/dismiss
+    // notifier system the way shadcn's sonner or the original Sonner library
+    // is — it's a bare presentational div wrapper with no imperative toast()
+    // API, timing, or stacking logic of its own. Don't let the shared name
+    // imply parity with those.
+    status: 'limited',
+    ui: ['toast'],
+    themes: ['toast', 'sonner'],
+  },
   {
     // Stat (Stat/StatLabel/StatValue/StatDescription) IS a real export, but
     // unlike its siblings on this page it has no dedicated subpath — it's

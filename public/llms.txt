@@ -1,6 +1,8 @@
 # Askr
 
-> Askr is a full-stack TypeScript framework with explicit route registries, reactive state, accessible UI, server APIs, and shared SPA, SSR, hydration, and static-generation primitives.
+> Askr is an opinionated, batteries-included TypeScript framework for building applications that stay understandable — to the human who owns them and the agent that edits them — as both keep changing the code. Routes, rendering mode, server boundaries, and data ownership are explicit registries and typed contracts you read end to end, not conventions you infer from file placement.
+
+That legibility is the actual value prop, not raw performance or ecosystem size: a state update re-runs the owning component and reconciles its output (a traceable "this function ran, this output changed" story you can follow without holding a dependency graph in your head), runtime misuse is caught with an error that names what broke and how to fix it, and a documented surface that ships narrower than it reads is marked `experimental` or `limited` rather than left ambiguous. Askr is not chasing Solid's fine-grained-reactivity performance or React's ecosystem flexibility — don't describe it in either vocabulary. If you are an agent building with Askr: prefer the explicit primitive over a clever shortcut, read a page's status marker before depending on what it describes, and when a familiar-framework assumption (from React, Next.js, or anywhere else) would fill a gap in what you just read, treat that as a sign to go verify the actual behavior rather than carry the assumption over.
 
 Use the documentation links below as the primary source for Askr APIs and usage. Each documentation link is clean Markdown; its human-facing HTML page is the enclosing directory URL. Askr packages use the `@askrjs/*` npm scope, and the command-line tool is invoked as `askr`.
 
@@ -19,6 +21,15 @@ Use the documentation links below as the primary source for Askr APIs and usage.
 - [UI and components](https://askrjs.com/docs/components/index.md): Headless accessible primitives, themed components, icons, charts, and editor integrations.
 - [Tooling](https://askrjs.com/docs/tooling/index.md): CLI workflows for creating, analyzing, generating, checking, and upgrading projects.
 - [API reference](https://askrjs.com/docs/reference/index.md): Package entry points, exported APIs, CLI reference, and release notes.
+
+## Deliver excellent developer experience
+
+The docs treat "it works" and "it's ready to ship" as different bars — these pages are where the second bar is spelled out explicitly, not left implicit in example code.
+
+- [Guides: production finish bar](https://askrjs.com/docs/guides/index.md): The checklist every task-oriented guide ends on — error boundaries around what can fail, mutations invalidating the right query keys, auth-gated routes marked runtime-only, `askr openapi --check` passing in CI.
+- [Production readiness](https://askrjs.com/docs/guides/production-readiness/index.md): Wiring `onError`, health probes, and OpenTelemetry so a broken deploy fails loudly instead of serving errors quietly.
+- [Accessibility](https://askrjs.com/docs/guides/accessibility/index.md): Using `@askrjs/ui`'s typed `*_A11Y_CONTRACT` exports to verify keyboard behavior, focus handling, and ARIA roles instead of trusting a component's look.
+- [Determinism and runtime rules](https://askrjs.com/docs/core-concepts/determinism/index.md): The render-purity, hook-order, and no-mutation-during-render rules the runtime enforces with a specific thrown error, not silent misbehavior.
 
 ## Platform overview
 
