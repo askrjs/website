@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Structure an Askr Project'
+  short_description: 'Place Askr code behind explicit owners'
+  default_prompt: 'Use $project-structures to organize this Askr project with explicit ownership and dependency direction.'

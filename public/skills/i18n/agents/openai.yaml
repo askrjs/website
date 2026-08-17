@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Internationalize an Askr App'
+  short_description: 'Own typed locales, direction, and hydration'
+  default_prompt: 'Use $i18n to add typed, application-owned localization to this Askr application.'

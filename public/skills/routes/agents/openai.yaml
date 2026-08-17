@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Build Askr Routes'
+  short_description: 'Declare and verify explicit Askr route trees'
+  default_prompt: 'Use $routes to build an explicit Askr route registry with typed navigation and owned route behavior.'

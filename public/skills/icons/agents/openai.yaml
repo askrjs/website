@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Use Askr Icons'
+  short_description: 'Choose and compose accessible Askr icons'
+  default_prompt: 'Use $icons to select and compose accessible, theme-aligned icons for this Askr interface.'
