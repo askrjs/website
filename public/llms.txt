@@ -8,6 +8,16 @@ Use the documentation links below as the primary source for Askr APIs and usage.
 
 ## Start here
 
+- [Agent building guide](https://askrjs.com/AGENTS.md): Concise architectural rules and the entry point for agents building with Askr.
+- [Build an Askr app skill](https://askrjs.com/skills/build-askr-app/SKILL.md): Thin end-to-end workflow that composes the project structures, routes, themes, and static-delivery guidance.
+- [Askr themes skill](https://askrjs.com/skills/themes/SKILL.md): Theme boundaries, styled building blocks, tokens, customization, and server-rendered style integration.
+- [Askr routes skill](https://askrjs.com/skills/routes/SKILL.md): Route registries, layouts, URL state, navigation, loaders, access, metadata, and fallbacks.
+- [Askr project structures skill](https://askrjs.com/skills/project-structures/SKILL.md): Ownership and dependency direction across pages, features, components, data boundaries, and server code.
+- [Askr control flows skill](https://askrjs.com/skills/control-flows/SKILL.md): Conditional rendering, keyed collections, reactive rows, and render-scoped ordering invariants.
+- [Askr icons skill](https://askrjs.com/skills/icons/SKILL.md): Lucide icons, brand logos, accessible composition, semantic sizing, and custom SVG integration.
+- [Askr queries and mutations skill](https://askrjs.com/skills/queries-and-mutations/SKILL.md): Query identity, consistency, reconciliation, mutations, invalidation, server prefetch, dehydration, and hydration.
+- [Askr i18n skill](https://askrjs.com/skills/i18n/SKILL.md): Typed locale catalogs, application-owned locale resolution, direction, formatting, and SSR hydration.
+- [Askr charts skill](https://askrjs.com/skills/charts/SKILL.md): Typed plotting, marks and transforms, interaction, accessibility, live data, styling, and export.
 - [Documentation](https://askrjs.com/docs/index.md): Documentation overview and navigation for the Askr platform.
 - [Getting started](https://askrjs.com/docs/getting-started/index.md): Install Askr, choose a starter, and build a first route.
 - [Core concepts](https://askrjs.com/docs/core-concepts/index.md): Components, state, scopes, lifecycle work, and deterministic rendering.
