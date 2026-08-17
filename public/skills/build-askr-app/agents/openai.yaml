@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Build an Askr App'
+  short_description: 'Compose and ship legible Askr applications'
+  default_prompt: 'Use $build-askr-app to build an Askr application with explicit architecture and appropriate delivery guidance.'

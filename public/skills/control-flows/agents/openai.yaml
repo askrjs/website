@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Build Askr Control Flows'
+  short_description: 'Render branches and keyed collections safely'
+  default_prompt: 'Use $control-flows to implement this Askr component with explicit branches, stable collection identity, and valid render order.'

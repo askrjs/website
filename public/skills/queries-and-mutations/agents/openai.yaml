@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Build Askr Queries and Mutations'
+  short_description: 'Own cached reads, writes, and consistency'
+  default_prompt: 'Use $queries-and-mutations to implement this Askr data flow with stable identity, explicit states, and correct invalidation.'

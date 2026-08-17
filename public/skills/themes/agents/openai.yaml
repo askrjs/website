@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Use Askr Themes'
+  short_description: 'Compose and customize Askr themed interfaces'
+  default_prompt: 'Use $themes to compose an Askr interface from canonical themed components and tokens.'

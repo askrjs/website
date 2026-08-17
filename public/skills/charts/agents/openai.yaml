@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Build Askr Charts'
+  short_description: 'Compose typed and accessible Askr plots'
+  default_prompt: 'Use $charts to build a typed, accessible Askr visualization that preserves data truth.'
