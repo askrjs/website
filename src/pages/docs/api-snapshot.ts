@@ -117,6 +117,15 @@ export const apiSymbolSets: Readonly<
         'Create a reactive {@link Query} cell bound to the current component, either\nfrom inline `options` (key + fetch) or a reusable {@link QueryDefinition}\nplus its input.',
     },
     {
+      name: 'createQueryCollection',
+      anchor: 'create-query-collection',
+      signature:
+        'createQueryCollection: <TInput, TResult extends {}, TKey extends QueryCollectionKey = string>(options: QueryCollectionOptions<TInput, TResult, TKey>) => QueryCollection<TInput, TResult, TKey>',
+      typeOnly: true,
+      summary:
+        'Create one lifecycle-owned collection of dynamically keyed readers for a\nreusable query definition, with bounded collection-started fetches.',
+    },
+    {
       name: 'createRef',
       anchor: 'create-ref',
       signature: 'createRef: <T extends Element = Element>() => Ref<T>',
@@ -390,6 +399,118 @@ export const apiSymbolSets: Readonly<
           summary:
             'Optional key for keyed lists (string | number | symbol for internal frames)',
           signature: 'key?: string | number | symbol | undefined;',
+        },
+      ],
+    },
+    {
+      name: 'QueryCollection',
+      anchor: 'query-collection',
+      signature: 'QueryCollection: any',
+      typeOnly: true,
+      summary:
+        'Aggregate reactive state for a lifecycle-owned dynamic query collection.',
+      members: [
+        {
+          name: 'entries',
+          summary: '',
+          signature:
+            'readonly entries: readonly QueryCollectionEntry<TInput, TResult, TKey>[];',
+        },
+        {
+          name: 'loading',
+          summary: '',
+          signature: 'readonly loading: boolean;',
+        },
+        {
+          name: 'settled',
+          summary: '',
+          signature: 'readonly settled: boolean;',
+        },
+        {
+          name: 'results',
+          summary: '',
+          signature: 'readonly results: ReadonlyMap<TKey, TResult>;',
+        },
+        {
+          name: 'errors',
+          summary: '',
+          signature: 'readonly errors: ReadonlyMap<TKey, {}>;',
+        },
+        {
+          name: 'get',
+          summary: '',
+          signature:
+            'get(key: TKey): QueryCollectionEntry<TInput, TResult, TKey> | undefined;',
+        },
+        {
+          name: 'retry',
+          summary: '',
+          signature: 'retry(key: TKey): Promise<void>;',
+        },
+      ],
+    },
+    {
+      name: 'QueryCollectionEntry',
+      anchor: 'query-collection-entry',
+      signature: 'QueryCollectionEntry: any',
+      typeOnly: true,
+      summary: 'One keyed input and its underlying cache-backed query reader.',
+      members: [
+        {
+          name: 'key',
+          summary: '',
+          signature: 'readonly key: TKey;',
+        },
+        {
+          name: 'input',
+          summary: '',
+          signature: 'readonly input: TInput;',
+        },
+        {
+          name: 'query',
+          summary: '',
+          signature: 'readonly query: Query<TResult>;',
+        },
+      ],
+    },
+    {
+      name: 'QueryCollectionKey',
+      anchor: 'query-collection-key',
+      signature: 'QueryCollectionKey: string | number | symbol',
+      typeOnly: true,
+      summary: 'Stable identity for one member of a {@link QueryCollection}.',
+    },
+    {
+      name: 'QueryCollectionOptions',
+      anchor: 'query-collection-options',
+      signature: 'QueryCollectionOptions: any',
+      typeOnly: true,
+      summary: 'Options for {@link createQueryCollection}.',
+      members: [
+        {
+          name: 'query',
+          summary: '',
+          signature: 'readonly query: QueryDefinition<TInput, TResult>;',
+        },
+        {
+          name: 'inputs',
+          summary: '',
+          signature: 'readonly inputs: () => readonly TInput[];',
+        },
+        {
+          name: 'key',
+          summary: '',
+          signature: 'readonly key: (input: TInput) => TKey;',
+        },
+        {
+          name: 'concurrency',
+          summary: '',
+          signature: 'readonly concurrency?: number;',
+        },
+        {
+          name: 'runtime',
+          summary: '',
+          signature: 'readonly runtime?: DataRuntime;',
         },
       ],
     },
@@ -1321,6 +1442,16 @@ export const apiSymbolSets: Readonly<
           name: 'key',
           summary: '',
           signature: 'key: string;',
+        },
+        {
+          name: 'currentTarget',
+          summary: '',
+          signature: 'currentTarget?: unknown;',
+        },
+        {
+          name: 'target',
+          summary: '',
+          signature: 'target?: unknown;',
         },
       ],
     },
@@ -2526,6 +2657,15 @@ export const apiSymbolSets: Readonly<
         'Create a reactive {@link Query} cell bound to the current component, either\nfrom inline `options` (key + fetch) or a reusable {@link QueryDefinition}\nplus its input.',
     },
     {
+      name: 'createQueryCollection',
+      anchor: 'create-query-collection',
+      signature:
+        'createQueryCollection: <TInput, TResult extends {}, TKey extends QueryCollectionKey = string>(options: QueryCollectionOptions<TInput, TResult, TKey>) => QueryCollection<TInput, TResult, TKey>',
+      typeOnly: true,
+      summary:
+        'Create one lifecycle-owned collection of dynamically keyed readers for a\nreusable query definition, with bounded collection-started fetches.',
+    },
+    {
       name: 'createQueryPrefetchContext',
       anchor: 'create-query-prefetch-context',
       signature:
@@ -2739,6 +2879,118 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
       summary:
         'Reactive read state for a query cell: data, loading/refresh flags, and freshness.',
+    },
+    {
+      name: 'QueryCollection',
+      anchor: 'query-collection',
+      signature: 'QueryCollection: any',
+      typeOnly: true,
+      summary:
+        'Aggregate reactive state for a lifecycle-owned dynamic query collection.',
+      members: [
+        {
+          name: 'entries',
+          summary: '',
+          signature:
+            'readonly entries: readonly QueryCollectionEntry<TInput, TResult, TKey>[];',
+        },
+        {
+          name: 'loading',
+          summary: '',
+          signature: 'readonly loading: boolean;',
+        },
+        {
+          name: 'settled',
+          summary: '',
+          signature: 'readonly settled: boolean;',
+        },
+        {
+          name: 'results',
+          summary: '',
+          signature: 'readonly results: ReadonlyMap<TKey, TResult>;',
+        },
+        {
+          name: 'errors',
+          summary: '',
+          signature: 'readonly errors: ReadonlyMap<TKey, {}>;',
+        },
+        {
+          name: 'get',
+          summary: '',
+          signature:
+            'get(key: TKey): QueryCollectionEntry<TInput, TResult, TKey> | undefined;',
+        },
+        {
+          name: 'retry',
+          summary: '',
+          signature: 'retry(key: TKey): Promise<void>;',
+        },
+      ],
+    },
+    {
+      name: 'QueryCollectionEntry',
+      anchor: 'query-collection-entry',
+      signature: 'QueryCollectionEntry: any',
+      typeOnly: true,
+      summary: 'One keyed input and its underlying cache-backed query reader.',
+      members: [
+        {
+          name: 'key',
+          summary: '',
+          signature: 'readonly key: TKey;',
+        },
+        {
+          name: 'input',
+          summary: '',
+          signature: 'readonly input: TInput;',
+        },
+        {
+          name: 'query',
+          summary: '',
+          signature: 'readonly query: Query<TResult>;',
+        },
+      ],
+    },
+    {
+      name: 'QueryCollectionKey',
+      anchor: 'query-collection-key',
+      signature: 'QueryCollectionKey: string | number | symbol',
+      typeOnly: true,
+      summary: 'Stable identity for one member of a {@link QueryCollection}.',
+    },
+    {
+      name: 'QueryCollectionOptions',
+      anchor: 'query-collection-options',
+      signature: 'QueryCollectionOptions: any',
+      typeOnly: true,
+      summary: 'Options for {@link createQueryCollection}.',
+      members: [
+        {
+          name: 'query',
+          summary: '',
+          signature: 'readonly query: QueryDefinition<TInput, TResult>;',
+        },
+        {
+          name: 'inputs',
+          summary: '',
+          signature: 'readonly inputs: () => readonly TInput[];',
+        },
+        {
+          name: 'key',
+          summary: '',
+          signature: 'readonly key: (input: TInput) => TKey;',
+        },
+        {
+          name: 'concurrency',
+          summary: '',
+          signature: 'readonly concurrency?: number;',
+        },
+        {
+          name: 'runtime',
+          summary: '',
+          signature: 'readonly runtime?: DataRuntime;',
+        },
+      ],
     },
     {
       name: 'QueryConsistency',
@@ -5158,7 +5410,7 @@ export const apiSymbolSets: Readonly<
       name: 'createRenderContext',
       anchor: 'create-render-context',
       signature:
-        'createRenderContext: (seed?: number, opts?: { url?: string; data?: SSRData; params?: Record<string, string>; routes?: readonly Route[]; routeAuth?: RouteAuthOptions; basePath?: string; signal?: AbortSignal; dataRuntime?: unknown; mode?: "ssr" | "spa"; queryPrefetch?: QueryPrefetchContext; framework?: Readonly<Record<string, unknown>>; envelope?: PageRenderEnvelope; cspNonce?: string; }) => RenderContext',
+        'createRenderContext: (seed?: number, opts?: { url?: string; data?: SSRData; params?: Record<string, string>; routes?: readonly Route[]; routeAuth?: RouteAuthOptions; authContext?: AuthContext; basePath?: string; signal?: AbortSignal; dataRuntime?: unknown; mode?: "ssr" | "spa"; queryPrefetch?: QueryPrefetchContext; framework?: Readonly<Record<string, unknown>>; envelope?: PageRenderEnvelope; cspNonce?: string; }) => RenderContext',
       typeOnly: true,
       summary:
         'Build a fresh SSR render context (data cache, routes, seed) for a render pass.',
@@ -5401,7 +5653,7 @@ export const apiSymbolSets: Readonly<
       name: 'renderToStringSync',
       anchor: 'render-to-string-sync',
       signature:
-        'renderToStringSync: (component: (props?: Record<string, unknown>) => VNode | JSXElement | string | number | boolean | null | undefined, props?: Record<string, unknown>, options?: { seed?: number; data?: SSRData; envelope?: PageRenderEnvelope; cspNonce?: string; onContext?: (ctx: RenderContext) => void; }) => string',
+        'renderToStringSync: (component: (props?: Record<string, unknown>) => VNode | JSXElement | string | number | boolean | null | undefined, props?: Record<string, unknown>, options?: { seed?: number; data?: SSRData; envelope?: PageRenderEnvelope; cspNonce?: string; authContext?: import("@askrjs/auth").AuthContext; onContext?: (ctx: RenderContext) => void; }) => string',
       typeOnly: true,
       summary:
         'Synchronously render a component to an HTML string, without route resolution.',
@@ -6293,7 +6545,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'resolve',
           summary:
-            'Resolve the principal, session, tenant, and authorization state.',
+            'Resolve the principal, session, tenant, and authorization state.\nInvalid bearer and cookie JWTs fall through as unauthenticated; tenant and store failures propagate.',
           signature:
             'resolve(request: Request, options?: {\n    signal?: AbortSignal;\n  }): Promise<AuthContext<P, S>>;',
           tags: {
@@ -7605,16 +7857,25 @@ export const apiSymbolSets: Readonly<
       ],
     },
     {
+      name: 'TotpVerificationResult',
+      anchor: 'totp-verification-result',
+      signature:
+        'TotpVerificationResult: {\n  valid: true;\n  /**\n   * Accepted moving counter. The application must atomically reject an already-consumed\n   * counter and persist a newly accepted counter to provide replay protection.\n   */\n  counter: number;\n  /** Matched offset from the current counter; useful for application-owned clock-drift policy. */\n  drift: number;\n} | {\n  valid: false;\n  counter?: never;\n  drift?: never;\n}',
+      typeOnly: true,
+      summary: 'Result of verifying a TOTP code.',
+    },
+    {
       name: 'verifyTotpCode',
       anchor: 'verify-totp-code',
       signature:
-        'verifyTotpCode: (input: VerifyTotpOptions) => Promise<{ valid: boolean; counter?: number; drift?: number; }>',
+        'verifyTotpCode: (input: VerifyTotpOptions) => Promise<TotpVerificationResult>',
       typeOnly: true,
-      summary: 'Verify a TOTP code with a bounded clock-drift window.',
+      summary:
+        'Verify a TOTP code with a bounded clock-drift window.\n\nThe window is scanned from `-window` through `+window`. If the same code matches more than one\ncounter, the last match wins, so the greatest numeric drift (toward `+window`) is returned.\n\nA valid cryptographic result alone does not prevent replay. The caller must atomically consume\nand persist the returned `counter` before granting access:\n\n```ts\nconst result = await verifyTotpCode({ secret, code });\nif (result.valid && await counters.consume(result.counter)) grantAccess();\n```',
       tags: {
         param: ['input Verification input and settings.'],
         returns: [
-          'Whether the code is valid and its matched counter when valid.',
+          'The validation result and matched counter/drift when valid.',
         ],
       },
     },
@@ -10675,6 +10936,12 @@ export const apiSymbolSets: Readonly<
           signature: 'bodyCodec?: Codec;',
         },
         {
+          name: 'bodyMediaType',
+          summary:
+            'Explicit media type used to encode a request body with a multi-variant `content()` codec.',
+          signature: 'bodyMediaType?: string;',
+        },
+        {
           name: 'response',
           summary: '',
           signature: 'response?: Codec;',
@@ -10938,7 +11205,8 @@ export const apiSymbolSets: Readonly<
       members: [
         {
           name: 'params',
-          summary: '',
+          summary:
+            'Declares path parameter types and optional runtime validators. Generic types are erased;\nruntime validation occurs only for entries whose specification includes a validator.',
           signature:
             'params<T extends Record<string, unknown>>(spec?: ParameterMap): EndpointBuilder<T, Q, H, B, R, E>;',
         },
@@ -11437,6 +11705,12 @@ export const apiSymbolSets: Readonly<
           summary:
             'Computes the delay (ms) before the given retry attempt, if no `Retry-After` header is present.',
           signature: 'delay?: (attempt: number) => number;',
+        },
+        {
+          name: 'maxRetryAfter',
+          summary:
+            'Maximum delay (ms) accepted from `Retry-After`. Defaults to 60 seconds.',
+          signature: 'maxRetryAfter?: number;',
         },
       ],
     },
@@ -25957,7 +26231,7 @@ export const apiSymbolSets: Readonly<
       name: 'MonacoEditorProps',
       anchor: 'monaco-editor-props',
       signature:
-        "MonacoEditorProps: Omit<JSX.IntrinsicElements['div'], 'children' | 'ref'> & {\n  ref?: Ref<HTMLDivElement>;\n  children?: never;\n  role?: JSX.IntrinsicElements['div']['role'];\n  options?: MonacoEditorOptions;\n  overrideServices?: Monaco.editor.IEditorOverrideServices;\n  model?: MonacoTextModel | null;\n  value?: string;\n  defaultValue?: string;\n  language?: string;\n  path?: string | MonacoUri;\n  theme?: string;\n  monaco?: MonacoNamespace;\n  loadMonaco?: MonacoLoader;\n  beforeMount?: MonacoBeforeMount;\n  onMount?: MonacoMountHandler;\n  onUnmount?: MonacoMountHandler;\n  onError?: MonacoErrorHandler;\n  editorRef?: Ref<MonacoEditorInstance>;\n  monacoRef?: Ref<MonacoNamespace>;\n}",
+        "MonacoEditorProps: Omit<JSX.IntrinsicElements['div'], 'children' | 'ref'> & {\n  ref?: Ref<HTMLDivElement>;\n  children?: never;\n  role?: JSX.IntrinsicElements['div']['role'];\n  options?: MonacoEditorOptions;\n  overrideServices?: Monaco.editor.IEditorOverrideServices;\n  model?: MonacoTextModel | null;\n  value?: string;\n  defaultValue?: string;\n  language?: string;\n  path?: string | MonacoUri;\n  /** Monaco theme name. Monaco applies themes process-wide, so simultaneous editors cannot use different themes. */\n  theme?: string;\n  monaco?: MonacoNamespace;\n  loadMonaco?: MonacoLoader;\n  beforeMount?: MonacoBeforeMount;\n  onMount?: MonacoMountHandler;\n  onUnmount?: MonacoMountHandler;\n  onError?: MonacoErrorHandler;\n  editorRef?: Ref<MonacoEditorInstance>;\n  monacoRef?: Ref<MonacoNamespace>;\n}",
       typeOnly: true,
       summary:
         "Thin Askr host for Monaco's standalone editor.\n\nPass raw Monaco `options` and, when needed, provide an external `model`\nto keep full access to Monaco's language services, providers, and editor APIs.",
@@ -26052,7 +26326,8 @@ export const apiSymbolSets: Readonly<
         },
         {
           name: 'theme',
-          summary: '',
+          summary:
+            'Monaco theme name. Monaco applies themes process-wide, so simultaneous editors cannot use different themes.',
           signature: 'theme?: string | undefined;',
         },
         {
@@ -26149,7 +26424,7 @@ export const apiSymbolSets: Readonly<
       name: 'MonacoEditorProps',
       anchor: 'monaco-editor-props',
       signature:
-        "MonacoEditorProps: Omit<JSX.IntrinsicElements['div'], 'children' | 'ref'> & {\n  ref?: Ref<HTMLDivElement>;\n  children?: never;\n  role?: JSX.IntrinsicElements['div']['role'];\n  options?: MonacoEditorOptions;\n  overrideServices?: Monaco.editor.IEditorOverrideServices;\n  model?: MonacoTextModel | null;\n  value?: string;\n  defaultValue?: string;\n  language?: string;\n  path?: string | MonacoUri;\n  theme?: string;\n  monaco?: MonacoNamespace;\n  loadMonaco?: MonacoLoader;\n  beforeMount?: MonacoBeforeMount;\n  onMount?: MonacoMountHandler;\n  onUnmount?: MonacoMountHandler;\n  onError?: MonacoErrorHandler;\n  editorRef?: Ref<MonacoEditorInstance>;\n  monacoRef?: Ref<MonacoNamespace>;\n}",
+        "MonacoEditorProps: Omit<JSX.IntrinsicElements['div'], 'children' | 'ref'> & {\n  ref?: Ref<HTMLDivElement>;\n  children?: never;\n  role?: JSX.IntrinsicElements['div']['role'];\n  options?: MonacoEditorOptions;\n  overrideServices?: Monaco.editor.IEditorOverrideServices;\n  model?: MonacoTextModel | null;\n  value?: string;\n  defaultValue?: string;\n  language?: string;\n  path?: string | MonacoUri;\n  /** Monaco theme name. Monaco applies themes process-wide, so simultaneous editors cannot use different themes. */\n  theme?: string;\n  monaco?: MonacoNamespace;\n  loadMonaco?: MonacoLoader;\n  beforeMount?: MonacoBeforeMount;\n  onMount?: MonacoMountHandler;\n  onUnmount?: MonacoMountHandler;\n  onError?: MonacoErrorHandler;\n  editorRef?: Ref<MonacoEditorInstance>;\n  monacoRef?: Ref<MonacoNamespace>;\n}",
       typeOnly: true,
       summary:
         "Thin Askr host for Monaco's standalone editor.\n\nPass raw Monaco `options` and, when needed, provide an external `model`\nto keep full access to Monaco's language services, providers, and editor APIs.",
@@ -26244,7 +26519,8 @@ export const apiSymbolSets: Readonly<
         },
         {
           name: 'theme',
-          summary: '',
+          summary:
+            'Monaco theme name. Monaco applies themes process-wide, so simultaneous editors cannot use different themes.',
           signature: 'theme?: string | undefined;',
         },
         {
@@ -26615,7 +26891,8 @@ export const apiSymbolSets: Readonly<
           name: 'assets',
           summary:
             'Serves static files from this directory before falling back to the application.',
-          signature: 'readonly assets?: {\n    readonly root: string;\n  };',
+          signature:
+            'readonly assets?: {\n    readonly root: string;\n    /** Returns true when an extension-bearing path must bypass static serving. */\n    readonly exclude?: (pathname: string) => boolean;\n  };',
         },
         {
           name: 'signals',
@@ -27106,6 +27383,12 @@ export const apiSymbolSets: Readonly<
         'Builds a `202 Accepted` response; JSON-serializes `value` if given, otherwise an empty body.',
     },
     {
+      name: 'accepts',
+      anchor: 'accepts',
+      signature: 'accepts: (value: string, expected: string) => boolean',
+      typeOnly: true,
+    },
+    {
       name: 'AccessDeniedHandler',
       anchor: 'access-denied-handler',
       signature:
@@ -27390,6 +27673,11 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
       summary:
         'Returns a clone of `response` with a `Set-Cookie` header that expires and clears `name`.',
+      tags: {
+        throws: [
+          '{TypeError} If the cookie domain or path contains invalid attribute characters.',
+        ],
+      },
     },
     {
       name: 'conflict',
@@ -27399,16 +27687,23 @@ export const apiSymbolSets: Readonly<
       summary: 'Builds a `409 Conflict` Problem Details response.',
     },
     {
+      name: 'contentType',
+      anchor: 'content-type',
+      signature: 'contentType: (value: string | null) => string | undefined',
+      typeOnly: true,
+    },
+    {
       name: 'CookieOptions',
       anchor: 'cookie-options',
       signature: 'CookieOptions: any',
       typeOnly: true,
       summary:
-        'Options controlling how a cookie is set via {@link ServerContext.setCookie}.',
+        'Options controlling how a cookie is set via {@link ServerContext.setCookie}.\nDo not derive `domain` or `path` from untrusted input; invalid attribute characters are rejected.',
       members: [
         {
           name: 'domain',
-          summary: '',
+          summary:
+            'ASCII cookie domain without whitespace or attribute delimiters.',
           signature: 'domain?: string;',
         },
         {
@@ -27428,7 +27723,8 @@ export const apiSymbolSets: Readonly<
         },
         {
           name: 'path',
-          summary: '',
+          summary:
+            'Cookie path without control characters or the `;` attribute delimiter.',
           signature: 'path?: string;',
         },
         {
@@ -27630,6 +27926,13 @@ export const apiSymbolSets: Readonly<
           signature: 'headers?: HeadersInit;',
         },
       ],
+    },
+    {
+      name: 'explicitlyAccepts',
+      anchor: 'explicitly-accepts',
+      signature:
+        'explicitlyAccepts: (value: string, expected: string) => boolean',
+      typeOnly: true,
     },
     {
       name: 'forbidden',
@@ -28668,6 +28971,11 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
       summary:
         'Returns a clone of `response` with an additional `Set-Cookie` header appended, serialized\nfrom `name`, `value`, and `options`.',
+      tags: {
+        throws: [
+          '{TypeError} If the cookie domain or path contains invalid attribute characters.',
+        ],
+      },
     },
     {
       name: 'text',
@@ -29093,6 +29401,12 @@ export const apiSymbolSets: Readonly<
         'Builds a `202 Accepted` response; JSON-serializes `value` if given, otherwise an empty body.',
     },
     {
+      name: 'accepts',
+      anchor: 'accepts',
+      signature: 'accepts: (value: string, expected: string) => boolean',
+      typeOnly: true,
+    },
+    {
       name: 'bad',
       anchor: 'bad',
       signature: 'bad: (detail?: string, init?: ResponseInit) => Response',
@@ -29123,6 +29437,11 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
       summary:
         'Returns a clone of `response` with a `Set-Cookie` header that expires and clears `name`.',
+      tags: {
+        throws: [
+          '{TypeError} If the cookie domain or path contains invalid attribute characters.',
+        ],
+      },
     },
     {
       name: 'conflict',
@@ -29130,6 +29449,12 @@ export const apiSymbolSets: Readonly<
       signature: 'conflict: (detail?: string, init?: ResponseInit) => Response',
       typeOnly: true,
       summary: 'Builds a `409 Conflict` Problem Details response.',
+    },
+    {
+      name: 'contentType',
+      anchor: 'content-type',
+      signature: 'contentType: (value: string | null) => string | undefined',
+      typeOnly: true,
     },
     {
       name: 'created',
@@ -29236,6 +29561,13 @@ export const apiSymbolSets: Readonly<
           signature: 'headers?: HeadersInit;',
         },
       ],
+    },
+    {
+      name: 'explicitlyAccepts',
+      anchor: 'explicitly-accepts',
+      signature:
+        'explicitlyAccepts: (value: string, expected: string) => boolean',
+      typeOnly: true,
     },
     {
       name: 'forbidden',
@@ -29385,6 +29717,11 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
       summary:
         'Returns a clone of `response` with an additional `Set-Cookie` header appended, serialized\nfrom `name`, `value`, and `options`.',
+      tags: {
+        throws: [
+          '{TypeError} If the cookie domain or path contains invalid attribute characters.',
+        ],
+      },
     },
     {
       name: 'text',
@@ -29509,10 +29846,11 @@ export const apiSymbolSets: Readonly<
         'createMemoryRateLimitStore: (options?: MemoryRateLimitStoreOptions) => RateLimitStore',
       typeOnly: true,
       summary:
-        'Creates an in-memory {@link RateLimitStore} backed by a `Map`, suitable for single-process\ndeployments. Periodically prunes expired entries as a side effect of `consume` calls.',
+        "Creates an in-memory {@link RateLimitStore} backed by a `Map`, suitable for single-process\ndeployments. Expired keys are pruned before capacity eviction, then the least recently used key\nis evicted when `maxEntries` is reached. Eviction forgets that key's current quota; use a custom\nstore when the key space is adversarial or cannot be safely bounded for one process.",
       tags: {
         param: [
           'options.now - Clock function used to determine window boundaries. Defaults to `Date.now`.',
+          'options.maxEntries - Maximum retained key count. Defaults to 10,000.',
         ],
       },
     },
@@ -29586,6 +29924,12 @@ export const apiSymbolSets: Readonly<
           name: 'now',
           summary: '',
           signature: 'readonly now?: () => number;',
+        },
+        {
+          name: 'maxEntries',
+          summary:
+            'Maximum active keys retained in memory. Defaults to 10,000.',
+          signature: 'readonly maxEntries?: number;',
         },
       ],
     },
@@ -32080,7 +32424,7 @@ export const apiSymbolSets: Readonly<
         'DialogOverlay: { (props: DialogOverlayProps): JSX.Element | null; (props: DialogOverlayAsChildProps): JSX.Element | null; }',
       typeOnly: true,
       summary:
-        'Renders the `dialog-overlay` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
+        'Renders the `dialog-overlay` part of `dialog`.\n\nWith `@askrjs/themes/default`, the overlay is fully styled out of the box\nwith the shared backdrop token, blur, stacking, and fade animation. Standard\nDialog and AlertDialog usage requires no additional overlay CSS; customize\nthe theme tokens instead of applying a competing background class.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogPortal',
@@ -32601,6 +32945,11 @@ export const apiSymbolSets: Readonly<
           signature: 'width?: ResponsiveValue<BlockSize> | undefined;',
         },
         {
+          name: 'wrap',
+          summary: '',
+          signature: 'wrap?: ResponsiveValue<boolean> | undefined;',
+        },
+        {
           name: 'zIndex',
           summary: '',
           signature: 'zIndex?: ResponsiveValue<BlockZIndex> | undefined;',
@@ -32805,6 +33154,11 @@ export const apiSymbolSets: Readonly<
           signature: 'width?: ResponsiveValue<BlockSize> | undefined;',
         },
         {
+          name: 'wrap',
+          summary: '',
+          signature: 'wrap?: ResponsiveValue<boolean> | undefined;',
+        },
+        {
           name: 'zIndex',
           summary: '',
           signature: 'zIndex?: ResponsiveValue<BlockZIndex> | undefined;',
@@ -32998,6 +33352,11 @@ export const apiSymbolSets: Readonly<
           name: 'width',
           summary: '',
           signature: 'width?: ResponsiveValue<BlockSize> | undefined;',
+        },
+        {
+          name: 'wrap',
+          summary: '',
+          signature: 'wrap?: ResponsiveValue<boolean> | undefined;',
         },
         {
           name: 'zIndex',
@@ -33206,6 +33565,11 @@ export const apiSymbolSets: Readonly<
           signature: 'width?: ResponsiveValue<BlockSize> | undefined;',
         },
         {
+          name: 'wrap',
+          summary: '',
+          signature: 'wrap?: ResponsiveValue<boolean> | undefined;',
+        },
+        {
           name: 'zIndex',
           summary: '',
           signature: 'zIndex?: ResponsiveValue<BlockZIndex> | undefined;',
@@ -33386,6 +33750,11 @@ export const apiSymbolSets: Readonly<
           name: 'width',
           summary: '',
           signature: 'width?: ResponsiveValue<BlockSize> | undefined;',
+        },
+        {
+          name: 'wrap',
+          summary: '',
+          signature: 'wrap?: ResponsiveValue<boolean> | undefined;',
         },
         {
           name: 'zIndex',
@@ -33572,6 +33941,11 @@ export const apiSymbolSets: Readonly<
           name: 'width',
           summary: '',
           signature: 'width?: ResponsiveValue<BlockSize> | undefined;',
+        },
+        {
+          name: 'wrap',
+          summary: '',
+          signature: 'wrap?: ResponsiveValue<boolean> | undefined;',
         },
         {
           name: 'zIndex',
@@ -33802,6 +34176,11 @@ export const apiSymbolSets: Readonly<
           signature: 'width?: ResponsiveValue<BlockSize> | undefined;',
         },
         {
+          name: 'wrap',
+          summary: '',
+          signature: 'wrap?: ResponsiveValue<boolean> | undefined;',
+        },
+        {
           name: 'zIndex',
           summary: '',
           signature: 'zIndex?: ResponsiveValue<BlockZIndex> | undefined;',
@@ -33818,10 +34197,11 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Box',
       anchor: 'box',
-      signature: 'Box: (props: CatalogComponentProps) => JSX.Element',
+      signature: 'Box: (props: LegacyLayoutProps) => JSX.Element',
       typeOnly: true,
-      summary:
-        'Legacy `Box` layout alias for {@link Block } with no default direction.',
+      tags: {
+        deprecated: ['Use {@link Block } directly.'],
+      },
     },
     {
       name: 'Brand',
@@ -34170,7 +34550,7 @@ export const apiSymbolSets: Readonly<
       signature: 'Calendar: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
       summary:
-        'Renders the `calendar` part of the shadcn-compatible catalog primitives.',
+        'Styling-only calendar anatomy; it does not own dates, grid focus, selection, or month navigation.',
     },
     {
       name: 'CalendarBody',
@@ -34487,7 +34867,7 @@ export const apiSymbolSets: Readonly<
       signature: 'Carousel: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
       summary:
-        'Renders the `carousel` part of the shadcn-compatible catalog primitives.',
+        'Styling-only carousel anatomy; it does not own an active slide, scrolling, or keyboard navigation.',
     },
     {
       name: 'CarouselContent',
@@ -34664,7 +35044,7 @@ export const apiSymbolSets: Readonly<
       signature: 'Combobox: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
       summary:
-        'Renders the `combobox` part of the shadcn-compatible catalog primitives.',
+        'Styling-only combobox anatomy; it does not own value, popup, filtering, focus, or ARIA state.',
     },
     {
       name: 'ComboboxInput',
@@ -34672,7 +35052,7 @@ export const apiSymbolSets: Readonly<
       signature: 'ComboboxInput: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
       summary:
-        'Renders the combobox\'s text input, wired up with `role="combobox"`.',
+        'Styling-only combobox input; consumers supplying behavior also own its complete ARIA contract.',
     },
     {
       name: 'ComboboxList',
@@ -34697,7 +35077,7 @@ export const apiSymbolSets: Readonly<
       signature: 'Command: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
       summary:
-        'Renders the `command` part of the shadcn-compatible catalog primitives.',
+        'Styling-only command anatomy; it does not own filtering, selection, focus, or keyboard commands.',
     },
     {
       name: 'CommandDialog',
@@ -34858,7 +35238,7 @@ export const apiSymbolSets: Readonly<
       name: 'CommandPaletteLinkProps',
       anchor: 'command-palette-link-props',
       signature:
-        'CommandPaletteLinkProps: LinkProps & {\n  closeOnSelect?: boolean;\n  onBeforeNavigate?: () => void;\n}',
+        'CommandPaletteLinkProps: LinkProps & {\n  closeOnSelect?: boolean;\n  onBeforeNavigate?: (event: Event) => void;\n}',
       typeOnly: true,
       summary: 'Props for the {@link CommandPaletteLink } component.',
       members: [
@@ -34870,7 +35250,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'onBeforeNavigate',
           summary: '',
-          signature: 'onBeforeNavigate?: (() => void) | undefined;',
+          signature: 'onBeforeNavigate?: ((event: Event) => void) | undefined;',
         },
       ],
     },
@@ -35045,6 +35425,48 @@ export const apiSymbolSets: Readonly<
         'Renders the `dropdown-trigger` part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
+      name: 'CopyButton',
+      anchor: 'copy-button',
+      signature: 'CopyButton: (props: CopyButtonProps) => JSX.Element',
+      typeOnly: true,
+      summary:
+        'Copies text with visual and assistive success/failure feedback.',
+    },
+    {
+      name: 'CopyButtonProps',
+      anchor: 'copy-button-props',
+      signature:
+        'CopyButtonProps: Omit<ButtonNativeProps, "children" | "onPress"> & {\n  text: string;\n  label: string;\n  successMessage?: string;\n  failureMessage?: string;\n  resetAfter?: number;\n}',
+      typeOnly: true,
+      members: [
+        {
+          name: 'failureMessage',
+          summary: '',
+          signature: 'failureMessage?: string | undefined;',
+        },
+        {
+          name: 'label',
+          summary: '',
+          signature: 'label: string;',
+        },
+        {
+          name: 'resetAfter',
+          summary: '',
+          signature: 'resetAfter?: number | undefined;',
+        },
+        {
+          name: 'successMessage',
+          summary: '',
+          signature: 'successMessage?: string | undefined;',
+        },
+        {
+          name: 'text',
+          summary: '',
+          signature: 'text: string;',
+        },
+      ],
+    },
+    {
       name: 'DataTable',
       anchor: 'data-table',
       signature: 'DataTable: (props: CatalogComponentProps) => JSX.Element',
@@ -35058,7 +35480,7 @@ export const apiSymbolSets: Readonly<
       signature: 'DatePicker: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
       summary:
-        'Renders the `date-picker` part of the shadcn-compatible catalog primitives.',
+        'Styling-only `date-picker` container. It does not implement a popup calendar, formatting, or\ncalendar-grid keyboard behavior; pair it with {@link DatePickerInput} for a native date input.',
     },
     {
       name: 'DatePickerInput',
@@ -35066,7 +35488,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'DatePickerInput: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
-      summary: 'Renders the date picker\'s `<input type="date">` by default.',
+      summary:
+        'Native `<input type="date">` styling slot; browser behavior and localization remain native.',
     },
     {
       name: 'DebouncedInput',
@@ -35089,7 +35512,12 @@ export const apiSymbolSets: Readonly<
       anchor: 'dialog',
       signature: 'Dialog: (props: DialogProps) => JSX.Element',
       typeOnly: true,
-      summary: 'Renders a part of `dialog`.',
+      summary: 'Coordinates the Dialog trigger, portal, overlay, and content.',
+      tags: {
+        example: [
+          '```tsx\n<Dialog>\n  <DialogTrigger>Open dialog</DialogTrigger>\n  <DialogPortal>\n    <DialogOverlay />\n    <DialogContent>Confirm action</DialogContent>\n  </DialogPortal>\n</Dialog>\n```',
+        ],
+      },
     },
     {
       name: 'DialogClose',
@@ -35125,7 +35553,7 @@ export const apiSymbolSets: Readonly<
         'DialogOverlay: { (props: DialogOverlayProps): JSX.Element | null; (props: DialogOverlayAsChildProps): JSX.Element | null; }',
       typeOnly: true,
       summary:
-        'Renders the `dialog-overlay` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
+        'Renders the `dialog-overlay` part of `dialog`.\n\nWith `@askrjs/themes/default`, the overlay is fully styled out of the box\nwith the shared backdrop token, blur, stacking, and fade animation. Standard\nDialog and AlertDialog usage requires no additional overlay CSS; customize\nthe theme tokens instead of applying a competing background class.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogPortal',
@@ -35206,7 +35634,12 @@ export const apiSymbolSets: Readonly<
       anchor: 'drawer',
       signature: 'Dialog: (props: DialogProps) => JSX.Element',
       typeOnly: true,
-      summary: 'Renders a part of `dialog`.',
+      summary: 'Coordinates the Dialog trigger, portal, overlay, and content.',
+      tags: {
+        example: [
+          '```tsx\n<Dialog>\n  <DialogTrigger>Open dialog</DialogTrigger>\n  <DialogPortal>\n    <DialogOverlay />\n    <DialogContent>Confirm action</DialogContent>\n  </DialogPortal>\n</Dialog>\n```',
+        ],
+      },
     },
     {
       name: 'DrawerClose',
@@ -35242,7 +35675,7 @@ export const apiSymbolSets: Readonly<
         'DialogOverlay: { (props: DialogOverlayProps): JSX.Element | null; (props: DialogOverlayAsChildProps): JSX.Element | null; }',
       typeOnly: true,
       summary:
-        'Renders the `dialog-overlay` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
+        'Renders the `dialog-overlay` part of `dialog`.\n\nWith `@askrjs/themes/default`, the overlay is fully styled out of the box\nwith the shared backdrop token, blur, stacking, and fade animation. Standard\nDialog and AlertDialog usage requires no additional overlay CSS; customize\nthe theme tokens instead of applying a competing background class.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DrawerPortal',
@@ -35694,6 +36127,11 @@ export const apiSymbolSets: Readonly<
           name: 'width',
           summary: '',
           signature: 'width?: ResponsiveValue<BlockSize> | undefined;',
+        },
+        {
+          name: 'wrap',
+          summary: '',
+          signature: 'wrap?: ResponsiveValue<boolean> | undefined;',
         },
         {
           name: 'zIndex',
@@ -36187,10 +36625,11 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Inline',
       anchor: 'inline',
-      signature: 'Inline: (props: CatalogComponentProps) => JSX.Element',
+      signature: 'Inline: (props: LegacyLayoutProps) => JSX.Element',
       typeOnly: true,
-      summary:
-        'Legacy `Inline` layout alias for {@link Block } that defaults to a row direction.',
+      tags: {
+        deprecated: ['Use `<Block direction="row">`.'],
+      },
     },
     {
       name: 'Input',
@@ -36313,7 +36752,7 @@ export const apiSymbolSets: Readonly<
       signature: 'InputOTP: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
       summary:
-        'Renders the `input-otp` part of the shadcn-compatible catalog primitives.',
+        'Styling-only OTP anatomy; it does not render an input or own value, focus, paste, or validation behavior.',
     },
     {
       name: 'InputOTPGroup',
@@ -36432,6 +36871,206 @@ export const apiSymbolSets: Readonly<
         'Renders the `label` part of `label`.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
+      name: 'LegacyLayoutProps',
+      anchor: 'legacy-layout-props',
+      signature:
+        'LegacyLayoutProps: Omit<BlockLayoutProps, "gap" | "padding" | "wrap"> & LegacyStructuralProps & LegacyLayoutConveniences',
+      typeOnly: true,
+      members: [
+        {
+          name: 'align',
+          summary: '',
+          signature: 'align?: ResponsiveValue<BlockAlign> | undefined;',
+        },
+        {
+          name: 'as',
+          summary: '',
+          signature: 'as?: BlockElement | undefined;',
+        },
+        {
+          name: 'asChild',
+          summary: '',
+          signature: 'asChild?: boolean | undefined;',
+        },
+        {
+          name: 'background',
+          summary: '',
+          signature:
+            'background?: ResponsiveValue<BlockBackground> | undefined;',
+        },
+        {
+          name: 'border',
+          summary: '',
+          signature: 'border?: ResponsiveValue<boolean> | undefined;',
+        },
+        {
+          name: 'borderBottom',
+          summary: '',
+          signature: 'borderBottom?: ResponsiveValue<boolean> | undefined;',
+        },
+        {
+          name: 'borderRight',
+          summary: '',
+          signature: 'borderRight?: ResponsiveValue<boolean> | undefined;',
+        },
+        {
+          name: 'borderTop',
+          summary: '',
+          signature: 'borderTop?: ResponsiveValue<boolean> | undefined;',
+        },
+        {
+          name: 'center',
+          summary: '',
+          signature: 'center?: ResponsiveValue<boolean> | undefined;',
+        },
+        {
+          name: 'children',
+          summary: '',
+          signature: 'children?: unknown;',
+        },
+        {
+          name: 'className',
+          summary: '',
+          signature: 'className?: string | undefined;',
+        },
+        {
+          name: 'direction',
+          summary: '',
+          signature: 'direction?: ResponsiveValue<BlockDirection> | undefined;',
+        },
+        {
+          name: 'gap',
+          summary: '',
+          signature: 'gap?: ResponsiveValue<LegacySpace> | undefined;',
+        },
+        {
+          name: 'grow',
+          summary: '',
+          signature: 'grow?: ResponsiveValue<number | boolean> | undefined;',
+        },
+        {
+          name: 'height',
+          summary: '',
+          signature: 'height?: ResponsiveValue<BlockSize> | undefined;',
+        },
+        {
+          name: 'hide',
+          summary: '',
+          signature: 'hide?: ResponsiveValue<boolean> | undefined;',
+        },
+        {
+          name: 'justify',
+          summary: '',
+          signature: 'justify?: ResponsiveValue<BlockJustify> | undefined;',
+        },
+        {
+          name: 'margin',
+          summary: '',
+          signature: 'margin?: ResponsiveValue<BlockMargin> | undefined;',
+        },
+        {
+          name: 'marginX',
+          summary: '',
+          signature: 'marginX?: ResponsiveValue<BlockMargin> | undefined;',
+        },
+        {
+          name: 'marginY',
+          summary: '',
+          signature: 'marginY?: ResponsiveValue<BlockMargin> | undefined;',
+        },
+        {
+          name: 'maxHeight',
+          summary: '',
+          signature: 'maxHeight?: ResponsiveValue<BlockSize> | undefined;',
+        },
+        {
+          name: 'maxWidth',
+          summary: '',
+          signature: 'maxWidth?: ResponsiveValue<BlockSize> | undefined;',
+        },
+        {
+          name: 'minHeight',
+          summary: '',
+          signature: 'minHeight?: ResponsiveValue<BlockSize> | undefined;',
+        },
+        {
+          name: 'minWidth',
+          summary: '',
+          signature: 'minWidth?: ResponsiveValue<BlockSize> | undefined;',
+        },
+        {
+          name: 'p',
+          summary: '',
+          signature: 'p?: ResponsiveValue<LegacySpace> | undefined;',
+        },
+        {
+          name: 'padding',
+          summary: '',
+          signature: 'padding?: ResponsiveValue<LegacySpace> | undefined;',
+        },
+        {
+          name: 'paddingX',
+          summary: '',
+          signature: 'paddingX?: ResponsiveValue<BlockSpace> | undefined;',
+        },
+        {
+          name: 'paddingY',
+          summary: '',
+          signature: 'paddingY?: ResponsiveValue<BlockSpace> | undefined;',
+        },
+        {
+          name: 'radius',
+          summary: '',
+          signature: 'radius?: ResponsiveValue<BlockRadius> | undefined;',
+        },
+        {
+          name: 'ref',
+          summary: '',
+          signature: 'ref?: Ref<unknown>;',
+        },
+        {
+          name: 'rowFrom',
+          summary: '',
+          signature: 'rowFrom?: BlockRowFrom | undefined;',
+        },
+        {
+          name: 'shadow',
+          summary: '',
+          signature: 'shadow?: ResponsiveValue<BlockShadow> | undefined;',
+        },
+        {
+          name: 'shrink',
+          summary: '',
+          signature: 'shrink?: ResponsiveValue<number | boolean> | undefined;',
+        },
+        {
+          name: 'sticky',
+          summary: '',
+          signature: 'sticky?: boolean | undefined;',
+        },
+        {
+          name: 'top',
+          summary: '',
+          signature: 'top?: ResponsiveValue<BlockSpace> | undefined;',
+        },
+        {
+          name: 'width',
+          summary: '',
+          signature: 'width?: ResponsiveValue<BlockSize> | undefined;',
+        },
+        {
+          name: 'wrap',
+          summary: '',
+          signature: 'wrap?: ResponsiveValue<LegacyWrap> | undefined;',
+        },
+        {
+          name: 'zIndex',
+          summary: '',
+          signature: 'zIndex?: ResponsiveValue<BlockZIndex> | undefined;',
+        },
+      ],
+    },
+    {
       name: 'Main',
       anchor: 'main',
       signature: 'Main: (props: MainProps) => JSX.Element',
@@ -36544,6 +37183,51 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
       summary:
         'Renders a part of `menubar`.\n\nSupports polymorphic rendering via `asChild`.',
+    },
+    {
+      name: 'MetaStrip',
+      anchor: 'meta-strip',
+      signature: 'MetaStrip: (props: MetaStripProps) => JSX.Element',
+      typeOnly: true,
+      summary:
+        'Semantic compact key/value facts with consistent inline or stacked wrapping.',
+    },
+    {
+      name: 'MetaStripDensity',
+      anchor: 'meta-strip-density',
+      signature: 'MetaStripDensity: "inline" | "stacked"',
+      typeOnly: true,
+    },
+    {
+      name: 'MetaStripItem',
+      anchor: 'meta-strip-item',
+      signature:
+        'MetaStripItem: {\n  label: string;\n  value: string | number;\n  caption?: string;\n  font?: "body" | "mono";\n  numeric?: "normal" | "tabular";\n}',
+      typeOnly: true,
+    },
+    {
+      name: 'MetaStripProps',
+      anchor: 'meta-strip-props',
+      signature:
+        'MetaStripProps: Omit<JSX.IntrinsicElements["dl"], "children" | "ref"> & {\n  items: readonly MetaStripItem[];\n  density?: MetaStripDensity;\n  ref?: Ref<HTMLDListElement>;\n}',
+      typeOnly: true,
+      members: [
+        {
+          name: 'density',
+          summary: '',
+          signature: 'density?: MetaStripDensity | undefined;',
+        },
+        {
+          name: 'items',
+          summary: '',
+          signature: 'items: readonly MetaStripItem[];',
+        },
+        {
+          name: 'ref',
+          summary: '',
+          signature: 'ref?: Ref<HTMLDListElement>;',
+        },
+      ],
     },
     {
       name: 'NativeSelect',
@@ -36791,6 +37475,11 @@ export const apiSymbolSets: Readonly<
           signature: 'width?: ResponsiveValue<BlockSize> | undefined;',
         },
         {
+          name: 'wrap',
+          summary: '',
+          signature: 'wrap?: ResponsiveValue<boolean> | undefined;',
+        },
+        {
           name: 'zIndex',
           summary: '',
           signature: 'zIndex?: ResponsiveValue<BlockZIndex> | undefined;',
@@ -36859,7 +37548,7 @@ export const apiSymbolSets: Readonly<
         'NavigationMenu: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
       summary:
-        'Renders the `navigation-menu` part of the shadcn-compatible catalog primitives.',
+        'Styling-only navigation-menu anatomy; it does not own disclosure, roving focus, or keyboard behavior.',
     },
     {
       name: 'NavigationMenuContent',
@@ -37042,7 +37731,7 @@ export const apiSymbolSets: Readonly<
       name: 'PageHeaderProps',
       anchor: 'page-header-props',
       signature:
-        'PageHeaderProps: BlockDivProps & {\n  title: unknown;\n  description?: unknown;\n  actions?: unknown;\n}',
+        'PageHeaderProps: Omit<BlockDivProps, "direction" | "rowFrom"> & {\n  title: unknown;\n  description?: unknown;\n  actions?: unknown;\n  direction?: never;\n  rowFrom?: never;\n}',
       typeOnly: true,
       summary: 'Props for the {@link PageHeader } component.',
       members: [
@@ -37052,62 +37741,6 @@ export const apiSymbolSets: Readonly<
           signature: 'actions?: unknown;',
         },
         {
-          name: 'align',
-          summary: '',
-          signature: 'align?: ResponsiveValue<BlockAlign> | undefined;',
-        },
-        {
-          name: 'as',
-          summary: '',
-          signature: 'as?: "div" | undefined;',
-        },
-        {
-          name: 'asChild',
-          summary: '',
-          signature: 'asChild?: false | undefined;',
-        },
-        {
-          name: 'background',
-          summary: '',
-          signature:
-            'background?: ResponsiveValue<BlockBackground> | undefined;',
-        },
-        {
-          name: 'border',
-          summary: '',
-          signature: 'border?: ResponsiveValue<boolean> | undefined;',
-        },
-        {
-          name: 'borderBottom',
-          summary: '',
-          signature: 'borderBottom?: ResponsiveValue<boolean> | undefined;',
-        },
-        {
-          name: 'borderRight',
-          summary: '',
-          signature: 'borderRight?: ResponsiveValue<boolean> | undefined;',
-        },
-        {
-          name: 'borderTop',
-          summary: '',
-          signature: 'borderTop?: ResponsiveValue<boolean> | undefined;',
-        },
-        {
-          name: 'center',
-          summary: '',
-          signature: 'center?: ResponsiveValue<boolean> | undefined;',
-        },
-        {
-          name: 'children',
-          summary: '',
-          signature: 'children?: unknown;',
-        },
-        {
-          name: 'className',
-          summary: '',
-          signature: 'className?: string | undefined;',
-        },
-        {
           name: 'description',
           summary: '',
           signature: 'description?: unknown;',
@@ -37115,132 +37748,17 @@ export const apiSymbolSets: Readonly<
         {
           name: 'direction',
           summary: '',
-          signature: 'direction?: ResponsiveValue<BlockDirection> | undefined;',
-        },
-        {
-          name: 'gap',
-          summary: '',
-          signature: 'gap?: ResponsiveValue<BlockSpace> | undefined;',
-        },
-        {
-          name: 'grow',
-          summary: '',
-          signature: 'grow?: ResponsiveValue<number | boolean> | undefined;',
-        },
-        {
-          name: 'height',
-          summary: '',
-          signature: 'height?: ResponsiveValue<BlockSize> | undefined;',
-        },
-        {
-          name: 'hide',
-          summary: '',
-          signature: 'hide?: ResponsiveValue<boolean> | undefined;',
-        },
-        {
-          name: 'justify',
-          summary: '',
-          signature: 'justify?: ResponsiveValue<BlockJustify> | undefined;',
-        },
-        {
-          name: 'margin',
-          summary: '',
-          signature: 'margin?: ResponsiveValue<BlockMargin> | undefined;',
-        },
-        {
-          name: 'marginX',
-          summary: '',
-          signature: 'marginX?: ResponsiveValue<BlockMargin> | undefined;',
-        },
-        {
-          name: 'marginY',
-          summary: '',
-          signature: 'marginY?: ResponsiveValue<BlockMargin> | undefined;',
-        },
-        {
-          name: 'maxHeight',
-          summary: '',
-          signature: 'maxHeight?: ResponsiveValue<BlockSize> | undefined;',
-        },
-        {
-          name: 'maxWidth',
-          summary: '',
-          signature: 'maxWidth?: ResponsiveValue<BlockSize> | undefined;',
-        },
-        {
-          name: 'minHeight',
-          summary: '',
-          signature: 'minHeight?: ResponsiveValue<BlockSize> | undefined;',
-        },
-        {
-          name: 'minWidth',
-          summary: '',
-          signature: 'minWidth?: ResponsiveValue<BlockSize> | undefined;',
-        },
-        {
-          name: 'padding',
-          summary: '',
-          signature: 'padding?: ResponsiveValue<BlockSpace> | undefined;',
-        },
-        {
-          name: 'paddingX',
-          summary: '',
-          signature: 'paddingX?: ResponsiveValue<BlockSpace> | undefined;',
-        },
-        {
-          name: 'paddingY',
-          summary: '',
-          signature: 'paddingY?: ResponsiveValue<BlockSpace> | undefined;',
-        },
-        {
-          name: 'radius',
-          summary: '',
-          signature: 'radius?: ResponsiveValue<BlockRadius> | undefined;',
-        },
-        {
-          name: 'ref',
-          summary: '',
-          signature: 'ref?: Ref<unknown>;',
+          signature: 'direction?: undefined;',
         },
         {
           name: 'rowFrom',
           summary: '',
-          signature: 'rowFrom?: BlockRowFrom | undefined;',
-        },
-        {
-          name: 'shadow',
-          summary: '',
-          signature: 'shadow?: ResponsiveValue<BlockShadow> | undefined;',
-        },
-        {
-          name: 'shrink',
-          summary: '',
-          signature: 'shrink?: ResponsiveValue<number | boolean> | undefined;',
-        },
-        {
-          name: 'sticky',
-          summary: '',
-          signature: 'sticky?: boolean | undefined;',
+          signature: 'rowFrom?: undefined;',
         },
         {
           name: 'title',
           summary: '',
           signature: 'title: unknown;',
-        },
-        {
-          name: 'top',
-          summary: '',
-          signature: 'top?: ResponsiveValue<BlockSpace> | undefined;',
-        },
-        {
-          name: 'width',
-          summary: '',
-          signature: 'width?: ResponsiveValue<BlockSize> | undefined;',
-        },
-        {
-          name: 'zIndex',
-          summary: '',
-          signature: 'zIndex?: ResponsiveValue<BlockZIndex> | undefined;',
         },
       ],
     },
@@ -37821,7 +38339,12 @@ export const apiSymbolSets: Readonly<
       anchor: 'sheet',
       signature: 'Dialog: (props: DialogProps) => JSX.Element',
       typeOnly: true,
-      summary: 'Renders a part of `dialog`.',
+      summary: 'Coordinates the Dialog trigger, portal, overlay, and content.',
+      tags: {
+        example: [
+          '```tsx\n<Dialog>\n  <DialogTrigger>Open dialog</DialogTrigger>\n  <DialogPortal>\n    <DialogOverlay />\n    <DialogContent>Confirm action</DialogContent>\n  </DialogPortal>\n</Dialog>\n```',
+        ],
+      },
     },
     {
       name: 'SheetClose',
@@ -37872,7 +38395,7 @@ export const apiSymbolSets: Readonly<
         'DialogOverlay: { (props: DialogOverlayProps): JSX.Element | null; (props: DialogOverlayAsChildProps): JSX.Element | null; }',
       typeOnly: true,
       summary:
-        'Renders the `dialog-overlay` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
+        'Renders the `dialog-overlay` part of `dialog`.\n\nWith `@askrjs/themes/default`, the overlay is fully styled out of the box\nwith the shared backdrop token, blur, stacking, and fade animation. Standard\nDialog and AlertDialog usage requires no additional overlay CSS; customize\nthe theme tokens instead of applying a competing background class.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'SheetPortal',
@@ -37902,25 +38425,29 @@ export const apiSymbolSets: Readonly<
       name: 'Shell',
       anchor: 'shell',
       signature:
-        'Shell: (props: CatalogComponentProps & { variant?: unknown; }) => JSX.Element',
+        'Shell: (props: LegacyLayoutProps & { variant?: string; }) => JSX.Element',
       typeOnly: true,
-      summary:
-        'Legacy `Shell` layout alias for {@link Block }; the `variant` prop is accepted but ignored.',
+      tags: {
+        deprecated: ['Compose semantic {@link Block } primitives instead.'],
+      },
     },
     {
       name: 'ShellMain',
       anchor: 'shell-main',
-      signature: 'ShellMain: (props: CatalogComponentProps) => JSX.Element',
+      signature: 'ShellMain: (props: LegacyLayoutProps) => JSX.Element',
       typeOnly: true,
-      summary:
-        'Legacy `ShellMain` layout alias for {@link Block } that renders a growing `<main>` element.',
+      tags: {
+        deprecated: ['Use `<Block as="main" grow>`.'],
+      },
     },
     {
       name: 'ShellNav',
       anchor: 'shell-nav',
-      signature: 'ShellNav: (props: CatalogComponentProps) => JSX.Element',
+      signature: 'ShellNav: (props: LegacyLayoutProps) => JSX.Element',
       typeOnly: true,
-      summary: 'Legacy `ShellNav` layout alias for {@link Block }.',
+      tags: {
+        deprecated: ['Use `<Block as="nav">`.'],
+      },
     },
     {
       name: 'Sidebar',
@@ -38414,10 +38941,11 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Stack',
       anchor: 'stack',
-      signature: 'Stack: (props: CatalogComponentProps) => JSX.Element',
+      signature: 'Stack: (props: LegacyLayoutProps) => JSX.Element',
       typeOnly: true,
-      summary:
-        'Legacy `Stack` layout alias for {@link Block } that defaults to a column direction.',
+      tags: {
+        deprecated: ['Use `<Block direction="column">`.'],
+      },
     },
     {
       name: 'Stat',
@@ -38597,7 +39125,7 @@ export const apiSymbolSets: Readonly<
       signature: 'TabsContent: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
       summary:
-        'Renders the `tabs-content` part of the shadcn-compatible catalog primitives.',
+        'Styling-only tabs-content slot; visibility and panel association are consumer-owned.',
     },
     {
       name: 'TabsList',
@@ -38605,7 +39133,7 @@ export const apiSymbolSets: Readonly<
       signature: 'TabsList: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
       summary:
-        'Renders the `tabs-list` part of the shadcn-compatible catalog primitives.',
+        'Styling-only tabs-list slot; it does not own tab selection, ARIA state, or keyboard behavior.',
     },
     {
       name: 'TabsProps',
@@ -38639,7 +39167,7 @@ export const apiSymbolSets: Readonly<
       signature: 'TabsTrigger: (props: CatalogComponentProps) => JSX.Element',
       typeOnly: true,
       summary:
-        'Renders the `tabs-content` part of the shadcn-compatible catalog primitives.',
+        'Styling-only trigger button; it does not select or associate a tab panel.',
     },
     {
       name: 'Text',
@@ -39039,7 +39567,7 @@ export const apiSymbolSets: Readonly<
       name: 'ToolbarProps',
       anchor: 'toolbar-props',
       signature:
-        'ToolbarProps: BlockDivProps & {\n  title: unknown;\n  actions?: unknown;\n}',
+        'ToolbarProps: Omit<BlockDivProps, "direction" | "rowFrom"> & {\n  title: unknown;\n  actions?: unknown;\n  direction?: never;\n  rowFrom?: never;\n}',
       typeOnly: true,
       summary: 'Props for the {@link Toolbar } component.',
       members: [
@@ -39049,190 +39577,19 @@ export const apiSymbolSets: Readonly<
           signature: 'actions?: unknown;',
         },
         {
-          name: 'align',
-          summary: '',
-          signature: 'align?: ResponsiveValue<BlockAlign> | undefined;',
-        },
-        {
-          name: 'as',
-          summary: '',
-          signature: 'as?: "div" | undefined;',
-        },
-        {
-          name: 'asChild',
-          summary: '',
-          signature: 'asChild?: false | undefined;',
-        },
-        {
-          name: 'background',
-          summary: '',
-          signature:
-            'background?: ResponsiveValue<BlockBackground> | undefined;',
-        },
-        {
-          name: 'border',
-          summary: '',
-          signature: 'border?: ResponsiveValue<boolean> | undefined;',
-        },
-        {
-          name: 'borderBottom',
-          summary: '',
-          signature: 'borderBottom?: ResponsiveValue<boolean> | undefined;',
-        },
-        {
-          name: 'borderRight',
-          summary: '',
-          signature: 'borderRight?: ResponsiveValue<boolean> | undefined;',
-        },
-        {
-          name: 'borderTop',
-          summary: '',
-          signature: 'borderTop?: ResponsiveValue<boolean> | undefined;',
-        },
-        {
-          name: 'center',
-          summary: '',
-          signature: 'center?: ResponsiveValue<boolean> | undefined;',
-        },
-        {
-          name: 'children',
-          summary: '',
-          signature: 'children?: unknown;',
-        },
-        {
-          name: 'className',
-          summary: '',
-          signature: 'className?: string | undefined;',
-        },
-        {
           name: 'direction',
           summary: '',
-          signature: 'direction?: ResponsiveValue<BlockDirection> | undefined;',
-        },
-        {
-          name: 'gap',
-          summary: '',
-          signature: 'gap?: ResponsiveValue<BlockSpace> | undefined;',
-        },
-        {
-          name: 'grow',
-          summary: '',
-          signature: 'grow?: ResponsiveValue<number | boolean> | undefined;',
-        },
-        {
-          name: 'height',
-          summary: '',
-          signature: 'height?: ResponsiveValue<BlockSize> | undefined;',
-        },
-        {
-          name: 'hide',
-          summary: '',
-          signature: 'hide?: ResponsiveValue<boolean> | undefined;',
-        },
-        {
-          name: 'justify',
-          summary: '',
-          signature: 'justify?: ResponsiveValue<BlockJustify> | undefined;',
-        },
-        {
-          name: 'margin',
-          summary: '',
-          signature: 'margin?: ResponsiveValue<BlockMargin> | undefined;',
-        },
-        {
-          name: 'marginX',
-          summary: '',
-          signature: 'marginX?: ResponsiveValue<BlockMargin> | undefined;',
-        },
-        {
-          name: 'marginY',
-          summary: '',
-          signature: 'marginY?: ResponsiveValue<BlockMargin> | undefined;',
-        },
-        {
-          name: 'maxHeight',
-          summary: '',
-          signature: 'maxHeight?: ResponsiveValue<BlockSize> | undefined;',
-        },
-        {
-          name: 'maxWidth',
-          summary: '',
-          signature: 'maxWidth?: ResponsiveValue<BlockSize> | undefined;',
-        },
-        {
-          name: 'minHeight',
-          summary: '',
-          signature: 'minHeight?: ResponsiveValue<BlockSize> | undefined;',
-        },
-        {
-          name: 'minWidth',
-          summary: '',
-          signature: 'minWidth?: ResponsiveValue<BlockSize> | undefined;',
-        },
-        {
-          name: 'padding',
-          summary: '',
-          signature: 'padding?: ResponsiveValue<BlockSpace> | undefined;',
-        },
-        {
-          name: 'paddingX',
-          summary: '',
-          signature: 'paddingX?: ResponsiveValue<BlockSpace> | undefined;',
-        },
-        {
-          name: 'paddingY',
-          summary: '',
-          signature: 'paddingY?: ResponsiveValue<BlockSpace> | undefined;',
-        },
-        {
-          name: 'radius',
-          summary: '',
-          signature: 'radius?: ResponsiveValue<BlockRadius> | undefined;',
-        },
-        {
-          name: 'ref',
-          summary: '',
-          signature: 'ref?: Ref<unknown>;',
+          signature: 'direction?: undefined;',
         },
         {
           name: 'rowFrom',
           summary: '',
-          signature: 'rowFrom?: BlockRowFrom | undefined;',
-        },
-        {
-          name: 'shadow',
-          summary: '',
-          signature: 'shadow?: ResponsiveValue<BlockShadow> | undefined;',
-        },
-        {
-          name: 'shrink',
-          summary: '',
-          signature: 'shrink?: ResponsiveValue<number | boolean> | undefined;',
-        },
-        {
-          name: 'sticky',
-          summary: '',
-          signature: 'sticky?: boolean | undefined;',
+          signature: 'rowFrom?: undefined;',
         },
         {
           name: 'title',
           summary: '',
           signature: 'title: unknown;',
-        },
-        {
-          name: 'top',
-          summary: '',
-          signature: 'top?: ResponsiveValue<BlockSpace> | undefined;',
-        },
-        {
-          name: 'width',
-          summary: '',
-          signature: 'width?: ResponsiveValue<BlockSize> | undefined;',
-        },
-        {
-          name: 'zIndex',
-          summary: '',
-          signature: 'zIndex?: ResponsiveValue<BlockZIndex> | undefined;',
         },
       ],
     },
@@ -41026,7 +41383,7 @@ export const apiSymbolSets: Readonly<
         'DialogOverlay: { (props: DialogOverlayProps): JSX.Element | null; (props: DialogOverlayAsChildProps): JSX.Element | null; }',
       typeOnly: true,
       summary:
-        'Renders the `dialog-overlay` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
+        'Renders the `dialog-overlay` part of `dialog`.\n\nWith `@askrjs/themes/default`, the overlay is fully styled out of the box\nwith the shared backdrop token, blur, stacking, and fade animation. Standard\nDialog and AlertDialog usage requires no additional overlay CSS; customize\nthe theme tokens instead of applying a competing background class.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogOverlayAsChildProps',
@@ -41886,10 +42243,10 @@ export const apiSymbolSets: Readonly<
       name: 'CHECKBOX_A11Y_CONTRACT',
       anchor: 'checkbox-a11-y-contract',
       signature:
-        'CHECKBOX_A11Y_CONTRACT: { readonly ROLE: "checkbox"; readonly KEYBOARD_ACTIVATION: readonly ["Enter", "Space"]; readonly CHECKED_ATTRIBUTE: "aria-checked"; readonly INDETERMINATE_VALUE: "mixed"; readonly DISABLED_ATTRIBUTES: { readonly nativeInput: { readonly disabled: true; }; readonly nonNative: { readonly "aria-disabled": "true"; readonly tabIndex: -1; }; }; readonly DATA_ATTRIBUTES: { readonly state: "data-state"; readonly disabled: "data-disabled"; }; readonly FOCUS_RULES: { readonly enabled: "tabIndex >= 0"; readonly disabled: "tabIndex = -1"; readonly visualIndicator: "required"; }; }',
+        'CHECKBOX_A11Y_CONTRACT: { readonly ROLE: "checkbox"; readonly KEYBOARD_ACTIVATION: readonly ["Space"]; readonly CHECKED_ATTRIBUTE: "aria-checked"; readonly INDETERMINATE_VALUE: "mixed"; readonly DISABLED_ATTRIBUTES: { readonly nativeInput: { readonly disabled: true; }; readonly nonNative: { readonly "aria-disabled": "true"; readonly tabIndex: -1; }; }; readonly DATA_ATTRIBUTES: { readonly state: "data-state"; readonly disabled: "data-disabled"; }; readonly FOCUS_RULES: { readonly enabled: "tabIndex >= 0"; readonly disabled: "tabIndex = -1"; readonly visualIndicator: "required"; }; }',
       typeOnly: true,
       summary:
-        "WAI-ARIA Checkbox Pattern\n\nSpecification: https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/\n\nA checkbox is an input mechanism that allows users to select one or more items\nfrom a set. Unlike toggle buttons, checkboxes visually represent a checked state\nwith aria-checked (not aria-pressed).\n\n## Required ARIA\n- aria-checked: 'true' | 'false' | 'mixed' (indicates checkbox state)\n- role: 'checkbox' (when not native input)\n\n## Keyboard Support\n- Enter: Activates checkbox (on non-input elements)\n- Space: Activates checkbox\n\n## Focus Management\n- Checkbox is focusable when not disabled\n- Visual focus indicator required\n\n## Disabled State\n- aria-disabled when disabled=true (for non-native)\n- disabled attribute when native input\n- Removed from tab order\n- Visual disabled styling (consumer responsibility)\n\n## Indeterminate State\n- `asChild`: aria-checked='mixed'\n- native input: current host path omits aria-checked and keeps data-state='indeterminate'\n- Typically used for \"select all\" checkboxes when partial selection",
+        "WAI-ARIA Checkbox Pattern\n\nSpecification: https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/\n\nA checkbox is an input mechanism that allows users to select one or more items\nfrom a set. Unlike toggle buttons, checkboxes visually represent a checked state\nwith aria-checked (not aria-pressed).\n\n## Required ARIA\n- aria-checked: 'true' | 'false' | 'mixed' (indicates checkbox state)\n- role: 'checkbox' (when not native input)\n\n## Keyboard Support\n- Space: Activates checkbox\n- Enter: Does not activate checkbox\n\n## Focus Management\n- Checkbox is focusable when not disabled\n- Visual focus indicator required\n\n## Disabled State\n- aria-disabled when disabled=true (for non-native)\n- disabled attribute when native input\n- Removed from tab order\n- Visual disabled styling (consumer responsibility)\n\n## Indeterminate State\n- `asChild`: aria-checked='mixed'\n- native input: current host path omits aria-checked and keeps data-state='indeterminate'\n- Typically used for \"select all\" checkboxes when partial selection",
     },
     {
       name: 'CheckboxA11yContract',
@@ -42414,7 +42771,12 @@ export const apiSymbolSets: Readonly<
       anchor: 'dialog',
       signature: 'Dialog: (props: DialogProps) => JSX.Element',
       typeOnly: true,
-      summary: 'Renders a part of `dialog`.',
+      summary: 'Coordinates the Dialog trigger, portal, overlay, and content.',
+      tags: {
+        example: [
+          '```tsx\n<Dialog>\n  <DialogTrigger>Open dialog</DialogTrigger>\n  <DialogPortal>\n    <DialogOverlay />\n    <DialogContent>Confirm action</DialogContent>\n  </DialogPortal>\n</Dialog>\n```',
+        ],
+      },
     },
     {
       name: 'DIALOG_A11Y_CONTRACT',
@@ -42755,7 +43117,7 @@ export const apiSymbolSets: Readonly<
         'DialogOverlay: { (props: DialogOverlayProps): JSX.Element | null; (props: DialogOverlayAsChildProps): JSX.Element | null; }',
       typeOnly: true,
       summary:
-        'Renders the `dialog-overlay` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
+        'Renders the `dialog-overlay` part of `dialog`.\n\nWith `@askrjs/themes/default`, the overlay is fully styled out of the box\nwith the shared backdrop token, blur, stacking, and fade animation. Standard\nDialog and AlertDialog usage requires no additional overlay CSS; customize\nthe theme tokens instead of applying a competing background class.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogOverlayAsChildProps',
@@ -44024,7 +44386,7 @@ export const apiSymbolSets: Readonly<
       name: 'FOCUS_SCOPE_A11Y_CONTRACT',
       anchor: 'focus-scope-a11-y-contract',
       signature:
-        'FOCUS_SCOPE_A11Y_CONTRACT: { readonly FEATURES: { readonly trapped: true; readonly loop: true; readonly restoreFocus: true; }; }',
+        'FOCUS_SCOPE_A11Y_CONTRACT: { readonly FEATURES: { readonly trapped: true; readonly loop: true; readonly autoFocus: true; readonly restoreFocus: true; }; }',
       typeOnly: true,
       summary: 'Focus scope accessibility contract.',
     },
@@ -44057,6 +44419,11 @@ export const apiSymbolSets: Readonly<
           name: 'asChild',
           summary: '',
           signature: 'asChild: true;',
+        },
+        {
+          name: 'autoFocus',
+          summary: '',
+          signature: 'autoFocus?: boolean | undefined;',
         },
         {
           name: 'children',
@@ -44099,11 +44466,16 @@ export const apiSymbolSets: Readonly<
       name: 'FocusScopeOwnProps',
       anchor: 'focus-scope-own-props',
       signature:
-        'FocusScopeOwnProps: {\n  children?: unknown;\n  trapped?: boolean;\n  loop?: boolean;\n  restoreFocus?: boolean;\n  id?: string;\n  tabIndex?: number;\n}',
+        'FocusScopeOwnProps: {\n  children?: unknown;\n  trapped?: boolean;\n  loop?: boolean;\n  autoFocus?: boolean;\n  restoreFocus?: boolean;\n  id?: string;\n  tabIndex?: number;\n}',
       typeOnly: true,
       summary:
         'Own props for Focus Scope, before merging with native element attributes.',
       members: [
+        {
+          name: 'autoFocus',
+          summary: '',
+          signature: 'autoFocus?: boolean | undefined;',
+        },
         {
           name: 'children',
           summary: '',
@@ -44148,6 +44520,11 @@ export const apiSymbolSets: Readonly<
           name: 'asChild',
           summary: '',
           signature: 'asChild?: false | undefined;',
+        },
+        {
+          name: 'autoFocus',
+          summary: '',
+          signature: 'autoFocus?: boolean | undefined;',
         },
         {
           name: 'children',
@@ -45929,6 +46306,30 @@ export const apiSymbolSets: Readonly<
       ],
     },
     {
+      name: 'MenuItemDescription',
+      anchor: 'menu-item-description',
+      signature:
+        'MenuItemDescription: { (props: MenuItemPartProps): JSX.Element; (props: MenuItemPartAsChildProps): JSX.Element; }',
+      typeOnly: true,
+      summary: 'Optional supporting description for a structured Menu Item.',
+    },
+    {
+      name: 'MenuItemIcon',
+      anchor: 'menu-item-icon',
+      signature:
+        'MenuItemIcon: { (props: MenuItemPartProps): JSX.Element; (props: MenuItemPartAsChildProps): JSX.Element; }',
+      typeOnly: true,
+      summary: 'Optional leading visual for a Menu Item.',
+    },
+    {
+      name: 'MenuItemLabel',
+      anchor: 'menu-item-label',
+      signature:
+        'MenuItemLabel: { (props: MenuItemPartProps): JSX.Element; (props: MenuItemPartAsChildProps): JSX.Element; }',
+      typeOnly: true,
+      summary: 'Primary visible label for a structured Menu Item.',
+    },
+    {
       name: 'MenuItemOwnProps',
       anchor: 'menu-item-own-props',
       signature:
@@ -45957,6 +46358,55 @@ export const apiSymbolSets: Readonly<
           summary:
             'Text used for typeahead when rendered children are not plain text.',
           signature: 'textValue?: string | undefined;',
+        },
+      ],
+    },
+    {
+      name: 'MenuItemPartAsChildProps',
+      anchor: 'menu-item-part-as-child-props',
+      signature: 'MenuItemPartAsChildProps: BoxAsChildProps',
+      typeOnly: true,
+      summary:
+        'Props for a polymorphic presentational part within a Menu Item.',
+      members: [
+        {
+          name: 'asChild',
+          summary: '',
+          signature: 'asChild: true;',
+        },
+        {
+          name: 'children',
+          summary: '',
+          signature: 'children: JSXElement;',
+        },
+        {
+          name: 'ref',
+          summary: '',
+          signature: 'ref?: Ref<Element>;',
+        },
+      ],
+    },
+    {
+      name: 'MenuItemPartProps',
+      anchor: 'menu-item-part-props',
+      signature: "MenuItemPartProps: BoxProps<'span', HTMLSpanElement>",
+      typeOnly: true,
+      summary: 'Props for a presentational part within a Menu Item.',
+      members: [
+        {
+          name: 'asChild',
+          summary: '',
+          signature: 'asChild?: false | undefined;',
+        },
+        {
+          name: 'children',
+          summary: '',
+          signature: 'children?: unknown;',
+        },
+        {
+          name: 'ref',
+          summary: '',
+          signature: 'ref?: Ref<HTMLSpanElement>;',
         },
       ],
     },
@@ -48662,7 +49112,7 @@ export const apiSymbolSets: Readonly<
       name: 'SWITCH_A11Y_CONTRACT',
       anchor: 'switch-a11-y-contract',
       signature:
-        'SWITCH_A11Y_CONTRACT: { readonly ROLE: "switch"; readonly CHECKED_ATTRIBUTE: "aria-checked"; readonly KEYBOARD_ACTIVATION: readonly ["Enter", "Space"]; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; }; readonly DISABLED_ATTRIBUTES: { readonly nativeButton: { readonly disabled: true; readonly "aria-disabled": "true"; }; readonly nonNative: { readonly "aria-disabled": "true"; readonly tabIndex: -1; }; }; readonly FORM_INTEGRATION: { readonly host: "button"; readonly hiddenInputType: "checkbox"; readonly hiddenInputValue: "on"; }; }',
+        'SWITCH_A11Y_CONTRACT: { readonly ROLE: "switch"; readonly CHECKED_ATTRIBUTE: "aria-checked"; readonly KEYBOARD_ACTIVATION: readonly ["Space"]; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; }; readonly DISABLED_ATTRIBUTES: { readonly nativeButton: { readonly disabled: true; readonly "aria-disabled": "true"; }; readonly nonNative: { readonly "aria-disabled": "true"; readonly tabIndex: -1; }; }; readonly FORM_INTEGRATION: { readonly host: "button"; readonly hiddenInputType: "checkbox"; readonly hiddenInputValue: "on"; }; }',
       typeOnly: true,
       summary:
         'WAI-ARIA Switch Pattern\n\nSpecification: https://www.w3.org/WAI/ARIA/apg/patterns/switch/',
@@ -49515,7 +49965,7 @@ export const apiSymbolSets: Readonly<
       name: 'TOAST_A11Y_CONTRACT',
       anchor: 'toast-a11-y-contract',
       signature:
-        'TOAST_A11Y_CONTRACT: { readonly ROOT_ROLE: "status"; readonly LIVE_REGION_ATTRIBUTE: "aria-live"; readonly LIVE_REGION_VALUE: "polite"; readonly VIEWPORT_LABEL: "Notifications"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; }; }',
+        'TOAST_A11Y_CONTRACT: { readonly ROOT_ROLE: "status"; readonly LIVE_REGION_ATTRIBUTE: "aria-live"; readonly LIVE_REGION_VALUE: "polite"; readonly VIEWPORT_LABEL: "Notifications"; readonly AUTO_DISMISS_PAUSE: "pointer-or-focus"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; }; }',
       typeOnly: true,
       summary: 'Toast accessibility contract.',
     },
@@ -52087,10 +52537,10 @@ export const apiSymbolSets: Readonly<
       name: 'CHECKBOX_A11Y_CONTRACT',
       anchor: 'checkbox-a11-y-contract',
       signature:
-        'CHECKBOX_A11Y_CONTRACT: { readonly ROLE: "checkbox"; readonly KEYBOARD_ACTIVATION: readonly ["Enter", "Space"]; readonly CHECKED_ATTRIBUTE: "aria-checked"; readonly INDETERMINATE_VALUE: "mixed"; readonly DISABLED_ATTRIBUTES: { readonly nativeInput: { readonly disabled: true; }; readonly nonNative: { readonly "aria-disabled": "true"; readonly tabIndex: -1; }; }; readonly DATA_ATTRIBUTES: { readonly state: "data-state"; readonly disabled: "data-disabled"; }; readonly FOCUS_RULES: { readonly enabled: "tabIndex >= 0"; readonly disabled: "tabIndex = -1"; readonly visualIndicator: "required"; }; }',
+        'CHECKBOX_A11Y_CONTRACT: { readonly ROLE: "checkbox"; readonly KEYBOARD_ACTIVATION: readonly ["Space"]; readonly CHECKED_ATTRIBUTE: "aria-checked"; readonly INDETERMINATE_VALUE: "mixed"; readonly DISABLED_ATTRIBUTES: { readonly nativeInput: { readonly disabled: true; }; readonly nonNative: { readonly "aria-disabled": "true"; readonly tabIndex: -1; }; }; readonly DATA_ATTRIBUTES: { readonly state: "data-state"; readonly disabled: "data-disabled"; }; readonly FOCUS_RULES: { readonly enabled: "tabIndex >= 0"; readonly disabled: "tabIndex = -1"; readonly visualIndicator: "required"; }; }',
       typeOnly: true,
       summary:
-        "WAI-ARIA Checkbox Pattern\n\nSpecification: https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/\n\nA checkbox is an input mechanism that allows users to select one or more items\nfrom a set. Unlike toggle buttons, checkboxes visually represent a checked state\nwith aria-checked (not aria-pressed).\n\n## Required ARIA\n- aria-checked: 'true' | 'false' | 'mixed' (indicates checkbox state)\n- role: 'checkbox' (when not native input)\n\n## Keyboard Support\n- Enter: Activates checkbox (on non-input elements)\n- Space: Activates checkbox\n\n## Focus Management\n- Checkbox is focusable when not disabled\n- Visual focus indicator required\n\n## Disabled State\n- aria-disabled when disabled=true (for non-native)\n- disabled attribute when native input\n- Removed from tab order\n- Visual disabled styling (consumer responsibility)\n\n## Indeterminate State\n- `asChild`: aria-checked='mixed'\n- native input: current host path omits aria-checked and keeps data-state='indeterminate'\n- Typically used for \"select all\" checkboxes when partial selection",
+        "WAI-ARIA Checkbox Pattern\n\nSpecification: https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/\n\nA checkbox is an input mechanism that allows users to select one or more items\nfrom a set. Unlike toggle buttons, checkboxes visually represent a checked state\nwith aria-checked (not aria-pressed).\n\n## Required ARIA\n- aria-checked: 'true' | 'false' | 'mixed' (indicates checkbox state)\n- role: 'checkbox' (when not native input)\n\n## Keyboard Support\n- Space: Activates checkbox\n- Enter: Does not activate checkbox\n\n## Focus Management\n- Checkbox is focusable when not disabled\n- Visual focus indicator required\n\n## Disabled State\n- aria-disabled when disabled=true (for non-native)\n- disabled attribute when native input\n- Removed from tab order\n- Visual disabled styling (consumer responsibility)\n\n## Indeterminate State\n- `asChild`: aria-checked='mixed'\n- native input: current host path omits aria-checked and keeps data-state='indeterminate'\n- Typically used for \"select all\" checkboxes when partial selection",
     },
     {
       name: 'CheckboxA11yContract',
@@ -54558,7 +55008,7 @@ export const apiSymbolSets: Readonly<
       name: 'SWITCH_A11Y_CONTRACT',
       anchor: 'switch-a11-y-contract',
       signature:
-        'SWITCH_A11Y_CONTRACT: { readonly ROLE: "switch"; readonly CHECKED_ATTRIBUTE: "aria-checked"; readonly KEYBOARD_ACTIVATION: readonly ["Enter", "Space"]; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; }; readonly DISABLED_ATTRIBUTES: { readonly nativeButton: { readonly disabled: true; readonly "aria-disabled": "true"; }; readonly nonNative: { readonly "aria-disabled": "true"; readonly tabIndex: -1; }; }; readonly FORM_INTEGRATION: { readonly host: "button"; readonly hiddenInputType: "checkbox"; readonly hiddenInputValue: "on"; }; }',
+        'SWITCH_A11Y_CONTRACT: { readonly ROLE: "switch"; readonly CHECKED_ATTRIBUTE: "aria-checked"; readonly KEYBOARD_ACTIVATION: readonly ["Space"]; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; }; readonly DISABLED_ATTRIBUTES: { readonly nativeButton: { readonly disabled: true; readonly "aria-disabled": "true"; }; readonly nonNative: { readonly "aria-disabled": "true"; readonly tabIndex: -1; }; }; readonly FORM_INTEGRATION: { readonly host: "button"; readonly hiddenInputType: "checkbox"; readonly hiddenInputValue: "on"; }; }',
       typeOnly: true,
       summary:
         'WAI-ARIA Switch Pattern\n\nSpecification: https://www.w3.org/WAI/ARIA/apg/patterns/switch/',
@@ -57549,7 +57999,7 @@ export const apiSymbolSets: Readonly<
         'DialogOverlay: { (props: DialogOverlayProps): JSX.Element | null; (props: DialogOverlayAsChildProps): JSX.Element | null; }',
       typeOnly: true,
       summary:
-        'Renders the `dialog-overlay` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
+        'Renders the `dialog-overlay` part of `dialog`.\n\nWith `@askrjs/themes/default`, the overlay is fully styled out of the box\nwith the shared backdrop token, blur, stacking, and fade animation. Standard\nDialog and AlertDialog usage requires no additional overlay CSS; customize\nthe theme tokens instead of applying a competing background class.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'AlertDialogOverlayAsChildProps',
@@ -58063,7 +58513,12 @@ export const apiSymbolSets: Readonly<
       anchor: 'dialog',
       signature: 'Dialog: (props: DialogProps) => JSX.Element',
       typeOnly: true,
-      summary: 'Renders a part of `dialog`.',
+      summary: 'Coordinates the Dialog trigger, portal, overlay, and content.',
+      tags: {
+        example: [
+          '```tsx\n<Dialog>\n  <DialogTrigger>Open dialog</DialogTrigger>\n  <DialogPortal>\n    <DialogOverlay />\n    <DialogContent>Confirm action</DialogContent>\n  </DialogPortal>\n</Dialog>\n```',
+        ],
+      },
     },
     {
       name: 'DIALOG_A11Y_CONTRACT',
@@ -58404,7 +58859,7 @@ export const apiSymbolSets: Readonly<
         'DialogOverlay: { (props: DialogOverlayProps): JSX.Element | null; (props: DialogOverlayAsChildProps): JSX.Element | null; }',
       typeOnly: true,
       summary:
-        'Renders the `dialog-overlay` part of `dialog`.\n\nSupports polymorphic rendering via `asChild`.',
+        'Renders the `dialog-overlay` part of `dialog`.\n\nWith `@askrjs/themes/default`, the overlay is fully styled out of the box\nwith the shared backdrop token, blur, stacking, and fade animation. Standard\nDialog and AlertDialog usage requires no additional overlay CSS; customize\nthe theme tokens instead of applying a competing background class.\n\nSupports polymorphic rendering via `asChild`.',
     },
     {
       name: 'DialogOverlayAsChildProps',
@@ -59679,7 +60134,7 @@ export const apiSymbolSets: Readonly<
       name: 'FOCUS_SCOPE_A11Y_CONTRACT',
       anchor: 'focus-scope-a11-y-contract',
       signature:
-        'FOCUS_SCOPE_A11Y_CONTRACT: { readonly FEATURES: { readonly trapped: true; readonly loop: true; readonly restoreFocus: true; }; }',
+        'FOCUS_SCOPE_A11Y_CONTRACT: { readonly FEATURES: { readonly trapped: true; readonly loop: true; readonly autoFocus: true; readonly restoreFocus: true; }; }',
       typeOnly: true,
       summary: 'Focus scope accessibility contract.',
     },
@@ -59712,6 +60167,11 @@ export const apiSymbolSets: Readonly<
           name: 'asChild',
           summary: '',
           signature: 'asChild: true;',
+        },
+        {
+          name: 'autoFocus',
+          summary: '',
+          signature: 'autoFocus?: boolean | undefined;',
         },
         {
           name: 'children',
@@ -59754,11 +60214,16 @@ export const apiSymbolSets: Readonly<
       name: 'FocusScopeOwnProps',
       anchor: 'focus-scope-own-props',
       signature:
-        'FocusScopeOwnProps: {\n  children?: unknown;\n  trapped?: boolean;\n  loop?: boolean;\n  restoreFocus?: boolean;\n  id?: string;\n  tabIndex?: number;\n}',
+        'FocusScopeOwnProps: {\n  children?: unknown;\n  trapped?: boolean;\n  loop?: boolean;\n  autoFocus?: boolean;\n  restoreFocus?: boolean;\n  id?: string;\n  tabIndex?: number;\n}',
       typeOnly: true,
       summary:
         'Own props for Focus Scope, before merging with native element attributes.',
       members: [
+        {
+          name: 'autoFocus',
+          summary: '',
+          signature: 'autoFocus?: boolean | undefined;',
+        },
         {
           name: 'children',
           summary: '',
@@ -59803,6 +60268,11 @@ export const apiSymbolSets: Readonly<
           name: 'asChild',
           summary: '',
           signature: 'asChild?: false | undefined;',
+        },
+        {
+          name: 'autoFocus',
+          summary: '',
+          signature: 'autoFocus?: boolean | undefined;',
         },
         {
           name: 'children',
@@ -60396,6 +60866,30 @@ export const apiSymbolSets: Readonly<
       ],
     },
     {
+      name: 'MenuItemDescription',
+      anchor: 'menu-item-description',
+      signature:
+        'MenuItemDescription: { (props: MenuItemPartProps): JSX.Element; (props: MenuItemPartAsChildProps): JSX.Element; }',
+      typeOnly: true,
+      summary: 'Optional supporting description for a structured Menu Item.',
+    },
+    {
+      name: 'MenuItemIcon',
+      anchor: 'menu-item-icon',
+      signature:
+        'MenuItemIcon: { (props: MenuItemPartProps): JSX.Element; (props: MenuItemPartAsChildProps): JSX.Element; }',
+      typeOnly: true,
+      summary: 'Optional leading visual for a Menu Item.',
+    },
+    {
+      name: 'MenuItemLabel',
+      anchor: 'menu-item-label',
+      signature:
+        'MenuItemLabel: { (props: MenuItemPartProps): JSX.Element; (props: MenuItemPartAsChildProps): JSX.Element; }',
+      typeOnly: true,
+      summary: 'Primary visible label for a structured Menu Item.',
+    },
+    {
       name: 'MenuItemOwnProps',
       anchor: 'menu-item-own-props',
       signature:
@@ -60424,6 +60918,55 @@ export const apiSymbolSets: Readonly<
           summary:
             'Text used for typeahead when rendered children are not plain text.',
           signature: 'textValue?: string | undefined;',
+        },
+      ],
+    },
+    {
+      name: 'MenuItemPartAsChildProps',
+      anchor: 'menu-item-part-as-child-props',
+      signature: 'MenuItemPartAsChildProps: BoxAsChildProps',
+      typeOnly: true,
+      summary:
+        'Props for a polymorphic presentational part within a Menu Item.',
+      members: [
+        {
+          name: 'asChild',
+          summary: '',
+          signature: 'asChild: true;',
+        },
+        {
+          name: 'children',
+          summary: '',
+          signature: 'children: JSXElement;',
+        },
+        {
+          name: 'ref',
+          summary: '',
+          signature: 'ref?: Ref<Element>;',
+        },
+      ],
+    },
+    {
+      name: 'MenuItemPartProps',
+      anchor: 'menu-item-part-props',
+      signature: "MenuItemPartProps: BoxProps<'span', HTMLSpanElement>",
+      typeOnly: true,
+      summary: 'Props for a presentational part within a Menu Item.',
+      members: [
+        {
+          name: 'asChild',
+          summary: '',
+          signature: 'asChild?: false | undefined;',
+        },
+        {
+          name: 'children',
+          summary: '',
+          signature: 'children?: unknown;',
+        },
+        {
+          name: 'ref',
+          summary: '',
+          signature: 'ref?: Ref<HTMLSpanElement>;',
         },
       ],
     },
@@ -62220,7 +62763,7 @@ export const apiSymbolSets: Readonly<
       name: 'TOAST_A11Y_CONTRACT',
       anchor: 'toast-a11-y-contract',
       signature:
-        'TOAST_A11Y_CONTRACT: { readonly ROOT_ROLE: "status"; readonly LIVE_REGION_ATTRIBUTE: "aria-live"; readonly LIVE_REGION_VALUE: "polite"; readonly VIEWPORT_LABEL: "Notifications"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; }; }',
+        'TOAST_A11Y_CONTRACT: { readonly ROOT_ROLE: "status"; readonly LIVE_REGION_ATTRIBUTE: "aria-live"; readonly LIVE_REGION_VALUE: "polite"; readonly VIEWPORT_LABEL: "Notifications"; readonly AUTO_DISMISS_PAUSE: "pointer-or-focus"; readonly DATA_ATTRIBUTES: { readonly slot: "data-slot"; readonly state: "data-state"; readonly disabled: "data-disabled"; }; }',
       typeOnly: true,
       summary: 'Toast accessibility contract.',
     },
