@@ -45,7 +45,7 @@ src/
   components/
     project-card.tsx
   main.tsx
-  server.ts
+server.ts
 ```
 
 Keep a small application smaller. Retain `pages/_routes.tsx` and
@@ -53,7 +53,8 @@ Keep a small application smaller. Retain `pages/_routes.tsx` and
 Add a nested page group only when it needs its own route prefix, layout, access
 boundary, or navigation context.
 
-The browser entry owns mounting or hydration. A server entry owns server
+The browser entry (`src/main.tsx`) owns mounting or hydration. The server
+entry (`server.ts`, at the project root beside `package.json`) owns server
 composition. Neither should become a dumping ground for feature behavior.
 
 ## Keep pages thin

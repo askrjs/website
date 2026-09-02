@@ -51,6 +51,15 @@ export function componentPropReferences(
       ])
     );
     members.delete('maxWidth');
+    // ContainerProps is `Omit<BlockDivProps, "maxWidth">`, and BlockDivProps
+    // fixes `as` to the literal "div" (intersecting BlockOwnProps's generic
+    // `as?: BlockElement` with BlockElementProps<"div">'s `as?: "div"`).
+    // Inheriting BlockOwnProps's own `as` member here would wrongly imply
+    // Container accepts any BlockElement tag, so narrow it back down.
+    const asMember = members.get('as');
+    if (asMember) {
+      members.set('as', { ...asMember, signature: 'as?: "div" | undefined;' });
+    }
     byName.set('ContainerProps', {
       ...container,
       members: [...members.values()].sort((left, right) =>

@@ -11,7 +11,7 @@
 
 Use `@askrjs/logos` for an authorized brand mark, not for general interface
 concepts. The installed package currently determines which marks are available.
-At version 0.2.0 it exports Apple, Facebook, GitHub, Google, and Microsoft logo
+At version 0.2.1 it exports Apple, Facebook, GitHub, Google, and Microsoft logo
 components. Verify the installed declarations rather than assuming another
 brand is present.
 

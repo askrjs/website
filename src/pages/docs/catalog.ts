@@ -537,6 +537,10 @@ const rendering = sectionPages('Rendering', 'Rendering', 'rendering', [
   },
   {
     title: 'Selective Hydration',
+    // @askrjs/askr/boot only exports createIsland/createIslands/createSPA/
+    // hydrateSPA — there's no boundary-selection or priority API to hydrate
+    // part of a page before the rest. This page describes the pattern you'd
+    // want, not something the runtime ships today.
     status: 'limited',
     headings: [
       'Boundary selection',
@@ -1065,6 +1069,11 @@ const overlays = componentPages('Overlays', [
   },
   {
     title: 'Drawer and Sheet',
+    // Not primitive-less like the experimentalControls set above — both are
+    // straight aliases of @askrjs/ui/dialog (askr-themes/src/entries/
+    // {drawer,sheet}.ts). Sheet gets real data-side positioning CSS; Drawer
+    // has none at all — neither has distinct gesture or animation behavior
+    // of its own beyond what Dialog already provides.
     status: 'experimental',
     ui: [],
     themes: ['drawer', 'sheet'],
