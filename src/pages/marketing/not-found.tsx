@@ -5,7 +5,7 @@ import { Button, Container } from '@askrjs/themes/components';
 export function NotFoundPage() {
   return (
     <section class="not-found" aria-labelledby="not-found-title">
-      <Container class="not-found__inner" size="xl">
+      <Container class="not-found__inner" direction="column" size="xl">
         <span aria-hidden="true">404</span>
         <h1 id="not-found-title">This route does not exist.</h1>
         <p>

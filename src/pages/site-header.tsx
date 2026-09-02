@@ -64,7 +64,7 @@ export function SiteThemeToggle() {
 export function SiteHeader() {
   return (
     <Header class="site-header" sticky>
-      <Container size="xl">
+      <Container direction="column" size="xl">
         <Navbar aria-label="Primary navigation">
           <NavBrand>
             <AskrBrand />

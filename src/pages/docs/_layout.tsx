@@ -108,7 +108,7 @@ export function DocsLayout({ children }: Props) {
 
   return (
     <SiteLayout variant="docs">
-      <Container size="xl" class="docs-channel">
+      <Container direction="column" size="xl" class="docs-channel">
         <SidebarScope class="docs-scope">
           <Sidebar class="docs-desktop-sidebar">
             <DocsNavigation />
