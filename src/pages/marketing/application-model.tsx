@@ -26,8 +26,8 @@ const ownership: readonly SequenceItem[] = [
   },
   {
     title: 'Scopes',
-    description: 'End effects and resources with their lexical owner.',
-    meta: 'own · dispose',
+    description: 'Provide a typed value down the tree without a global store.',
+    meta: 'provide · read',
   },
 ];
 
@@ -43,8 +43,8 @@ export function ApplicationModelPage() {
           <h2>Four things, and where each one lives</h2>
           <p>
             State lives with the component that changes it. Derived values
-            recompute instead of drifting out of sync. When the owning scope
-            goes away, its resources are cleaned up automatically.
+            recompute instead of drifting out of sync. When the owning component
+            unmounts, its resources are cleaned up automatically.
           </p>
         </div>
         <SequenceList

@@ -9,15 +9,20 @@
 
 ## Render the state contract
 
-Read the discriminated fields directly:
+A query exposes `data`, `error`, the booleans `loading`, `refreshing`, and
+`stale`, plus a `consistency` field and a `staleReason`. Read them directly
+rather than inferring semantics from another query library:
 
 - `loading` means the first request has not produced data; `data` is `null`.
-- `fresh` means committed data is current.
-- `refreshing` keeps previous data while a confirming fetch runs.
-- `pending-write` keeps previous data while a successful write is being
-  confirmed.
-- `stale` is settled but not current, with reason `inconsistent`, `aborted`, or
-  `error`.
+- `consistency === 'fresh'` means committed data is current.
+- `refreshing` (and `consistency === 'refreshing'`) keeps previous data while
+  a confirming fetch runs.
+- `consistency === 'pending-write'` keeps previous data while a successful
+  write is being confirmed.
+- `stale` means the query is not fresh; it can also be `true` while refreshing
+  or confirming a pending write, when `staleReason` is `null`.
+- `consistency === 'stale'` is settled but not current, with `staleReason` of
+  `inconsistent`, `aborted`, or `error`.
 
 Use `refresh()` for explicit retry or user refresh. Concurrent manual refresh
 calls coalesce while work is pending.
