@@ -12,7 +12,7 @@ type HeroProps = {
 export function EditorialHero({ title, lede }: HeroProps) {
   return (
     <section class="editorial-hero" aria-labelledby="editorial-title">
-      <Container size="xl">
+      <Container direction="column" size="xl">
         <h1 id="editorial-title">{title}</h1>
         <p class="editorial-hero__lede">{lede}</p>
       </Container>

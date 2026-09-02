@@ -17,7 +17,7 @@ import { GitHubMark } from './site-header';
 export function SiteFooter() {
   return (
     <Footer class="site-footer">
-      <Container size="xl" paddingY="xl">
+      <Container direction="column" size="xl" paddingY="xl">
         <FooterContent class="marketing-footer__columns">
           <FooterSection>
             <FooterTitle>

@@ -53,7 +53,7 @@ export function HomePage() {
       </section>
 
       <section class="differentiation" aria-labelledby="differentiation-title">
-        <Container class="differentiation__inner" size="xl">
+        <Container class="differentiation__inner" direction="column" size="xl">
           <div class="differentiation__heading">
             <h2 id="differentiation-title">This is the whole routing layer.</h2>
             <p>
