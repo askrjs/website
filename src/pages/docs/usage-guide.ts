@@ -1093,7 +1093,7 @@ route('/projects/{projectId}', ProjectPage, {
       'Return an explicit allow, redirect, unauthorized, or forbidden decision from the route policy and repeat the enforcement on server APIs.',
       `route('/admin', AdminPage, {
   policies: [({ auth }) =>
-    auth.permissions.includes('admin') ? allow() : forbidden()],
+    auth.principal?.permissions?.includes('admin') ? allow() : forbidden()],
 });`,
     ],
     [

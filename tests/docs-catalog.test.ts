@@ -268,6 +268,33 @@ describe('documentation catalog', () => {
     expect(prose).not.toContain('manifest-only');
   });
 
+  it('should keep query and authentication guidance aligned with installed contracts', () => {
+    const prose = JSON.stringify(headingOverrides);
+    const symbols = Object.values(apiSymbolSets).flat();
+    const query = symbols.find(
+      (symbol) =>
+        symbol.name === 'Query' &&
+        symbol.signature.includes('QueryStaleErrorWithValue')
+    );
+    const authResolver = symbols.find(
+      (symbol) => symbol.name === 'AuthResolver'
+    );
+    const resolveMember = authResolver?.members?.find(
+      (member) => member.name === 'resolve'
+    );
+
+    expect(query?.signature).toContain('QueryStaleErrorWithValue');
+    expect(query?.signature).toContain('QueryStaleError');
+    expect(prose).toContain('either retains previous data or has data: null');
+    expect(prose).not.toContain(
+      'stale query with an error has both data: null'
+    );
+
+    expect(resolveMember?.summary).toContain('fall through as unauthenticated');
+    expect(prose).toContain('resolves to an unauthenticated context');
+    expect(prose).not.toContain('not silently treated as anonymous');
+  });
+
   it('should keep hand-written CLI guidance aligned with generated behavior', () => {
     const prose = JSON.stringify(headingOverrides);
     expect(prose).not.toContain('nine subcommands');

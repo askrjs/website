@@ -142,6 +142,11 @@ export function PlatformPage() {
             column is generated from each installed package&rsquo;s published
             peer dependencies.
           </p>
+          <p>
+            All of them are pre-1.0 (0.2.x) — the API surface is still moving,
+            and <code>askr upgrade</code> exists because breaking changes are
+            expected between minor versions, not just major ones.
+          </p>
         </div>
         <PackageTable label="Published Askr packages" rows={packageRows} />
       </RuledSection>
