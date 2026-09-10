@@ -45,15 +45,15 @@
     "@askrjs/schema": "0.2.1",
     "@askrjs/server": "0.2.1",
     "@askrjs/testing": "0.2.1",
-    "@askrjs/vite": "0.2.1",
+    "@askrjs/vite": "0.2.2",
     "@types/node": "^26.3.0",
     "@typescript/native": "npm:typescript@^7.0.2",
-    "@vitest/browser-playwright": "4.1.10",
+    "@vitest/browser-playwright": "4.1.11",
     "monaco-editor": "^0.56.0",
     "playwright": "^1.62.1",
     "tsx": "4.23.12",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "vite-plus": "^0.2.8"
+    "vite-plus": "^0.3.1"
   },
   "overrides": {
     "dompurify": "3.4.13"
