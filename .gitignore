@@ -56,6 +56,11 @@ screenshots/
 .codex-screenshots/
 .vitest-attachments/
 
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+
 # Environment
 .env
 .env.*
