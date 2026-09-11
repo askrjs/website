@@ -763,7 +763,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/vite',
-    version: '0.2.1',
+    version: '0.2.2',
     subpath: '.',
     importName: '@askrjs/vite',
     slug: 'root',
@@ -771,7 +771,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/vite',
-    version: '0.2.1',
+    version: '0.2.2',
     subpath: './server',
     importName: '@askrjs/vite/server',
     slug: 'server',
@@ -779,7 +779,7 @@ export const apiManifest: readonly ApiEntrypointDefinition[] = [
   },
   {
     packageName: '@askrjs/vite',
-    version: '0.2.1',
+    version: '0.2.2',
     subpath: './image',
     importName: '@askrjs/vite/image',
     slug: 'image',
