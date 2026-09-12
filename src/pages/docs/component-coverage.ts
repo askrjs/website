@@ -62,7 +62,10 @@ const familyRoutes = [
   { match: /tooltip/, route: '/docs/components/tooltip' },
   { match: /virtual-list/, route: '/docs/components/virtual-list' },
   { match: /virtual-table/, route: '/docs/components/virtual-table' },
-  { match: /portal|layer/, route: '/docs/components/portals-and-layers' },
+  {
+    match: /portal|layer|overlay-host/,
+    route: '/docs/components/portals-and-layers',
+  },
   { match: /collection/, route: '/docs/components/collections' },
   {
     match: /aria|visually-hidden|ref/,
