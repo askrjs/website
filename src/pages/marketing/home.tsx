@@ -49,6 +49,10 @@ export function HomePage() {
             <span>Start a project</span>
             <code>npx @askrjs/cli@latest create startkit my-app</code>
           </div>
+          <p class="hero__proof">
+            In production today on static marketing sites and admin consoles —
+            this site included.
+          </p>
         </Container>
       </section>
 
@@ -168,7 +172,8 @@ export function HomePage() {
             <p>
               Choose the closest starter, keep the generated files in view, and
               add rendering, server, and production capabilities only when the
-              application calls for them.
+              application calls for them. It is the path the sites and consoles
+              already running on Askr took.
             </p>
           </div>
           <Button asChild>

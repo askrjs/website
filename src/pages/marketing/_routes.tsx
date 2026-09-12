@@ -34,9 +34,9 @@ export const marketingRouteMetadata: Readonly<Record<string, RouteMetadata>> = {
     description: 'The requested Askr page does not exist.',
   },
   '/contribute': {
-    title: 'Become an early contributor | Askr',
+    title: 'Contribute to Askr | Askr',
     description:
-      'Help shape Askr early through themes, CSS, accessibility, SSR, SSG, technical SEO, documentation, and developer experience.',
+      'Help shape Askr through themes, CSS, accessibility, SSR, SSG, technical SEO, documentation, and developer experience.',
   },
   ...Object.fromEntries(
     marketingPages.map(({ path, title, description }) => [

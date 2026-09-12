@@ -20,7 +20,7 @@ const opportunities: readonly SequenceItem[] = [
     label: 'Rendering',
     title: 'Pressure-test SSR and SSG',
     description:
-      'Build real applications, find rough edges in server and static rendering, and improve metadata, hydration, performance, and deployment behavior.',
+      'Push server and static rendering past what the production applications already cover — metadata, hydration, performance, and deployment behavior on workloads they do not exercise yet.',
     meta: '@askrjs/askr · @askrjs/server · @askrjs/cli',
   },
   {
@@ -55,12 +55,12 @@ export function ContributePage() {
     <>
       <EditorialHero
         title="Help shape Askr while the decisions are still close to the code."
-        lede="Askr is an early open-source project maintained by one person. If you would like to become an early contributor, there is room to influence how its themes, rendering, and developer experience develop — not just pick up a finished backlog."
+        lede="Askr is an open-source framework that runs production applications today — static marketing sites and admin consoles, including this site. Contributions land close to the code: there is room to influence how its themes, rendering, and developer experience develop, not just pick up a finished backlog."
       />
 
       <RuledSection stacked>
         <div class="editorial-section__heading">
-          <h2>Where your perspective could matter now</h2>
+          <h2>Where your perspective matters most</h2>
           <p>
             These are open areas, not job descriptions. A specialist review, a
             working prototype, a focused fix, or a carefully documented finding
@@ -68,25 +68,27 @@ export function ContributePage() {
           </p>
         </div>
         <SequenceList
-          label="Early contribution opportunities"
+          label="Contribution opportunities"
           items={opportunities}
         />
       </RuledSection>
 
       <RuledSection>
         <div class="editorial-section__heading">
-          <h2>Early means direct</h2>
+          <h2>Working on Askr is direct</h2>
         </div>
         <div class="editorial-prose">
           <p>
-            There is no contributor program or established community behind Askr
-            today. You will work directly with the maintainer, close to the code
-            and the reasoning behind it.
+            There is no formal contributor program or large community around
+            Askr. You work directly with the people maintaining it, close to the
+            code and the reasoning behind it.
           </p>
           <p>
-            The project is young enough that a good contribution can influence
-            conventions and priorities. It is also young enough that some paths
-            will be unfinished. Candor about both is part of the invitation.
+            The surface is broad, and the applications running on it exercise
+            one slice of it. Where a documented path ships narrower than it
+            reads, the docs mark it <code>experimental</code> or{' '}
+            <code>limited</code> — that is a map of where a contribution has the
+            most leverage.
           </p>
           <p>
             Contributions are volunteer open-source work. There is no

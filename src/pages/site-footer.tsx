@@ -35,7 +35,7 @@ export function SiteFooter() {
                 data-slot="footer-link"
                 href="/contribute"
               >
-                Early contributors
+                Contribute
               </Link>
               {marketingPages.map((page) => (
                 <Link
