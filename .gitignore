@@ -65,3 +65,6 @@ blob-report/
 .env
 .env.*
 !.env.example
+
+# Local agent state and worktrees
+.claude/
