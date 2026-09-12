@@ -1,5 +1,6 @@
 import type { PluginOption, UserConfig } from 'vite-plus';
 import { askr } from '@askrjs/vite';
+import { configDefaults } from 'vitest/config';
 
 function askrPlugin(): PluginOption {
   return askr() as unknown as PluginOption;
@@ -10,6 +11,12 @@ export default function config(): UserConfig {
     plugins: [askrPlugin()],
     lint: {
       ignorePatterns: ['.askr/**', 'dist/**', 'node_modules/**'],
+    },
+    test: {
+      // Agent worktrees under .claude/ are full checkouts of this repo, so
+      // without this their copies of every suite are discovered alongside the
+      // real ones. Vitest's own defaults are kept alongside it.
+      exclude: [...configDefaults.exclude, '**/.claude/**'],
     },
     fmt: {
       semi: true,
