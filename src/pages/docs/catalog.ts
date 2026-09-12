@@ -1,7 +1,6 @@
 import { apiManifest } from './api-manifest';
 import {
   descriptionOverrides,
-  headingOverrides,
   lateHeadingOverrides,
 } from './content-overrides';
 import { docsPrimarySections } from './primary-sections';
@@ -116,9 +115,11 @@ function heading(
 ) {
   if (typeof value !== 'string') return value;
   const id = slug(value);
-  const override = route
-    ? (headingOverrides[route]?.[id] ?? lateHeadingOverrides[route]?.[id])
-    : undefined;
+  // The main body corpus lives in heading-bodies.ts and is applied by
+  // resolveHeadingBodies() when a docs page renders, so that ~520KB of prose
+  // stays out of the eager route-registry chunk. Only the late overrides --
+  // a handful of pages, ~5KB -- are cheap enough to resolve here.
+  const override = route ? lateHeadingOverrides[route]?.[id] : undefined;
   return {
     id,
     title: value,

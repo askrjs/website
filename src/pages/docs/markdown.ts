@@ -3,6 +3,7 @@ import { apiSymbolSets } from './api-snapshot';
 import { docsCatalog, docsSections } from './catalog';
 import { cliSnapshot } from './cli-snapshot';
 import { componentPropReferences } from './component-props';
+import { resolveHeadingBodies } from './heading-bodies';
 import { upgradeGuidance } from './release-notes';
 import type { DocsPageDefinition } from './types';
 import { buildUsageGuide, routeExampleFor } from './usage-guide';
@@ -238,7 +239,7 @@ export function renderDocsPageMarkdown(page: DocsPageDefinition): string {
 
   lines.push(...componentPropsMarkdown(page));
 
-  for (const heading of page.headings) {
+  for (const heading of resolveHeadingBodies(page)) {
     lines.push(
       '',
       `## ${markdownProse(heading.title)}`,

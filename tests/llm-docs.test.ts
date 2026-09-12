@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { apiManifest } from '../src/pages/docs/api-manifest';
 import { apiSymbolSets } from '../src/pages/docs/api-snapshot';
 import { docsCatalog } from '../src/pages/docs/catalog';
+import { resolveHeadingBodies } from '../src/pages/docs/heading-bodies';
 import {
   docsMarkdownPath,
   docsMarkdownUrl,
@@ -38,7 +39,9 @@ describe('LLM documentation artifacts', () => {
       expect(markdown?.endsWith('\n'), page.route).toBe(true);
 
       if (page.navSection !== 'Generated API') {
-        for (const heading of page.headings) {
+        // Bodies are resolved the same way the renderer resolves them, so
+        // this also covers the lazy heading-bodies lookup.
+        for (const heading of resolveHeadingBodies(page)) {
           expect(markdown, `${page.route}#${heading.id}`).toContain(
             `## ${markdownProse(heading.title)}`
           );

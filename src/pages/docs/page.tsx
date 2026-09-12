@@ -4,6 +4,7 @@ import { docsByRoute, docsSections, resolveDocsRoute } from './catalog';
 import { cliSnapshot } from './cli-snapshot';
 import { componentDemoFor } from './component-demos';
 import { componentPropReferences } from './component-props';
+import { resolveHeadingBodies } from './heading-bodies';
 import { upgradeGuidance } from './release-notes';
 import type { DocsHeadingDefinition, DocsPageDefinition } from './types';
 import { buildUsageGuide, routeExampleFor } from './usage-guide';
@@ -303,7 +304,7 @@ export default function DocsPage() {
       <UsageGuide page={page} />
       <ComponentDemo page={page} />
       <ComponentPropsReference page={page} />
-      <HeadingContentList headings={page.headings} page={page} />
+      <HeadingContentList headings={resolveHeadingBodies(page)} page={page} />
       {page.route === '/docs' && <DocsLandingDetails />}
       {page.route === '/docs/tooling/cli-overview' && <CliReferenceSection />}
       <PreviousNext page={page} />
