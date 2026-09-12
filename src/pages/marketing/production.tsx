@@ -48,6 +48,20 @@ export function ProductionPage() {
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
+          <h2>What already runs on this</h2>
+        </div>
+        <div class="editorial-prose">
+          <p>
+            Askr serves static marketing sites and admin consoles in production
+            today. This site is one of them: its routes are rendered by{' '}
+            <code>askr ssg</code> and deployed as a folder of static files, so
+            every page you are reading is the output of the build described
+            above — public, and inspectable with view-source.
+          </p>
+        </div>
+      </RuledSection>
+      <RuledSection>
+        <div class="editorial-section__heading">
           <h2>The things your orchestrator actually asks for</h2>
         </div>
         <div class="editorial-prose">

@@ -205,6 +205,15 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   white-space: nowrap;
 }
 
+.hero__proof {
+  max-width: 34rem;
+  margin: var(--ak-space-lg) 0 0;
+  color: var(--ak-color-text-muted);
+  font-size: var(--ak-font-size-sm);
+  line-height: var(--ak-line-height-relaxed);
+  text-wrap: pretty;
+}
+
 .differentiation__inner {
   padding-block: clamp(4rem, 8vw, 7rem);
   border-top: 1px solid var(--ak-color-border);
@@ -1181,6 +1190,10 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
     flex-direction: column;
     gap: var(--ak-space-sm);
     margin-top: var(--ak-space-2xl);
+  }
+
+  .hero__proof {
+    margin-top: var(--ak-space-md);
   }
 
   .differentiation__inner {

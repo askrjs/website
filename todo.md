@@ -37,31 +37,34 @@ The machinery was planned and never built — `ComponentDemoDefinition` exists i
 
 ### 2. Publish benchmark numbers
 
-Grepped all seven marketing pages for
-`benchmark|performance|faster|users|adopt|testimonial|case stud` — **zero
-hits.** No logos, no adoption, no production story, no numbers.
+The production story now exists: `/`, `/production`, `/contribute`, and
+`public/llms.txt` state that Askr serves static marketing sites and admin
+consoles in production today, and point at this site as the inspectable
+instance. That is first-party use, unattributed by choice — no logos, no
+third-party adoption, and nothing here should imply either.
 
-`askrjs/js-framework-benchmark` already exists as a fork in the org. Benchmarks
-are the one form of hard evidence a pre-adoption framework can produce, and the
-only falsifiable claim available. Every current claim ("deterministic,"
-"explicit," "readable top to bottom") is architectural assertion.
+Still missing: numbers. `askrjs/js-framework-benchmark` already exists as a
+fork in the org. Benchmarks are the remaining form of hard, falsifiable
+evidence; every other current claim ("deterministic," "explicit," "readable top
+to bottom") is architectural assertion.
 
 - [ ] Run the existing benchmark fork and publish results
 - [ ] Surface a headline number on `/` or `/platform`
 
 ### 3. State the maturity honestly
 
-Packages ship at 0.0.1–0.1.3 (`@askrjs/fetch` 0.0.1, `@askrjs/testing` 0.0.1,
-`@askrjs/askr` 0.0.59). Grepped marketing for
-`alpha|beta|pre-1.0|early|breaking change|unstable` — **zero hits.**
+**Resolved by decision, not by copy.** Packages now ship at 0.3.x, and the
+deliberate choice is that marketing carries no version or stability hedging —
+the docs' per-page `experimental` / `limited` badges are the single place
+status is asserted, and `/contribute` points readers at those badges as the map
+of where the surface is thin. The earlier framing here ("young," "early," "some
+paths will be unfinished") has been removed from `/contribute`, the footer, and
+the `/contribute` route metadata: Askr is in production use and should not read
+as unused.
 
-Meanwhile the voice is finished and total ("Everything a full-stack app needs").
-A reader hits that, runs `npm i`, sees `0.0.59`, and discounts everything else
-on the page. Per-page `experimental` / `limited` badges already exist in the
-docs, so the honesty is present at the leaf and missing at the top.
+Do not reintroduce a maturity statement on `/` or `/docs` without revisiting
+that decision.
 
-- [ ] One-sentence maturity statement on `/` and `/docs` — e.g. which surfaces
-      are stable vs still moving
 - [ ] Add a changelog / release notes section. None exists today; the only
       adjacent pages are `/docs/charts/migration-0-1`,
       `/docs/guides/migration-from-react`, `/docs/reference/compatibility`
