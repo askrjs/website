@@ -33,6 +33,9 @@ function route(
       toJSON: () => query,
     },
     hash,
+    // askr 0.3.0 adds explicit history-entry state to RouteSnapshot.
+    hasState: false,
+    state: undefined,
     matches: [],
   };
 }
