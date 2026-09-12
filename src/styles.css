@@ -1,5 +1,39 @@
 @import '@askrjs/themes/default';
-@import '@fontsource-variable/domine';
+
+/* Declared here rather than via @fontsource's own stylesheet so that
+   font-display can be `optional`. The hero <h1> is the LCP element on every
+   marketing route and it renders in Domine. With `swap`, a font arriving after
+   first paint re-lays out that heading into a taller box, and a larger paint
+   box registers a *second* LCP candidate -- which on throttled mobile landed
+   at ~4.9s against a 1.8s first paint. `optional` gives the font no swap
+   period: it is used if it is ready for the first layout and otherwise sits
+   out that page load entirely, so LCP can never be reset by typography.
+   The preload injected by ssg.config.ts is what makes it ready in time. */
+@font-face {
+  font-family: 'Domine Variable';
+  font-style: normal;
+  font-display: optional;
+  font-weight: 400 700;
+  src: url('@fontsource-variable/domine/files/domine-latin-wght-normal.woff2')
+    format('woff2-variations');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Domine Variable';
+  font-style: normal;
+  font-display: optional;
+  font-weight: 400 700;
+  src: url('@fontsource-variable/domine/files/domine-latin-ext-wght-normal.woff2')
+    format('woff2-variations');
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+    U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
 
 * {
   box-sizing: border-box;

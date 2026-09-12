@@ -7,10 +7,6 @@
     <link rel="icon" type="image/png" href="/assets/askr-logo-64.png" />
     <link rel="apple-touch-icon" href="/assets/askr-logo-180.png" />
     <!-- Google tag (gtag.js) -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-TXZTWQFV59"
-    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
@@ -18,6 +14,23 @@
       }
       gtag('js', new Date());
       gtag('config', 'G-TXZTWQFV59', { send_page_view: false });
+
+      // gtag.js is ~170KB and, requested from the head, contends for bandwidth
+      // across the entire critical window on a throttled mobile connection.
+      // The stub above is what route-analytics actually calls, and dataLayer
+      // holds queued events until the library arrives to drain them, so
+      // loading it after onload costs no analytics and no contention.
+      (function () {
+        function loadGtag() {
+          var script = document.createElement('script');
+          script.async = true;
+          script.src =
+            'https://www.googletagmanager.com/gtag/js?id=G-TXZTWQFV59';
+          document.head.appendChild(script);
+        }
+        if (document.readyState === 'complete') loadGtag();
+        else window.addEventListener('load', loadGtag, { once: true });
+      })();
     </script>
   </head>
 

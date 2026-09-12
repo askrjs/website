@@ -16,7 +16,7 @@ import { lucideIcons } from '../src/pages/docs/lucide-icons';
 import { searchDocs } from '../src/pages/docs/search-index';
 import { buildUsageGuide } from '../src/pages/docs/usage-guide';
 import { upgradeGuidance } from '../src/pages/docs/release-notes';
-import { headingOverrides } from '../src/pages/docs/content-overrides';
+import { headingOverrides } from '../src/pages/docs/heading-bodies';
 import { routeRegistry } from '../src/pages/_routes';
 import { registry as staticRegistry } from '../ssg.config';
 import {
