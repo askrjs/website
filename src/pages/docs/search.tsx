@@ -1,4 +1,5 @@
-import { For, Show, state } from '@askrjs/askr';
+import { state } from '@askrjs/askr';
+import { For, Show } from '@askrjs/askr/control';
 import { on } from '@askrjs/askr/resources';
 import { SearchIcon, XIcon } from '@askrjs/lucide';
 import { Button } from '@askrjs/themes/components';

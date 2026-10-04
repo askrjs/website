@@ -7,10 +7,8 @@ export function NotFoundPage() {
     <section class="not-found" aria-labelledby="not-found-title">
       <Container class="not-found__inner" direction="column" size="xl">
         <span aria-hidden="true">404</span>
-        <h1 id="not-found-title">This route does not exist.</h1>
-        <p>
-          The address may have changed, or the page may never have been here.
-        </p>
+        <h1 id="not-found-title">We couldn't find that page.</h1>
+        <p>Check the address, return home, or browse the documentation.</p>
         <div class="not-found__actions">
           <Button asChild>
             <Link href="/">

@@ -11,73 +11,69 @@ export function ProductionPage() {
   return (
     <>
       <EditorialHero
-        title="If it doesn't need a server, it doesn't get one."
-        lede="A fully static app builds to a folder of HTML and hashed assets — no Node process to keep alive. Add the Node adapter only once a route actually needs to run server code per request."
+        title="Build static HTML and assets with Askr."
+        lede="Deploy the output as static files, with no Node process to run. For routes that need request-time code, configure a server build and use the Node adapter."
       />
       <RuledSection stacked>
         <div class="editorial-section__heading">
           <h2>One application, two deployment paths</h2>
           <p>
-            Keep the application source shared, then choose the SSG build for
-            static hosting or the server build and Node adapter for request-time
-            rendering.
+            Reuse your route registry and components, then configure either an
+            SSG build for static hosting or a server entry and Node adapter for
+            request-time rendering.
           </p>
         </div>
         <FlowMap
           label="Askr production outputs"
           direction="fan-out"
           hub={{
-            label: 'Application-owned',
-            title: 'Document + routes',
+            label: 'Your application',
+            title: 'HTML document + routes',
             description:
-              'HTML shell, metadata, and asset placement stay visible.',
+              'Provide the document and registry to the selected renderer.',
           }}
           nodes={[
             {
               label: 'Static output',
               title: 'Documents + hashed assets',
-              description: 'No required server runtime.',
+              description: 'No server process required.',
             },
             {
               label: 'Node output',
               title: 'Adapter + HTTP handlers',
-              description: 'A thin runtime boundary.',
+              description: 'The Node process handles HTTP requests.',
             },
           ]}
         />
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
-          <h2>What already runs on this</h2>
+          <h2>Inspect the generated HTML</h2>
         </div>
         <div class="editorial-prose">
           <p>
-            Askr serves static marketing sites and admin consoles in production
-            today. This site is one of them: its routes are rendered by{' '}
-            <code>askr ssg</code> and deployed as a folder of static files, so
-            every page you are reading is the output of the build described
-            above — public, and inspectable with view-source.
+            This website is built with <code>askr ssg</code>. Its generated
+            pages are HTML files you can inspect with view-source.
           </p>
         </div>
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
-          <h2>The things your orchestrator actually asks for</h2>
+          <h2>Configure health checks and telemetry for your deployment</h2>
         </div>
         <div class="editorial-prose">
           <p>
-            Liveness, readiness, and startup are separate probes, because "is
-            the process running" and "can it serve a database-backed request
-            right now" are different questions — answering them the same way is
-            how you get restart loops.
+            The Node adapter exposes separate liveness, readiness, and startup
+            probes. Keep liveness focused on whether the process is alive and
+            readiness focused on whether it can serve traffic; combining those
+            checks can cause avoidable restart loops.
           </p>
           <p>
-            Message keys for localization are typed, so a missing translation
-            fails at build time, not in front of a user. OpenTelemetry
-            attributes are allowlisted by default — request bodies, submitted
-            values, cookies, and tokens are never forwarded — but you still
-            choose the exporter and the sensitive-data policy. Askr doesn't
-            phone data anywhere on its own.
+            Askr's localization package checks typed message keys so missing
+            translations surface during development or build. The OpenTelemetry
+            integration records allowlisted span attributes, not request bodies
+            or form values. You choose the provider and exporter; Askr sends no
+            telemetry on its own.
           </p>
           <RepositoryLink href="https://github.com/askrjs/askr-node">
             View the Node adapter
@@ -85,7 +81,7 @@ export function ProductionPage() {
         </div>
       </RuledSection>
       <EditorialCTA
-        title="Ship it as static files or a Node process."
+        title="Deploy static files or run the Node adapter."
         primaryHref="/docs/getting-started"
         primaryLabel="Create an app"
         secondaryHref="/docs/guides"

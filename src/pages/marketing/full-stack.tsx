@@ -11,26 +11,27 @@ export function FullStackPage() {
   return (
     <>
       <EditorialHero
-        title="Adding a server doesn't mean adding a second framework."
-        lede="Page routes, actions, HTTP APIs, and auth policies meet at one application composition root — no parallel backend project to keep in sync."
+        title="Add server routes to your TypeScript application."
+        lede="Define page actions and HTTP handlers alongside your routes. Add schemas, access policies, and services in code. Connect the identity system and infrastructure your app already uses."
       />
       <RuledSection stacked>
         <div class="editorial-section__heading">
-          <h2>Forms submit to actions. Actions are just handlers.</h2>
+          <h2>Forms can submit to server actions</h2>
           <p>
-            A page action is a POST handler that returns a redirect or a
-            field-level error — it works with JavaScript disabled, and the same
-            Request/Response primitives back your JSON APIs.
+            A page action handles a form POST and can return a redirect or
+            field-level errors, including when JavaScript is disabled. HTTP APIs
+            use the standard <code>Request</code> and <code>Response</code>
+            interfaces.
           </p>
         </div>
         <FlowMap
-          label="Full-stack composition root"
+          label="Pages, actions, and APIs share application setup"
           direction="converge"
           hub={{
-            label: 'Composition root',
-            title: 'Policies + dependencies',
+            label: 'Application setup',
+            title: 'Schemas + services',
             description:
-              'Schemas, auth contracts, and application services meet here.',
+              'Validate requests, apply access policies, and connect services.',
           }}
           nodes={[
             { title: 'Pages', description: 'Routes and loaders' },
@@ -41,19 +42,19 @@ export function FullStackPage() {
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
-          <h2>One schema, checked twice</h2>
+          <h2>Keep request validation and the API contract together</h2>
         </div>
         <div class="editorial-prose">
           <p>
-            Define an input schema once with <code>@askrjs/schema</code> and it
-            validates the request at runtime <em>and</em> generates the matching
-            OpenAPI operation — so a CI check can catch the day your handler and
-            your published API contract disagree.
+            Define executable schemas for your routes. Askr can validate
+            requests and generate an OpenAPI document from those definitions.
+            Run <code>askr openapi --check</code> in CI to catch when the
+            generated document differs from the committed contract.
           </p>
           <p>
-            Auth is a policy function you attach to a route, plus whatever
-            identity provider you plug in — Askr doesn't ship its own user
-            database or decide who counts as logged in.
+            Access is a policy you attach to a route, plus an identity resolver
+            you provide. Askr does not include a user database or decide who is
+            logged in.
           </p>
           <RepositoryLink href="https://github.com/askrjs/askr-server">
             View the server foundation
@@ -61,7 +62,7 @@ export function FullStackPage() {
         </div>
       </RuledSection>
       <EditorialCTA
-        title="Add the server when a route actually needs one."
+        title="Add server actions and APIs when routes need them."
         primaryHref="/docs/server"
         primaryLabel="Read the server docs"
         secondaryHref="/docs/getting-started"

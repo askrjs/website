@@ -24,19 +24,19 @@ export type RouteMetadata = {
 
 export const marketingRouteMetadata: Readonly<Record<string, RouteMetadata>> = {
   '/': {
-    title:
-      'A cat named Askr, or how we learned to build full-stack apps | Askr',
+    title: 'Askr | Full-stack TypeScript with explicit routes',
     description:
-      'Build typed applications across browser and server rendering with Askr.',
+      'Build TypeScript apps with one explicit route registry for browser, server, or static rendering.',
   },
   '/404': {
     title: 'Page not found | Askr',
-    description: 'The requested Askr page does not exist.',
+    description:
+      'We could not find this page. Return home or browse the Askr documentation.',
   },
   '/contribute': {
     title: 'Contribute to Askr | Askr',
     description:
-      'Help shape Askr through themes, CSS, accessibility, SSR, SSG, technical SEO, documentation, and developer experience.',
+      'Contribute to Askr themes, rendering, accessibility, documentation, and developer tooling.',
   },
   ...Object.fromEntries(
     marketingPages.map(({ path, title, description }) => [
