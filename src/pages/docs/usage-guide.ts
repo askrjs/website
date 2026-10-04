@@ -1387,7 +1387,7 @@ await timeout(1_000);`,
     ],
     [
       /Runtime and Renderer Boundaries/,
-      'Use Askr’s public boot APIs to mount an application. Custom runtime and renderer-host construction are not public APIs in Askr 0.4.3.',
+      'Use Askr’s public boot APIs to mount an application. Runtime and renderer-host construction are not exported for application use.',
       `import { createSPA } from '@askrjs/askr/boot';
 import { createRouteRegistry, route } from '@askrjs/askr/router';
 

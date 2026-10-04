@@ -1971,11 +1971,11 @@ export const headingOverrides: Readonly<
     'public-application-entrypoints':
       'Mount a browser application with `createSPA()` or hydrate server-rendered markup with `hydrateSPA()` from @askrjs/askr/boot. These public APIs own runtime setup; application code does not need to construct a runtime first.',
     'runtime-ownership':
-      "Application primitives such as `state()` and `derive()` use the runtime managed by Askr's public boot APIs. Askr 0.4.3 does not publish an API for retrieving or configuring a process-wide runtime singleton.",
+      "Application primitives such as `state()` and `derive()` use the runtime managed by Askr's public boot APIs. There is no public API for retrieving or configuring a process-wide runtime singleton.",
     'renderer-support':
-      'Askr 0.4.3 does not publish a custom renderer-host extension API. Use the browser rendering APIs for client applications and the published SSR or SSG APIs for generated HTML; a non-DOM renderer is not a supported extension point.',
-    'askr-0-4-3':
-      'Askr 0.4.3 removed `@askrjs/askr/experimental` and its runtime and renderer-host construction APIs. Use the public boot, component, and state APIs to mount and extend applications, and avoid depending on internal implementation fields.',
+      'Askr does not publish a custom renderer-host extension API. Use the browser rendering APIs for client applications and the published SSR or SSG APIs for generated HTML; a non-DOM renderer is not a supported extension point.',
+    'current-package-exports':
+      'Askr no longer exports `@askrjs/askr/experimental` or its runtime and renderer-host construction APIs. Use the public boot, component, and state APIs to mount and extend applications, and avoid depending on internal implementation fields.',
   },
   '/docs/reference/fx': {
     cleanup:
@@ -1985,7 +1985,7 @@ export const headingOverrides: Readonly<
     'deterministic-tests':
       "`once(fn)` guards against double execution — handy for init logic that a test might trigger twice by accident — and `retry(fn, options?)` retries an async function with configurable `maxAttempts`, `delayMs`, and a custom `backoff(attemptIndex)` function. Because these helpers don't touch component internals, you can unit test them directly with fake timers without mounting anything.",
     scheduling:
-      '`debounceEvent(ms, handler, options?)` coalesces DOM events and returns a cancelable listener with `flush()`. `throttleEvent(ms, handler, options?)` limits how often an event handler runs. For ordinary function calls, `throttle(fn, ms, options?)` returns a cancelable rate-limited function; Askr 0.4.3 does not export a general `debounce()` helper from this entrypoint. `raf(fn)` coalesces calls into one animation frame and returns a cancelable function, while `scheduleTimeout(ms, fn)` and `scheduleIdle(fn, options?)` return cancel functions for delayed or low-priority work.',
+      '`debounceEvent(ms, handler, options?)` coalesces DOM events and returns a cancelable listener with `flush()`. `throttleEvent(ms, handler, options?)` limits how often an event handler runs. For ordinary function calls, `throttle(fn, ms, options?)` returns a cancelable rate-limited function; `@askrjs/askr/fx` does not export a general `debounce()` helper. `raf(fn)` coalesces calls into one animation frame and returns a cancelable function, while `scheduleTimeout(ms, fn)` and `scheduleIdle(fn, options?)` return cancel functions for delayed or low-priority work.',
   },
   '/docs/reference/glossary': {
     'data-terms':

@@ -1505,7 +1505,7 @@ const reference = sectionPages('Reference', 'Reference', 'reference', [
       'Public application entrypoints',
       'Runtime ownership',
       'Renderer support',
-      'Askr 0.4.3',
+      'Current package exports',
     ],
   },
   {
