@@ -142,7 +142,8 @@ function componentGuide(page: DocsPageDefinition): UsageGuideDefinition {
     ],
     [
       /Collections|Controlled State/,
-      `import { For, state } from '@askrjs/askr';
+      `import { state } from '@askrjs/askr';
+import { For } from '@askrjs/askr/control';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@askrjs/themes/components';
 
 function ProjectStatusSelect() {
@@ -170,7 +171,7 @@ import { SearchIcon } from '@askrjs/lucide';
     ],
     [
       /Combobox and Command/,
-      `import { For } from '@askrjs/askr';
+      `import { For } from '@askrjs/askr/control';
 import { Combobox, ComboboxInput, ComboboxList, ComboboxOption } from '@askrjs/themes/components';
 
 <Combobox value={owner()} onValueChange={setOwner}>
@@ -249,7 +250,7 @@ import { Combobox, ComboboxInput, ComboboxList, ComboboxOption } from '@askrjs/t
     ],
     [
       /Scroll Area/,
-      `import { For } from '@askrjs/askr';
+      `import { For } from '@askrjs/askr/control';
 import { ScrollArea, ScrollAreaScrollbar, ScrollAreaThumb, ScrollAreaViewport } from '@askrjs/themes/components';
 
 <ScrollArea>
@@ -495,7 +496,7 @@ function ProjectStatusSelect() {
     ],
     [
       /^Table$/,
-      `import { For } from '@askrjs/askr';
+      `import { For } from '@askrjs/askr/control';
 import { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from '@askrjs/themes/components';
 
 <Table>
@@ -509,7 +510,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } fro
     ],
     [
       /^Data Table$/,
-      `import { For } from '@askrjs/askr';
+      `import { For } from '@askrjs/askr/control';
 import { DataTable, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from '@askrjs/themes/components';
 
 <DataTable>
@@ -909,7 +910,7 @@ return <ProjectDetails project={result.data} />;`,
     [
       /Loading, Empty, Error, and Pending States/,
       'Render pending, empty, and recoverable failure states at the query boundary while preserving the last useful context during refreshes.',
-      `import { Show } from '@askrjs/askr';
+      `import { Show } from '@askrjs/askr/control';
 
 <Show when={!projects.pending} fallback={<ProjectSkeleton />}>
   <Show when={!projects.error} fallback={<ProjectError onRetry={projects.refetch} />}>
@@ -992,7 +993,7 @@ function ProjectPage({ initialProjectId }: { initialProjectId: string }) {
     [
       /Lists with For/,
       'Render stable keyed rows and keep row identity separate from array position.',
-      `import { For } from '@askrjs/askr';
+      `import { For } from '@askrjs/askr/control';
 
 <For each={projects()} by={(project) => project.id}>
   {(project) => <ProjectRow project={project} />}
@@ -1001,7 +1002,7 @@ function ProjectPage({ initialProjectId }: { initialProjectId: string }) {
     [
       /Conditional Rendering/,
       'Use Show for a boolean branch and Match/Case when one value selects several mutually exclusive views.',
-      `import { Case, Match, Show } from '@askrjs/askr';
+      `import { Case, Match, Show } from '@askrjs/askr/control';
 
 function ProjectState(props: {
   project: Project | null;
@@ -1375,21 +1376,23 @@ expect(invalidations.calls).toEqual([]);`,
     [
       /FX Timing Utilities/,
       'Use the FX helpers for lifecycle-owned timing, pass cleanup through the owning scope, and replace real clocks with deterministic scheduling in tests.',
-      `import { debounce, retry, timeout } from '@askrjs/askr/fx';
+      `import { debounceEvent, retry, timeout } from '@askrjs/askr/fx';
 
-const search = debounce((query: string) => loadResults(query), 200);
+const search = debounceEvent(200, (event) => {
+  const query = (event.currentTarget as HTMLInputElement).value;
+  void loadResults(query);
+});
 const project = await retry(() => loadProject(id), { maxAttempts: 3 });
 await timeout(1_000);`,
     ],
     [
-      /Advanced and Custom Runtimes/,
-      'Create a custom runtime only when implementing a renderer host or isolated execution environment; normal applications should use the default runtime.',
-      `import { createRuntime, getDefaultRuntime } from '@askrjs/askr';
+      /Runtime and Renderer Boundaries/,
+      'Use Askr’s public boot APIs to mount an application. Custom runtime and renderer-host construction are not public APIs in Askr 0.4.3.',
+      `import { createSPA } from '@askrjs/askr/boot';
+import { createRouteRegistry, route } from '@askrjs/askr/router';
 
-const applicationRuntime = getDefaultRuntime();
-
-// Renderer authors provide the complete host contract.
-const isolatedRuntime = createRuntime({ renderer: customRendererHost });`,
+const registry = createRouteRegistry(() => route('/', HomePage));
+await createSPA({ root: '#app', registry });`,
     ],
     [
       /Compatibility and Migration Notes/,

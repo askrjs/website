@@ -1499,13 +1499,13 @@ const reference = sectionPages('Reference', 'Reference', 'reference', [
     packages: [packageReference('askr', '@askrjs/askr/fx')],
   },
   {
-    title: 'Advanced and Custom Runtimes',
+    title: 'Runtime and Renderer Boundaries',
     path: 'custom-runtimes',
     headings: [
-      'Create a runtime',
-      'Renderer host',
-      'Default runtime',
-      'Advanced constraints',
+      'Public application entrypoints',
+      'Runtime ownership',
+      'Renderer support',
+      'Askr 0.4.3',
     ],
   },
   {

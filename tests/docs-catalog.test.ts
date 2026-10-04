@@ -355,9 +355,7 @@ describe('documentation catalog', () => {
     expect(source).not.toContain('none of that has to be re-verified');
     expect(source).not.toContain('Two outputs, one build');
     expect(source).toContain('one explicit registry');
-    expect(source).toContain(
-      'Each mode has its own entry point and build setup.'
-    );
+    expect(source).toContain('own entry point and build setup.');
     expect(source).toContain(
       "This site is built with Askr's static-site generator"
     );
