@@ -22,83 +22,6 @@ export const apiSymbolSets: Readonly<
 > = {
   symbols0: [
     {
-      name: 'AskrRuntime',
-      anchor: 'askr-runtime',
-      signature: 'AskrRuntime: typeof AskrRuntime',
-      typeOnly: true,
-      summary:
-        'Construction-only scheduler and renderer wiring. Mounting uses the default runtime.',
-      members: [
-        {
-          name: 'scheduler',
-          summary: '',
-          signature: 'readonly scheduler: Scheduler;',
-        },
-        {
-          name: 'rendererHost',
-          summary: '',
-          signature: 'private rendererHost;',
-        },
-        {
-          name: 'renderer',
-          summary: '',
-          signature: 'get renderer(): RuntimeRendererHost;',
-        },
-        {
-          name: 'configureRenderer',
-          summary: '',
-          signature: 'configureRenderer(renderer: RuntimeRendererHost): void;',
-        },
-      ],
-    },
-    {
-      name: 'AskrRuntimeOptions',
-      anchor: 'askr-runtime-options',
-      signature: 'AskrRuntimeOptions: any',
-      typeOnly: true,
-      summary: 'Options for {@link createRuntime}.',
-      members: [
-        {
-          name: 'scheduler',
-          summary: '',
-          signature: 'scheduler?: Scheduler;',
-        },
-        {
-          name: 'renderer',
-          summary: '',
-          signature: 'renderer?: RuntimeRendererHost;',
-        },
-      ],
-    },
-    {
-      name: 'Case',
-      anchor: 'case',
-      signature: 'Case: (props: CaseProps) => JSXElement',
-      typeOnly: true,
-      summary:
-        'Render the first matching {@link Match} child (by `when`), or `fallback` if none match.',
-    },
-    {
-      name: 'CaseProps',
-      anchor: 'case-props',
-      signature:
-        'CaseProps: {\n  fallback?: BoundaryChild;\n  children?: unknown;\n}',
-      typeOnly: true,
-      summary: 'Props for {@link Case}.',
-      members: [
-        {
-          name: 'children',
-          summary: '',
-          signature: 'children?: unknown;',
-        },
-        {
-          name: 'fallback',
-          summary: '',
-          signature: 'fallback?: RenderableChild;',
-        },
-      ],
-    },
-    {
       name: 'configureRenderDiagnostics',
       anchor: 'configure-render-diagnostics',
       signature:
@@ -108,31 +31,13 @@ export const apiSymbolSets: Readonly<
         'Configure development render diagnostics and return a function that restores\nthe previous configuration. Component counters and timing remain enabled\nwhen warning output is disabled.',
     },
     {
-      name: 'createDOMRendererHost',
-      anchor: 'create-domrenderer-host',
+      name: 'createElement',
+      anchor: 'create-element',
       signature:
-        'createDOMRendererHost: (configure: (native: DOMRendererHost) => DOMRendererHost) => RuntimeRendererHost',
+        'createElement: (type: string | symbol | ((props: never) => unknown), props: Record<string, unknown> | null, ...children: unknown[]) => JSXElement',
       typeOnly: true,
       summary:
-        'Construct a validated DOM adapter without installing it in a runtime.',
-    },
-    {
-      name: 'createQuery',
-      anchor: 'create-query',
-      signature:
-        'createQuery: { <T extends {}>(options: QueryOptions<T>): Query<T>; <TInput, TResult extends {}>(definition: QueryDefinition<TInput, TResult>, input: TInput, options?: Omit<QueryOptions<TResult>, "key" | "fetch">): Query<TResult>; }',
-      typeOnly: true,
-      summary:
-        'Create a reactive {@link Query} cell bound to the current component, either\nfrom inline `options` (key + fetch) or a reusable {@link QueryDefinition}\nplus its input.',
-    },
-    {
-      name: 'createQueryCollection',
-      anchor: 'create-query-collection',
-      signature:
-        'createQueryCollection: <TInput, TResult extends {}, TKey extends QueryCollectionKey = string>(options: QueryCollectionOptions<TInput, TResult, TKey>) => QueryCollection<TInput, TResult, TKey>',
-      typeOnly: true,
-      summary:
-        'Create one lifecycle-owned collection of dynamically keyed readers for a\nreusable query definition, with bounded collection-started fetches.',
+        'Classic element factory. The automatic JSX transform falls back to it for a\n`key` written after a spread (`<Row {...props} key={id} />`). The key and\nthe development-only `__self`/`__source` props are taken out of `props`,\nand child arguments become `props.children`.',
     },
     {
       name: 'createRef',
@@ -140,14 +45,6 @@ export const apiSymbolSets: Readonly<
       signature: 'createRef: <T extends Element = Element>() => Ref<T>',
       typeOnly: true,
       summary: 'Create a new, empty {@link Ref} holder.',
-    },
-    {
-      name: 'createRuntime',
-      anchor: 'create-runtime',
-      signature: 'createRuntime: (options?: AskrRuntimeOptions) => AskrRuntime',
-      typeOnly: true,
-      summary:
-        'Create construction-only runtime wiring. Omitted schedulers share the default scheduler; mounting uses the default runtime.',
     },
     {
       name: 'cspNonce',
@@ -171,70 +68,12 @@ export const apiSymbolSets: Readonly<
         'Lexical scope carrying the CSP nonce for the current render, if any.',
     },
     {
-      name: 'DataRuntime',
-      anchor: 'data-runtime',
-      signature: 'DataRuntime: any',
-      typeOnly: true,
-      summary:
-        'Isolated cache/state container backing queries and mutations, e.g. one per test or request.',
-      members: [
-        {
-          name: 'queryCache',
-          summary: '',
-          signature: 'readonly queryCache: Map<string, unknown>;',
-        },
-        {
-          name: 'queryData',
-          summary: '',
-          signature: 'readonly queryData: Map<string, unknown>;',
-        },
-        {
-          name: 'queryTestOverrides',
-          summary:
-            'Test-only query overrides keyed by the canonical query key.',
-          signature: 'readonly queryTestOverrides: Map<string, unknown>;',
-        },
-        {
-          name: 'mutationTestOverrides',
-          summary:
-            'Test-only mutation overrides keyed by the canonical mutation key.',
-          signature: 'readonly mutationTestOverrides: Map<string, unknown>;',
-        },
-      ],
-    },
-    {
-      name: 'defineQuery',
-      anchor: 'define-query',
-      signature:
-        'defineQuery: <TInput, TResult extends {}>(definition: QueryDefinition<TInput, TResult>) => QueryDefinition<TInput, TResult>',
-      typeOnly: true,
-      summary: 'Freeze and return a reusable {@link QueryDefinition}.',
-    },
-    {
       name: 'defineScope',
       anchor: 'define-scope',
       signature: 'defineScope: <T>(defaultValue: T) => Scope<T>',
       typeOnly: true,
       summary:
         'Create a new lexical {@link Scope} with `defaultValue`, readable via {@link readScope}.',
-    },
-    {
-      name: 'defineServerQueries',
-      anchor: 'define-server-queries',
-      signature:
-        'defineServerQueries: (...entries: readonly ServerQueryEntry<any, any>[]) => ServerQueryRegistry',
-      typeOnly: true,
-      summary:
-        'Build a {@link ServerQueryRegistry} from one or more {@link serveQuery} entries.',
-    },
-    {
-      name: 'dehydrateDataRuntime',
-      anchor: 'dehydrate-data-runtime',
-      signature:
-        'dehydrateDataRuntime: (runtime: DataRuntime) => Record<string, unknown>',
-      typeOnly: true,
-      summary:
-        "Extract a runtime's cached query data into a JSON-serializable snapshot, dropping non-serializable values.",
     },
     {
       name: 'derive',
@@ -254,241 +93,12 @@ export const apiSymbolSets: Readonly<
         'A reactive derived value produced by {@link derive}; call it to read the current result.',
     },
     {
-      name: 'DOMChildScope',
-      anchor: 'domchild-scope',
-      signature: 'DOMChildScope: any',
-      typeOnly: true,
-      summary:
-        'Opaque child scope identity scoped to one DOM renderer factory.',
-    },
-    {
-      name: 'DOMComponentOwner',
-      anchor: 'domcomponent-owner',
-      signature: 'DOMComponentOwner: any',
-      typeOnly: true,
-      summary: 'Opaque component identity scoped to one DOM renderer factory.',
-    },
-    {
-      name: 'DOMReactiveSource',
-      anchor: 'domreactive-source',
-      signature: 'DOMReactiveSource: any',
-      typeOnly: true,
-      summary:
-        'Opaque reactive source identity scoped to one DOM renderer factory.',
-    },
-    {
-      name: 'DOMRendererCleanup',
-      anchor: 'domrenderer-cleanup',
-      signature: 'DOMRendererCleanup: any',
-      typeOnly: true,
-      summary: 'DOM lifetime cleanup operations.',
-      members: [
-        {
-          name: 'cleanupInstancesUnder',
-          summary: '',
-          signature: 'cleanupInstancesUnder(node: Node): void;',
-        },
-        {
-          name: 'teardownNodeSubtree',
-          summary: '',
-          signature: 'teardownNodeSubtree(root: Node): void;',
-        },
-      ],
-    },
-    {
-      name: 'DOMRendererEvaluation',
-      anchor: 'domrenderer-evaluation',
-      signature: 'DOMRendererEvaluation: any',
-      typeOnly: true,
-      summary: 'DOM evaluation and replacement operations.',
-      members: [
-        {
-          name: 'evaluate',
-          summary: '',
-          signature:
-            'evaluate(\n    node: unknown,\n    target: Element | null,\n    context?: object,\n    retainedOwner?: DOMComponentOwner\n  ): void;',
-        },
-        {
-          name: 'replaceComponentRange',
-          summary: '',
-          signature:
-            'replaceComponentRange(\n    owner: DOMComponentOwner,\n    result: unknown,\n    host: Element | Comment\n  ): Node | null;',
-        },
-      ],
-    },
-    {
-      name: 'DOMRendererHost',
-      anchor: 'domrenderer-host',
-      signature: 'DOMRendererHost: any',
-      typeOnly: true,
-      summary:
-        'Complete DOM extension roles. Delegate explicitly to the supplied native host.',
-      members: [
-        {
-          name: 'evaluation',
-          summary: '',
-          signature: 'evaluation: DOMRendererEvaluation;',
-        },
-        {
-          name: 'cleanup',
-          summary: '',
-          signature: 'cleanup: DOMRendererCleanup;',
-        },
-        {
-          name: 'scopes',
-          summary: '',
-          signature: 'scopes: DOMRendererScopes;',
-        },
-        {
-          name: 'keys',
-          summary: '',
-          signature: 'keys: DOMRendererKeys;',
-        },
-        {
-          name: 'reactivity',
-          summary: '',
-          signature: 'reactivity: DOMRendererReactivity;',
-        },
-      ],
-    },
-    {
-      name: 'DOMRendererKeys',
-      anchor: 'domrenderer-keys',
-      signature: 'DOMRendererKeys: any',
-      typeOnly: true,
-      summary: 'Keyed DOM reconciliation operations.',
-      members: [
-        {
-          name: 'populateKeyMapForElement',
-          summary: '',
-          signature: 'populateKeyMapForElement(parent: Element): void;',
-        },
-        {
-          name: 'getKeyMapForElement',
-          summary: '',
-          signature:
-            'getKeyMapForElement(\n    parent: Element\n  ): Map<string | number, Element> | undefined;',
-        },
-        {
-          name: 'isKeyedReorderFastPathEligible',
-          summary: '',
-          signature:
-            'isKeyedReorderFastPathEligible(\n    parent: Element,\n    children: unknown[],\n    oldKeyMap: Map<string | number, Element> | undefined\n  ): RuntimeKeyedReorderDecision;',
-        },
-      ],
-    },
-    {
-      name: 'DOMRendererRange',
-      anchor: 'domrenderer-range',
-      signature: 'DOMRendererRange: any',
-      typeOnly: true,
-      summary: 'Read-only boundary of rendered DOM output.',
-      members: [
-        {
-          name: 'start',
-          summary: '',
-          signature: 'readonly start: Node;',
-        },
-        {
-          name: 'end',
-          summary: '',
-          signature: 'readonly end: Node;',
-        },
-        {
-          name: 'single',
-          summary: '',
-          signature: 'readonly single: boolean;',
-        },
-      ],
-    },
-    {
-      name: 'DOMRendererReactivity',
-      anchor: 'domrenderer-reactivity',
-      signature: 'DOMRendererReactivity: any',
-      typeOnly: true,
-      summary: 'Reactive DOM invalidation operations.',
-      members: [
-        {
-          name: 'markReactivePropsDirtySource',
-          summary: '',
-          signature:
-            'markReactivePropsDirtySource(source: DOMReactiveSource): void;',
-        },
-      ],
-    },
-    {
-      name: 'DOMRendererScopes',
-      anchor: 'domrenderer-scopes',
-      signature: 'DOMRendererScopes: any',
-      typeOnly: true,
-      summary: 'Child scope boundary inspection.',
-      members: [
-        {
-          name: 'resolveChildScopeRange',
-          summary: '',
-          signature:
-            'resolveChildScopeRange(scope: DOMChildScope): DOMRendererRange | null;',
-        },
-      ],
-    },
-    {
-      name: 'For',
-      anchor: 'for',
-      signature:
-        'For: <T, K extends string | number = string | number>(props: ForProps<T, K>) => JSXElement',
-      typeOnly: true,
-      summary:
-        'Render a keyed or indexed list, reconciling items by key instead of position.',
-    },
-    {
-      name: 'ForProps',
-      anchor: 'for-props',
-      signature: 'ForProps: | KeyedForProps<T, K>\n  | IndexedForProps<T>',
-      typeOnly: true,
-      summary: 'Props for {@link For}.',
-      members: [
-        {
-          name: 'by',
-          summary: '',
-          signature: 'by?: ((item: T, index: number) => K) | undefined;',
-        },
-        {
-          name: 'byIndex',
-          summary: '',
-          signature: 'byIndex?: true | undefined;',
-        },
-        {
-          name: 'children',
-          summary:
-            'Row renderer. Parent reactive reads must use `selector()` or thunk props;\nclosure-captured values are snapshotted when the row is created or\nreconciled; changing the parent source does not rerun an existing row.',
-          signature: 'children: (item: T, index: () => number) => VNode;',
-        },
-        {
-          name: 'each',
-          summary: '',
-          signature: 'each: ForEachSource<T>;',
-        },
-        {
-          name: 'fallback',
-          summary: '',
-          signature: 'fallback?: RenderableChild;',
-        },
-      ],
-    },
-    {
       name: 'Fragment',
       anchor: 'fragment',
       signature: 'Fragment: typeof Fragment',
       typeOnly: true,
       summary:
         'The element type marker for JSX fragments (`<>...</>`), groups children without a wrapper element.',
-    },
-    {
-      name: 'getDefaultRuntime',
-      anchor: 'get-default-runtime',
-      signature: 'getDefaultRuntime: () => AskrRuntime',
-      typeOnly: true,
-      summary: 'Get the process-wide default {@link AskrRuntime}.',
     },
     {
       name: 'getSignal',
@@ -499,19 +109,10 @@ export const apiSymbolSets: Readonly<
         'Get the abort signal for the current component.\n\nThe signal is guaranteed to be aborted when:\n- Component unmounts\n- Navigation occurs (different route)\n- Parent is destroyed',
     },
     {
-      name: 'hydrateDataRuntime',
-      anchor: 'hydrate-data-runtime',
-      signature:
-        'hydrateDataRuntime: (runtime: DataRuntime, data: unknown) => void',
-      typeOnly: true,
-      summary:
-        "Load a {@link dehydrateDataRuntime} snapshot back into a runtime's query cache.",
-    },
-    {
       name: 'jsx',
       anchor: 'jsx',
       signature:
-        'jsx: { (type: EagerControlPrimitive, props: Props | null, key?: string | number): unknown; <TTag extends keyof KnownIntrinsicElementProps>(type: TTag, props: KnownIntrinsicElementProps[TTag] | null, key?: string | number): JSXElement; <TTag extends string>(type: Exclude<TTag, keyof KnownIntrinsicElementProps>, props: IntrinsicFallbackProps | null, key?: string | number): JSXElement; <TProps extends object>(type: (props: TProps) => unknown, props: TProps | null, key?: string | number): JSXElement; (type: symbol, props: Props | null, key?: string | number): JSXElement; }',
+        'jsx: { <TTag extends keyof KnownIntrinsicElementProps>(type: TTag, props: KnownIntrinsicElementProps[NoInfer<TTag>] | null, key?: string | number): JSXElement; <TTag extends OtherIntrinsicTag>(type: TTag, props: OtherIntrinsicProps<TTag> | null, key?: string | number): JSXElement; <TProps extends object>(type: (props: TProps) => unknown, props: TProps | null, key?: string | number): JSXElement; (type: symbol, props: Props | null, key?: string | number): JSXElement; }',
       typeOnly: true,
       summary:
         'JSX factory for elements with a single or no child, used by the `jsxImportSource` transform.',
@@ -520,53 +121,10 @@ export const apiSymbolSets: Readonly<
       name: 'jsxs',
       anchor: 'jsxs',
       signature:
-        'jsxs: { (type: EagerControlPrimitive, props: Props | null, key?: string | number): unknown; <TTag extends keyof KnownIntrinsicElementProps>(type: TTag, props: KnownIntrinsicElementProps[TTag] | null, key?: string | number): JSXElement; <TTag extends string>(type: Exclude<TTag, keyof KnownIntrinsicElementProps>, props: IntrinsicFallbackProps | null, key?: string | number): JSXElement; <TProps extends object>(type: (props: TProps) => unknown, props: TProps | null, key?: string | number): JSXElement; (type: symbol, props: Props | null, key?: string | number): JSXElement; }',
+        'jsxs: { <TTag extends keyof KnownIntrinsicElementProps>(type: TTag, props: KnownIntrinsicElementProps[NoInfer<TTag>] | null, key?: string | number): JSXElement; <TTag extends OtherIntrinsicTag>(type: TTag, props: OtherIntrinsicProps<TTag> | null, key?: string | number): JSXElement; <TProps extends object>(type: (props: TProps) => unknown, props: TProps | null, key?: string | number): JSXElement; (type: symbol, props: Props | null, key?: string | number): JSXElement; }',
       typeOnly: true,
       summary:
         'JSX factory for elements with multiple static children, used by the `jsxImportSource` transform.',
-    },
-    {
-      name: 'Match',
-      anchor: 'match',
-      signature: 'Match: (_props: MatchProps) => null',
-      typeOnly: true,
-      summary:
-        'Declares one branch of a {@link Case}; only valid as its direct child.',
-    },
-    {
-      name: 'MatchProps',
-      anchor: 'match-props',
-      signature:
-        'MatchProps: {\n  key?: string | number | null;\n  when: unknown;\n  children: MatchChild;\n}',
-      typeOnly: true,
-      summary:
-        'Props for {@link Match}, valid only as a direct child of {@link Case}.',
-      members: [
-        {
-          name: 'children',
-          summary: '',
-          signature: 'children: MatchChild;',
-        },
-        {
-          name: 'key',
-          summary: '',
-          signature: 'key?: string | number | null | undefined;',
-        },
-        {
-          name: 'when',
-          summary: '',
-          signature: 'when: unknown;',
-        },
-      ],
-    },
-    {
-      name: 'prefetchQuery',
-      anchor: 'prefetch-query',
-      signature:
-        'prefetchQuery: <TInput, TResult extends {}>(context: QueryPrefetchContext, query: QueryDefinition<TInput, TResult>, input: TInput) => Promise<boolean>',
-      typeOnly: true,
-      summary:
-        "Prefetch `query` with `input` into a {@link QueryPrefetchContext}'s runtime.",
     },
     {
       name: 'Props',
@@ -586,186 +144,6 @@ export const apiSymbolSets: Readonly<
           summary:
             'Optional key for keyed lists (string | number | symbol for internal frames)',
           signature: 'key?: string | number | symbol | undefined;',
-        },
-      ],
-    },
-    {
-      name: 'QueryCollection',
-      anchor: 'query-collection',
-      signature: 'QueryCollection: any',
-      typeOnly: true,
-      summary:
-        'Aggregate reactive state for a lifecycle-owned dynamic query collection.',
-      members: [
-        {
-          name: 'entries',
-          summary: '',
-          signature:
-            'readonly entries: readonly QueryCollectionEntry<TInput, TResult, TKey>[];',
-        },
-        {
-          name: 'loading',
-          summary: '',
-          signature: 'readonly loading: boolean;',
-        },
-        {
-          name: 'settled',
-          summary: '',
-          signature: 'readonly settled: boolean;',
-        },
-        {
-          name: 'results',
-          summary: '',
-          signature: 'readonly results: ReadonlyMap<TKey, TResult>;',
-        },
-        {
-          name: 'errors',
-          summary: '',
-          signature: 'readonly errors: ReadonlyMap<TKey, {}>;',
-        },
-        {
-          name: 'get',
-          summary: '',
-          signature:
-            'get(key: TKey): QueryCollectionEntry<TInput, TResult, TKey> | undefined;',
-        },
-        {
-          name: 'retry',
-          summary: '',
-          signature: 'retry(key: TKey): Promise<void>;',
-        },
-      ],
-    },
-    {
-      name: 'QueryCollectionEntry',
-      anchor: 'query-collection-entry',
-      signature: 'QueryCollectionEntry: any',
-      typeOnly: true,
-      summary: 'One keyed input and its underlying cache-backed query reader.',
-      members: [
-        {
-          name: 'key',
-          summary: '',
-          signature: 'readonly key: TKey;',
-        },
-        {
-          name: 'input',
-          summary: '',
-          signature: 'readonly input: TInput;',
-        },
-        {
-          name: 'query',
-          summary: '',
-          signature: 'readonly query: Query<TResult>;',
-        },
-      ],
-    },
-    {
-      name: 'QueryCollectionKey',
-      anchor: 'query-collection-key',
-      signature: 'QueryCollectionKey: string | number | symbol',
-      typeOnly: true,
-      summary: 'Stable identity for one member of a {@link QueryCollection}.',
-    },
-    {
-      name: 'QueryCollectionOptions',
-      anchor: 'query-collection-options',
-      signature: 'QueryCollectionOptions: any',
-      typeOnly: true,
-      summary: 'Options for {@link createQueryCollection}.',
-      members: [
-        {
-          name: 'query',
-          summary: '',
-          signature: 'readonly query: QueryDefinition<TInput, TResult>;',
-        },
-        {
-          name: 'inputs',
-          summary: '',
-          signature: 'readonly inputs: () => readonly TInput[];',
-        },
-        {
-          name: 'key',
-          summary: '',
-          signature: 'readonly key: (input: TInput) => TKey;',
-        },
-        {
-          name: 'concurrency',
-          summary: '',
-          signature: 'readonly concurrency?: number;',
-        },
-        {
-          name: 'runtime',
-          summary: '',
-          signature: 'readonly runtime?: DataRuntime;',
-        },
-      ],
-    },
-    {
-      name: 'QueryDefinition',
-      anchor: 'query-definition',
-      signature: 'QueryDefinition: any',
-      typeOnly: true,
-      summary:
-        'Reusable query definition for {@link defineQuery}: key, fetcher, and freshness checks.',
-      members: [
-        {
-          name: 'key',
-          summary: '',
-          signature: 'readonly key: (input: TInput) => string;',
-        },
-        {
-          name: 'fetch',
-          summary: '',
-          signature:
-            'readonly fetch: (\n    context: TInput & {\n      signal: AbortSignal;\n    }\n  ) => Promise<TResult>;',
-        },
-        {
-          name: 'isConsistent',
-          summary: '',
-          signature: 'readonly isConsistent?: (data: TResult) => boolean;',
-        },
-        {
-          name: 'reconcile',
-          summary: '',
-          signature:
-            'readonly reconcile?: (\n    data: TResult,\n    context: {\n      key: string;\n    }\n  ) => Promise<boolean> | boolean;',
-        },
-      ],
-    },
-    {
-      name: 'QueryPrefetchContext',
-      anchor: 'query-prefetch-context',
-      signature: 'QueryPrefetchContext: any',
-      typeOnly: true,
-      summary:
-        'Context passed to server prefetch callbacks, exposing a scoped `prefetch` helper.',
-      members: [
-        {
-          name: 'runtime',
-          summary: '',
-          signature: 'readonly runtime: DataRuntime;',
-        },
-        {
-          name: 'request',
-          summary: '',
-          signature: 'readonly request?: Request;',
-        },
-        {
-          name: 'signal',
-          summary: '',
-          signature: 'readonly signal: AbortSignal;',
-        },
-        {
-          name: 'mode',
-          summary: '',
-          signature: "readonly mode: 'ssr' | 'spa';",
-        },
-        {
-          name: 'prefetch',
-          summary: '',
-          signature:
-            'prefetch<TInput, TResult extends {}>(\n    query: QueryDefinition<TInput, TResult>,\n    input: TInput\n  ): Promise<boolean>;',
         },
       ],
     },
@@ -801,10 +179,26 @@ export const apiSymbolSets: Readonly<
         'Register request-local CSS produced during SSR without importing the SSR renderer in clients.',
     },
     {
+      name: 'RenderDepthError',
+      anchor: 'render-depth-error',
+      signature: 'RenderDepthError: typeof RenderDepthError',
+      typeOnly: true,
+      summary:
+        "Thrown when the JavaScript call stack overflows during a render, usually\nbecause the component tree is too deep. `cause` is the engine's error.",
+      members: [
+        {
+          name: 'cause',
+          summary: '',
+          signature: 'readonly cause: unknown;',
+        },
+      ],
+    },
+    {
       name: 'RenderDiagnosticsOptions',
       anchor: 'render-diagnostics-options',
       signature: 'RenderDiagnosticsOptions: any',
       typeOnly: true,
+      summary: 'Options for {@link configureRenderDiagnostics}.',
       members: [
         {
           name: 'slowRenderWarnings',
@@ -816,117 +210,6 @@ export const apiSymbolSets: Readonly<
           name: 'slowRenderThresholdMs',
           summary: 'Slow-render threshold in milliseconds. The default is 5.',
           signature: 'slowRenderThresholdMs?: number;',
-        },
-      ],
-    },
-    {
-      name: 'RuntimeKeyedReorderDecision',
-      anchor: 'runtime-keyed-reorder-decision',
-      signature: 'RuntimeKeyedReorderDecision: any',
-      typeOnly: true,
-      summary:
-        'Diagnostic breakdown of a keyed-list reorder decision, returned by {@link RuntimeRendererHost.isKeyedReorderFastPathEligible}.',
-      members: [
-        {
-          name: 'useFastPath',
-          summary: '',
-          signature: 'useFastPath: boolean;',
-        },
-        {
-          name: 'totalKeyed',
-          summary: '',
-          signature: 'totalKeyed: number;',
-        },
-        {
-          name: 'totalChildren',
-          summary: '',
-          signature: 'totalChildren: number;',
-        },
-        {
-          name: 'currentKeyCount',
-          summary: '',
-          signature: 'currentKeyCount: number;',
-        },
-        {
-          name: 'moveCount',
-          summary: '',
-          signature: 'moveCount: number;',
-        },
-        {
-          name: 'lisLen',
-          summary: '',
-          signature: 'lisLen: number;',
-        },
-        {
-          name: 'hasPropChanges',
-          summary: '',
-          signature: 'hasPropChanges: boolean;',
-        },
-        {
-          name: 'isWholeKeyedList',
-          summary: '',
-          signature: 'isWholeKeyedList: boolean;',
-        },
-      ],
-    },
-    {
-      name: 'RuntimeRendererHost',
-      anchor: 'runtime-renderer-host',
-      signature: 'RuntimeRendererHost: any',
-      typeOnly: true,
-      summary:
-        'The renderer implementation an {@link AskrRuntime} delegates DOM evaluation and cleanup to.',
-      members: [
-        {
-          name: 'evaluate',
-          summary: '',
-          signature:
-            'evaluate(\n    node: unknown,\n    target: Element | null,\n    context?: object,\n    retainedOwner?: ComponentInstance\n  ): void;',
-        },
-        {
-          name: 'cleanupInstancesUnder',
-          summary: '',
-          signature: 'cleanupInstancesUnder(node: Node): void;',
-        },
-        {
-          name: 'replaceComponentRange',
-          summary: '',
-          signature:
-            'replaceComponentRange(\n    instance: ComponentInstance,\n    result: unknown,\n    host: Element | Comment\n  ): Node | null;',
-        },
-        {
-          name: 'resolveChildScopeRange',
-          summary: '',
-          signature:
-            'resolveChildScopeRange?(scope: ChildScope): DOMRange | null;',
-        },
-        {
-          name: 'teardownNodeSubtree',
-          summary: '',
-          signature: 'teardownNodeSubtree(root: Node): void;',
-        },
-        {
-          name: 'populateKeyMapForElement',
-          summary: '',
-          signature: 'populateKeyMapForElement(parent: Element): void;',
-        },
-        {
-          name: 'getKeyMapForElement',
-          summary: '',
-          signature:
-            'getKeyMapForElement(\n    parent: Element\n  ): Map<string | number, Element> | undefined;',
-        },
-        {
-          name: 'isKeyedReorderFastPathEligible',
-          summary: '',
-          signature:
-            'isKeyedReorderFastPathEligible(\n    parent: Element,\n    children: unknown[],\n    oldKeyMap: Map<string | number, Element> | undefined\n  ): RuntimeKeyedReorderDecision;',
-        },
-        {
-          name: 'markReactivePropsDirtySource',
-          summary: '',
-          signature:
-            'markReactivePropsDirtySource(source: ReadableSource<unknown>): void;',
         },
       ],
     },
@@ -966,58 +249,6 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
       summary:
         'A fine-grained reactive membership check produced by {@link selector}.',
-    },
-    {
-      name: 'serveQuery',
-      anchor: 'serve-query',
-      signature:
-        'serveQuery: <TInput, TResult extends {}>(query: QueryDefinition<TInput, TResult>, handler: ServerQueryHandler<TInput, TResult>) => ServerQueryEntry<TInput, TResult>',
-      typeOnly: true,
-      summary:
-        'Pair a {@link QueryDefinition} with the server-side handler that resolves it.',
-    },
-    {
-      name: 'ServerQueryHandler',
-      anchor: 'server-query-handler',
-      signature:
-        'ServerQueryHandler: (context: {\n  input: TInput;\n  request?: Request;\n  signal: AbortSignal;\n}) => Promise<TResult> | TResult',
-      typeOnly: true,
-      summary:
-        "Server-side handler that resolves a {@link QueryDefinition}'s data for `serveQuery`.",
-    },
-    {
-      name: 'Show',
-      anchor: 'show',
-      signature: 'Show: <T>(props: ShowProps<T>) => JSXElement',
-      typeOnly: true,
-      summary:
-        'Conditionally render children based on `when`, narrowing truthy values for the render function form.',
-    },
-    {
-      name: 'ShowProps',
-      anchor: 'show-props',
-      signature:
-        'ShowProps: {\n  when: ShowSource<T>;\n  fallback?: BoundaryChild;\n  children: BoundaryChild | ((value: Truthy<T>) => BoundaryChild);\n}',
-      typeOnly: true,
-      summary: 'Props for {@link Show}.',
-      members: [
-        {
-          name: 'children',
-          summary: '',
-          signature:
-            'children: RenderableChild | ((value: Truthy<T>) => BoundaryChild);',
-        },
-        {
-          name: 'fallback',
-          summary: '',
-          signature: 'fallback?: RenderableChild;',
-        },
-        {
-          name: 'when',
-          summary: '',
-          signature: 'when: ShowSource<T>;',
-        },
-      ],
     },
     {
       name: 'state',
@@ -1118,7 +349,7 @@ export const apiSymbolSets: Readonly<
       name: 'HydrateSPAConfig',
       anchor: 'hydrate-spaconfig',
       signature:
-        'HydrateSPAConfig: BootRouteSource & {\n  root: Element | string;\n  cspNonce?: string;\n  dataRuntime?: DataRuntime;\n  /** Pass the same explicit route registry used for the server render. */\n  auth?: RouteAuthOptions;\n  scrollRestoration?: boolean | ScrollRestorationOptions;\n  cleanupStrict?: boolean;\n  hydrate?: {\n    verifyMarkup?: boolean;\n    deferUntilIdle?: boolean;\n    deferBelowFold?: boolean;\n    foldThreshold?: number;\n    skipSelectors?: string[];\n  };\n}',
+        "HydrateSPAConfig: BootRouteSource & {\n  root: Element | string;\n  cspNonce?: string;\n  dataRuntime?: DataRuntime;\n  /** Auth resolution and redirect options; defaults to the registry's `auth`. */\n  auth?: RouteAuthOptions;\n  scrollRestoration?: boolean | ScrollRestorationOptions;\n  cleanupStrict?: boolean;\n  hydrate?: {\n    verifyMarkup?: boolean;\n    deferUntilIdle?: boolean;\n    deferBelowFold?: boolean;\n    foldThreshold?: number;\n    skipSelectors?: string[];\n  };\n}",
       typeOnly: true,
       summary: 'Configuration for {@link hydrateSPA}.',
     },
@@ -1144,7 +375,7 @@ export const apiSymbolSets: Readonly<
       name: 'SPAConfig',
       anchor: 'spaconfig',
       signature:
-        'SPAConfig: BootRouteSource & {\n  root: Element | string;\n  cspNonce?: string;\n  /** Optional data runtime, primarily for routed test fixtures. */\n  dataRuntime?: DataRuntime;\n  /** Pass a route registry built via `createRouteRegistry(() => { ... })`. */\n  auth?: RouteAuthOptions;\n  scrollRestoration?: boolean | ScrollRestorationOptions;\n  cleanupStrict?: boolean;\n  component?: never;\n}',
+        "SPAConfig: BootRouteSource & {\n  root: Element | string;\n  cspNonce?: string;\n  /** Optional data runtime, primarily for routed test fixtures. */\n  dataRuntime?: DataRuntime;\n  /** Auth resolution and redirect options; defaults to the registry's `auth`. */\n  auth?: RouteAuthOptions;\n  scrollRestoration?: boolean | ScrollRestorationOptions;\n  cleanupStrict?: boolean;\n  component?: never;\n}",
       typeOnly: true,
       summary: 'Configuration for {@link createSPA}.',
     },
@@ -1176,8 +407,9 @@ export const apiSymbolSets: Readonly<
       members: [
         {
           name: 'children',
-          summary: 'Optional children slot',
-          signature: 'children?: ErrorBoundaryContent;',
+          summary:
+            'Boundary content: nodes, elements, function children, or a list of them.',
+          signature: 'children?: ErrorBoundaryChild;',
         },
         {
           name: 'fallback',
@@ -1239,10 +471,47 @@ export const apiSymbolSets: Readonly<
       name: 'For',
       anchor: 'for',
       signature:
-        'For: <T, K extends string | number = string | number>(props: ForProps<T, K>) => JSXElement',
+        'For: { <T, K extends string | number = string | number>(props: ForGetterProps<T, K>): JSXElement; <T, K extends string | number = string | number>(props: ForProps<T, K>): JSXElement; }',
       typeOnly: true,
       summary:
         'Render a keyed or indexed list, reconciling items by key instead of position.',
+    },
+    {
+      name: 'ForGetterProps',
+      anchor: 'for-getter-props',
+      signature:
+        "ForGetterProps: Omit<\n  ForBaseProps<T>,\n  'each'\n> & { each: ForEachGetter<T> } & ForKeying<T, K>",
+      typeOnly: true,
+      summary:
+        '{@link ForProps} with a getter `each`. A `state()` getter is also an array\n(`[getter, setter]`), so `For` tries this form first and reads it as a getter.',
+      members: [
+        {
+          name: 'by',
+          summary: '',
+          signature: 'by?: ((item: T, index: number) => K) | undefined;',
+        },
+        {
+          name: 'byIndex',
+          summary: '',
+          signature: 'byIndex?: true | undefined;',
+        },
+        {
+          name: 'children',
+          summary:
+            'Row renderer. Existing rows rerun with the latest callback when the parent\nrerenders, and a reactive read in the callback subscribes that row. Prefer\n`selector()` or thunk props so only the affected rows or props update.',
+          signature: 'children: (item: T, index: () => number) => VNode;',
+        },
+        {
+          name: 'each',
+          summary: '',
+          signature: 'each: ForEachGetter<T>;',
+        },
+        {
+          name: 'fallback',
+          summary: '',
+          signature: 'fallback?: RenderableChild;',
+        },
+      ],
     },
     {
       name: 'ForProps',
@@ -1264,7 +533,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'children',
           summary:
-            'Row renderer. Parent reactive reads must use `selector()` or thunk props;\nclosure-captured values are snapshotted when the row is created or\nreconciled; changing the parent source does not rerun an existing row.',
+            'Row renderer. Existing rows rerun with the latest callback when the parent\nrerenders, and a reactive read in the callback subscribes that row. Prefer\n`selector()` or thunk props so only the affected rows or props update.',
           signature: 'children: (item: T, index: () => number) => VNode;',
         },
         {
@@ -1643,13 +912,22 @@ export const apiSymbolSets: Readonly<
       ],
     },
     {
+      name: 'MergedProps',
+      anchor: 'merged-props',
+      signature:
+        'MergedProps: HasIndexSignature<TBase> extends true\n    ? TInjected & TBase\n    : HasIndexSignature<TInjected> extends true\n      ? TInjected & TBase\n      : Omit<TInjected, keyof TBase> & {\n          [\n            K in keyof TBase as K extends RequiredKeys<TInjected> ? K : never\n          ]-?: MergedValue<TBase[K], TInjected[K & keyof TInjected]>;\n        } & {\n          [\n            K in keyof TBase as K extends RequiredKeys<TInjected> ? never : K\n          ]: MergedValue<\n            TBase[K],\n            K extends keyof TInjected ? TInjected[K] : undefined\n          >;\n        }',
+      typeOnly: true,
+      summary:
+        'The props {@link mergeProps} returns: base keys win unless `undefined`, and\na base key is required when the injected props always supply it. Props\nwith an index signature fall back to the intersection of both sides.',
+    },
+    {
       name: 'mergeProps',
       anchor: 'merge-props',
       signature:
-        'mergeProps: <TBase extends object, TInjected extends object>(base: TBase, injected: TInjected) => TInjected & TBase',
+        'mergeProps: <TBase extends object, TInjected extends object>(base: TBase, injected: TInjected) => MergedProps<TBase, TInjected>',
       typeOnly: true,
       summary:
-        'Merge `base` props over `injected` props: non-handler keys in `base` win,\nand matching event handlers are composed (`injected` runs first).',
+        'Merge `base` props over `injected` props: non-handler keys in `base` win,\nand matching event handlers are composed (`injected` runs first). `base`\nvalues that are `undefined` are treated as absent and never overwrite an\ninjected value; use `null` to clear one explicitly.',
     },
     {
       name: 'PointerLikeEvent',
@@ -2046,10 +1324,11 @@ export const apiSymbolSets: Readonly<
     {
       name: 'ControllableState',
       anchor: 'controllable-state',
-      signature: 'ControllableState: State<T> & {\n  isControlled: boolean;\n}',
+      signature:
+        'ControllableState: StateTuple<T> & {\n  isControlled: boolean;\n}',
       typeOnly: true,
       summary:
-        'A {@link State} accessor that also reports whether it is controlled.',
+        'A {@link StateTuple} accessor that also reports whether it is controlled.',
     },
     {
       name: 'isControlled',
@@ -2378,15 +1657,6 @@ export const apiSymbolSets: Readonly<
   ],
   symbols9: [
     {
-      name: 'getIconContractProps',
-      anchor: 'get-icon-contract-props',
-      signature:
-        'getIconContractProps: ({ size, strokeWidth, color, title, style, iconName, }: Pick<IconProps, "color" | "iconName" | "size" | "strokeWidth" | "style" | "title">) => { sizeToken: IconSizeToken | undefined; decorative: string | undefined; iconStyle: string | undefined; attrs: { xmlns: string; width: string; height: string; fill: string; stroke: string; "stroke-width": string; role: string; "aria-hidden": string | undefined; style: string | undefined; "data-slot": string; "data-icon": string | undefined; "data-size": IconSizeToken | undefined; "data-decorative": string | undefined; "data-color": string | undefined; }; }',
-      typeOnly: true,
-      summary:
-        'Compute the shared SVG attributes and inline style implementing the icon size/stroke/color contract.',
-    },
-    {
       name: 'IconBase',
       anchor: 'icon-base',
       signature:
@@ -2512,57 +1782,6 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
       summary: 'Camel-cased CSS style object accepted by icon `style` props.',
     },
-    {
-      name: 'isIconSizeToken',
-      anchor: 'is-icon-size-token',
-      signature: 'isIconSizeToken: (value: unknown) => value is IconSizeToken',
-      typeOnly: true,
-      summary:
-        "Check whether `value` is one of the named icon size tokens ('sm'|'md'|'lg'|'xl').",
-    },
-    {
-      name: 'joinIconStyle',
-      anchor: 'join-icon-style',
-      signature:
-        'joinIconStyle: (...styles: Array<string | undefined>) => string | undefined',
-      typeOnly: true,
-      summary:
-        'Join non-empty CSS declaration fragments with `;`, dropping any that are blank.',
-    },
-    {
-      name: 'normalizeIconSizeValue',
-      anchor: 'normalize-icon-size-value',
-      signature: 'normalizeIconSizeValue: (size: number | string) => string',
-      typeOnly: true,
-      summary:
-        'Normalize a numeric icon size to a `px` string; strings pass through unchanged.',
-    },
-    {
-      name: 'resolveIconSizeVariable',
-      anchor: 'resolve-icon-size-variable',
-      signature: 'resolveIconSizeVariable: (size: number | string) => string',
-      typeOnly: true,
-      summary:
-        'Resolve a size (token or literal) to a CSS `var(--ak-icon-size-*, ...)` expression or literal value.',
-    },
-    {
-      name: 'resolveIconStrokeWidthVariable',
-      anchor: 'resolve-icon-stroke-width-variable',
-      signature:
-        'resolveIconStrokeWidthVariable: (strokeWidth: number, sizeToken: IconSizeToken | undefined) => string',
-      typeOnly: true,
-      summary:
-        'Resolve a stroke width to a CSS `var(--ak-icon-stroke-width-*, ...)` expression, scoped to `sizeToken` when given.',
-    },
-    {
-      name: 'serializeIconStyle',
-      anchor: 'serialize-icon-style',
-      signature:
-        'serializeIconStyle: (style: string | IconStyleObject | undefined) => string',
-      typeOnly: true,
-      summary:
-        'Serialize an inline style object (or pass through a string) to a CSS declaration string.',
-    },
   ],
   symbols10: [
     {
@@ -2590,14 +1809,6 @@ export const apiSymbolSets: Readonly<
         '{@link ActivityPredicate} that is true while the document is visible.',
     },
     {
-      name: 'getSignal',
-      anchor: 'get-signal',
-      signature: 'getSignal: () => AbortSignal',
-      typeOnly: true,
-      summary:
-        'Get the abort signal for the current component.\n\nThe signal is guaranteed to be aborted when:\n- Component unmounts\n- Navigation occurs (different route)\n- Parent is destroyed',
-    },
-    {
       name: 'ListenerTarget',
       anchor: 'listener-target',
       signature:
@@ -2616,22 +1827,13 @@ export const apiSymbolSets: Readonly<
         "Attach an owned event listener to `target` for the current component's lifetime.",
     },
     {
-      name: 'onRouteChange',
-      anchor: 'on-route-change',
-      signature:
-        'onRouteChange: (fn: (current: RouteSnapshot, previous: RouteSnapshot | null) => RouteChangeCleanup, options?: RouteChangeOptions) => void',
-      typeOnly: true,
-      summary:
-        'Register a callback to run whenever the active route changes, with optional cleanup.',
-    },
-    {
       name: 'resource',
       anchor: 'resource',
       signature:
-        'resource: <T, const TDeps extends readonly unknown[]>(fn: (opts: { signal: AbortSignal; }) => PromiseLike<T> | T, deps: TDeps) => ResourceResult<T>',
+        'resource: { <TSource, T>(source: () => TSource, load: (value: TSource, opts: { signal: AbortSignal; }) => PromiseLike<T> | T): ResourceResult<T>; <T, const TDeps extends readonly unknown[] = readonly unknown[]>(fn: (opts: { signal: AbortSignal; }) => PromiseLike<T> | T, deps: TDeps): ResourceResult<T>; <T>(fn: (opts: { signal: AbortSignal; }) => PromiseLike<T> | T): ResourceResult<T>; }',
       typeOnly: true,
       summary:
-        'Creates a render-scoped async resource with cancellation and refresh; SSR has special data rules.',
+        'Create a source-driven resource whose loader receives the latest source value.\nCreates a render-scoped async resource with cancellation and refresh; SSR has special data rules.',
     },
     {
       name: 'ResourceResult',
@@ -2673,35 +1875,13 @@ export const apiSymbolSets: Readonly<
         '{@link ActivityPredicate} that is true while the current route matches `pathOrPaths`.',
     },
     {
-      name: 'RouteChangeCleanup',
-      anchor: 'route-change-cleanup',
-      signature: 'RouteChangeCleanup: void | (() => void)',
-      typeOnly: true,
-      summary:
-        'Optional cleanup returned by an {@link onRouteChange} callback, run before the next change.',
-    },
-    {
-      name: 'RouteChangeOptions',
-      anchor: 'route-change-options',
-      signature: 'RouteChangeOptions: any',
-      typeOnly: true,
-      summary: 'Options for {@link onRouteChange}.',
-      members: [
-        {
-          name: 'immediate',
-          summary: '',
-          signature: 'immediate?: boolean;',
-        },
-      ],
-    },
-    {
       name: 'stream',
       anchor: 'stream',
       signature:
-        'stream: <T>(source: StreamSource<T>, options?: StreamOptions<T>) => StreamResult<T>',
+        'stream: { <TSource, T>(source: () => TSource, connect: (value: TSource, context: { signal: AbortSignal; }) => AsyncIterable<T> | PromiseLike<AsyncIterable<T>>, options?: Omit<StreamOptions<T>, "deps">): StreamResult<T>; <T>(source: StreamSource<T>, options?: StreamOptions<T>): StreamResult<T>; }',
       typeOnly: true,
       summary:
-        "Subscribe to a streaming data source for the current component's lifetime, with auto reconnect/cleanup.",
+        "Connect a stream from an input read during a positional component render.\nSubscribe to a streaming data source for the current component's lifetime, with auto reconnect/cleanup.",
     },
     {
       name: 'StreamOptions',
@@ -2810,7 +1990,7 @@ export const apiSymbolSets: Readonly<
       name: 'watch',
       anchor: 'watch',
       signature:
-        'watch: { <TValue>(source: WatchSource<TValue>, callback: WatchCallback<TValue>): void; <const TSources extends readonly WatchSource<unknown>[]>(sources: TSources, callback: WatchCallback<WatchValues<TSources>>): void; }',
+        'watch: { <TValue>(source: WatchSource<TValue>, callback: WatchCallback<TValue>): void; <const TSources extends readonly WatchSource<unknown>[]>(sources: TSources extends WatchSource<unknown> ? never : TSources, callback: WatchCallback<WatchValues<TSources>>): void; }',
       typeOnly: true,
       summary:
         'Observe one readable source after commit and whenever its value changes.\nObserve an ordered tuple of readable sources after commit and whenever an entry changes.',
@@ -2851,7 +2031,7 @@ export const apiSymbolSets: Readonly<
     {
       name: 'WatchSource',
       anchor: 'watch-source',
-      signature: 'WatchSource: ReadableSource<T>',
+      signature: 'WatchSource: () => T',
       typeOnly: true,
       summary: 'A callable reactive source accepted by {@link watch}.',
     },
@@ -2937,18 +2117,6 @@ export const apiSymbolSets: Readonly<
           summary: '',
           signature: 'readonly queryData: Map<string, unknown>;',
         },
-        {
-          name: 'queryTestOverrides',
-          summary:
-            'Test-only query overrides keyed by the canonical query key.',
-          signature: 'readonly queryTestOverrides: Map<string, unknown>;',
-        },
-        {
-          name: 'mutationTestOverrides',
-          summary:
-            'Test-only mutation overrides keyed by the canonical mutation key.',
-          signature: 'readonly mutationTestOverrides: Map<string, unknown>;',
-        },
       ],
     },
     {
@@ -2967,16 +2135,6 @@ export const apiSymbolSets: Readonly<
           name: 'queryData',
           summary: '',
           signature: 'queryData?: Map<string, unknown>;',
-        },
-        {
-          name: 'queryTestOverrides',
-          summary: '',
-          signature: 'queryTestOverrides?: Map<string, unknown>;',
-        },
-        {
-          name: 'mutationTestOverrides',
-          summary: '',
-          signature: 'mutationTestOverrides?: Map<string, unknown>;',
         },
       ],
     },
@@ -3004,7 +2162,7 @@ export const apiSymbolSets: Readonly<
         'dehydrateDataRuntime: (runtime: DataRuntime) => Record<string, unknown>',
       typeOnly: true,
       summary:
-        "Extract a runtime's cached query data into a JSON-serializable snapshot, dropping non-serializable values.",
+        "Extract a runtime's cached query data into a JSON-serializable snapshot.\nThrows a `TypeError` naming the key and path of any value that would not\nsurvive JSON transport unchanged (for example a `Date`, `Map`, or bigint).",
     },
     {
       name: 'getDefaultDataRuntime',
@@ -3030,7 +2188,7 @@ export const apiSymbolSets: Readonly<
         'invalidate: (prefix: string, options?: InvalidateOptions) => void',
       typeOnly: true,
       summary:
-        'Mark all cached queries whose key starts with `prefix` as stale, triggering a refresh.',
+        "Mark all cached queries under `prefix` as stale, triggering a refresh.\nMatching is by `:`-delimited segment: a key matches when it equals `prefix`,\nwhen `prefix` ends in `:`, or when the key continues `prefix` at a `:`\n(`'user:1'` matches `user:1:posts` but not `user:10`). Only `:` is a\nsegment boundary; the empty prefix matches every key.",
     },
     {
       name: 'invalidateOnInterval',
@@ -3039,7 +2197,7 @@ export const apiSymbolSets: Readonly<
         'invalidateOnInterval: (prefix: string, options: InvalidateOnIntervalOptions) => void',
       typeOnly: true,
       summary:
-        'Periodically invalidate queries matching `prefix` on a fixed interval,\noptionally gated by active route, document visibility, or window focus.',
+        'Periodically invalidate queries matching `prefix` on a fixed interval,\noptionally gated by active route, document visibility, or window focus.\n`prefix` matches key segments the same way as {@link invalidate}.',
     },
     {
       name: 'InvalidateOnIntervalOptions',
@@ -3103,7 +2261,7 @@ export const apiSymbolSets: Readonly<
       name: 'MutationOptions',
       anchor: 'mutation-options',
       signature:
-        "MutationOptions: {\n  /** Stable identity used by runtime-scoped mutation test overrides. */\n  key?: string;\n  action: (\n    input: TInput,\n    ctx: {\n      signal: AbortSignal;\n    }\n  ) => Promise<TResult>;\n  affects?: (input: TInput, result: TResult) => string[];\n  afterSuccess?: 'invalidate';\n  runtime?: DataRuntime;\n}",
+        "MutationOptions: {\n  /** Stable identity used by runtime-scoped mutation test overrides. */\n  key?: string;\n  action: (\n    input: TInput,\n    ctx: {\n      signal: AbortSignal;\n    }\n  ) => Promise<TResult>;\n  /** Apply a synchronous optimistic change. Return a rollback for failure or abort. */\n  optimistic?: (\n    input: TInput,\n    ctx: { signal: AbortSignal }\n  ) => void | (() => void);\n  /**\n   * Query prefixes to invalidate after success, matched by `:`-delimited\n   * segment the same way as {@link invalidate}.\n   */\n  affects?: (input: TInput, result: TResult) => string[];\n  afterSuccess?: 'invalidate';\n  runtime?: DataRuntime;\n}",
       typeOnly: true,
       summary: 'Options for {@link createMutation}.',
     },
@@ -3262,7 +2420,7 @@ export const apiSymbolSets: Readonly<
           name: 'fetch',
           summary: '',
           signature:
-            'readonly fetch: (\n    context: TInput & {\n      signal: AbortSignal;\n    }\n  ) => Promise<TResult>;',
+            'readonly fetch: (\n    input: TInput,\n    context: {\n      signal: AbortSignal;\n    }\n  ) => Promise<TResult>;',
         },
         {
           name: 'isConsistent',
@@ -3325,10 +2483,11 @@ export const apiSymbolSets: Readonly<
     {
       name: 'queryScope',
       anchor: 'query-scope-2',
-      signature: 'queryScope: (namespace: string) => QueryScope',
+      signature:
+        'queryScope: (namespace: string, options?: Pick<InvalidateOptions, "runtime">) => QueryScope',
       typeOnly: true,
       summary:
-        'Create a {@link QueryScope} that namespaces keys and invalidations under `namespace`.',
+        'Create a {@link QueryScope} that namespaces keys and can bind invalidations to a runtime.',
     },
     {
       name: 'QueryScope',
@@ -3439,7 +2598,7 @@ export const apiSymbolSets: Readonly<
       signature: 'click: (element: Element) => boolean',
       typeOnly: true,
       summary:
-        "Dispatch the browser click sequence expected by Askr's delegated events.",
+        'Dispatch one bubbling `click` MouseEvent (no pointerdown/mousedown/mouseup sequence).',
     },
     {
       name: 'createInvalidationRecorder',
@@ -3452,7 +2611,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'createMutationTestRegistry',
       anchor: 'create-mutation-test-registry',
-      signature: 'createMutationTestRegistry: () => MutationTestRegistry',
+      signature:
+        'createMutationTestRegistry: (runtime?: DataRuntime) => MutationTestRegistry',
       typeOnly: true,
       summary:
         'Create a keyed mutation fixture registry for a test render runtime.',
@@ -3460,7 +2620,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'createQueryTestRegistry',
       anchor: 'create-query-test-registry',
-      signature: 'createQueryTestRegistry: () => QueryTestRegistry',
+      signature:
+        'createQueryTestRegistry: (runtime?: DataRuntime) => QueryTestRegistry',
       typeOnly: true,
       summary:
         'Create a keyed query fixture registry for a test render runtime.',
@@ -3852,30 +3013,10 @@ export const apiSymbolSets: Readonly<
         'type: (element: HTMLInputElement | HTMLTextAreaElement, text: string) => void',
       typeOnly: true,
       summary:
-        "Set a text control's value and emit an input event for each character.",
+        "Append `text` to a text control's value one character at a time, emitting an input event for each.",
     },
   ],
   symbols13: [
-    {
-      name: 'debounce',
-      anchor: 'debounce',
-      signature:
-        'debounce: <T extends AnyFn>(fn: T, ms: number, options?: DebounceOptions) => Scheduled<T> & { cancel(): void; }',
-      typeOnly: true,
-      summary:
-        'Debounce — delay execution, coalesce rapid calls\n\nUseful for: text input, resize, autosave',
-      tags: {
-        param: [
-          'fn Function to debounce',
-          'ms Delay in milliseconds',
-          'options trailing (default true), leading',
-        ],
-        returns: ['Debounced function with cancel() method'],
-        example: [
-          "```ts\nconst save = debounce((text) => api.save(text), 500);\ninput.addEventListener('input', (e) => save(e.target.value));\nsave.cancel(); // stop any pending execution\n```",
-        ],
-      },
-    },
     {
       name: 'debounceEvent',
       anchor: 'debounce-event',
@@ -3884,39 +3025,6 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
       summary:
         'Wrap an event handler so rapid events are coalesced and delayed by `ms`.',
-    },
-    {
-      name: 'DebounceOptions',
-      anchor: 'debounce-options',
-      signature: 'DebounceOptions: any',
-      typeOnly: true,
-      summary: 'Options for {@link debounce}.',
-      members: [
-        {
-          name: 'leading',
-          summary: '',
-          signature: 'leading?: boolean;',
-        },
-        {
-          name: 'trailing',
-          summary: '',
-          signature: 'trailing?: boolean;',
-        },
-      ],
-    },
-    {
-      name: 'defer',
-      anchor: 'defer',
-      signature: 'defer: (fn: () => void) => void',
-      typeOnly: true,
-      summary:
-        'Defer — schedule on microtask queue\n\nUseful for: run-after-current-stack logic\nMore reliable than setTimeout(..., 0)',
-      tags: {
-        param: ['fn Function to defer'],
-        example: [
-          '```ts\ndefer(() => update()); // runs after current stack, before next macrotask\n```',
-        ],
-      },
     },
     {
       name: 'idle',
@@ -3952,7 +3060,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'raf',
       anchor: 'raf',
-      signature: 'raf: <T extends AnyFn>(fn: T) => Scheduled<T>',
+      signature:
+        'raf: <T extends AnyFn>(fn: T) => Scheduled<T> & { cancel(): void; }',
       typeOnly: true,
       summary:
         'RAF — coalesce multiple updates into single frame\n\nUseful for: animation, layout work, render updates',
@@ -4017,6 +3126,15 @@ export const apiSymbolSets: Readonly<
       ],
     },
     {
+      name: 'RetryOutcome',
+      anchor: 'retry-outcome',
+      signature:
+        "RetryOutcome: | { status: 'success'; value: T }\n  | { status: 'error'; error: unknown }\n  | { status: 'cancelled' }",
+      typeOnly: true,
+      summary:
+        "Run `fn`, retrying with backoff on failure. Called from a mounted\ncomponent's task, watch callback, or event handler, pending attempts are\nalso cancelled when that component is cleaned up.",
+    },
+    {
       name: 'scheduleEventHandler',
       anchor: 'schedule-event-handler',
       signature:
@@ -4030,16 +3148,14 @@ export const apiSymbolSets: Readonly<
         'scheduleIdle: (fn: () => void, options?: { timeout?: number; }) => CancelFn',
       typeOnly: true,
       summary:
-        'Schedule `fn` during browser idle time, auto-cancelling on component cleanup.',
+        "Schedule `fn` during browser idle time; returns a cancel function. Called\nfrom a mounted component's task, watch callback, or event handler, it is\nalso cancelled when that component is cleaned up.",
     },
     {
       name: 'scheduleRetry',
       anchor: 'schedule-retry',
       signature:
-        'scheduleRetry: <T>(fn: () => Promise<T>, options?: RetryOptions$1) => { cancel(): void; }',
+        'scheduleRetry: <T>(fn: () => Promise<T>, options?: RetryOptions) => { cancel(): void; result: Promise<RetryOutcome<T>>; }',
       typeOnly: true,
-      summary:
-        'Run `fn`, retrying with backoff on failure, auto-cancelling on component cleanup.',
     },
     {
       name: 'scheduleTimeout',
@@ -4047,7 +3163,7 @@ export const apiSymbolSets: Readonly<
       signature: 'scheduleTimeout: (ms: number, fn: () => void) => CancelFn',
       typeOnly: true,
       summary:
-        'Schedule `fn` after `ms`, auto-cancelling on component cleanup; returns a cancel function.',
+        "Schedule `fn` after `ms`; returns a cancel function. Called from a mounted\ncomponent's task, watch callback, or event handler, it is also cancelled\nwhen that component is cleaned up.",
     },
     {
       name: 'throttle',
@@ -4444,7 +3560,7 @@ export const apiSymbolSets: Readonly<
           summary:
             'Optional aria-current attribute for indicating current page/location.\nUse "page" for the current page in navigation.',
           signature:
-            'aria-current?: "page" | "step" | "location" | "date" | "time" | "true" | "false" | undefined;',
+            'aria-current?: "time" | "page" | "step" | "location" | "date" | "true" | "false" | undefined;',
         },
         {
           name: 'aria-label',
@@ -4497,12 +3613,22 @@ export const apiSymbolSets: Readonly<
       ],
     },
     {
-      name: 'navigate',
-      anchor: 'navigate',
-      signature: 'navigate: (path: string, options?: NavigateOptions) => void',
+      name: 'matchRoute',
+      anchor: 'match-route',
+      signature:
+        'matchRoute: (pathname: string, options: { registry: RouteRegistry; }) => RouteMatch | null',
       typeOnly: true,
       summary:
-        'Navigate the client-side router to `path` using the History API.',
+        'Match a path against a route registry without resolving route policies or loading data.',
+    },
+    {
+      name: 'navigate',
+      anchor: 'navigate',
+      signature:
+        'navigate: (target: string | RouteDestination, options?: NavigateOptions) => void',
+      typeOnly: true,
+      summary:
+        'Navigate the client-side router using the History API.\n\nA string is a logical path: a root-relative path gains the registry\n`basePath`. A typed destination from `to()` already carries its public href.\nA target on another origin is handed to the browser.',
     },
     {
       name: 'NavigateOptions',
@@ -4622,9 +3748,10 @@ export const apiSymbolSets: Readonly<
       name: 'redirect',
       anchor: 'redirect',
       signature:
-        'redirect: (to: string, init?: { status?: AccessRedirectStatus; replace?: boolean; }) => AccessRedirectDecision',
+        'redirect: (to: string | RouteDestination, init?: { status?: AccessRedirectStatus; replace?: boolean; }) => AccessRedirectDecision',
       typeOnly: true,
-      summary: 'Policy decision: redirect the visitor to `to`.',
+      summary:
+        'Policy decision: redirect the visitor to `to`. A string is a logical path\nthat gains the registry `basePath`; a `to()` destination is used as-is.',
     },
     {
       name: 'Resolve',
@@ -4735,20 +3862,28 @@ export const apiSymbolSets: Readonly<
       members: [
         {
           name: 'resolve',
-          summary: '',
-          signature: 'resolve: RouteAuthResolver;',
+          summary:
+            'Resolve the identity for a request. When omitted, requests are anonymous\nunless the caller supplies an identity (for example `authContext` on the\nserver, or an opted-in hydration snapshot for the initial client route).',
+          signature: 'resolve?: RouteAuthResolver;',
+        },
+        {
+          name: 'dehydrate',
+          summary:
+            'Opt in to sending a minimal identity snapshot to the browser for\nhydration. Called on the server with the identity that authorized the\npage. `authenticated`, `principal`, `tenant`, and `scopes` of the result\nare serialized verbatim into the page, so return only what the client\nneeds; the session is never sent. The client uses the snapshot to resolve\nthe initial route and, without `resolve`, as its identity for\nnavigations. Nothing crosses without this hook.',
+          signature:
+            "dehydrate?: (context: AuthContext) => Omit<AuthContext, 'session'>;",
         },
         {
           name: 'loginPath',
           summary: '',
           signature:
-            'loginPath?:\n    | string\n    | ((context: RouteContext) => string | PromiseLike<string>);',
+            'loginPath?:\n    | string\n    | RouteDestination\n    | ((\n        context: RouteContext\n      ) => string | RouteDestination | PromiseLike<string | RouteDestination>);',
         },
         {
           name: 'authenticatedRedirectTo',
           summary: '',
           signature:
-            'authenticatedRedirectTo?:\n    | string\n    | ((context: RouteContext) => string | PromiseLike<string>);',
+            'authenticatedRedirectTo?:\n    | string\n    | RouteDestination\n    | ((\n        context: RouteContext\n      ) => string | RouteDestination | PromiseLike<string | RouteDestination>);',
         },
       ],
     },
@@ -4853,7 +3988,7 @@ export const apiSymbolSets: Readonly<
       signature: 'RouteDataLoadError: typeof RouteDataLoadError',
       typeOnly: true,
       summary:
-        "Thrown when a route's `loader` rejects; wraps the original `cause`.",
+        'Rejection of a `lazyRouteData()` loader whose import or `select` failed; wraps the original `cause`.',
       members: [
         {
           name: 'route',
@@ -4893,7 +4028,7 @@ export const apiSymbolSets: Readonly<
       signature: 'RouteDestination: any',
       typeOnly: true,
       summary:
-        'A resolved navigation target with a computed `href`, produced by {@link to }.',
+        'A typed navigation target with a computed public `href`, produced by\n{@link to }. Branded so that only `to()` creates one: its `href` already\nincludes the registry `basePath` and is never prefixed again.',
       members: [
         {
           name: 'href',
@@ -5560,7 +4695,8 @@ export const apiSymbolSets: Readonly<
       signature:
         'action: <TInput extends Record<string, unknown>, TResult = unknown>(descriptor: ActionDescriptor<TInput>) => { state: StateTuple<ActionStatus<TResult>>; submit(input: TInput): Promise<TResult>; }',
       typeOnly: true,
-      summary: 'Returns a command handle, rather than a hook.',
+      summary:
+        'Bind an action descriptor to the calling component and return its\n`{ state, submit }` handle. `action()` allocates its status with `state()`,\nso it follows the same rule: call it during component render, at the top\nlevel and in the same order on every render. `submit()` itself may be\ncalled from event handlers or other async work.',
     },
     {
       name: 'ActionDescriptor',
@@ -5770,21 +4906,20 @@ export const apiSymbolSets: Readonly<
         'Wraps rendered app HTML in a full document (`<html>`, `<head>`, etc.) for SSR/SSG output.',
     },
     {
+      name: 'escapeHtml',
+      anchor: 'escape-html',
+      signature: 'escapeHtml: (value: unknown) => string',
+      typeOnly: true,
+      summary:
+        'Escape a string for interpolation into a hand-written HTML document template,\neither as text content or inside a quoted attribute value. Replaces `&`, `<`,\n`>`, `"` and `\'` with character references. Use it for every request-derived\nvalue a `document` renderer interpolates, such as `context.pathname`,\n`context.params` or loader data. Do not use it for `appHtml`, which is\nalready rendered markup, or inside `<script>`/`<style>` raw text.\n`null` and `undefined` render as an empty string; other values are\nconverted with `String()`.',
+    },
+    {
       name: 'getRenderContext',
       anchor: 'get-render-context',
       signature: 'getRenderContext: () => RenderContext | null',
       typeOnly: true,
       summary:
         'Get the current render context.\nReturns null if not inside a render.',
-    },
-    {
-      name: 'renderResolvedToStringSync',
-      anchor: 'render-resolved-to-string-sync',
-      signature:
-        'renderResolvedToStringSync: (opts: { url: string; registry: RouteRegistry; handler: RouteHandler; params?: Record<string, string>; options?: { seed?: number; data?: SSRData; dataRuntime?: DataRuntime; envelope?: PageRenderEnvelope; cspNonce?: string; }; }) => string',
-      typeOnly: true,
-      summary:
-        'Synchronously render an already-resolved route handler to an HTML string.',
     },
     {
       name: 'renderRouteRequest',
@@ -5915,19 +5050,31 @@ export const apiSymbolSets: Readonly<
       name: 'renderToStringSync',
       anchor: 'render-to-string-sync',
       signature:
-        'renderToStringSync: (component: (props?: Record<string, unknown>) => VNode | JSXElement | string | number | boolean | null | undefined, props?: Record<string, unknown>, options?: { seed?: number; data?: SSRData; envelope?: PageRenderEnvelope; cspNonce?: string; authContext?: import("@askrjs/auth").AuthContext; onContext?: (ctx: RenderContext) => void; }) => string',
+        'renderToStringSync: (component: (props?: Record<string, unknown>) => VNode | JSXElement | string | number | boolean | null | undefined, props?: Record<string, unknown>, options?: { seed?: number; data?: SSRData; envelope?: PageRenderEnvelope; cspNonce?: string; authContext?: AuthContext; onContext?: (ctx: RenderContext) => void; }) => string',
       typeOnly: true,
       summary:
         'Synchronously render a component to an HTML string, without route resolution.',
     },
     {
-      name: 'resolveRequest',
-      anchor: 'resolve-request',
-      signature:
-        'resolveRequest: (opts: { url: string; registry: RouteRegistry; auth?: RouteAuthOptions; authContext?: AuthContext; request?: Request; signal?: AbortSignal; }) => Promise<RouteRequestResult>',
+      name: 'SSRAccessDecisionError',
+      anchor: 'ssraccess-decision-error',
+      signature: 'SSRAccessDecisionError: typeof SSRAccessDecisionError',
       typeOnly: true,
       summary:
-        'Resolve a URL against a route registry for SSR, applying auth/policies before render.',
+        'Thrown by synchronous route SSR (`renderToString()`/`renderToStream()`) when\nroute auth or a policy redirects or denies the request. Nothing is rendered;\nsend `decision` as the HTTP response (for example a 302 to `decision.to`, or\n`decision.status`).',
+      members: [
+        {
+          name: 'code',
+          summary: '',
+          signature: "readonly code = 'SSR_ACCESS_DECISION';",
+        },
+        {
+          name: 'decision',
+          summary: '',
+          signature:
+            'readonly decision: AccessRedirectDecision | AccessDenyDecision;',
+        },
+      ],
     },
     {
       name: 'SSRComponent',
@@ -6531,7 +5678,7 @@ export const apiSymbolSets: Readonly<
       name: 'jsx',
       anchor: 'jsx-2',
       signature:
-        'jsx: { (type: EagerControlPrimitive, props: Props | null, key?: string | number): unknown; <TTag extends keyof KnownIntrinsicElementProps>(type: TTag, props: KnownIntrinsicElementProps[TTag] | null, key?: string | number): JSXElement; <TTag extends string>(type: Exclude<TTag, keyof KnownIntrinsicElementProps>, props: IntrinsicFallbackProps | null, key?: string | number): JSXElement; <TProps extends object>(type: (props: TProps) => unknown, props: TProps | null, key?: string | number): JSXElement; (type: symbol, props: Props | null, key?: string | number): JSXElement; }',
+        'jsx: { <TTag extends keyof KnownIntrinsicElementProps>(type: TTag, props: KnownIntrinsicElementProps[NoInfer<TTag>] | null, key?: string | number): JSXElement; <TTag extends OtherIntrinsicTag>(type: TTag, props: OtherIntrinsicProps<TTag> | null, key?: string | number): JSXElement; <TProps extends object>(type: (props: TProps) => unknown, props: TProps | null, key?: string | number): JSXElement; (type: symbol, props: Props | null, key?: string | number): JSXElement; }',
       typeOnly: true,
       summary:
         'JSX factory for elements with a single or no child, used by the `jsxImportSource` transform.',
@@ -6555,7 +5702,7 @@ export const apiSymbolSets: Readonly<
       name: 'jsxDEV',
       anchor: 'jsx-dev',
       signature:
-        'jsxDEV: { (type: EagerControlPrimitive, props: Props | null, key?: string | number, isStaticChildren?: boolean): unknown; <TTag extends keyof KnownIntrinsicElementProps>(type: TTag, props: KnownIntrinsicElementProps[TTag] | null, key?: string | number, isStaticChildren?: boolean): JSXElement; <TTag extends string>(type: Exclude<TTag, keyof KnownIntrinsicElementProps>, props: IntrinsicFallbackProps | null, key?: string | number, isStaticChildren?: boolean): JSXElement; <TProps extends object>(type: (props: TProps) => unknown, props: TProps | null, key?: string | number, isStaticChildren?: boolean): JSXElement; (type: symbol, props: Props | null, key?: string | number, isStaticChildren?: boolean): JSXElement; }',
+        'jsxDEV: { <TTag extends keyof KnownIntrinsicElementProps>(type: TTag, props: KnownIntrinsicElementProps[NoInfer<TTag>] | null, key?: string | number, isStaticChildren?: boolean): JSXElement; <TTag extends OtherIntrinsicTag>(type: TTag, props: OtherIntrinsicProps<TTag> | null, key?: string | number, isStaticChildren?: boolean): JSXElement; <TProps extends object>(type: (props: TProps) => unknown, props: TProps | null, key?: string | number, isStaticChildren?: boolean): JSXElement; (type: symbol, props: Props | null, key?: string | number, isStaticChildren?: boolean): JSXElement; }',
       typeOnly: true,
     },
     {
@@ -6599,7 +5746,7 @@ export const apiSymbolSets: Readonly<
       name: 'jsxs',
       anchor: 'jsxs',
       signature:
-        'jsxs: { (type: EagerControlPrimitive, props: Props | null, key?: string | number): unknown; <TTag extends keyof KnownIntrinsicElementProps>(type: TTag, props: KnownIntrinsicElementProps[TTag] | null, key?: string | number): JSXElement; <TTag extends string>(type: Exclude<TTag, keyof KnownIntrinsicElementProps>, props: IntrinsicFallbackProps | null, key?: string | number): JSXElement; <TProps extends object>(type: (props: TProps) => unknown, props: TProps | null, key?: string | number): JSXElement; (type: symbol, props: Props | null, key?: string | number): JSXElement; }',
+        'jsxs: { <TTag extends keyof KnownIntrinsicElementProps>(type: TTag, props: KnownIntrinsicElementProps[NoInfer<TTag>] | null, key?: string | number): JSXElement; <TTag extends OtherIntrinsicTag>(type: TTag, props: OtherIntrinsicProps<TTag> | null, key?: string | number): JSXElement; <TProps extends object>(type: (props: TProps) => unknown, props: TProps | null, key?: string | number): JSXElement; (type: symbol, props: Props | null, key?: string | number): JSXElement; }',
       typeOnly: true,
       summary:
         'JSX factory for elements with multiple static children, used by the `jsxImportSource` transform.',
@@ -6633,7 +5780,7 @@ export const apiSymbolSets: Readonly<
       name: 'jsxDEV',
       anchor: 'jsx-dev',
       signature:
-        'jsxDEV: { (type: EagerControlPrimitive, props: Props | null, key?: string | number, isStaticChildren?: boolean): unknown; <TTag extends keyof KnownIntrinsicElementProps>(type: TTag, props: KnownIntrinsicElementProps[TTag] | null, key?: string | number, isStaticChildren?: boolean): JSXElement; <TTag extends string>(type: Exclude<TTag, keyof KnownIntrinsicElementProps>, props: IntrinsicFallbackProps | null, key?: string | number, isStaticChildren?: boolean): JSXElement; <TProps extends object>(type: (props: TProps) => unknown, props: TProps | null, key?: string | number, isStaticChildren?: boolean): JSXElement; (type: symbol, props: Props | null, key?: string | number, isStaticChildren?: boolean): JSXElement; }',
+        'jsxDEV: { <TTag extends keyof KnownIntrinsicElementProps>(type: TTag, props: KnownIntrinsicElementProps[NoInfer<TTag>] | null, key?: string | number, isStaticChildren?: boolean): JSXElement; <TTag extends OtherIntrinsicTag>(type: TTag, props: OtherIntrinsicProps<TTag> | null, key?: string | number, isStaticChildren?: boolean): JSXElement; <TProps extends object>(type: (props: TProps) => unknown, props: TProps | null, key?: string | number, isStaticChildren?: boolean): JSXElement; (type: symbol, props: Props | null, key?: string | number, isStaticChildren?: boolean): JSXElement; }',
       typeOnly: true,
     },
     {
@@ -8999,7 +8146,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'modifier',
           summary: '',
-          signature: 'modifier?: "shift" | "none" | undefined;',
+          signature: 'modifier?: "none" | "shift" | undefined;',
         },
       ],
     },
@@ -11074,7 +10221,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'mode',
           summary: '',
-          signature: 'mode?: "x" | "auto" | "mark" | undefined;',
+          signature: 'mode?: "mark" | "x" | "auto" | undefined;',
         },
       ],
     },
@@ -11654,7 +10801,7 @@ export const apiSymbolSets: Readonly<
       name: 'HttpResult',
       anchor: 'http-result',
       signature:
-        'HttpResult: {\n  ok: false;\n  kind: "http";\n  status: S;\n  error: T;\n  mediaType: string | null;\n  headers: Headers;\n  url: string;\n  response: Response;\n}',
+        'HttpResult: {\n  ok: false;\n  kind: "http";\n  status: S;\n  error: T;\n  mediaType: string | null;\n  headers: Headers;\n  url: string;\n  /** For stream codecs, this body is the same one-shot stream exposed by `error`. */\n  response: Response;\n}',
       typeOnly: true,
       summary:
         'A non-2xx fetch outcome where the server responded with a decodable error body.',
@@ -11856,7 +11003,7 @@ export const apiSymbolSets: Readonly<
       name: 'SuccessResult',
       anchor: 'success-result',
       signature:
-        'SuccessResult: {\n  ok: true;\n  kind: "success";\n  status: S;\n  data: T;\n  mediaType: string | null;\n  headers: Headers;\n  url: string;\n  response: Response;\n}',
+        'SuccessResult: {\n  ok: true;\n  kind: "success";\n  status: S;\n  data: T;\n  mediaType: string | null;\n  headers: Headers;\n  url: string;\n  /** For stream codecs, this body is the same one-shot stream exposed by `data`. */\n  response: Response;\n}',
       typeOnly: true,
       summary:
         'A successful (2xx) fetch outcome, carrying the decoded response data.',
@@ -32921,7 +32068,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'AlertDialog',
       anchor: 'alert-dialog',
-      signature: 'AlertDialog: (props: AlertDialogProps) => JSX.Element',
+      signature:
+        'AlertDialog: (props: AlertDialogProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary: 'Renders a part of `alert-dialog`.',
     },
@@ -32991,7 +32139,7 @@ export const apiSymbolSets: Readonly<
       name: 'AlertDialogTrigger',
       anchor: 'alert-dialog-trigger',
       signature:
-        'AlertDialogTrigger: (props: AlertDialogTriggerProps | AlertDialogTriggerAsChildProps) => JSX.Element',
+        'AlertDialogTrigger: (props: AlertDialogTriggerProps | AlertDialogTriggerAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders a part of `alert-dialog`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -34907,20 +34055,21 @@ export const apiSymbolSets: Readonly<
       signature: 'ButtonGroup: (props: ButtonGroupProps) => JSX.Element',
       typeOnly: true,
       summary:
-        'Groups related buttons together, optionally visually attached, with a horizontal or vertical orientation and `role="group"` by default.',
+        'Groups related buttons together, optionally visually attached, with a horizontal or vertical\norientation and `role="group"` by default. Attached groups without an explicit `orientation`\nstack at phone width unless they contain icon buttons; pass `orientation="horizontal"` to\nkeep the row.',
     },
     {
       name: 'ButtonGroupOrientation',
       anchor: 'button-group-orientation',
       signature: 'ButtonGroupOrientation: "horizontal" | "vertical"',
       typeOnly: true,
-      summary: 'Layout direction of a {@link ButtonGroup }.',
+      summary:
+        'Layout direction of a {@link ButtonGroup }. When omitted, an attached group is a row that\nstacks at phone width unless it contains icon buttons. An explicit value keeps that direction\nunless the caller also passes `data-responsive="true"`, which opts back into phone stacking.',
     },
     {
       name: 'ButtonGroupProps',
       anchor: 'button-group-props',
       signature:
-        'ButtonGroupProps: DivProps & {\n  children?: unknown;\n  attached?: boolean;\n  orientation?: ButtonGroupOrientation;\n  ref?: Ref<HTMLDivElement>;\n}',
+        'ButtonGroupProps: DivProps & {\n  children?: unknown;\n  attached?: boolean;\n  orientation?: ButtonGroupOrientation;\n  /** Stack at phone width. Defaults to `"true"` for attached groups without an `orientation`. */\n  "data-responsive"?: "true" | "false";\n  ref?: Ref<HTMLDivElement>;\n}',
       typeOnly: true,
       summary: 'Props for the {@link ButtonGroup } component.',
       members: [
@@ -34933,6 +34082,12 @@ export const apiSymbolSets: Readonly<
           name: 'children',
           summary: '',
           signature: 'children?: unknown;',
+        },
+        {
+          name: 'data-responsive',
+          summary:
+            'Stack at phone width. Defaults to `"true"` for attached groups without an `orientation`.',
+          signature: 'data-responsive?: "true" | "false" | undefined;',
         },
         {
           name: 'orientation',
@@ -35116,7 +34271,7 @@ export const apiSymbolSets: Readonly<
       name: 'CalendarDay',
       anchor: 'calendar-day',
       signature:
-        'CalendarDay: (props: CatalogComponentProps & { disabled?: boolean; outside?: boolean; rangeEnd?: boolean; rangeMiddle?: boolean; rangeStart?: boolean; selected?: boolean; today?: boolean; }) => JSX.Element',
+        'CalendarDay: (props: CatalogComponentProps<HTMLButtonElement> & { disabled?: boolean; outside?: boolean; rangeEnd?: boolean; rangeMiddle?: boolean; rangeStart?: boolean; selected?: boolean; today?: boolean; }) => JSX.Element',
       typeOnly: true,
       summary:
         'Renders a single selectable day cell in the calendar grid, with selection/range/today state exposed as data attributes.',
@@ -35158,7 +34313,7 @@ export const apiSymbolSets: Readonly<
       name: 'CalendarNextButton',
       anchor: 'calendar-next-button',
       signature:
-        'CalendarNextButton: (props: CatalogComponentProps) => JSX.Element',
+        'CalendarNextButton: (props: CatalogComponentProps<HTMLButtonElement>) => JSX.Element',
       typeOnly: true,
       summary: 'Button that navigates the calendar to the next month.',
     },
@@ -35166,7 +34321,7 @@ export const apiSymbolSets: Readonly<
       name: 'CalendarPreviousButton',
       anchor: 'calendar-previous-button',
       signature:
-        'CalendarPreviousButton: (props: CatalogComponentProps) => JSX.Element',
+        'CalendarPreviousButton: (props: CatalogComponentProps<HTMLButtonElement>) => JSX.Element',
       typeOnly: true,
       summary: 'Button that navigates the calendar to the previous month.',
     },
@@ -35424,7 +34579,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'CarouselNext',
       anchor: 'carousel-next',
-      signature: 'CarouselNext: (props: CatalogComponentProps) => JSX.Element',
+      signature:
+        'CarouselNext: (props: CatalogComponentProps<HTMLButtonElement>) => JSX.Element',
       typeOnly: true,
       summary: 'Button that navigates the carousel to the next item.',
     },
@@ -35432,7 +34588,7 @@ export const apiSymbolSets: Readonly<
       name: 'CarouselPrevious',
       anchor: 'carousel-previous',
       signature:
-        'CarouselPrevious: (props: CatalogComponentProps) => JSX.Element',
+        'CarouselPrevious: (props: CatalogComponentProps<HTMLButtonElement>) => JSX.Element',
       typeOnly: true,
       summary: 'Button that navigates the carousel to the previous item.',
     },
@@ -35456,7 +34612,7 @@ export const apiSymbolSets: Readonly<
       name: 'CatalogComponentProps',
       anchor: 'catalog-component-props',
       signature:
-        'CatalogComponentProps: Record<string, unknown> & {\n  as?: CatalogElement;\n  asChild?: boolean;\n  children?: unknown;\n  class?: string;\n  ref?: Ref<HTMLElement>;\n}',
+        'CatalogComponentProps: Record<string, unknown> & {\n  as?: CatalogElement;\n  asChild?: boolean;\n  children?: unknown;\n  class?: string;\n  ref?: Ref<TElement>;\n}',
       typeOnly: true,
       summary:
         'Shared prop shape for the shadcn-compatible catalog primitives below: a\npolymorphic `as`/`asChild` element plus passthrough attributes.',
@@ -35484,7 +34640,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'ref',
           summary: '',
-          signature: 'ref?: Ref<HTMLElement>;',
+          signature: 'ref?: Ref<TElement>;',
         },
       ],
     },
@@ -35968,7 +35124,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'ComboboxInput',
       anchor: 'combobox-input',
-      signature: 'ComboboxInput: (props: CatalogComponentProps) => JSX.Element',
+      signature:
+        'ComboboxInput: (props: CatalogComponentProps<HTMLInputElement>) => JSX.Element',
       typeOnly: true,
       summary:
         'Styling-only combobox input; consumers supplying behavior also own its complete ARIA contract.',
@@ -36042,7 +35199,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'CommandInput',
       anchor: 'command-input',
-      signature: 'CommandInput: (props: CatalogComponentProps) => JSX.Element',
+      signature:
+        'CommandInput: (props: CatalogComponentProps<HTMLInputElement>) => JSX.Element',
       typeOnly: true,
       summary: "Renders the command palette's search `<input>`.",
     },
@@ -36294,7 +35452,7 @@ export const apiSymbolSets: Readonly<
       name: 'ContextMenuGroup',
       anchor: 'context-menu-group',
       signature:
-        'DropdownGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => JSX.Element',
+        'DropdownGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `dropdown-group` part of `dropdown` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -36312,7 +35470,7 @@ export const apiSymbolSets: Readonly<
       name: 'ContextMenuLabel',
       anchor: 'context-menu-label',
       signature:
-        'DropdownLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => JSX.Element',
+        'DropdownLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `dropdown-label` part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -36329,7 +35487,7 @@ export const apiSymbolSets: Readonly<
       name: 'ContextMenuSeparator',
       anchor: 'context-menu-separator',
       signature:
-        'DropdownSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => JSX.Element',
+        'DropdownSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `dropdown-separator` part of `dropdown` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -36405,7 +35563,7 @@ export const apiSymbolSets: Readonly<
       name: 'DatePickerInput',
       anchor: 'date-picker-input',
       signature:
-        'DatePickerInput: (props: CatalogComponentProps) => JSX.Element',
+        'DatePickerInput: (props: CatalogComponentProps<HTMLInputElement>) => JSX.Element',
       typeOnly: true,
       summary:
         'Native `<input type="date">` styling slot; browser behavior and localization remain native.',
@@ -36416,7 +35574,7 @@ export const apiSymbolSets: Readonly<
       signature: 'DebouncedInput: (props: DebouncedInputProps) => JSX.Element',
       typeOnly: true,
       summary:
-        'DebouncedInput is a convenience wrapper around Input that emits a settled\nvalue for search and filter surfaces.',
+        'DebouncedInput is a convenience wrapper around Input that emits a settled\nvalue for search and filter surfaces.\n\nThe debounced emitter is created once per mount and replaced only when\n`debounceMs` changes. A pending value is re-timed with the new delay (or\nemitted at once when the delay drops to zero), is delivered to the latest\n`onDebouncedInput`, is dropped when `onDebouncedInput` is removed, and is\ncancelled on unmount.',
     },
     {
       name: 'DEFAULT_THEME_OPTIONS',
@@ -36642,7 +35800,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownGroup',
       anchor: 'dropdown-group',
       signature:
-        'DropdownGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => JSX.Element',
+        'DropdownGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `dropdown-group` part of `dropdown` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -36667,7 +35825,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownLabel',
       anchor: 'dropdown-label',
       signature:
-        'DropdownLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => JSX.Element',
+        'DropdownLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `dropdown-label` part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -36692,7 +35850,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownMenuGroup',
       anchor: 'dropdown-menu-group',
       signature:
-        'DropdownGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => JSX.Element',
+        'DropdownGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `dropdown-group` part of `dropdown` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -36710,7 +35868,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownMenuLabel',
       anchor: 'dropdown-menu-label',
       signature:
-        'DropdownLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => JSX.Element',
+        'DropdownLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `dropdown-label` part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -36727,7 +35885,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownMenuSeparator',
       anchor: 'dropdown-menu-separator',
       signature:
-        'DropdownSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => JSX.Element',
+        'DropdownSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `dropdown-separator` part of `dropdown` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -36753,7 +35911,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownSeparator',
       anchor: 'dropdown-separator',
       signature:
-        'DropdownSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => JSX.Element',
+        'DropdownSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `dropdown-separator` part of `dropdown` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -37592,7 +36750,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'HoverCard',
       anchor: 'hover-card',
-      signature: 'HoverCard: (props: HoverCardProps) => JSX.Element',
+      signature:
+        'HoverCard: (props: HoverCardProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary: 'Renders a part of `hover-card`.',
     },
@@ -37895,7 +37054,7 @@ export const apiSymbolSets: Readonly<
       name: 'MenubarGroup',
       anchor: 'menubar-group',
       signature:
-        'MenubarGroup: (props: MenubarGroupProps | MenubarGroupAsChildProps) => JSX.Element',
+        'MenubarGroup: (props: MenubarGroupProps | MenubarGroupAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `menubar-group` part of `menubar` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -37913,7 +37072,7 @@ export const apiSymbolSets: Readonly<
       name: 'MenubarLabel',
       anchor: 'menubar-label',
       signature:
-        'MenubarLabel: (props: MenubarLabelProps | MenubarLabelAsChildProps) => JSX.Element',
+        'MenubarLabel: (props: MenubarLabelProps | MenubarLabelAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `menubar-label` part of `menubar`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -37937,7 +37096,7 @@ export const apiSymbolSets: Readonly<
       name: 'MenubarSeparator',
       anchor: 'menubar-separator',
       signature:
-        'MenubarSeparator: (props: MenubarSeparatorProps | MenubarSeparatorAsChildProps) => JSX.Element',
+        'MenubarSeparator: (props: MenubarSeparatorProps | MenubarSeparatorAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `menubar-separator` part of `menubar` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -38023,7 +37182,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'NativeSelect',
       anchor: 'native-select',
-      signature: 'NativeSelect: (props: CatalogComponentProps) => JSX.Element',
+      signature:
+        'NativeSelect: (props: CatalogComponentProps<HTMLSelectElement>) => JSX.Element',
       typeOnly: true,
       summary: 'Renders a styled native `<select>` element.',
     },
@@ -38390,7 +37550,7 @@ export const apiSymbolSets: Readonly<
       name: 'NavigationMenuTrigger',
       anchor: 'navigation-menu-trigger',
       signature:
-        'NavigationMenuTrigger: (props: CatalogComponentProps) => JSX.Element',
+        'NavigationMenuTrigger: (props: CatalogComponentProps<HTMLButtonElement>) => JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `navigation-menu-content` part of the shadcn-compatible catalog primitives.',
@@ -38711,7 +37871,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Popover',
       anchor: 'popover',
-      signature: 'Popover: (props: PopoverProps) => JSX.Element',
+      signature:
+        'Popover: (props: PopoverProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary: 'Renders a part of `popover`.',
     },
@@ -38794,7 +37955,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'RadioGroup',
       anchor: 'radio-group',
-      signature: 'RadioGroup: (props: RadioGroupProps) => JSX.Element',
+      signature:
+        'RadioGroup: (props: RadioGroupProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary: 'Renders a part of `radio-group`.',
     },
@@ -39242,7 +38404,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'size',
           summary: '',
-          signature: 'size?: "sm" | "lg" | "default" | undefined;',
+          signature: 'size?: "default" | "sm" | "lg" | undefined;',
         },
         {
           name: 'tooltip',
@@ -39442,7 +38604,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'size',
           summary: '',
-          signature: 'size?: "sm" | "lg" | "default" | undefined;',
+          signature: 'size?: "default" | "sm" | "lg" | undefined;',
         },
         {
           name: 'tooltip',
@@ -40114,7 +39276,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'TabsTrigger',
       anchor: 'tabs-trigger',
-      signature: 'TabsTrigger: (props: CatalogComponentProps) => JSX.Element',
+      signature:
+        'TabsTrigger: (props: CatalogComponentProps<HTMLButtonElement>) => JSX.Element',
       typeOnly: true,
       summary:
         'Styling-only trigger button; it does not select or associate a tab panel.',
@@ -40492,7 +39655,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'ToggleGroup',
       anchor: 'toggle-group',
-      signature: 'ToggleGroup: (props: ToggleGroupProps) => JSX.Element',
+      signature:
+        'ToggleGroup: (props: ToggleGroupProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary: 'Renders a part of `toggle-group`.',
     },
@@ -40546,7 +39710,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Tooltip',
       anchor: 'tooltip',
-      signature: 'Tooltip: (props: TooltipProps) => JSX.Element',
+      signature:
+        'Tooltip: (props: TooltipProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary: 'Renders a part of `tooltip`.',
     },
@@ -41934,7 +41099,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'AlertDialog',
       anchor: 'alert-dialog',
-      signature: 'AlertDialog: (props: AlertDialogProps) => JSX.Element',
+      signature:
+        'AlertDialog: (props: AlertDialogProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary: 'Renders a part of `alert-dialog`.',
     },
@@ -42191,7 +41357,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'role',
           summary: '',
-          signature: 'role?: "alertdialog" | "dialog" | undefined;',
+          signature: 'role?: "dialog" | "alertdialog" | undefined;',
         },
       ],
     },
@@ -42241,7 +41407,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'role',
           summary: '',
-          signature: 'role?: "alertdialog" | "dialog" | undefined;',
+          signature: 'role?: "dialog" | "alertdialog" | undefined;',
         },
       ],
     },
@@ -42305,7 +41471,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'role',
           summary: '',
-          signature: 'role?: "alertdialog" | "dialog" | undefined;',
+          signature: 'role?: "dialog" | "alertdialog" | undefined;',
         },
       ],
     },
@@ -42614,7 +41780,7 @@ export const apiSymbolSets: Readonly<
       name: 'AlertDialogTrigger',
       anchor: 'alert-dialog-trigger',
       signature:
-        'AlertDialogTrigger: (props: AlertDialogTriggerProps | AlertDialogTriggerAsChildProps) => JSX.Element',
+        'AlertDialogTrigger: (props: AlertDialogTriggerProps | AlertDialogTriggerAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders a part of `alert-dialog`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -43353,11 +42519,6 @@ export const apiSymbolSets: Readonly<
           signature: 'disabled?: boolean | undefined;',
         },
         {
-          name: 'indeterminate',
-          summary: '',
-          signature: 'indeterminate?: boolean | undefined;',
-        },
-        {
           name: 'name',
           summary: '',
           signature: 'name?: string | undefined;',
@@ -43482,11 +42643,6 @@ export const apiSymbolSets: Readonly<
           name: 'disabled',
           summary: '',
           signature: 'disabled?: boolean | undefined;',
-        },
-        {
-          name: 'indeterminate',
-          summary: '',
-          signature: 'indeterminate?: boolean | undefined;',
         },
         {
           name: 'name',
@@ -43710,7 +42866,7 @@ export const apiSymbolSets: Readonly<
       signature: 'DebouncedInput: (props: DebouncedInputProps) => JSX.Element',
       typeOnly: true,
       summary:
-        'DebouncedInput is a convenience wrapper around Input that emits a settled\nvalue for search and filter surfaces.',
+        'DebouncedInput is a convenience wrapper around Input that emits a settled\nvalue for search and filter surfaces.\n\nThe debounced emitter is created once per mount and replaced only when\n`debounceMs` changes. A pending value is re-timed with the new delay (or\nemitted at once when the delay drops to zero), is delivered to the latest\n`onDebouncedInput`, is dropped when `onDebouncedInput` is removed, and is\ncancelled on unmount.',
     },
     {
       name: 'DebouncedInputProps',
@@ -43945,7 +43101,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'role',
           summary: '',
-          signature: 'role?: "alertdialog" | "dialog" | undefined;',
+          signature: 'role?: "dialog" | "alertdialog" | undefined;',
         },
       ],
     },
@@ -43996,7 +43152,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'role',
           summary: '',
-          signature: 'role?: "alertdialog" | "dialog" | undefined;',
+          signature: 'role?: "dialog" | "alertdialog" | undefined;',
         },
       ],
     },
@@ -44061,7 +43217,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'role',
           summary: '',
-          signature: 'role?: "alertdialog" | "dialog" | undefined;',
+          signature: 'role?: "dialog" | "alertdialog" | undefined;',
         },
       ],
     },
@@ -44820,7 +43976,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownGroup',
       anchor: 'dropdown-group',
       signature:
-        'DropdownGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => JSX.Element',
+        'DropdownGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `dropdown-group` part of `dropdown` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -45006,11 +44162,6 @@ export const apiSymbolSets: Readonly<
           signature: 'disabled?: boolean | undefined;',
         },
         {
-          name: 'onSelect',
-          summary: '',
-          signature: 'onSelect?: ((event: PressEvent) => void) | undefined;',
-        },
-        {
           name: 'ref',
           summary: '',
           signature: 'ref?: Ref<HTMLButtonElement>;',
@@ -45044,7 +44195,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownLabel',
       anchor: 'dropdown-label',
       signature:
-        'DropdownLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => JSX.Element',
+        'DropdownLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `dropdown-label` part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -45196,7 +44347,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownSeparator',
       anchor: 'dropdown-separator',
       signature:
-        'DropdownSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => JSX.Element',
+        'DropdownSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `dropdown-separator` part of `dropdown` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -45656,7 +44807,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'HoverCard',
       anchor: 'hover-card',
-      signature: 'HoverCard: (props: HoverCardProps) => JSX.Element',
+      signature:
+        'HoverCard: (props: HoverCardProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary: 'Renders a part of `hover-card`.',
     },
@@ -46451,7 +45603,7 @@ export const apiSymbolSets: Readonly<
       name: 'MenubarGroup',
       anchor: 'menubar-group',
       signature:
-        'MenubarGroup: (props: MenubarGroupProps | MenubarGroupAsChildProps) => JSX.Element',
+        'MenubarGroup: (props: MenubarGroupProps | MenubarGroupAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `menubar-group` part of `menubar` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -46611,7 +45763,7 @@ export const apiSymbolSets: Readonly<
       name: 'MenubarLabel',
       anchor: 'menubar-label',
       signature:
-        'MenubarLabel: (props: MenubarLabelProps | MenubarLabelAsChildProps) => JSX.Element',
+        'MenubarLabel: (props: MenubarLabelProps | MenubarLabelAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `menubar-label` part of `menubar`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -46782,7 +45934,7 @@ export const apiSymbolSets: Readonly<
       name: 'MenubarSeparator',
       anchor: 'menubar-separator',
       signature:
-        'MenubarSeparator: (props: MenubarSeparatorProps | MenubarSeparatorAsChildProps) => JSX.Element',
+        'MenubarSeparator: (props: MenubarSeparatorProps | MenubarSeparatorAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `menubar-separator` part of `menubar` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -47465,11 +46617,6 @@ export const apiSymbolSets: Readonly<
           signature: 'disabled?: boolean | undefined;',
         },
         {
-          name: 'onSelect',
-          summary: '',
-          signature: 'onSelect?: ((event: PressEvent) => void) | undefined;',
-        },
-        {
           name: 'ref',
           summary: '',
           signature: 'ref?: Ref<HTMLButtonElement>;',
@@ -47667,7 +46814,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'OverlayHost',
       anchor: 'overlay-host',
-      signature: 'OverlayHost: (props: OverlayHostProps) => JSX.Element',
+      signature:
+        'OverlayHost: (props: OverlayHostProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
     },
     {
@@ -47686,7 +46834,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Popover',
       anchor: 'popover',
-      signature: 'Popover: (props: PopoverProps) => JSX.Element',
+      signature:
+        'Popover: (props: PopoverProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary: 'Renders a part of `popover`.',
     },
@@ -48481,7 +47630,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'RadioGroup',
       anchor: 'radio-group',
-      signature: 'RadioGroup: (props: RadioGroupProps) => JSX.Element',
+      signature:
+        'RadioGroup: (props: RadioGroupProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary: 'Renders a part of `radio-group`.',
     },
@@ -51678,7 +50828,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'ToggleGroup',
       anchor: 'toggle-group',
-      signature: 'ToggleGroup: (props: ToggleGroupProps) => JSX.Element',
+      signature:
+        'ToggleGroup: (props: ToggleGroupProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary: 'Renders a part of `toggle-group`.',
     },
@@ -52094,7 +51245,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Tooltip',
       anchor: 'tooltip',
-      signature: 'Tooltip: (props: TooltipProps) => JSX.Element',
+      signature:
+        'Tooltip: (props: TooltipProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary: 'Renders a part of `tooltip`.',
     },
@@ -53719,11 +52871,6 @@ export const apiSymbolSets: Readonly<
           signature: 'disabled?: boolean | undefined;',
         },
         {
-          name: 'indeterminate',
-          summary: '',
-          signature: 'indeterminate?: boolean | undefined;',
-        },
-        {
           name: 'name',
           summary: '',
           signature: 'name?: string | undefined;',
@@ -53850,11 +52997,6 @@ export const apiSymbolSets: Readonly<
           signature: 'disabled?: boolean | undefined;',
         },
         {
-          name: 'indeterminate',
-          summary: '',
-          signature: 'indeterminate?: boolean | undefined;',
-        },
-        {
           name: 'name',
           summary: '',
           signature: 'name?: string | undefined;',
@@ -53896,7 +53038,7 @@ export const apiSymbolSets: Readonly<
       signature: 'DebouncedInput: (props: DebouncedInputProps) => JSX.Element',
       typeOnly: true,
       summary:
-        'DebouncedInput is a convenience wrapper around Input that emits a settled\nvalue for search and filter surfaces.',
+        'DebouncedInput is a convenience wrapper around Input that emits a settled\nvalue for search and filter surfaces.\n\nThe debounced emitter is created once per mount and replaced only when\n`debounceMs` changes. A pending value is re-timed with the new delay (or\nemitted at once when the delay drops to zero), is delivered to the latest\n`onDebouncedInput`, is dropped when `onDebouncedInput` is removed, and is\ncancelled on unmount.',
     },
     {
       name: 'DebouncedInputProps',
@@ -54619,7 +53761,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'RadioGroup',
       anchor: 'radio-group',
-      signature: 'RadioGroup: (props: RadioGroupProps) => JSX.Element',
+      signature:
+        'RadioGroup: (props: RadioGroupProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary: 'Renders a part of `radio-group`.',
     },
@@ -57657,7 +56800,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'ToggleGroup',
       anchor: 'toggle-group',
-      signature: 'ToggleGroup: (props: ToggleGroupProps) => JSX.Element',
+      signature:
+        'ToggleGroup: (props: ToggleGroupProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary: 'Renders a part of `toggle-group`.',
     },
@@ -58657,7 +57801,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'AlertDialog',
       anchor: 'alert-dialog',
-      signature: 'AlertDialog: (props: AlertDialogProps) => JSX.Element',
+      signature:
+        'AlertDialog: (props: AlertDialogProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary: 'Renders a part of `alert-dialog`.',
     },
@@ -58914,7 +58059,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'role',
           summary: '',
-          signature: 'role?: "alertdialog" | "dialog" | undefined;',
+          signature: 'role?: "dialog" | "alertdialog" | undefined;',
         },
       ],
     },
@@ -58964,7 +58109,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'role',
           summary: '',
-          signature: 'role?: "alertdialog" | "dialog" | undefined;',
+          signature: 'role?: "dialog" | "alertdialog" | undefined;',
         },
       ],
     },
@@ -59028,7 +58173,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'role',
           summary: '',
-          signature: 'role?: "alertdialog" | "dialog" | undefined;',
+          signature: 'role?: "dialog" | "alertdialog" | undefined;',
         },
       ],
     },
@@ -59337,7 +58482,7 @@ export const apiSymbolSets: Readonly<
       name: 'AlertDialogTrigger',
       anchor: 'alert-dialog-trigger',
       signature:
-        'AlertDialogTrigger: (props: AlertDialogTriggerProps | AlertDialogTriggerAsChildProps) => JSX.Element',
+        'AlertDialogTrigger: (props: AlertDialogTriggerProps | AlertDialogTriggerAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders a part of `alert-dialog`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -59794,7 +58939,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'role',
           summary: '',
-          signature: 'role?: "alertdialog" | "dialog" | undefined;',
+          signature: 'role?: "dialog" | "alertdialog" | undefined;',
         },
       ],
     },
@@ -59845,7 +58990,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'role',
           summary: '',
-          signature: 'role?: "alertdialog" | "dialog" | undefined;',
+          signature: 'role?: "dialog" | "alertdialog" | undefined;',
         },
       ],
     },
@@ -59910,7 +59055,7 @@ export const apiSymbolSets: Readonly<
         {
           name: 'role',
           summary: '',
-          signature: 'role?: "alertdialog" | "dialog" | undefined;',
+          signature: 'role?: "dialog" | "alertdialog" | undefined;',
         },
       ],
     },
@@ -60673,7 +59818,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownGroup',
       anchor: 'dropdown-group',
       signature:
-        'DropdownGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => JSX.Element',
+        'DropdownGroup: (props: DropdownGroupProps | DropdownGroupAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `dropdown-group` part of `dropdown` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -60859,11 +60004,6 @@ export const apiSymbolSets: Readonly<
           signature: 'disabled?: boolean | undefined;',
         },
         {
-          name: 'onSelect',
-          summary: '',
-          signature: 'onSelect?: ((event: PressEvent) => void) | undefined;',
-        },
-        {
           name: 'ref',
           summary: '',
           signature: 'ref?: Ref<HTMLButtonElement>;',
@@ -60897,7 +60037,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownLabel',
       anchor: 'dropdown-label',
       signature:
-        'DropdownLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => JSX.Element',
+        'DropdownLabel: (props: DropdownLabelProps | DropdownLabelAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `dropdown-label` part of `dropdown`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -61049,7 +60189,7 @@ export const apiSymbolSets: Readonly<
       name: 'DropdownSeparator',
       anchor: 'dropdown-separator',
       signature:
-        'DropdownSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => JSX.Element',
+        'DropdownSeparator: (props: DropdownSeparatorProps | DropdownSeparatorAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `dropdown-separator` part of `dropdown` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -61454,7 +60594,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'HoverCard',
       anchor: 'hover-card',
-      signature: 'HoverCard: (props: HoverCardProps) => JSX.Element',
+      signature:
+        'HoverCard: (props: HoverCardProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary: 'Renders a part of `hover-card`.',
     },
@@ -62132,11 +61273,6 @@ export const apiSymbolSets: Readonly<
           signature: 'disabled?: boolean | undefined;',
         },
         {
-          name: 'onSelect',
-          summary: '',
-          signature: 'onSelect?: ((event: PressEvent) => void) | undefined;',
-        },
-        {
           name: 'ref',
           summary: '',
           signature: 'ref?: Ref<HTMLButtonElement>;',
@@ -62489,7 +61625,7 @@ export const apiSymbolSets: Readonly<
       name: 'MenubarGroup',
       anchor: 'menubar-group',
       signature:
-        'MenubarGroup: (props: MenubarGroupProps | MenubarGroupAsChildProps) => JSX.Element',
+        'MenubarGroup: (props: MenubarGroupProps | MenubarGroupAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `menubar-group` part of `menubar` with `role="group"`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -62649,7 +61785,7 @@ export const apiSymbolSets: Readonly<
       name: 'MenubarLabel',
       anchor: 'menubar-label',
       signature:
-        'MenubarLabel: (props: MenubarLabelProps | MenubarLabelAsChildProps) => JSX.Element',
+        'MenubarLabel: (props: MenubarLabelProps | MenubarLabelAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `menubar-label` part of `menubar`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -62820,7 +61956,7 @@ export const apiSymbolSets: Readonly<
       name: 'MenubarSeparator',
       anchor: 'menubar-separator',
       signature:
-        'MenubarSeparator: (props: MenubarSeparatorProps | MenubarSeparatorAsChildProps) => JSX.Element',
+        'MenubarSeparator: (props: MenubarSeparatorProps | MenubarSeparatorAsChildProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary:
         'Renders the `menubar-separator` part of `menubar` with `role="separator"`.\n\nSupports polymorphic rendering via `asChild`.',
@@ -63209,7 +62345,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'OverlayHost',
       anchor: 'overlay-host',
-      signature: 'OverlayHost: (props: OverlayHostProps) => JSX.Element',
+      signature:
+        'OverlayHost: (props: OverlayHostProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
     },
     {
@@ -63230,7 +62367,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Popover',
       anchor: 'popover',
-      signature: 'Popover: (props: PopoverProps) => JSX.Element',
+      signature:
+        'Popover: (props: PopoverProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary: 'Renders a part of `popover`.',
     },
@@ -64458,7 +63596,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'Tooltip',
       anchor: 'tooltip',
-      signature: 'Tooltip: (props: TooltipProps) => JSX.Element',
+      signature:
+        'Tooltip: (props: TooltipProps) => import("@askrjs/askr/jsx-runtime").JSX.Element',
       typeOnly: true,
       summary: 'Renders a part of `tooltip`.',
     },

@@ -354,8 +354,14 @@ describe('documentation catalog', () => {
     expect(source).not.toContain('register on the same router');
     expect(source).not.toContain('none of that has to be re-verified');
     expect(source).not.toContain('Two outputs, one build');
-    expect(source).toContain('one application composition root');
-    expect(source).toContain('two deployment paths');
+    expect(source).toContain('one explicit registry');
+    expect(source).toContain(
+      'Each mode has its own entry point and build setup.'
+    );
+    expect(source).toContain(
+      "This site is built with Askr's static-site generator"
+    );
+    expect(source).toContain('Askr does not include a user database');
   });
 
   it('should keep the live shared layout mobile-safe', () => {
