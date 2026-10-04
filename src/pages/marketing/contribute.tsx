@@ -11,42 +11,42 @@ import {
 const opportunities: readonly SequenceItem[] = [
   {
     label: 'CSS and design systems',
-    title: 'Make the themes feel exceptional',
+    title: 'Improve themes across apps and browsers',
     description:
-      'Refine tokens, responsive behavior, light and dark themes, component polish, and cross-browser details without moving accessibility out of the headless layer.',
+      'Refine theme tokens, responsive layouts, color schemes, and browser behavior. Check that styled components preserve the keyboard and focus behavior from @askrjs/ui.',
     meta: '@askrjs/themes · @askrjs/ui',
   },
   {
     label: 'Rendering',
-    title: 'Pressure-test SSR and SSG',
+    title: 'Test server and static rendering in other apps',
     description:
-      'Push server and static rendering past what the production applications already cover — metadata, hydration, performance, and deployment behavior on workloads they do not exercise yet.',
+      "Test server and static rendering in other applications. Add examples for dynamic metadata, hydration, performance, and deployment setups beyond this site's static build.",
     meta: '@askrjs/askr · @askrjs/server · @askrjs/cli',
   },
   {
     label: 'Technical SEO',
-    title: 'Make generated pages easier to find',
+    title: 'Improve search metadata and sitemaps',
     description:
-      'Help sharpen canonical URLs, structured data, crawlability, sitemaps, social metadata, and the guidance applications need to use them well.',
+      'Check canonical URLs, structured data, crawlability, sitemaps, and social previews. Improve the docs and examples for applications using server or static rendering.',
     meta: 'SSG · SSR · documentation',
   },
 ];
 
 const firstContribution: readonly SequenceItem[] = [
   {
-    title: 'Choose a useful edge',
+    title: 'Find a project area',
     description:
-      'Bring a concrete problem, a small improvement, or an experiment from one of the areas above. You do not need to arrive with a complete solution.',
+      'Choose a problem or small improvement from the themes, rendering, or developer tools listed above. You can ask questions before proposing a solution.',
   },
   {
-    title: 'Start the conversation',
+    title: 'Open an issue or send a note',
     description:
-      'Open a GitHub issue in the relevant repository, or send a short email if you are not sure where the work belongs.',
+      'Use GitHub for a specific repository, or email us if you need help finding the right one.',
   },
   {
-    title: 'Shape and ship it together',
+    title: 'Review and verify the change',
     description:
-      'Agree on scope, make the reasoning visible, and validate the result. A single focused contribution is worthwhile; there is no ongoing commitment.',
+      'Discuss tradeoffs, make the change, and check it against the agreed behavior.',
   },
 ];
 
@@ -54,17 +54,17 @@ export function ContributePage() {
   return (
     <>
       <EditorialHero
-        title="Help shape Askr while the decisions are still close to the code."
-        lede="Askr is an open-source framework that runs production applications today — static marketing sites and admin consoles, including this site. Contributions land close to the code: there is room to influence how its themes, rendering, and developer experience develop, not just pick up a finished backlog."
+        title="Help test Askr in more applications."
+        lede="Askr uses one explicit route registry for browser navigation, server rendering, and static builds. This site uses the static generator. Testing the other paths, themes, and developer tools in more applications can show us where the code and documentation need work."
       />
 
       <RuledSection stacked>
         <div class="editorial-section__heading">
-          <h2>Where your perspective matters most</h2>
+          <h2>Where more testing would help</h2>
           <p>
-            These are open areas, not job descriptions. A specialist review, a
-            working prototype, a focused fix, or a carefully documented finding
-            can all move the project forward.
+            Focused reviews, prototypes, fixes, and documented findings can all
+            help. You do not need to take on a large project to make a useful
+            contribution.
           </p>
         </div>
         <SequenceList
@@ -75,32 +75,30 @@ export function ContributePage() {
 
       <RuledSection>
         <div class="editorial-section__heading">
-          <h2>Working on Askr is direct</h2>
+          <h2>Work directly with maintainers</h2>
         </div>
         <div class="editorial-prose">
           <p>
-            There is no formal contributor program or large community around
-            Askr. You work directly with the people maintaining it, close to the
-            code and the reasoning behind it.
+            Askr is an early project with a small maintainer team. You can
+            discuss a change with the people who maintain the code and hear the
+            reasoning behind it.
           </p>
           <p>
-            The surface is broad, and the applications running on it exercise
-            one slice of it. Where a documented path ships narrower than it
-            reads, the docs mark it <code>experimental</code> or{' '}
-            <code>limited</code> — that is a map of where a contribution has the
-            most leverage.
+            Askr supports more paths than this website can exercise. The docs
+            mark some areas <code>experimental</code> or <code>limited</code>.
+            Testing those areas in another application is a useful way to find
+            what needs better examples or implementation.
           </p>
           <p>
-            Contributions are volunteer open-source work. There is no
-            expectation that one useful contribution becomes a recurring
-            obligation.
+            Contributions are volunteer open-source work. One useful change does
+            not create an ongoing commitment.
           </p>
         </div>
       </RuledSection>
 
       <RuledSection stacked>
         <div class="editorial-section__heading">
-          <h2>A simple way to begin</h2>
+          <h2>Start with one focused change</h2>
         </div>
         <SequenceList
           label="How to make a first contribution"
@@ -122,11 +120,10 @@ export function ContributePage() {
       <section class="editorial-cta">
         <Container class="editorial-cta__inner" size="xl">
           <div>
-            <h2>Bring the part you care about.</h2>
+            <h2>Have an issue or an idea?</h2>
             <p class="contribute-cta__copy">
-              Introduce yourself, mention the area that interests you, and
-              include any idea or example you already have. A polished proposal
-              is not required.
+              Email us with the area you care about and one problem or example.
+              A rough description is enough to start.
             </p>
           </div>
           <div class="editorial-cta__actions">

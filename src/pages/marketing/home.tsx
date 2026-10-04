@@ -26,13 +26,11 @@ export function HomePage() {
       <section class="hero" aria-labelledby="hero-title">
         <Container class="hero__content" size="xl">
           <h1 id="hero-title">
-            A full-stack TypeScript framework you can read top to bottom.
+            Build full-stack TypeScript apps with routes declared in code.
           </h1>
           <p class="hero__lede">
-            One explicit page registry drives browser navigation, server
-            rendering, and static generation — so you can trace a URL to its
-            component without guessing what a file-based convention decided for
-            you.
+            Routes, layouts, and loaders live in one explicit registry. Reuse it
+            for browser navigation, server rendering, or static generation.
           </p>
           <div class="hero__actions">
             <Button asChild>
@@ -50,8 +48,8 @@ export function HomePage() {
             <code>npx @askrjs/cli@latest create startkit my-app</code>
           </div>
           <p class="hero__proof">
-            In production today on static marketing sites and admin consoles —
-            this site included.
+            This site is built with Askr's static-site generator and served as
+            static files.
           </p>
         </Container>
       </section>
@@ -59,11 +57,13 @@ export function HomePage() {
       <section class="differentiation" aria-labelledby="differentiation-title">
         <Container class="differentiation__inner" direction="column" size="xl">
           <div class="differentiation__heading">
-            <h2 id="differentiation-title">This is the whole routing layer.</h2>
+            <h2 id="differentiation-title">
+              Routes are explicit data you can inspect.
+            </h2>
             <p>
-              No folder-name magic, no generated manifest to reverse-engineer.
-              Routes, layouts, and the data they load are declared once, in code
-              you can open and read.
+              Askr does not infer routes from folder names. You declare paths,
+              layouts, and route behavior in code, then pass that registry to
+              the browser, server renderer, or static generator.
             </p>
           </div>
           <div class="differentiation__body">
@@ -76,42 +76,41 @@ export function HomePage() {
               <li>
                 <span>01</span>
                 <div>
-                  <h3>The route table is a value, not a global</h3>
+                  <h3>Export the route table as a value</h3>
                   <p>
-                    Every path, layout, and param lives in this one registry —
-                    which you export and hand to whatever renders it. Nothing is
-                    filled in behind you by a folder-naming convention.
+                    Define paths, layouts, and parameters in one registry, then
+                    pass it to the code that renders the app.
                   </p>
                 </div>
               </li>
               <li>
                 <span>02</span>
                 <div>
-                  <h3>Pick your rendering mode later</h3>
+                  <h3>Reuse routes across rendering modes</h3>
                   <p>
-                    Write the app once. Ship it as an SPA, hydrate it from
-                    server HTML, or pre-render it — swap modes without a
-                    rewrite.
+                    Use the same route registry for a client-rendered app, a
+                    server-rendered page with hydration, or static output. Each
+                    mode has its own entry point and build setup.
                   </p>
                 </div>
               </li>
               <li>
                 <span>03</span>
                 <div>
-                  <h3>Server code lives next to the routes it serves</h3>
+                  <h3>Make server requirements explicit</h3>
                   <p>
-                    Auth policies, schemas, and dependencies are wired in at the
-                    same root, so you can see what a route requires.
+                    Compose route policies, schemas, and services in code, so
+                    you can see what each server route needs.
                   </p>
                 </div>
               </li>
               <li>
                 <span>04</span>
                 <div>
-                  <h3>Deploy a folder of HTML or a small Node process</h3>
+                  <h3>Choose static files or a server</h3>
                   <p>
-                    Nothing exotic to operate — static hosting or a plain
-                    adapter, your call.
+                    Build HTML and assets for static hosting, or use the Node
+                    adapter for request-time server code.
                   </p>
                 </div>
               </li>
@@ -136,11 +135,11 @@ export function HomePage() {
         <Container class="capabilities__inner" size="xl">
           <div class="section-heading">
             <h2 id="capabilities-title">
-              Start with routes and a runtime. Add the rest when you need it.
+              Add components, server code, and build tools as the app grows.
             </h2>
             <p>
               A themed component library, a server, auth, and build tooling are
-              all available — none of them required on day one.
+              available to add as your application needs them.
             </p>
             <Link class="section-heading__link" href="/platform">
               Explore the platform
@@ -168,12 +167,11 @@ export function HomePage() {
       <section class="final-cta" id="get-started">
         <Container class="final-cta__inner" size="xl">
           <div>
-            <h2>Start with the application you need to ship.</h2>
+            <h2>Start with a project template.</h2>
             <p>
-              Choose the closest starter, keep the generated files in view, and
-              add rendering, server, and production capabilities only when the
-              application calls for them. It is the path the sites and consoles
-              already running on Askr took.
+              Choose a starter, keep its generated files in your project, and
+              add rendering or server capabilities when your application needs
+              them. Your route registry stays explicit as the app grows.
             </p>
           </div>
           <Button asChild>

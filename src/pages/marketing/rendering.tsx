@@ -11,12 +11,12 @@ export function RenderingPage() {
   return (
     <>
       <EditorialHero
-        title="You shouldn't have to rewrite an app to change how it's hosted."
-        lede="A marketing site that later needs a dashboard, or a dashboard that later needs a fast landing page — both are the same route tree with a different rendering mode switched on."
+        title="Reuse your route registry across rendering modes."
+        lede="Askr can render an application in the browser, on a server before hydration, or at build time. Each mode needs its own entry point and setup, while the route registry and component code can stay shared."
       />
       <RuledSection stacked>
         <div class="editorial-section__heading">
-          <h2>Same routes and components, three ways to serve them</h2>
+          <h2>One route model, three ways to render it</h2>
         </div>
         <FlowMap
           label="Shared route model outputs"
@@ -47,19 +47,20 @@ export function RenderingPage() {
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
-          <h2>Switching modes is a boot-file change, not a rewrite</h2>
+          <h2>Keep route definitions; configure the new entry point</h2>
         </div>
         <div class="editorial-prose">
           <p>
-            Swap <code>createSPA</code> for <code>hydrateSPA</code> and a
-            server-rendered document, and the browser takes over the same
-            component tree. Route loaders, params, and render data work the same
-            way regardless of where the HTML came from.
+            A client-only app starts with <code>createSPA</code>. For server
+            rendering, the server creates the initial document and the browser
+            uses <code>hydrateSPA</code> to take it over. The route registry and
+            components can be shared, but you still provide the server entry,
+            document, and initial data.
           </p>
           <p>
-            A loader that shouldn't block the first paint is marked{' '}
-            <code>defer</code> explicitly — you choose what's slow and deferred,
-            rather than the framework guessing.
+            Mark non-blocking loader data with <code>defer</code> when you want
+            it to resolve after the initial render. You decide which data can
+            wait.
           </p>
           <RepositoryLink href="https://github.com/askrjs/askr-examples">
             View the rendering examples
@@ -67,7 +68,7 @@ export function RenderingPage() {
         </div>
       </RuledSection>
       <EditorialCTA
-        title="Pick a rendering mode when you deploy, not when you start."
+        title="See the SPA, SSR, and SSG setup."
         primaryHref="/docs/rendering"
         primaryLabel="Read the rendering docs"
         secondaryHref="/docs/getting-started"

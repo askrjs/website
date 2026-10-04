@@ -1,4 +1,5 @@
-import { For, state } from '@askrjs/askr';
+import { state } from '@askrjs/askr';
+import { For } from '@askrjs/askr/control';
 import { Link } from '@askrjs/askr/router';
 import { ArrowLeftIcon, SearchIcon } from '@askrjs/lucide';
 import { lucideIcons } from './lucide-icons';

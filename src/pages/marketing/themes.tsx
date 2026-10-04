@@ -12,13 +12,13 @@ const layers: readonly SequenceItem[] = [
   {
     title: 'Headless components',
     description:
-      'Keyboard behavior, focus relationships, labels, state, and composition without a mandatory visual identity.',
+      'Keyboard, focus, labels, and component state without built-in visual styling.',
     meta: '@askrjs/ui',
   },
   {
     title: 'Themes',
     description:
-      'Styled components and named tokens for color, type, space, radius, and motion. Replace them without rewriting behavior.',
+      'Styled components with tokens for color, typography, spacing, radius, and motion.',
     meta: '@askrjs/themes',
   },
 ];
@@ -27,36 +27,37 @@ export function ThemesPage() {
   return (
     <>
       <EditorialHero
-        title="Restyle the app without rebuilding its interaction model."
-        lede="Focus management, ARIA, and dismissal behavior live in the headless layer. A visual theme can change independently, while the finished composition still receives keyboard, screen-reader, contrast, and focus-visibility testing."
+        title="Change the look without rewriting component behavior."
+        lede="@askrjs/ui provides keyboard, focus, and ARIA behavior. @askrjs/themes adds styles and tokens. Your team supplies clear labels and tests the finished interface for focus order, contrast, and screen-reader use."
       />
       <RuledSection stacked>
         <div class="editorial-section__heading">
-          <h2>Two packages, two jobs</h2>
+          <h2>Interaction behavior and styling are separate</h2>
           <p>
-            One owns whether a dialog traps focus correctly. The other owns
-            whether it's blue or dark-mode-aware. Neither has to change when you
-            touch the other.
+            <code>@askrjs/ui</code> provides interaction behavior such as focus
+            management. <code>@askrjs/themes</code> supplies styled components
+            and design tokens. You can adjust a theme without rewriting the
+            underlying primitive.
           </p>
         </div>
         <SequenceList label="Headless components to themes" items={layers} />
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
-          <h2>Ship the default theme, or rebuild it from tokens</h2>
+          <h2>Use the default theme or customize its tokens</h2>
         </div>
         <div class="editorial-prose">
           <p>
-            The default theme is a real, usable design — not a scaffold you're
-            expected to throw away. When you do want your own look, colors,
-            spacing, radius, and motion are all token-driven, so a rebrand is a
-            token change, not a component rewrite.
+            The default theme is ready to use. Change its color, spacing,
+            radius, and motion tokens to make the interface your own. Larger
+            structural changes may still call for custom CSS or different
+            component composition.
           </p>
           <p>
-            Icons, brand logos, charts, and a Monaco editor integration ship as
-            separate packages you opt into. None of this replaces your
-            accessibility testing — it gives you a tested starting point instead
-            of building focus management from scratch.
+            Icons, brand logos, charts, and a Monaco editor wrapper are separate
+            packages you can add when needed. Test labels, focus order, and
+            contrast in the finished interface; the component layer cannot
+            verify every composition.
           </p>
           <RepositoryLink href="https://github.com/askrjs/askr-themes">
             View the theme system
@@ -64,7 +65,7 @@ export function ThemesPage() {
         </div>
       </RuledSection>
       <EditorialCTA
-        title="Ship the default theme, or make it yours."
+        title="Customize the default theme."
         primaryHref="/docs/components"
         primaryLabel="Read the component docs"
         secondaryHref="/docs/getting-started"

@@ -16,7 +16,7 @@ const ownership: readonly SequenceItem[] = [
   },
   {
     title: 'Derived values',
-    description: 'Track relationships instead of synchronizing copies.',
+    description: 'Derived values track their source state.',
     meta: 'depend · compute',
   },
   {
@@ -35,16 +35,16 @@ export function ApplicationModelPage() {
   return (
     <>
       <EditorialHero
-        title="If you can't say who owns a piece of state, something's wrong."
-        lede="Askr pushes state, derived values, and async work into whatever component or scope actually owns them — instead of a global store you have to trace backward."
+        title="Keep state and async work with the UI that owns it."
+        lede="Askr provides local state, derived values, lifecycle-bound resources, and typed scopes. Declare where each piece of work belongs."
       />
       <RuledSection stacked>
         <div class="editorial-section__heading">
           <h2>Four things, and where each one lives</h2>
           <p>
-            State lives with the component that changes it. Derived values
-            recompute instead of drifting out of sync. When the owning component
-            unmounts, its resources are cleaned up automatically.
+            Keep mutable state near the component or scope that uses it. Derived
+            values track their source state. Resources can use the owning
+            component's lifecycle for cancellation and cleanup.
           </p>
         </div>
         <SequenceList
@@ -54,19 +54,19 @@ export function ApplicationModelPage() {
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
-          <h2>Routes are data, not a folder structure</h2>
+          <h2>Declare routes in a typed registry</h2>
         </div>
         <div class="editorial-prose">
           <p>
-            You declare params, layouts, loaders, and actions in a typed
-            registry, so tooling (and you) can enumerate every route the app has
-            — no need to reverse-engineer it from a file tree.
+            Declare paths, parameters, layouts, loaders, and actions in a typed
+            registry. The same registry is available to your app and its
+            tooling.
           </p>
           <p>
-            Async work — a query, a resource — is tied to the component or route
-            that requested it. Navigate away mid-fetch and the request is
-            cancelled instead of resolving into a component that no longer
-            exists. When a write invalidates a query, dependents refetch.
+            Resources receive an <code>AbortSignal</code> from their owner, so
+            cancellation-aware work can stop when that owner unmounts. When a
+            write invalidates a query, affected queries can refetch and update
+            the views that depend on them.
           </p>
           <RepositoryLink href="https://github.com/askrjs/askr">
             View the core runtime
@@ -74,7 +74,7 @@ export function ApplicationModelPage() {
         </div>
       </RuledSection>
       <EditorialCTA
-        title="Put state, routes, and lifecycle to work."
+        title="See how Askr models state and routes."
         primaryHref="/docs/core-concepts"
         primaryLabel="Read the fundamentals"
         secondaryHref="/docs/getting-started"

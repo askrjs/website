@@ -40,35 +40,34 @@ export function ToolingPage() {
   return (
     <>
       <EditorialHero
-        title="The CLI writes files you're expected to read and edit."
-        lede="Every generated file shows up as a normal diff. Nothing is written to a hidden build directory you're not supposed to look at."
+        title="Scaffold files you can inspect and change."
+        lede="Askr CLI generators add ordinary source files to your project. Read and edit them with the same tools you use for the rest of your code."
       />
       <RuledSection stacked>
         <div class="editorial-section__heading">
-          <h2>Five starters, picked by what you're actually building</h2>
+          <h2>Choose an app starter</h2>
         </div>
         <SequenceList label="Askr application starters" items={starters} />
       </RuledSection>
       <RuledSection>
         <div class="editorial-section__heading">
-          <h2>Generators write plain files; checks catch drift</h2>
+          <h2>Generate app code and check your OpenAPI contract</h2>
         </div>
         <div class="editorial-prose">
           <p>
-            <code>askr add page</code> and <code>askr add action</code> write a
-            normal component and a normal handler — review them like any other
-            change before you commit. <code>askr openapi --check</code> fails CI
-            when your schemas and your committed OpenAPI spec disagree, instead
-            of letting a client silently go stale. <code>askr generate</code>{' '}
-            turns that OpenAPI document into an <code>@askrjs/fetch</code>{' '}
-            client when another application needs the contract.
+            <code>askr add page</code> and <code>askr add action</code> create
+            source files you can review before committing. Use{' '}
+            <code>askr openapi --check</code> in CI to compare your generated
+            OpenAPI document with the committed file, then use{' '}
+            <code>askr generate</code> to create an <code>@askrjs/fetch</code>
+            client from that contract.
           </p>
           <p>
-            <code>askr update</code> only applies peer-compatible changes;
-            reaching for the latest peer set at all is a separate, deliberate{' '}
-            <code>askr upgrade</code>. And if you use an AI coding assistant,{' '}
-            <code>askr skills</code> checks in project-specific instructions so
-            it doesn't have to rediscover your conventions every session.
+            Use <code>askr update</code> for peer-compatible changes.{' '}
+            <code>askr upgrade</code> proposes newer package ranges; review them
+            before installing. A forced upgrade may require compatible updates
+            across several packages. <code>askr skills</code> adds repository
+            instructions for AI coding tools.
           </p>
           <RepositoryLink href="https://github.com/askrjs/askr-cli">
             View the CLI and starters
@@ -76,7 +75,7 @@ export function ToolingPage() {
         </div>
       </RuledSection>
       <EditorialCTA
-        title="Scaffold a project and read every file it writes."
+        title="Create a project from a starter."
         primaryHref="/docs/tooling"
         primaryLabel="Read the tooling docs"
         secondaryHref="/docs/getting-started"

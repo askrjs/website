@@ -10,64 +10,65 @@ export const marketingPages = [
   {
     path: '/platform',
     label: 'Platform',
-    homepageSummary: 'What you get on day one, and what you can bolt on later.',
+    homepageSummary:
+      'Start with the runtime and add packages as you need them.',
     title: 'Platform | Askr',
     description:
-      'A tour of what ships in Askr — runtime, routing, UI, server, rendering, and production tooling — and how they fit together.',
+      'See how Askr packages cover routes, UI, server work, rendering, and production tooling.',
   },
   {
     path: '/application-model',
     label: 'Application model',
     homepageSummary:
-      'How state, routes, and async work are owned and cleaned up.',
+      'Keep state and async work with the component or route that owns it.',
     title: 'Application model | Askr',
     description:
-      'How Askr models state, typed routes, and lifecycle-bound resources — including how queries cancel and invalidate.',
+      'Learn how Askr handles state, typed routes, lifecycle-bound resources, cancellation, and query invalidation.',
   },
   {
     path: '/rendering',
     label: 'Rendering',
     homepageSummary:
-      'SPA, server-rendered, or static — pick per deployment, not per rewrite.',
+      'Reuse route definitions for browser, server, or static rendering.',
     title: 'Rendering | Askr',
     description:
-      'Ship the same route tree as a client-rendered SPA, a hydrated server-rendered app, or a statically generated site.',
+      'Use one route registry for client rendering, server rendering with hydration, or static generation.',
   },
   {
     path: '/full-stack',
     label: 'Full stack',
     homepageSummary:
-      'Forms, APIs, and auth policies wired to the same route tree.',
+      'Add page actions, HTTP APIs, schemas, and access policies.',
     title: 'Full stack | Askr',
     description:
-      'Add page actions, validated HTTP APIs, OpenAPI generation, and auth policies without a second server framework.',
+      'Build page actions and HTTP APIs with request validation, OpenAPI output, and route access policies.',
   },
   {
     path: '/themes',
     label: 'Themes',
     homepageSummary:
-      'Accessible components you can restyle without touching behavior.',
+      'Change component styles without rewriting their interaction behavior.',
     title: 'Themes | Askr',
     description:
-      'Headless, accessible components with a themeable layer on top — plus icons, logos, charts, and editor integration.',
+      'Use headless interaction components with Askr themes, plus optional icons, logos, charts, and editor tools.',
   },
   {
     path: '/tooling',
     label: 'Tooling',
     homepageSummary:
-      'A CLI for scaffolding, generating, and checking your app.',
+      'Scaffold apps, generate files, and check OpenAPI contracts.',
     title: 'Tooling | Askr',
     description:
-      'Scaffold with the Askr CLI, generate pages and actions, catch OpenAPI drift, and manage dependency updates.',
+      'Use the Askr CLI to create apps, generate pages and actions, check OpenAPI changes, and review dependency updates.',
   },
   {
     path: '/production',
     label: 'Production',
     homepageSummary:
-      'What actually ships: static files or a Node process, and how to run either.',
+      'Build static files or run request-time code with the Node adapter.',
     title: 'Production | Askr',
     description:
-      'Deploy static output or a Node adapter, with health probes, middleware, localization, and telemetry you configure yourself.',
+      'Choose static output or a Node server, then configure probes, localization, and OpenTelemetry for your application.',
   },
 ] as const satisfies readonly MarketingPageDefinition[];
 
