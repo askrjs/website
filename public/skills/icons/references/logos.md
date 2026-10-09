@@ -11,7 +11,7 @@
 
 Use `@askrjs/logos` for an authorized brand mark, not for general interface
 concepts. The installed package currently determines which marks are available.
-At version 0.2.1 it exports Apple, Facebook, GitHub, Google, and Microsoft logo
+The curated catalog exports Apple, Facebook, GitHub, Google, and Microsoft logo
 components. Verify the installed declarations rather than assuming another
 brand is present.
 
@@ -27,9 +27,10 @@ Import a named logo from the package root:
 import { GitHubLogo, GoogleLogo } from '@askrjs/logos';
 ```
 
-Focused subpaths such as `@askrjs/logos/logos/github` are also published.
-Verify the installed export before using one. The package has no runtime logo
-registry or string-selected logo component.
+Root imports support tree shaking. The 0.5 migration removes individual logo
+subpaths and factory helpers. Use `IconBase` and `IconProps` from
+`@askrjs/askr/foundations/icon` for custom marks and prop annotations. The package
+has no runtime logo registry or string-selected logo component.
 
 ## Preserve brand treatment
 
