@@ -1069,15 +1069,13 @@ const overlays = componentPages('Overlays', [
     themes: ['dropdown-menu', 'context-menu'],
   },
   {
-    title: 'Drawer and Sheet',
-    // Not primitive-less like the experimentalControls set above — both are
-    // straight aliases of @askrjs/ui/dialog (askr-themes/src/entries/
-    // {drawer,sheet}.ts). Sheet gets real data-side positioning CSS; Drawer
-    // has none at all — neither has distinct gesture or animation behavior
-    // of its own beyond what Dialog already provides.
+    title: 'Sheet',
+    path: 'drawer-and-sheet',
+    // Preserve the published documentation URL. Sheet composes Dialog behavior
+    // with side-aware content and styled text/layout parts.
     status: 'experimental',
-    ui: [],
-    themes: ['drawer', 'sheet'],
+    ui: ['dialog'],
+    themes: ['sheet'],
   },
 ]);
 const navigation = componentPages('Navigation and chrome', [
@@ -1137,16 +1135,13 @@ const feedback = componentPages('Disclosure and feedback', [
     themes: ['progress'],
   },
   {
-    title: 'Toast and Sonner',
-    // Toast (from @askrjs/ui) is a real, working headless primitive. Sonner
-    // (themes/sonner, aliasing Toaster) is not a queueing/stacking/dismiss
-    // notifier system the way shadcn's sonner or the original Sonner library
-    // is — it's a bare presentational div wrapper with no imperative toast()
-    // API, timing, or stacking logic of its own. Don't let the shared name
-    // imply parity with those.
+    title: 'Toast and Toaster',
+    path: 'toast-and-sonner',
+    // Preserve the published URL. Toast owns notification behavior; Toaster is
+    // a presentational host available through the retained aggregate entry.
     status: 'limited',
     ui: ['toast'],
-    themes: ['toast', 'sonner'],
+    themes: ['toast', 'components'],
   },
   {
     // Stat (Stat/StatLabel/StatValue/StatDescription) IS a real export, but

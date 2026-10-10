@@ -405,7 +405,7 @@ function ProjectStatusSelect() {
 </AlertDialog>`,
     ],
     [
-      /^Drawer and Sheet$/,
+      /^Sheet$/,
       `import { Button, Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@askrjs/themes/components';
 
 <Sheet>
@@ -576,7 +576,7 @@ const columns: readonly VirtualTableColumn<Project>[] = [
 <Progress value={uploaded()} max={total()} aria-label="Upload progress" />`,
     ],
     [
-      /Toast|Sonner/,
+      /Toast|Toaster/,
       `import { Toast, ToastDescription, ToastHost, ToastTitle } from '@askrjs/themes/components';
 
 <ToastHost>
@@ -1330,11 +1330,11 @@ git diff -- skills`,
     [
       /Vite Integration and Document Ownership/,
       'Install the Askr Vite plugin once and keep the HTML document owned by the selected SPA, SSR, or SSG entry instead of generating competing shells.',
-      `import { askrVitePlugin } from '@askrjs/vite';
+      `import { askr } from '@askrjs/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  plugins: [askrVitePlugin()],
+  plugins: [askr()],
 });`,
     ],
     [

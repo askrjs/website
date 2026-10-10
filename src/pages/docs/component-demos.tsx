@@ -324,7 +324,7 @@ const demos: Record<string, ComponentDemoDefinition> = {
     'Open actions and select an item.',
     MenuDemo
   ),
-  'Toast and Sonner': defineDemo(
+  'Toast and Toaster': defineDemo(
     'Try Toast',
     'Dismiss transient feedback from the viewport.',
     ToastDemo
