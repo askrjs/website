@@ -68,7 +68,7 @@ export function OrderTotal() {
 });`,
   '/docs/data/queries-and-consistency': `const project = defineQuery({
   key: ({ id }: { id: string }) => 'project:' + id,
-  fetch: ({ id, signal }) => api.projects.get(id, { signal }),
+  fetch: ({ id }, { signal }) => api.projects.get(id, { signal }),
 });
 
 const result = createQuery(project, { id: projectId });`,
@@ -1365,7 +1365,8 @@ const project = resource(
     [
       /Testing Utilities/,
       'Mock the query or route boundary, drive public state transitions, and inspect invalidation or route warnings without replacing the application runtime.',
-      `import { createInvalidationRecorder, matchRoute, mockQuery } from '@askrjs/askr/testing';
+      `import { createInvalidationRecorder, mockQuery } from '@askrjs/askr/testing';
+import { matchRoute } from '@askrjs/askr/router';
 
 const projects = mockQuery({ data: [{ id: 'p1', name: 'Northstar' }] });
 const invalidations = createInvalidationRecorder();
@@ -1479,7 +1480,7 @@ export const registry = createRouteRegistry(() => {
 
 const project = defineQuery({
   key: ({ id }: { id: string }) => 'project:' + id,
-  fetch: ({ id, signal }) => api.projects.get(id, { signal }),
+  fetch: ({ id }, { signal }) => api.projects.get(id, { signal }),
 });
 
 const result = createQuery(project, { id: projectId });`,
