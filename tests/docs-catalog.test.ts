@@ -226,7 +226,7 @@ describe('documentation catalog', () => {
       'Popover',
       'Tooltip',
       'Menu, Dropdown, and Context Menu',
-      'Toast and Sonner',
+      'Toast and Toaster',
     ];
     expect(componentDemoTitles).toEqual(expect.arrayContaining(expected));
     for (const title of expected) expect(componentDemoFor(title)).toBeTruthy();

@@ -196,7 +196,7 @@ export const headingOverrides: Readonly<
     'component-page-contract':
       "Every component page in this section follows the same shape — purpose, install and import, live examples, anatomy, state model, keyboard and accessibility, styling and tokens, an API reference grounded in the real prop types, edge cases, and related pages — so once you've read one you know how to navigate the rest. Pages link out to the specific @askrjs/ui and @askrjs/themes subpath exports they cover rather than the package roots, which keeps import statements copy-pasteable. If a page has no @askrjs/ui subpath listed, that's not an oversight: it means the component genuinely has no headless counterpart and ships only as a themed component.",
     'experimental-families':
-      'A handful of component families are marked experimental — Combobox and Command, Calendar and Date Picker, Native Select and Input OTP, and Drawer and Sheet — and all four share the same reason: none of them has an @askrjs/ui headless primitive backing them. They exist only in @askrjs/themes today, which means their behavior and markup are more likely to change shape as a headless version gets built out. Treat their APIs as less stable than the rest of the catalog and expect follow-up releases to adjust them.',
+      'Combobox and Command, Calendar and Date Picker, and Native Select and Input OTP are experimental themed controls without a dedicated headless family. Sheet is also marked experimental, but it composes the supported Dialog behavior and adds theme-owned side positioning. Check each page for its actual behavior owner and stability.',
     'headless-and-themed-layers':
       "Askr's component system is split into two packages that ship separately: @askrjs/ui, which owns interaction behavior, focus handling, and ARIA wiring with no visual opinion at all, and @askrjs/themes, which owns the default look, CSS tokens, and a styled component catalog built on top of it. When a headless primitive exists — Button, Dialog, Select, and similar — the themed version literally imports and wraps it rather than reimplementing behavior, so keyboard handling and state management stay in one place. Reach for @askrjs/ui directly when you're writing your own design system from scratch, or @askrjs/themes when you want a shipped, styled result.",
     'package-boundaries':
@@ -211,7 +211,7 @@ export const headingOverrides: Readonly<
     'install-and-import':
       'Install `@askrjs/ui` for the headless behavior and `@askrjs/themes` for the styled defaults. Pull Accordion pieces from `@askrjs/ui/accordion` (headless) or `@askrjs/themes/accordion` (styled), and Collapsible pieces from `@askrjs/ui/collapsible` or `@askrjs/themes/collapsible` — the two components ship as separate subpaths in both packages, not one combined module.',
     'keyboard-and-accessibility':
-      'Triggers in both components carry `role="button"` semantics with `aria-expanded` and `aria-controls`, and respond to Enter or Space to toggle open state — behavior the `COLLAPSIBLE_A11Y_CONTRACT` and `ACCORDION_A11Y_CONTRACT` constants codify directly. Accordion goes a step further, wrapping its panels in `role="region"` and giving triggers arrow-key roving focus governed by `orientation` and `loop`, since a set of triggers benefits from list-style navigation between them. Collapsible skips that roving-focus layer entirely, since managing a single trigger leaves nothing to navigate across.',
+      'Triggers expose aria-expanded and aria-controls and support keyboard activation. Accordion additionally coordinates focus among its triggers according to orientation and loop; Collapsible owns a single disclosure. Test the rendered relationships, focus movement and open state through those public components.',
     'live-examples':
       'The example composes the themed Accordion and Collapsible directly. Once it is running in your own app, open devtools and watch `data-state` and `aria-expanded` change as you toggle an item — those attributes are the styling and testing contract, so confirm your markup produces them before layering custom CSS on top.',
     purpose:
@@ -259,7 +259,7 @@ export const headingOverrides: Readonly<
     purpose:
       'None of Alert, Badge, Empty, Skeleton, Spinner, or Stat ships a headless counterpart in `@askrjs/ui` — each lives only in the themes package, since their behavior amounts to static markup and styling rather than anything complex enough to justify a separate logic layer. Stat is the odd one out in a different way: it has no dedicated `@askrjs/themes/stat` subpath, so you reach it through the shared `@askrjs/themes/components` barrel instead of importing it on its own.',
     'related-pages':
-      "See Progress for a determinate alternative to Spinner's indeterminate look, and Toast and Sonner for time-boxed feedback instead of a persistent inline Alert.",
+      "See Progress for a determinate alternative to Spinner's indeterminate look, and Toast and Toaster for time-boxed feedback instead of a persistent inline Alert.",
     'state-model':
       "None of these six own any state — every one of them is presentational, driven entirely by the props you pass on each render, and that includes Stat. Alert accepts an `onDismiss` callback for a caller-owned dismiss button, but the decision to mount or unmount the alert is still yours; Alert doesn't track its own visibility internally.",
     'styling-and-tokens':
@@ -274,7 +274,7 @@ export const headingOverrides: Readonly<
     'install-and-import':
       "Import behavior from `@askrjs/ui/alert-dialog` and styling from `@askrjs/themes/alert-dialog`, both real subpaths. `AlertDialogAction` and `AlertDialogCancel` really are `DialogClose` under alias names with no logic of their own, and `AlertDialogOverlay`/`AlertDialogTitle`/`AlertDialogDescription` pass straight through to Dialog's parts — but `AlertDialogTrigger` and `AlertDialogContent` aren't bare re-exports; both wrap the underlying Dialog part with alert-dialog-specific dismissal guarding, so don't assume every piece in this tree is a zero-logic alias just because most of them are.",
     'keyboard-and-accessibility':
-      'The a11y contract calls for both a primary action and a cancel action to be present — `ALERT_DIALOG_A11Y_CONTRACT.ACTION_REQUIREMENTS` flags both as required, so don\'t ship an alert dialog with only a single button. `aria-labelledby`/`aria-describedby` from `DialogTitle`/`DialogDescription` are wired up the same way Dialog does it, but `role="alertdialog"` is not applied automatically — the component defaults to Dialog\'s own role, so set `role="alertdialog"` on `AlertDialogContent` explicitly if you want assistive tech to treat it as an interruption needing an explicit response rather than a plain dialog.',
+      'Provide both a primary action and a cancel action. DialogTitle and DialogDescription supply accessible naming and description. Set role="alertdialog" on AlertDialogContent when the interaction requires an interrupting confirmation, and test focus placement, keyboard activation and cancellation in the composed tree.',
     'live-examples':
       "Structure mirrors Dialog: `AlertDialog` wraps an `AlertDialogTrigger` and a portal containing `AlertDialogContent`, `AlertDialogTitle`, and `AlertDialogDescription`. The part that's actually distinct is the footer — pair `AlertDialogCancel` with `AlertDialogAction` so there's always an explicit way to back out alongside the destructive action.",
     purpose:
@@ -335,13 +335,13 @@ export const headingOverrides: Readonly<
     'install-and-import':
       "`asChild` and `ref` aren't separately imported — they're just props defined on every component's prop union, e.g. `ButtonProps = ButtonNativeProps | ButtonAsChildProps`. `VisuallyHidden` is a normal component import: `import { VisuallyHidden } from '@askrjs/ui'`.",
     'keyboard-and-accessibility':
-      'When `asChild` renders onto a non-natively-interactive element (a `<div>` or `<a>` standing in for a button), the component compensates by adding `aria-disabled` and `tabindex="-1"` in place of the native `disabled` attribute, and by ensuring the element is keyboard-focusable — this is exactly the branch `BUTTON_A11Y_CONTRACT.DISABLED_ATTRIBUTES.asChild` documents. `VisuallyHidden` content stays in the accessibility tree and the tab order (when focusable) even though it\'s clipped from the visual viewport.',
+      'Disabled native controls use the disabled attribute. When asChild targets an element without native disabled behavior, verify aria-disabled, tab order and suppressed activation. VisuallyHidden keeps its content available to assistive technology while removing it from visual layout.',
     'live-examples':
       '`<Button asChild><a href="/docs">Docs</a></Button>` renders an anchor with button press semantics instead of a nested `<button><a>...</a></button>`, which keeps the DOM valid and avoids nested interactive elements. `<VisuallyHidden>Loading results</VisuallyHidden>` renders text that\'s readable by screen readers but not visible on screen, commonly paired with a spinner or icon-only control that needs an accessible name.',
     purpose:
       "Two patterns repeat across almost every component in @askrjs/ui: the `asChild` prop for rendering onto a caller-supplied element instead of the component's default tag, and a shared `Ref<T>` type for forwarding refs through that polymorphism. This page covers both, plus VisuallyHidden, the one component whose entire purpose is an accessibility utility rather than an interactive widget.",
     'related-pages':
-      "See Interaction Policies for how each component's `*_A11Y_CONTRACT` documents the asChild-vs-native attribute differences shown here. See Icon Contract for another small, focused accessibility convention that layers on top of components like Button.",
+      'See Interaction Policies for native and asChild behavior and how to test the rendered attributes. See Icon Contract for accessible icon labeling.',
     'state-model':
       "Neither `asChild` nor ref forwarding carries state — they're purely about which DOM element a component's behavior attaches to. State-bearing props like `checked` or `value` work identically regardless of which branch of the union you're in.",
     'styling-and-tokens':
@@ -366,7 +366,7 @@ export const headingOverrides: Readonly<
     'state-model':
       "Avatar tracks one real piece of state: `AvatarLoadingStatus`, typed as `'idle' | 'loading' | 'loaded' | 'error'`, exposed through `AvatarImage`'s `onLoadingStatusChange` callback so you can react to load failures yourself. Item's state is purely presentational — `active?: boolean` and `variant?: 'default' | 'outline' | 'muted'` control appearance, but Item doesn't manage selection or interaction state; if a row needs to respond to clicks or track selected-ness, that logic lives in your own component or in whatever interactive element you put inside it.",
     'styling-and-tokens':
-      "Both components mark their internal parts with `data-slot` hooks — `data-avatar`, `data-avatar-image`, `data-avatar-fallback` for Avatar per its `AVATAR_A11Y_CONTRACT` — which is the surface you should target with CSS rather than reaching into internal structure. Item's `size` prop (`'default' | 'sm' | 'xs'`) and `variant` prop map to `data-size`/`data-variant` attributes that drive gap, padding, and background changes off the theme's general `--ak-space-*` scale — not the separate `--ak-density-*` family, which is scoped to form-control sizing rather than list rows — so a compact `Item` list still lines up visually with the rest of the theme's spacing rhythm, just not through that specific token family.",
+      'Target the published data-slot and data-state hooks rather than private child structure. Item size and variant attributes select theme spacing and presentation; inspect the resulting DOM and styles when composing a custom theme.',
   },
   '/docs/components/breadcrumb-and-pagination': {
     anatomy:
@@ -522,11 +522,11 @@ export const headingOverrides: Readonly<
     'install-and-import':
       "These primitives live in @askrjs/ui: `import { FocusScope, DismissableLayer, VisuallyHidden } from '@askrjs/ui'`, or import them individually from `@askrjs/ui/focus-scope`, `@askrjs/ui/dismissable-layer`, and so on if you want narrower imports. They're building blocks other components — Dialog, Popover, Dropdown — already use internally, so you'll often meet them indirectly before you ever import one yourself.",
     'keyboard-and-accessibility':
-      "FocusScope's behavior is described by `FOCUS_SCOPE_A11Y_CONTRACT`, which declares `trapped`, `loop`, and `restoreFocus` as its supported features — trapping tab order inside the scope, wrapping focus at the edges, and returning focus to wherever it came from on unmount. VisuallyHidden's contract declares its strategy as `visually-hidden-but-screen-reader-visible` rendered on a `span`, which is exactly what you want for screen-reader-only labels that shouldn't take up layout space.",
+      'FocusScope exposes trapped, loop and restoreFocus behavior. Verify Tab containment, edge wrapping and focus restoration on teardown through the rendered tree. VisuallyHidden provides labels that remain available to assistive technology.',
     'live-examples':
       'A typical modal composes FocusScope and DismissableLayer directly around its content: FocusScope traps tab order inside the dialog and restores focus to the trigger on close, while DismissableLayer listens for the escape key and outside pointer events to close it. Dialog itself is built this way internally, which is why wrapping your own overlay content in the same two primitives gets you the same behavior without writing a single keydown handler.',
     purpose:
-      "Askr's headless primitives are built to be composed rather than configured — instead of a dozen props controlling every visual detail, you assemble small, focused pieces like FocusScope and DismissableLayer around your own markup. Accessibility isn't bolted on afterward; each primitive ships a documented contract (role, ARIA attributes, data hooks) that you can inspect directly in its `*_A11Y_CONTRACT` export.",
+      'Compose the public primitives around explicit markup. Their supported contracts are component props, observable roles and ARIA relationships, keyboard behavior and focus ownership. Test those outcomes in your own composition.',
     'related-pages':
       'See ARIA and Ref Utilities for the lower-level attribute and ref helpers these primitives build on, and Focus and Dismissal for a deeper look at how FocusScope and DismissableLayer are used across overlay components specifically.',
     'state-model':
@@ -610,7 +610,7 @@ export const headingOverrides: Readonly<
     purpose:
       "Trapping focus and blocking interaction with everything behind it is what Dialog does at its core, forcing the user to either act or dismiss before continuing. Reach for it when a task needs undivided attention — a form, a confirmation step, a detail view — and letting the user ignore it and keep scrolling would be the wrong call. When the content is purely informational and doesn't need to block the rest of the page, Popover is the better fit.",
     'related-pages':
-      'Alert Dialog reuses this exact component tree under the hood for the case where you specifically need a confirm/cancel action pair. Drawer and Sheet are also Dialog under a different name in the themed layer, just with slide-in positioning instead of a centered panel. If what you actually want is a non-modal floating panel, see Popover.',
+      'Alert Dialog reuses Dialog behavior for confirmation flows. Sheet adds themed edge positioning while retaining the Dialog state, focus and dismissal model. Use Popover for a floating panel with its own interaction model.',
     'state-model':
       "A dialog's open state is just a boolean, driven by `open`, `defaultOpen`, and `onOpenChange` on the root `Dialog` component. `modal` controls whether interaction with the rest of the page is blocked while it's open — leave it on unless you have a specific reason to allow background interaction. There's no separate loading or error state baked in; anything beyond open/closed is left to whatever you render inside `DialogContent`.",
     'styling-and-tokens':
@@ -618,24 +618,24 @@ export const headingOverrides: Readonly<
   },
   '/docs/components/drawer-and-sheet': {
     anatomy:
-      '`DrawerContent`/`SheetContent` are `DialogContent` under a different name, so they inherit the same overlay-plus-content structure: `DrawerTrigger` opens it, `DrawerPortal` mounts it outside the normal DOM flow, `DrawerOverlay` is the backdrop, and `DrawerTitle`/`DrawerDescription` supply the accessible name and description. Swap the `Drawer` prefix for `Sheet` and the story is identical.',
-    api: 'The full Dialog prop surface is inherited: `DrawerContent`/`SheetContent` take `forceMount`, `role`, `onEscapeKeyDown`, `onPointerDownOutside`, `onInteractOutside`, and `onDismiss`; `DrawerTrigger`/`SheetTrigger` and `DrawerClose`/`SheetClose` take standard button-like props. There are no drawer- or sheet-specific props like `side` or `size` in the current release.',
+      'Sheet composes Sheet, SheetTrigger, SheetPortal, SheetOverlay and SheetContent with SheetTitle, SheetDescription and SheetClose. Root, trigger, portal, overlay and close reuse Dialog; the themed content and text parts provide Sheet-specific slots.',
+    api: 'Sheet accepts the Dialog root props open, defaultOpen, onOpenChange and modal. SheetContent adds side="top" | "right" | "bottom" | "left", defaulting to right, and forwards its remaining props to DialogContent. SheetHeader and SheetFooter provide layout slots.',
     'edge-cases':
-      "If your design calls for a genuine edge-anchored panel with its own slide transition, treat Drawer and Sheet as a naming convention today, not a distinct component — you're responsible for the positioning CSS and any width/height constraints. Because both names compile to the same module as Dialog, mixing `Drawer` and `Sheet` imports in one tree carries no behavioral risk, but it also means renaming one to the other later is a no-op beyond your own class names.",
+      'Test the chosen side at narrow widths and with long content. Sheet relies on Dialog for focus and dismissal; side changes presentation rather than creating another open-state owner. Provide an accessible title and an explicit close action.',
     'install-and-import':
-      "Headless control for these components comes from `@askrjs/ui/dialog` — no separate `@askrjs/ui/drawer` or `@askrjs/ui/sheet` package exists. Themed usage is different: import from `@askrjs/themes/drawer` and `@askrjs/themes/sheet`, which compile to the same output as `@askrjs/themes/dialog` under the hood. The only visible difference is naming — you'll get `Drawer`/`Sheet`-prefixed exports such as `DrawerContent` and `SheetTrigger` instead of `Dialog`-prefixed ones.",
+      'Import Sheet and its parts from @askrjs/themes/sheet or the supported @askrjs/themes/components aggregate. Its headless behavior comes from @askrjs/ui/dialog. For 0.5, migrate retired Drawer aliases to the corresponding Dialog components; use Sheet when its side positioning is intended.',
     'keyboard-and-accessibility':
-      "Because the implementation is Dialog's, Escape-to-close, focus trapping, and the `dialog`/`alertdialog` role handling all carry over unchanged — `DialogContentOwnProps`' `onEscapeKeyDown`, `onPointerDownOutside`, and `onDismiss` hooks are available under the Drawer/Sheet names too. Don't assume drawer-specific screen-reader behavior (like announcing a direction of entry) exists; it doesn't yet.",
+      'Sheet inherits Dialog focus and dismissal behavior. Verify Escape, outside interactions, accessible title and description, and return focus through your composed trigger and content. The side prop does not add gesture or directional screen-reader semantics.',
     'live-examples':
-      "A Drawer or Sheet example looks exactly like a Dialog example with the names swapped: a root component wrapping a trigger and a portal-rendered content block with title, description, and close affordances. There is currently no `side` prop or edge-anchored slide-in animation distinguishing them visually from a centered modal — that's the clearest way to see the alias in practice.",
+      'Open the Sheet example and inspect its edge positioning and accessible title. Set side="left" on SheetContent to move it to the left edge, then close it and verify focus returns to the trigger.',
     purpose:
-      "Drawer and Sheet are themed components for panel-style overlays — a drawer sliding in from an edge, a sheet covering more of the viewport — but as shipped today they're both exported as direct aliases of `Dialog` under `@askrjs/themes`, with no headless `@askrjs/ui` primitive of their own. That's why this page is marked experimental: the names exist to signal intent in your markup, but the underlying behavior, positioning, and CSS are currently identical to Dialog.",
+      'Sheet provides a themed edge panel built on Dialog behavior. Its content adds side positioning and Sheet-specific slots, while Dialog remains the owner of open state, focus and dismissal.',
     'related-pages':
-      'See Dialog for the primitive Drawer and Sheet are currently built from, including its full controlled-state and dismissal-handling API. See Alert Dialog for the confirmation-flow variant of the same underlying pattern.',
+      'See Dialog for the underlying open-state, focus and dismissal model, and Alert Dialog for confirmation flows.',
     'state-model':
-      "Open state follows Dialog's shape exactly: `open`, `defaultOpen`, `onOpenChange`, and `modal` on the root component. There is no drawer-specific state, like which edge it's anchored to, because that behavior hasn't been built out separately from Dialog yet.",
+      'Open state is owned by the Dialog-derived Sheet root through open, defaultOpen and onOpenChange. The SheetContent side prop is presentation input and does not create another state store.',
     'styling-and-tokens':
-      "There's no dedicated `drawer.css` or `sheet.css` in the default theme — both ride on the same overlay CSS and `data-state`/`data-slot` attributes as Dialog. If you want an actual slide-in panel from an edge, you'll need to add that positioning and transition CSS yourself against the Dialog-derived markup, since the shipped styles only render it as a centered modal.",
+      'The default overlay stylesheet targets data-slot="sheet-content" and data-side for edge positioning. SheetHeader, SheetFooter, SheetTitle and SheetDescription expose their own slots; theme tokens control the shared surface, border and motion presentation.',
   },
   '/docs/components/focus-and-dismissal': {
     anatomy:
@@ -652,7 +652,7 @@ export const headingOverrides: Readonly<
     purpose:
       "FocusScope and DismissableLayer are the two headless primitives every overlay in @askrjs/ui (Dialog, Popover, Dropdown, Menu, Tooltip, HoverCard, Menubar) is built on. FocusScope handles trapping and restoring keyboard focus; DismissableLayer handles closing on outside interaction. They're exported and usable directly if you're building a custom overlay that isn't already covered by the shipped components.",
     'related-pages':
-      'See the Dialog, Popover, Dropdown, and Tooltip component pages for how these primitives get composed into full overlays. See Interaction Policies for how to read the `FOCUS_SCOPE_A11Y_CONTRACT` and `DISMISSABLE_LAYER_A11Y_CONTRACT` constants.',
+      'See Dialog and Popover for complete overlay composition, Interaction Policies for keyboard and pointer behavior, and ARIA and Ref Utilities for asChild and ref ownership.',
     'state-model':
       "Neither primitive owns open/closed state itself — that stays with the consumer (or the overlay component wrapping them, like DialogContent). FocusScope's props (`trapped`, `loop`, `restoreFocus`) and DismissableLayer's callbacks are configuration, not state; you mount and unmount them in response to state that lives elsewhere.",
     'styling-and-tokens':
@@ -684,11 +684,11 @@ export const headingOverrides: Readonly<
       "For components that exist in both packages, the themed version is a thin wrapper: it renders the headless component and attaches classes and data attributes for styling. For components that exist only in @askrjs/themes — Tabs, Sidebar, Card, Badge, Combobox, and others — there's no wrapping happening at all, because there's nothing headless to wrap. Those components implement their own behavior directly inside the themed package.",
     api: "Headless primitives in @askrjs/ui commonly support an `asChild` prop, which renders their behavior and ARIA attributes onto a child element you provide instead of injecting an extra wrapper node — FocusScope, DismissableLayer, and VisuallyHidden all support it, alongside the interactive controls. Themed components generally don't need `asChild` themselves since they already compose the primitive underneath, but understanding the pattern matters once you start pairing @askrjs/ui directly with your own markup.",
     'edge-cases':
-      "Don't go looking for an @askrjs/ui subpath for every themed component — Tabs, Sidebar, Card, Badge, Combobox, Calendar, Drawer, Sheet, Native Select, and Input OTP have none, and importing `@askrjs/ui/tabs` will simply fail because it doesn't exist. If you need headless behavior for one of these, you'll have to build it yourself on top of the lower-level primitives like FocusScope and DismissableLayer rather than expecting a ready-made export.",
+      'Some themed components, including Tabs, Sidebar, Card, Badge, Combobox, Calendar, Native Select and Input OTP, have no matching headless subpath. Sheet uses the existing Dialog family for behavior and adds themed parts; use @askrjs/ui/dialog when composing that behavior directly.',
     'install-and-import':
       "Install both packages together: `npm install @askrjs/ui @askrjs/askr` followed by `npm install @askrjs/themes`. Import the full surface from the package root (`import { Button, Dialog } from '@askrjs/ui'`) when convenience matters more than bundle size, or use per-component subpaths (`import { Button } from '@askrjs/ui/button'`, `import { Button } from '@askrjs/themes/button'`) when you want smaller, more explicit imports.",
     'keyboard-and-accessibility':
-      'Keyboard handling and ARIA wiring are implemented exactly once, in @askrjs/ui, against a documented contract — Dialog exposes `DIALOG_A11Y_CONTRACT` with its role, `aria-modal`, `aria-labelledby`, and trigger attributes; Select exposes `SELECT_A11Y_CONTRACT` with its roles and `aria-selected` wiring. Themed components inherit this for free when they wrap a headless primitive, which is a big part of why the split exists in the first place. Components without a headless counterpart have to implement their own accessibility from scratch, so scrutinize those more carefully.',
+      'Headless UI components own keyboard handling, focus and ARIA relationships. Themed wrappers reuse that behavior. Verify the actual role, labeling, selection and focus outcomes for your composition, especially when using a styling-only component that has no headless counterpart.',
     'live-examples':
       "`@askrjs/ui/button` gives you an unstyled Button with real press handling and keyboard support but no CSS at all. `@askrjs/themes/button` gives you a Button that looks finished out of the box — because under the hood it wraps the exact same headless Button and layers styling and data-attribute hooks on top. Swap one import for the other and the behavior doesn't change, only the appearance does.",
     purpose:
@@ -751,7 +751,7 @@ export const headingOverrides: Readonly<
     'install-and-import':
       'Two packages cover Input: @askrjs/ui plus @askrjs/askr for the headless behavior, and @askrjs/themes if you also want default styling applied. `Input` and `DebouncedInput` live at `@askrjs/ui/input` in headless form, or you can pull `Input` from `@askrjs/themes/input` to get the same component wired to theme CSS. Since themes re-exports the @askrjs/ui Input rather than layering a separate wrapper around it, props and behavior stay identical no matter which path you import from.',
     'keyboard-and-accessibility':
-      'Because Input is a real <input>, it inherits full native keyboard and screen-reader behavior with no extra ARIA wiring required from the component. It supports labeling via a <label for>, aria-label, or aria-labelledby (all three are declared supported in INPUT_A11Y_CONTRACT), defaults to tabIndex 0, and drops to tabIndex -1 when disabled is set.',
+      'Associate Input with a visible Label or an accessible name, and use native disabled and aria-invalid attributes where appropriate. Test keyboard entry, focus and validation messages through the rendered input; DebouncedInput additionally owns its documented debounce lifecycle.',
     'live-examples':
       'Look at a plain text input alongside a disabled one to see the visual and focus differences, then an asChild example wrapping a custom element to confirm props merge onto it rather than a native input being added underneath. A DebouncedInput example wired to a search list is the best way to feel the difference between its onInput (fires on every change) and onDebouncedInput (fires once typing settles).',
     purpose:
@@ -765,24 +765,24 @@ export const headingOverrides: Readonly<
   },
   '/docs/components/interaction-policies': {
     anatomy:
-      'Each contract is a `declare const ..._A11Y_CONTRACT` frozen object with a matching type alias (`ButtonA11yContract`, `SwitchA11yContract`, etc.) derived via `typeof`, so you get autocomplete and type-checking against the literal values rather than a loosely typed record. Fields are grouped by concern — role, keyboard activation, disabled-state attributes, focus rules, and the `DATA_ATTRIBUTES` map of stable `data-*` hooks — and not every component populates every group, since not every component needs one.',
-    api: "There's no single generic contract type — each component defines its own, e.g. `ButtonA11yContract`, `AccordionA11yContract`, `SwitchA11yContract`, `DismissableLayerA11yContract`, `FocusScopeA11yContract`. Import the constant when you want the actual values (for tests or docs generation) and the type when you only need to constrain a function parameter to 'something shaped like a contract'.",
+      'A family root owns its state and coordinates triggers, items and content through private context. Public props select controlled state, keyboard navigation, dismissal and focus behavior. Observe roles, ARIA relationships and data attributes on the resulting DOM.',
+    api: 'Import components and their props from @askrjs/ui or a supported family subpath. Use those props to configure behavior and derive callback types from the props when needed. Accessibility metadata objects and their type aliases are implementation details in 0.5.',
     'edge-cases':
-      "Contracts describe intended behavior, not a runtime guarantee enforced by the library — nothing stops a consumer from overriding `role` or stripping a `data-*` attribute via passthrough props, so treat them as documentation-you-can-import rather than a validator. Even the simplest components export one: `INPUT_A11Y_CONTRACT`, `TEXTAREA_A11Y_CONTRACT`, and `LABEL_A11Y_CONTRACT` all exist, alongside every other interactive component in the package — there's no tier of components that skips this.",
+      'Passthrough attributes and asChild composition can change accessible output. Test the completed tree, including disabled controls, canceled events, nested overlays and teardown, rather than assuming a static description proves the result.',
     'install-and-import':
-      "Contracts are exported alongside their component from the same entrypoint, e.g. `import { Button, BUTTON_A11Y_CONTRACT } from '@askrjs/ui'` or from the per-component subpath `import { BUTTON_A11Y_CONTRACT } from '@askrjs/ui/button'`. You don't need them at runtime to use a component correctly — they're most useful for testing and for verifying your own asChild wrapper preserves the expected behavior.",
+      "Use import { Button } from '@askrjs/ui/button' for a single family, or the supported root for multi-family composition. Application tests should mount the public components and exercise user-visible behavior.",
     'keyboard-and-accessibility':
-      "This is the primary content of most contracts. `KEYBOARD_ACTIVATION` lists which keys trigger a press-like interaction (`Enter`/`Space` for Button and Switch), and `DISMISS_EVENTS` on DismissableLayer's contract lists which interactions close an overlay. Reading a component's contract before wiring custom keyboard handling around it tells you what's already handled internally versus what you still need to implement yourself.",
+      'Check each family page for its keyboard and focus model. Button supports native activation; menus coordinate item navigation; overlay primitives coordinate Escape, outside interactions and restoration. Avoid duplicating handlers already owned by the component.',
     'live-examples':
-      "`BUTTON_A11Y_CONTRACT.KEYBOARD_ACTIVATION` is `['Enter', 'Space']` and `BUTTON_A11Y_CONTRACT.DISABLED_ATTRIBUTES` distinguishes the native `disabled` attribute from the `aria-disabled` used when `asChild` renders something other than a real `<button>`. `DISMISSABLE_LAYER_A11Y_CONTRACT.DISMISS_EVENTS` lists `['escape-key', 'outside-pointer']`, which is exactly the set of interactions DismissableLayer listens for by default.",
+      'Focus a Button and activate it with Enter or Space, then disable it and verify that activation is suppressed. Open a Dialog, dismiss it with Escape and verify that focus returns to the trigger. Repeat through asChild markup where your application uses that mode.',
     purpose:
-      "Every interactive @askrjs/ui component ships a companion `*_A11Y_CONTRACT` object — `BUTTON_A11Y_CONTRACT`, `ACCORDION_A11Y_CONTRACT`, `SWITCH_A11Y_CONTRACT`, and so on — that documents its ARIA role, keyboard bindings, and data attributes as a typed, importable value rather than as prose you have to trust. This page explains what these contracts are for and how to read them, since they're the closest thing @askrjs/ui has to a formal interaction spec per component.",
+      'Interaction policies describe the observable behavior of the public components: state transitions, keyboard handling, focus ownership, roles and ARIA relationships. Use the component documentation and executable behavior to assess your application composition.',
     'related-pages':
-      'See ARIA and Ref Utilities for how these contracts relate to the `asChild` pattern and ref forwarding. See Focus and Dismissal for the two components — FocusScope and DismissableLayer — whose entire job is implementing one interaction policy each.',
+      'See ARIA and Ref Utilities for asChild and ref forwarding, and Focus and Dismissal for FocusScope and DismissableLayer composition.',
     'state-model':
-      "The contracts themselves are static — they don't change at runtime and carry no component state. What varies at runtime is which branch of a contract applies: Button's `DISABLED_ATTRIBUTES.native` (`'disabled'`) kicks in for a real `<button>`, while `DISABLED_ATTRIBUTES.asChild` (`'aria-disabled'`) applies when `asChild` is set and the rendered element isn't natively disableable — the constant itself only names that one attribute; the accompanying `tabindex=\"-1\"` on a disabled `asChild` element is separate behavior the component applies, not a second value bundled into `DISABLED_ATTRIBUTES.asChild`.",
+      'Root props distinguish controlled values from internal state. Disabled native elements use their native disabled behavior; non-native asChild targets require equivalent ARIA, tab-order and activation handling. Test a mode transition explicitly when your application changes controlled props.',
     'styling-and-tokens':
-      '`DATA_ATTRIBUTES` inside each contract is the styling-relevant part: it names the `data-slot`, `data-state`, and `data-disabled` (or similarly-purposed) attributes a component sets on its DOM output. `@askrjs/themes` selectors are written against exactly these attribute names, so if you build a custom theme, the contract tells you which hooks are guaranteed stable rather than incidental implementation detail.',
+      'Style the documented data-slot, data-state and data-disabled attributes emitted by the components. Keep styling assertions separate from keyboard, focus and accessible-name checks so each failure identifies the affected contract.',
   },
   '/docs/components/menu-dropdown-and-context-menu': {
     anatomy:
@@ -814,7 +814,7 @@ export const headingOverrides: Readonly<
     'install-and-import':
       'Install both @askrjs/ui and @askrjs/themes, then import from @askrjs/ui/menubar for the unstyled primitive or @askrjs/themes/menubar if you want the default look applied automatically. Note that every @askrjs/themes subpath, including ./menubar, actually resolves to the same components.js barrel — the subpath is there for import-path clarity, not a smaller bundle. Bring in @askrjs/themes/default CSS once at the app root so the menubar tokens and data-slot styles are active.',
     'keyboard-and-accessibility':
-      'MENUBAR_A11Y_CONTRACT documents the exact contract: the root gets role="menubar", each MenubarContent gets role="menu", and each MenubarItem gets role="menuitem", with aria-expanded and aria-haspopup applied to triggers automatically. Arrow keys move focus across top-level triggers and down into open menus, matching the native menu bar convention users already expect. Data attributes like data-state, data-disabled, data-side, and data-align are set for you and are the correct hooks for styling — you shouldn\'t need to track any of that yourself.',
+      'Menubar uses menubar, menu and menuitem roles. Test arrow-key navigation between top-level triggers and open-menu items, along with Escape, disabled items and focus restoration. Use data-state, data-disabled, data-side and data-align for styling.',
     'live-examples':
       "A typical menubar nests Menubar around several MenubarMenu blocks, each pairing a MenubarTrigger with a MenubarContent that holds MenubarItem, MenubarSeparator, and MenubarLabel. For nested submenus, wrap a MenubarSub around a MenubarSubTrigger and MenubarSubContent inside a menu's content. Because MenubarContent supports side, align, and sideOffset, you can flip a menu below or beside its trigger depending on where it sits in the layout.",
     purpose:
@@ -894,7 +894,7 @@ export const headingOverrides: Readonly<
     'edge-cases':
       "Because portaled content renders outside its logical parent in the DOM, don't rely on CSS descendant selectors scoped to the trigger's container to style it — target the portal content's own `data-slot` hooks instead. Also be aware that nested portals (a dropdown opened from inside a dialog, for instance) stack according to the shared z-index ladder, not render order, so a component that opens later isn't guaranteed to render visually on top unless its layer token says it should.",
     'install-and-import':
-      "Portals ship alongside their parent component rather than as a separate import: `import { Dialog, DialogPortal, DialogContent } from '@askrjs/ui'` or the themed equivalent from `@askrjs/themes/components`. Themed aliases follow the same pattern — `DrawerPortal` and `SheetPortal`, for example, are literally the same `DialogPortal` re-exported under a different name.",
+      "Import DialogPortal with its owning Dialog family from '@askrjs/ui/dialog' or the themed component entries. SheetPortal reuses the Dialog portal behavior. Compose each portal under the root that owns its state and lifecycle.",
     'keyboard-and-accessibility':
       "Moving markup to a different DOM location doesn't change its position in the accessibility tree the way it changes its visual position — portaled content still needs the same `aria-modal`, `aria-labelledby`, and focus-trap wiring the Dialog a11y contract specifies, and Askr's headless components handle that automatically regardless of where the portal renders to.",
     'live-examples':
@@ -917,13 +917,13 @@ export const headingOverrides: Readonly<
     'install-and-import':
       'The headless primitives live at `@askrjs/ui/progress` (linear) and `@askrjs/ui/progress-circle` (circular). The themed layer only ships a dedicated `@askrjs/themes/progress` subpath for the linear bar — ProgressCircle is still themed and re-exported, but you pull it from the full `@askrjs/themes/components` barrel rather than its own subpath.',
     'keyboard-and-accessibility':
-      'Both variants render `role="progressbar"` with `aria-valuenow`, `aria-valuemin`, and `aria-valuemax` kept in sync with `value`/`max`, per PROGRESS_A11Y_CONTRACT. Neither is focusable, so there\'s no keyboard behavior to test — the accessibility work on your end is almost entirely about supplying a meaningful `getValueLabel`.',
+      'Provide an accessible name for each progress indicator. The rendered progressbar exposes aria-valuenow, aria-valuemin and aria-valuemax according to value and max; verify those attributes and the value label for your application.',
     'live-examples':
       "The example puts the linear and circular variants side by side: `value` drives the fill width on one and the ring's stroke offset on the other. Render both with a changing `value`, then with `value={null}`, to see how the indeterminate state reads before you commit to it in your own UI.",
     purpose:
       'Progress and ProgressCircle communicate how far along a task with a known endpoint is — a linear bar or a ring, picked by layout rather than meaning. Neither is interactive: they render a value, not a control, so if what you actually have is an unknown-duration wait, use Spinner instead of forcing a fake percentage into either of these.',
     'related-pages':
-      'See Toast and Sonner for time-boxed feedback instead of a persistent indicator, and Alert, Badge, Empty, Skeleton, and Spinner for the indeterminate-loading counterpart that pairs naturally with Progress.',
+      'See Toast and Toaster for time-boxed feedback instead of a persistent indicator, and Alert, Badge, Empty, Skeleton, and Spinner for the indeterminate-loading counterpart that pairs naturally with Progress.',
     'state-model':
       'There\'s no internal state here — `value` is a plain number (or `null` for an indeterminate look) that you own and update on every render, and `max` sets whatever total makes sense for your unit. `getValueLabel(value, max)` turns that pair into the text announced to assistive tech, so use it when the raw percentage on its own wouldn\'t mean anything to a user, like "3 of 5 files uploaded".',
     'styling-and-tokens':
@@ -978,7 +978,7 @@ export const headingOverrides: Readonly<
     'install-and-import':
       'Add both `@askrjs/ui` and `@askrjs/themes` (the headless primitive needs the accompanying visuals to look like anything). Import from the dedicated subpaths — `@askrjs/ui/select` and `@askrjs/themes/select` — rather than the package roots so your bundle only pulls in the select-specific code and its dependency chain.',
     'keyboard-and-accessibility':
-      'The trigger carries `role="button"` with `aria-expanded`, `aria-controls`, and `aria-haspopup` wired automatically; the popover content gets `role="listbox"` and each item `role="option"` with `aria-selected` reflecting the current value. These roles come straight from the `SELECT_A11Y_CONTRACT` object the package exports, so you can inspect it directly if you want to assert on the contract in tests rather than guessing at attribute names.',
+      'Verify the trigger popup and expanded attributes, content listbox, option roles and aria-selected relationships through the rendered Select. Exercise keyboard navigation, selection and focus restoration, including disabled and dynamically removed options.',
     'live-examples':
       'The example composes `Select`, `SelectTrigger`, `SelectValue`, `SelectContent`, and `SelectItem` the same way you will in application code — nothing in it reaches into internals. Copy it wholesale and swap in your own `SelectItem` values as a starting point.',
     purpose:
@@ -1020,7 +1020,7 @@ export const headingOverrides: Readonly<
     'install-and-import':
       "Install `@askrjs/ui` for the behavior and `@askrjs/themes` for the default track/range/thumb visuals, then import from `@askrjs/ui/slider` and `@askrjs/themes/slider`. Both subpaths are real exports, so there's no need to pull in the package roots just to use a slider.",
     'keyboard-and-accessibility':
-      'The thumb carries `role="slider"` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, and `aria-orientation` kept in sync automatically, matching the `SLIDER_A11Y_CONTRACT` export. Dragging is handled with `pointermove`/`pointerup` listeners attached only while a drag is active, and every drag ends by returning focus to the thumb so keyboard users can immediately take over with arrow keys.',
+      'Slider thumbs expose role="slider" and their current, minimum, maximum and orientation attributes. Test keyboard and pointer changes, focus ownership and listener cleanup when a drag ends or the component unmounts.',
     'live-examples':
       "The examples show single-thumb sliders at different `min`, `max`, and `step` configurations, including a disabled variant. Each one is built from the same four parts — `Slider`, `SliderTrack`, `SliderRange`, `SliderThumb` — so you can trace exactly which prop changed the behavior you're looking at.",
     purpose:
@@ -1058,7 +1058,7 @@ export const headingOverrides: Readonly<
     'install-and-import':
       'Import the behavior from `@askrjs/ui/switch` and the default appearance from `@askrjs/themes/switch`. Both are real subpath exports of their respective packages, so you never need to reach into the root barrel just to render a switch.',
     'keyboard-and-accessibility':
-      'Switch renders with `role="switch"` and `aria-checked`, and both Enter and Space toggle it — the exact contract spelled out in the package\'s `SWITCH_A11Y_CONTRACT`, which mirrors the switch pattern published at w3.org/WAI/ARIA/apg/patterns/switch. When disabled, native `<button disabled>` semantics apply automatically since the default render target is a real button element.',
+      'Switch exposes role="switch" and aria-checked. Test keyboard activation and checked-state changes, then verify that disabled controls suppress activation and preserve the intended tab order.',
     'live-examples':
       "The demos cover a plain uncontrolled switch, a controlled one wired to `checked`/`onCheckedChange`, and a disabled state. Each renders as a native `<button>` under the hood, which is worth noticing if you're inspecting the DOM — there's no hidden checkbox unless you also pass `name`.",
     purpose:
@@ -1154,24 +1154,24 @@ export const headingOverrides: Readonly<
   },
   '/docs/components/toast-and-sonner': {
     anatomy:
-      "ToastHost sits near the root of your tree and owns the registry plus a default `duration`; ToastViewport renders the live region the stack mounts into. Each notification is declared with a Toast, which returns no DOM of its own, composed from ToastTitle, ToastDescription, and optionally ToastAction or ToastClose for interactive controls. Sonner skips all of that composition — it's a single mounted piece, closer in spirit to the themed catalog's Toaster than to the ToastHost/Toast model.",
+      'ToastHost owns the notification registry and default duration; ToastViewport presents the stack. Compose each Toast from title, description and optional action or close controls. Toaster is a separate styling-only host with no registry or notification lifecycle.',
     api: 'ToastHostProps adds `duration` on top of standard div props; ToastProps adds `variant`, `open`/`defaultOpen`/`onOpenChange`, and `duration`. ToastAction and ToastClose use the same button-like prop shape as other interactive primitives in the library, including `asChild`.',
     'edge-cases':
-      'Toast and Sonner solve the same problem with two different composition models, so mixing them in one application means running two separate notification stacks side by side — pick one per app rather than splitting notification types between them. Because ToastHost owns the registry, a Toast rendered without a ToastHost above it has nowhere to register into, so mount ToastHost once near your app root instead of per page.',
+      'Render each Toast beneath ToastHost so it can register. Toaster does not supply a queue, timer, stacking or dismissal behavior; applications using it must provide any such behavior explicitly.',
     'install-and-import':
-      'Headless pieces — ToastHost, ToastViewport, Toast, ToastTitle, ToastDescription, ToastAction, ToastClose — come from `@askrjs/ui/toast`. The themed layer re-exports that same set from `@askrjs/themes/toast`, and separately exposes `@askrjs/themes/sonner`, which is its own API with no headless counterpart to import instead.',
+      'Import the headless Toast family from @askrjs/ui/toast and the themed version from @askrjs/themes/toast. Toaster is available from the supported @askrjs/themes/components aggregate. Migrate the retired Sonner alias to Toaster; it remains a styling-only host.',
     'keyboard-and-accessibility':
-      'The stack renders with `role="status"` and `aria-live="polite"`, per TOAST_A11Y_CONTRACT, so new toasts get announced without stealing focus, and the viewport carries an accessible "Notifications" label out of the box. ToastAction and ToastClose are ordinary focusable buttons; ToastAction runs its handler and then closes the toast on its own, so there\'s no need to also wire a separate dismiss call after the action fires.',
+      'The Toast family exposes a polite status region and a Notifications viewport label. Test announcement content, focusable actions, dismissal and timer pausing in your composition. Toaster does not add those interaction or announcement behaviors by itself.',
     'live-examples':
-      "Trigger Toast from this page and inspect Sonner's markup separately — they're not offering the same behavior to compare side by side. Toast actually stacks, times out, and dismisses entries through ToastHost's registry; Sonner is a bare styled wrapper with none of that wired up, so there's no live stacking/timing/dismiss behavior to observe from it here.",
+      'Trigger Toast and observe its registry-backed timing and dismissal. Inspect Toaster separately as a styled container; it has no live notification queue to exercise.',
     purpose:
-      "Toast is the headless notification primitive: a host component that owns a registry of active entries, plus the individual pieces you compose into each one — this is the real, working notification system. Sonner (aliased from `Toaster`) is not a drop-in replacement for it: it's a bare presentational wrapper with no imperative `toast()` API, queueing, stacking, timing, or dismiss logic of its own — despite sharing a name with the popular standalone Sonner library, it doesn't reproduce that library's behavior. If you need an actual working notification system today, build it on Toast/ToastHost, not Sonner.",
+      'Toast and ToastHost provide the notification lifecycle. Toaster provides a styling-only host for application-owned presentation and does not implement an imperative toast API, timers, stacking or dismissal.',
     'related-pages':
       'See Progress for status feedback with a determinate value instead of a transient message, and Alert, Badge, Empty, Skeleton, and Spinner for feedback that should stay on screen rather than time out.',
     'state-model':
       "An individual Toast takes `open`/`defaultOpen`/`onOpenChange` like the other disclosure primitives, plus its own `duration` (falling back to ToastHost's default when omitted) and a `variant` of `'default' | 'success' | 'warning' | 'danger' | 'info'`. Setting `duration` on ToastHost changes that fallback for every toast underneath it that doesn't specify one itself.",
     'styling-and-tokens':
-      "`data-slot`, `data-state`, and `data-disabled` drive the themed enter/exit transitions for the ToastHost/Toast family. Sonner is a distinct API with its own presentation, so don't assume its class names or data attributes line up with Toast's — write separate styles for each rather than sharing selectors across them.",
+      'The Toast family exposes data-slot and data-state styling hooks. Toaster preserves its existing data-slot="sonner" hook; that DOM styling name does not restore the retired Sonner export or add notification behavior.',
   },
   '/docs/components/toggle-family': {
     anatomy:
@@ -1203,7 +1203,7 @@ export const headingOverrides: Readonly<
     'install-and-import':
       "The headless behavior lives at `@askrjs/ui/tooltip`, exporting `Tooltip`, `TooltipTrigger`, `TooltipPortal`, and `TooltipContent`. Most apps won't import from there directly — pull the styled version from `@askrjs/themes/tooltip`, which wraps the same primitives with the default theme's positioning and animation CSS already applied.",
     'keyboard-and-accessibility':
-      'The content renders with `role="tooltip"` and the trigger gets `aria-describedby` pointing at it, per `TOOLTIP_A11Y_CONTRACT` — so screen readers announce the hint as a description of the trigger, not as a separate focusable region. Focusing the trigger with the keyboard opens it the same as hovering does, and moving focus away closes it; there\'s no dedicated close button or additional tab stop to manage.',
+      'Tooltip content exposes role="tooltip", and the trigger references it through aria-describedby. Verify opening from focus and hover, closing on blur or pointer exit, and cleanup when the trigger is removed.',
     'live-examples':
       'A minimal tooltip is a `Tooltip` wrapping a `TooltipTrigger` and a `TooltipContent` inside `TooltipPortal`, with the trigger set to whatever element the hint describes — commonly an icon `Button`. Toggling `side` and `align` on `TooltipContent` is the fastest way to see how the positioning engine reacts to different anchor placements before wiring up real content.',
     purpose:
@@ -1509,13 +1509,13 @@ export const headingOverrides: Readonly<
   },
   '/docs/guides/accessibility': {
     'failure-states':
-      "A component that does not respond to its documented keyboard shortcuts (Space/Enter for `Button`, arrow keys for `Menu`/`RadioGroup`) is a contract violation, not a style choice — check the component's `.a11y.ts` source file (compiled to `.a11y.d.ts` in the published package, but the source you'd actually read is `.a11y.ts`) for the exact keys it commits to before assuming custom behavior is fine. Disabled elements must be genuinely out of the tab order (native `disabled` or `tabindex=\"-1\"`) — most contracts declare that explicitly through a `FOCUS_RULES` field, though not every one does, so check the specific contract rather than assuming the field is always there. A visually-disabled button a screen reader user can still tab into and activate is a real bug regardless. Overlay components that don't restore focus to their trigger on close break keyboard navigation for the next action — treat that as equivalent to a broken click handler.",
+      'Check accessible names, roles, ARIA relationships, keyboard activation and focus order in the rendered application. Disabled controls must suppress activation and follow the documented tab-order behavior. Test overlay focus restoration after close and teardown, including nested compositions.',
     'goal-and-architecture':
-      "`@askrjs/ui` bakes accessibility into each component as a documented, typed contract rather than leaving it to the consumer — components like `Button`, `Toast`, `Dropdown`, and `FocusScope` each export an `_A11Y_CONTRACT` constant (e.g. `BUTTON_A11Y_CONTRACT`) describing their ARIA role, keyboard activation keys, disabled-state attributes, and focus rules, following the WAI-ARIA APG patterns. Interaction behavior is centralized in shared foundations for most of the set (the `pressable` foundation drives keyboard activation for `Button`, for instance), which is what keeps behavior consistent across those components — but it's not a blanket guarantee every interactive component funnels through the same foundation, so verify the specific component you're composing with rather than assuming.",
+      'Public UI components own their documented interaction and accessibility behavior. The 0.5 contract exposes components and props; static accessibility metadata and its type aliases remain private. Test observable roles, relationships, keyboard handling and focus rather than importing internal descriptions.',
     implementation:
-      "Use the components as designed rather than reaching for `asChild` unless you need to render a different host element — `asChild` mode preserves the child's role but switches disabled handling from the native `disabled` attribute to `aria-disabled` plus `tabindex=\"-1\"`, since a non-native element has no built-in disabled state. `Dialog` and `Popover` build on `FocusScope` to trap and restore focus around overlays; `Menu` doesn't — it manages roving focus through its own mechanism rather than `FocusScope`. Let the component you're using own its own focus behavior rather than manually managing `tabindex` and `document.activeElement` yourself, but don't assume every overlay-style component shares one implementation underneath. For custom interactive elements outside the component set, check the relevant `*_A11Y_CONTRACT` for the closest existing component as a reference for what role, keyboard support, and ARIA attributes are expected.",
+      'Compose the public components and let each owning root manage its state and focus. Use asChild when a different host element is needed, and test its disabled, keyboard and ref behavior. Custom controls must explicitly provide appropriate roles, labels, interaction and teardown.',
     verification:
-      "Assert against the exported `*_A11Y_CONTRACT` constants directly in tests — e.g. confirm a `Button`'s rendered `role` and keyboard handling match `BUTTON_A11Y_CONTRACT.ROLE` and `.KEYBOARD_ACTIVATION` — so a regression in the component's markup fails a test instead of only showing up in manual screen-reader testing. Run keyboard-only and screen-reader passes on any custom composition of overlay primitives (`Dialog` + `FocusScope`, `Popover` + `DismissableLayer`), since contracts describe the primitives correctly but your composition can still break focus order or announcement timing.",
+      'Assert the rendered accessible role and name, ARIA relationships, disabled behavior and callbacks. Drive keyboard and pointer events and verify focus before and after dismissal or unmount. Include keyboard-only and screen-reader checks for custom overlay compositions.',
   },
   '/docs/guides/add-ssr-to-an-spa': {
     'failure-states':
@@ -1523,7 +1523,7 @@ export const headingOverrides: Readonly<
     'goal-and-architecture':
       "Adding SSR means the same route registry now renders on the server first and hydrates in the browser, instead of mounting cold. The client swaps `createSPA` for `hydrateSPA({ root, registry })`, and the server calls `renderToString()` with your route registry or a `RouteRenderOptions` object to produce the initial HTML. `@askrjs/vite`'s `askrServer({ entry })` plugin is the piece that's new here — it owns wiring your server entry module into the Vite dev/build pipeline.",
     implementation:
-      "Your HTML template needs exactly one `<!--askr-head-->` marker inside `<head>` and one `<!--askr-app-->` marker where the app mounts — the server plugin validates both and refuses to serve a template missing either one. `insertAskrFragment()` and `composeAskrHead()` are the low-level primitives the plugin uses internally to compose the document at those markers. Point `askrServer({ entry: 'src/server/entry-server.ts' })` at a module that exports a plain `ServerApp` — the plugin wraps it with `createDocumentApp()` internally, you don't call that function yourself. Vite owns the document end to end: it preserves your authored head content and injects only Askr-owned title/meta/link/JSON-LD nodes at the marker.",
+      "Place exactly one <!--askr-head--> marker inside head and one <!--askr-app--> marker at the application mount. Configure askrServer({ entry: 'src/server/entry-server.ts' }) with a module exporting ServerApp. The plugin validates and composes the document internally, preserving authored head content and inserting the Askr-owned output. Custom document integrations can use the supported createDocumentApp helper from @askrjs/vite/server.",
     verification:
       "View source on a rendered route and confirm the markup is real content, not an empty shell waiting for JS — that's the entire point of doing this work. Throttle the network tab and watch hydration complete without a flash of unstyled or duplicated content. Then disable JavaScript entirely and confirm the initial page is still readable; if it isn't, something in your entry-server module is producing markup the static HTML path never exercises.",
   },
@@ -2339,7 +2339,7 @@ export const headingOverrides: Readonly<
   },
   '/docs/tooling/vite': {
     'askr-vite-plugin':
-      "askr() from @askrjs/vite is the entry point every Askr app needs in vite.config.ts. It accepts an optional options object with three booleans -- transformJsx, optimizeTemplates, and ssrPrecompile -- and returns a plugin object whose only publicly-typed field is name: 'askr:vite'. That minimal public type is deliberate: keeping Vite's own (recursive, versioned) Plugin type out of the shipped declarations avoids type-identity conflicts when something like vite-plus compares plugin instances across separately-installed Vite versions.",
+      "askr() from @askrjs/vite is the entry point every Askr app needs in vite.config.ts. Its options configure transformJsx, optimizeTemplates, and the images pipeline. Remove the retired ssrPrecompile option; it never changed generated output. The returned plugin's only publicly-typed field is name: 'askr:vite'. That minimal public type keeps Vite's recursive, versioned Plugin type out of shipped declarations and avoids type-identity conflicts between separately installed Vite versions.",
     'browser-build':
       "On the client side, the plugin's job is applying Askr's JSX and template transforms so a normal Vite dev server and build pipeline understand Askr syntax without any other configuration. You install it alongside vite and @askrjs/askr (npm install -D @askrjs/vite vite, npm install @askrjs/askr) and add plugins: [askr()] to a standard defineConfig call -- there's no additional loader or babel config required.",
     'document-ownership':
