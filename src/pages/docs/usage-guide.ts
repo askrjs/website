@@ -78,7 +78,7 @@ const result = createQuery(project, { id: projectId });`,
 });`,
   '/docs/server/request-binding': `router.post('/projects', async (context) => {
   const input = await context.bind<CreateProjectInput>();
-  return created(await projects.create(input));
+  return context.created(await projects.create(input));
 });`,
   '/docs/authentication/authorization': `route('/admin', AdminPage, {
   auth: requireUser(),
@@ -820,7 +820,7 @@ router.post('/projects', createProject, { auth: canManageProjects });`,
     [
       /^Build an API-Only Server$/,
       'Compose a context-first router, validate every external input, and return explicit response helpers from handlers.',
-      `import { createRouter, created, notFound, ok } from '@askrjs/server';
+      `import { createRouter } from '@askrjs/server/router';
 
 export const router = createRouter()
   .get('/projects/{id}', async (context) => {
@@ -1580,12 +1580,12 @@ export const i18n = createI18n('en', {
     return {
       intro:
         'Build the HTTP surface from a router and context-first handlers; bind input and return an explicit response helper from the same boundary.',
-      code: `import { createRouter, created } from '@askrjs/server';
+      code: `import { createRouter } from '@askrjs/server/router';
 
 export const router = createRouter().post('/projects', async (context) => {
   const input = await context.bind<CreateProjectInput>();
   const project = await projects.create(input);
-  return created(project);
+  return context.created(project);
 });`,
     };
   }
