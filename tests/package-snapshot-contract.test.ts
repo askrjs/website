@@ -2,7 +2,7 @@ import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import ts from 'typescript';
-import { beforeAll, describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vite-plus/test';
 import { apiManifest } from '../src/pages/docs/api-manifest';
 import { apiSymbolSets } from '../src/pages/docs/api-snapshot';
 import { cliSnapshot } from '../src/pages/docs/cli-snapshot';
@@ -64,14 +64,6 @@ interface MutableContract {
 }
 
 const updatePackageSnapshot = process.env.UPDATE_PACKAGE_SNAPSHOT === '1';
-
-const removedRouterSymbols = new Set([
-  'registerRoutes',
-  'getManifest',
-  'getRoutes',
-  'clearRoutes',
-  'RegisterRoutesOptions',
-]);
 
 function exportedTypesTarget(value: unknown): string | undefined {
   if (typeof value === 'string' || !value || typeof value !== 'object') {
@@ -324,32 +316,15 @@ function deriveInstalledContract(): MutableContract {
       const symbols = moduleSymbol
         ? checker
             .getExportsOfModule(moduleSymbol)
-            .filter(
-              (symbol) =>
-                symbol.name !== 'default' &&
-                !(
-                  entrypoint.packageName === '@askrjs/askr' &&
-                  entrypoint.subpath === './router' &&
-                  removedRouterSymbols.has(symbol.name)
-                )
-            )
+            .filter((symbol) => symbol.name !== 'default')
             .map((symbol) => {
               const baseAnchor = anchorFor(symbol.name) || 'export';
               const count = usedAnchors.get(baseAnchor) ?? 0;
               usedAnchors.set(baseAnchor, count + 1);
-              const signature = signatureFor(symbol);
-              const isRouterEntrypoint =
-                entrypoint.packageName === '@askrjs/askr' &&
-                entrypoint.subpath === './router';
               return {
                 name: symbol.name,
                 anchor: count === 0 ? baseAnchor : `${baseAnchor}-${count + 1}`,
-                signature: isRouterEntrypoint
-                  ? signature.replaceAll(
-                      'RegisterRoutesOptions',
-                      'RouteRegistryOptions'
-                    )
-                  : signature,
+                signature: signatureFor(symbol),
                 typeOnly: !symbol.valueDeclaration,
                 ...documentationFor(symbol),
               };

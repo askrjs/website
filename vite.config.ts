@@ -1,6 +1,6 @@
 import type { PluginOption, UserConfig } from 'vite-plus';
 import { askr } from '@askrjs/vite';
-import { configDefaults } from 'vitest/config';
+import { configDefaults } from 'vite-plus';
 
 function askrPlugin(): PluginOption {
   return askr() as unknown as PluginOption;
