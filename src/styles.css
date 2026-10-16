@@ -1,14 +1,7 @@
 @import '@askrjs/themes/default';
 
-/* Declared here rather than via @fontsource's own stylesheet so that
-   font-display can be `optional`. The hero <h1> is the LCP element on every
-   marketing route and it renders in Domine. With `swap`, a font arriving after
-   first paint re-lays out that heading into a taller box, and a larger paint
-   box registers a *second* LCP candidate -- which on throttled mobile landed
-   at ~4.9s against a 1.8s first paint. `optional` gives the font no swap
-   period: it is used if it is ready for the first layout and otherwise sits
-   out that page load entirely, so LCP can never be reset by typography.
-   The preload injected by ssg.config.ts is what makes it ready in time. */
+/* Optional serif type for the fallback page. The landing page and docs use
+   the shared sans-serif family, with no custom font needed for first paint. */
 @font-face {
   font-family: 'Domine Variable';
   font-style: normal;
@@ -106,6 +99,8 @@ canvas {
 }
 
 .site-shell {
+  --site-content-width: 90rem;
+  --site-gutter: clamp(1.25rem, 3vw, 1.75rem);
   --ak-font-family-quote: 'Domine Variable', serif;
   --docs-color-text-secondary: color-mix(
     in oklch,
@@ -126,8 +121,90 @@ canvas {
   flex-direction: column;
 }
 
-.site-shell[data-layout='docs'] .docs-channel {
+/* All page regions share one outer container and responsive gutter. */
+.site-header > [data-slot='container'],
+.site-footer > [data-slot='container'],
+.site-shell[data-layout='marketing']
+  .site-main
+  > section
+  > [data-slot='container'],
+.site-shell[data-layout='marketing'] .site-main > [data-slot='container'],
+.site-shell .docs-channel {
+  width: min(100%, var(--site-content-width));
+  max-width: var(--site-content-width);
+  margin-inline: auto;
+  padding-inline: var(--site-gutter);
+}
+
+/* Documentation has a second navigation level below the shared site header. */
+.docs-section-nav {
+  position: sticky;
+  z-index: 30;
+  top: 3.5rem;
+  border-bottom: 1px solid var(--ak-color-border);
+  background: var(--ak-color-bg);
+}
+
+.docs-section-nav__inner {
+  display: flex;
+  width: min(100%, var(--site-content-width));
+  margin-inline: auto;
+  padding-inline: var(--site-gutter);
+  gap: 1.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.docs-section-nav a {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  flex-shrink: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--docs-color-text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.docs-section-nav a:hover,
+.docs-section-nav a[aria-current='true'] {
+  color: var(--ak-color-text);
+}
+
+.docs-section-nav a[aria-current='true'] {
+  border-bottom-color: var(--ak-color-text);
+}
+
+.docs-nav-group {
+  margin-bottom: 0.5rem;
+}
+
+.docs-nav-group summary {
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.5rem;
+  color: var(--ak-color-text);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.docs-nav-group summary:hover {
+  background: var(--ak-color-surface-muted);
+}
+
+.docs-nav-group [data-slot='sidebar-menu'] {
+  padding-inline-start: 0.5rem;
+}
+
+.docs-channel {
   flex: 1;
+}
+
+.site-shell[data-layout='docs'] .site-footer {
+  margin-top: 0;
+  border-top: 1px solid var(--ak-color-border);
 }
 
 .site-header {
@@ -139,7 +216,18 @@ canvas {
   min-height: 3.5rem;
 }
 
+.site-docs-link {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.site-header [data-slot='nav-group-body'] {
+  min-width: 0;
+  flex-wrap: nowrap;
+}
+
 .site-header .docs-search {
+  min-width: 0;
   width: min(18rem, 38vw);
   margin: 0;
 }
@@ -961,12 +1049,8 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   color: var(--ak-color-text);
 }
 
-.docs-channel {
-  padding-inline: 0;
-}
-
 .docs-scope {
-  --docs-header-height: 3.5rem;
+  --docs-header-height: 6.5rem;
   min-width: 0;
   min-height: calc(100vh - var(--docs-header-height));
   background: transparent;
@@ -985,8 +1069,9 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .docs-scope [data-slot='sidebar-content'] {
-  padding-block: var(--ak-space-lg);
-  padding-inline-end: var(--ak-space-lg);
+  padding: 2.5rem 0.75rem 3rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ak-color-border) transparent;
 }
 
 .docs-scope [data-slot='sidebar-group'] + [data-slot='sidebar-group'] {
@@ -1003,17 +1088,16 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .docs-scope [data-slot='sidebar-menu'] {
-  gap: 0;
-  margin-inline-start: var(--ak-space-sm);
-  padding-inline-start: var(--ak-space-sm);
-  border-inline-start: 1px solid var(--ak-color-border);
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0;
 }
 
 .docs-scope [data-slot='sidebar-menu-button'] {
   height: auto;
-  min-height: 1.7rem;
-  padding-block: 0.28rem;
-  border-radius: var(--ak-radius-sm);
+  min-height: 2rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 0.5rem;
   color: var(--ak-color-text-muted);
   font-size: var(--ak-font-size-sm);
   font-weight: var(--ak-font-weight-normal);
@@ -1026,24 +1110,14 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .docs-scope [data-slot='sidebar-menu-button']:hover {
+  background: var(--ak-color-surface-muted);
   color: var(--ak-color-text);
 }
 
 .docs-scope [data-slot='sidebar-menu-button'][data-active='true'] {
-  position: relative;
-  background: transparent;
-  color: var(--ak-color-primary);
+  background: var(--ak-color-surface-muted);
+  color: var(--ak-color-text);
   font-weight: var(--ak-font-weight-semibold);
-}
-
-.docs-scope [data-slot='sidebar-menu-button'][data-active='true']::before {
-  position: absolute;
-  content: '';
-  inset-block: 0.15rem;
-  inset-inline-start: calc(var(--ak-space-sm) * -1 - 1px);
-  width: 2px;
-  border-radius: 1px;
-  background: var(--ak-color-primary);
 }
 
 .docs-mobile-bar {
@@ -1099,10 +1173,10 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .docs-content {
-  width: min(calc(100% - 4rem), 52rem);
+  width: min(calc(100% - 4rem), 46rem);
   min-width: 0;
   margin: 0 auto;
-  padding: clamp(3.5rem, 7vw, 6rem) 0 6rem;
+  padding: 2.5rem 0 5rem;
 }
 
 .docs-article {
@@ -1111,44 +1185,43 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .docs-article__header {
   min-width: 0;
-  padding-bottom: 3rem;
-  border-bottom: 1px solid var(--ak-color-border);
+  padding-bottom: 0.5rem;
 }
 
 .docs-article h1 {
   margin: 0;
-  font-family: var(--ak-font-family-quote);
-  font-size: clamp(2.65rem, 7vw, 4.5rem);
-  font-weight: var(--ak-font-weight-regular);
-  letter-spacing: -0.055em;
-  line-height: 1;
+  font-family: var(--ak-font-family-body);
+  font-size: clamp(1.9rem, 3vw, 2.35rem);
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  line-height: 1.2;
   overflow-wrap: anywhere;
 }
 
 .docs-article__header > p:last-child {
   max-width: 42rem;
-  margin: 1.4rem 0 0;
+  margin: 1.1rem 0 0;
   color: var(--ak-color-text-muted);
-  font-size: 1.12rem;
+  font-size: 1.05rem;
   line-height: 1.75;
 }
 
 .docs-article section {
-  margin-top: 3.5rem;
+  margin-top: 2.5rem;
 }
 
 .docs-article h2 {
   margin: 0 0 1rem;
-  font-family: var(--ak-font-family-quote);
-  font-size: 1.65rem;
-  font-weight: var(--ak-font-weight-regular);
-  letter-spacing: -0.03em;
+  font-family: var(--ak-font-family-body);
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
 }
 
 .docs-article section > p {
-  max-width: 44rem;
+  max-width: 46rem;
   margin: 0;
-  color: var(--ak-color-text-muted);
+  color: var(--docs-color-text-secondary);
   line-height: 1.8;
 }
 
@@ -1451,25 +1524,23 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .docs-toc {
   position: sticky;
-  top: 0;
+  top: var(--docs-header-height);
   box-sizing: border-box;
-  height: 100vh;
-  padding: 4.75rem 1.5rem 2rem 0;
+  max-height: calc(100vh - var(--docs-header-height));
+  padding: 2.5rem 1.5rem 2rem 0;
   overflow-y: auto;
 }
 
 .docs-toc > p {
-  margin: 0 0 0.7rem;
+  margin: 0 0 1rem;
   color: var(--ak-color-text);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .docs-toc ul {
   display: grid;
-  gap: 0.55rem;
+  gap: 0.8rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1477,7 +1548,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 
 .docs-toc a {
   color: var(--docs-color-text-secondary);
-  font-size: 0.76rem;
+  font-size: 0.82rem;
   line-height: 1.35;
   text-decoration: none;
 }
@@ -1490,7 +1561,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
-  margin-bottom: 1.8rem;
+  margin-bottom: 1.25rem;
   color: var(--docs-color-text-secondary);
   font-size: 0.76rem;
   overflow-wrap: anywhere;
@@ -1503,12 +1574,10 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 .docs-eyebrow {
   display: flex;
   gap: 0.5rem;
-  margin-bottom: 0.9rem;
-  color: var(--docs-color-text-secondary);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  margin-bottom: 0.65rem;
+  color: var(--ak-color-text);
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .docs-eyebrow [data-status] {
@@ -1516,7 +1585,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .anchored-heading {
-  scroll-margin-top: 1.5rem;
+  scroll-margin-top: 8rem;
 }
 
 .anchored-heading a {
@@ -1533,12 +1602,18 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 .docs-callout {
   margin: 1.5rem 0;
   padding: 1rem 1.1rem;
-  border-left: 3px solid var(--ak-color-primary);
-  background: var(--ak-color-primary-soft);
+  border: 1px solid var(--ak-color-border);
+  border-radius: 0.65rem;
+  background: var(--ak-color-surface);
+}
+
+.docs-callout[data-tone='authority'] {
+  margin-top: 3rem;
+  font-size: 0.85rem;
 }
 
 .docs-callout[data-tone='warning'] {
-  border-left-color: #c87916;
+  border-inline-start: 3px solid #c87916;
 }
 
 .docs-callout strong {
@@ -1601,6 +1676,9 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .docs-pagination a {
+  padding: 1rem;
+  border: 1px solid var(--ak-color-border);
+  border-radius: 0.65rem;
   display: flex;
   min-width: 0;
   align-items: center;
@@ -1657,7 +1735,7 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 }
 
 .api-symbol {
-  scroll-margin-top: 1rem;
+  scroll-margin-top: 8rem;
   min-width: 0;
   padding: 0.9rem;
   border: 1px solid var(--ak-color-border);
@@ -1680,6 +1758,21 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   overflow-wrap: anywhere;
 }
 
+.api-symbol h3 code {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: 0.9rem;
+}
+
+.api-symbol__summary,
+.api-symbol__remarks {
+  margin: 0.85rem 0 0;
+  color: var(--docs-color-text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.75;
+}
+
 .api-symbol h3 span {
   padding: 0.12rem 0.35rem;
   border-radius: 0.25rem;
@@ -1692,10 +1785,20 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
 .api-symbol pre {
   margin: 0.75rem 0 0;
   max-width: 100%;
+  padding: 0.85rem;
   overflow-x: auto;
-  color: var(--docs-color-text-secondary);
-  font-size: 0.72rem;
-  line-height: 1.55;
+  border-radius: 0.4rem;
+  background: var(--ak-color-surface-muted);
+  color: var(--ak-color-text);
+  font-size: 0.8rem;
+  line-height: 1.65;
+}
+
+.api-symbol pre code {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: inherit;
 }
 
 .component-demo {
@@ -1834,14 +1937,10 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
     max-height: calc(100dvh - 5rem);
   }
 
-  .docs-channel {
-    padding-inline: 0;
-  }
-
   .docs-scope [data-slot='sidebar-container'],
   .docs-scope [data-slot='sidebar'] {
-    top: 3.5rem;
-    height: calc(100vh - 3.5rem);
+    top: var(--docs-header-height);
+    height: calc(100vh - var(--docs-header-height));
   }
 
   .docs-desktop-sidebar {
@@ -1849,16 +1948,17 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   }
 
   .docs-mobile-bar {
+    padding-inline: 0;
     display: flex;
   }
 
   .docs-content {
-    width: min(calc(100% - 2rem), 52rem);
-    padding: 2.5rem 0 4rem;
+    width: min(100%, 46rem);
+    padding: 1.5rem 0 4rem;
   }
 
   .docs-article h1 {
-    font-size: clamp(2.25rem, 11vw, 3.4rem);
+    font-size: clamp(1.75rem, 7vw, 2.1rem);
   }
 
   .docs-pagination {
@@ -1900,5 +2000,208 @@ html[data-theme='dark'] .github-mark img.github-mark__dark {
   .not-found__actions > *,
   .editorial-cta__actions > * {
     width: 100%;
+  }
+}
+
+/* One concise landing page leads directly into the documentation. */
+.landing-hero {
+  padding-block: clamp(3rem, 6vw, 5rem);
+}
+
+.landing-hero .landing-hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5rem);
+}
+
+.landing-hero__copy {
+  min-width: 0;
+}
+
+.landing-eyebrow {
+  margin: 0 0 1.5rem;
+  color: var(--docs-color-text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.landing-hero h1 {
+  margin: 0;
+  font-family: var(--ak-font-family-body);
+  font-size: clamp(2.5rem, 4vw, 3.8rem);
+  font-weight: 650;
+  line-height: 1.1;
+  letter-spacing: -0.045em;
+}
+
+.landing-hero__lede {
+  max-width: 32rem;
+  margin: 1.5rem 0 0;
+  color: var(--docs-color-text-secondary);
+  font-size: 1.1rem;
+  line-height: 1.75;
+}
+
+.landing-install {
+  min-width: 0;
+  margin-top: 2.5rem;
+}
+
+.landing-install > span {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.landing-install pre {
+  max-width: 100%;
+  margin: 0.65rem 0 0;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+  border: 1px solid var(--ak-color-border);
+  border-radius: 0.5rem;
+  background: var(--ak-color-surface);
+  font-size: 0.8rem;
+}
+
+.landing-install code,
+.landing-example code {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--ak-font-family-mono);
+  font-size: inherit;
+}
+
+.landing-hero__note {
+  margin: 1rem 0 0;
+  color: var(--docs-color-text-secondary);
+  font-size: 0.8rem;
+}
+
+.landing-example {
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--ak-color-border);
+  border-radius: 0.8rem;
+  background: var(--ak-color-surface);
+}
+
+.landing-example__header {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--ak-color-border);
+  color: var(--docs-color-text-secondary);
+  font-size: 0.8rem;
+}
+
+.landing-example pre {
+  margin: 0;
+  padding: 1.5rem 1.25rem;
+  overflow-x: auto;
+  font-size: 0.8rem;
+  line-height: 1.85;
+}
+
+.landing-example > p {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--ak-color-border);
+  color: var(--docs-color-text-secondary);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.landing-paths {
+  padding-block: 0 3rem;
+}
+
+.landing-paths__heading {
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--ak-color-border);
+}
+
+.landing-paths h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.landing-paths__heading > p {
+  margin: 0.75rem 0 0;
+  color: var(--docs-color-text-secondary);
+  line-height: 1.7;
+}
+
+.landing-paths__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.landing-path {
+  display: block;
+  min-width: 0;
+  padding: 1.25rem;
+  border: 1px solid var(--ak-color-border);
+  border-radius: 0.65rem;
+  color: var(--ak-color-text);
+  text-decoration: none;
+}
+
+.landing-path:hover {
+  background: var(--ak-color-surface);
+  border-color: var(--ak-color-text-muted);
+}
+
+.landing-path h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.landing-path p,
+.landing-proof {
+  margin: 0.75rem 0 0;
+  color: var(--docs-color-text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.75;
+}
+
+.landing-proof {
+  margin-top: 2rem;
+}
+
+.legacy-forward {
+  width: min(100%, var(--site-content-width));
+  margin-inline: auto;
+  padding: 3rem var(--site-gutter);
+  font-family: var(--ak-font-family-body);
+}
+
+@media (max-width: 64rem) {
+  .landing-hero .landing-hero__inner {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .landing-paths__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 36rem) {
+  .landing-paths__grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

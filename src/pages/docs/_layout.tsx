@@ -24,6 +24,8 @@ import {
   SidebarTrigger,
 } from '@askrjs/themes/components';
 import { SiteLayout } from '../site-layout';
+import { docsPrimarySections } from './primary-sections';
+import type { DocsPageDefinition } from './types';
 import {
   docsByRoute,
   docsSections,
@@ -31,47 +33,97 @@ import {
   resolveDocsRoute,
 } from './catalog';
 
+function DocsSectionNavigation() {
+  const page = docsByRoute.get(resolveDocsRoute(currentRoute()));
+  return (
+    <nav class="docs-section-nav" aria-label="Documentation sections">
+      <div class="docs-section-nav__inner">
+        {docsPrimarySections.map((section) => (
+          <Link
+            key={section.route}
+            href={section.route}
+            aria-current={page?.navGroup === section.label ? 'true' : undefined}
+          >
+            {section.label}
+          </Link>
+        ))}
+      </div>
+    </nav>
+  );
+}
+
+function DocsNavigationLinks({
+  pages,
+  close,
+}: {
+  pages: readonly DocsPageDefinition[];
+  close?: () => void;
+}) {
+  const activePath = resolveDocsRoute(currentRoute());
+  return (
+    <SidebarMenu>
+      {pages.map((page) => (
+        <SidebarMenuItem key={page.route}>
+          <SidebarMenuButton
+            asChild
+            active={page.route === activePath}
+            size="sm"
+          >
+            <Link
+              href={page.route}
+              aria-current={page.route === activePath ? 'page' : undefined}
+              onPress={close}
+            >
+              <span>{page.title}</span>
+              {page.status !== 'stable' && (
+                <span class="docs-sidebar-nav__status" title={page.status}>
+                  •
+                </span>
+              )}
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      ))}
+    </SidebarMenu>
+  );
+}
+
 function DocsNavigation({ close }: { close?: () => void }) {
   const activePath = resolveDocsRoute(currentRoute());
+  const page = docsByRoute.get(activePath);
+  const section =
+    docsSections.find((candidate) => candidate.label === page?.navGroup) ??
+    docsSections[0];
+  const groups = [
+    ...new Set(section.pages.map((item) => item.navSection ?? section.label)),
+  ];
 
   return (
     <SidebarContent as="nav" aria-label="Documentation navigation">
-      {docsSections.map((section) => (
-        <SidebarGroup key={section.id} data-nav-section={section.id}>
-          <SidebarGroupLabel>{section.label}</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {section.pages.map((page) => (
-                <SidebarMenuItem key={page.route}>
-                  <SidebarMenuButton
-                    asChild
-                    active={page.route === activePath}
-                    size="sm"
-                  >
-                    <Link
-                      href={page.route}
-                      aria-current={
-                        page.route === activePath ? 'page' : undefined
-                      }
-                      onPress={close}
-                    >
-                      <span>{page.title}</span>
-                      {page.status !== 'stable' && (
-                        <span
-                          class="docs-sidebar-nav__status"
-                          title={page.status}
-                        >
-                          •
-                        </span>
-                      )}
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      ))}
+      <SidebarGroup data-nav-section={section.id}>
+        <SidebarGroupLabel>{section.label}</SidebarGroupLabel>
+        <SidebarGroupContent>
+          {groups.length === 1 ? (
+            <DocsNavigationLinks pages={section.pages} close={close} />
+          ) : (
+            groups.map((group) => {
+              const pages = section.pages.filter(
+                (item) => (item.navSection ?? section.label) === group
+              );
+              return (
+                <details
+                  class="docs-nav-group"
+                  key={group}
+                  open={pages.some((item) => item.route === activePath)}
+                >
+                  <summary>{group}</summary>
+                  <DocsNavigationLinks pages={pages} close={close} />
+                </details>
+              );
+            })
+          )}
+        </SidebarGroupContent>
+      </SidebarGroup>
     </SidebarContent>
   );
 }
@@ -108,6 +160,7 @@ export function DocsLayout({ children }: Props) {
 
   return (
     <SiteLayout variant="docs">
+      <DocsSectionNavigation />
       <Container direction="column" size="xl" class="docs-channel">
         <SidebarScope class="docs-scope">
           <Sidebar class="docs-desktop-sidebar">

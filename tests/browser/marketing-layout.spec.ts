@@ -3,9 +3,6 @@ import type { Locator, Page } from '@playwright/test';
 import { marketingRouteMetadata } from '../../src/pages/marketing/_routes';
 
 const routes = Object.keys(marketingRouteMetadata);
-const editorialRoutes = routes.filter(
-  (route) => route !== '/' && route !== '/404'
-);
 const viewports = [
   { name: 'mobile', width: 390, height: 844 },
   { name: 'desktop', width: 1440, height: 1000 },
@@ -98,26 +95,25 @@ test.describe('marketing page layout', () => {
           expect(footerColumnCount).toBe(viewport.name === 'mobile' ? 1 : 3);
 
           if (route === '/') {
-            const differentiation = await requiredLocator(
-              page,
-              '.differentiation__inner'
+            await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+              'TypeScript apps.Explicit by design.'
             );
-            await expectVerticalChildren(differentiation);
-
-            const body = await requiredLocator(page, '.differentiation__body');
-            const bodyColumnCount = await gridColumnCount(body);
+            const bodyColumnCount = await gridColumnCount(
+              await requiredLocator(page, '.landing-hero__inner')
+            );
             expect(bodyColumnCount).toBe(viewport.name === 'mobile' ? 1 : 2);
-          } else if (route === '/404') {
+            const pathsColumnCount = await gridColumnCount(
+              await requiredLocator(page, '.landing-paths__grid')
+            );
+            expect(pathsColumnCount).toBe(viewport.name === 'mobile' ? 1 : 4);
+            const links = page.locator('.landing-paths__grid a');
+            await expect(links).toHaveCount(4);
+            for (const link of await links.all()) {
+              expect(await link.getAttribute('href')).toMatch(/^\/docs/);
+            }
+          } else {
             await expectVerticalChildren(
               await requiredLocator(page, '.not-found__inner')
-            );
-          } else {
-            expect(editorialRoutes).toContain(route);
-            await expectVerticalChildren(
-              await requiredLocator(
-                page,
-                '.editorial-hero > [data-slot="container"]'
-              )
             );
           }
         });

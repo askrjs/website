@@ -70,6 +70,11 @@ export function SiteHeader() {
             <AskrBrand />
           </NavBrand>
           <NavGroup align="end">
+            <Button asChild variant="ghost">
+              <Link class="site-docs-link" href="/docs">
+                Docs
+              </Link>
+            </Button>
             <DocsSearch />
             <Button asChild variant="ghost" size="icon">
               <a

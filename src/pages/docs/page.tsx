@@ -2,6 +2,7 @@ import { Link, currentRoute } from '@askrjs/askr/router';
 import { ArrowLeftIcon, ArrowRightIcon, CopyIcon } from '@askrjs/lucide';
 import { docsByRoute, docsSections, resolveDocsRoute } from './catalog';
 import { cliSnapshot } from './cli-snapshot';
+import { InlineProse } from './prose';
 import { componentDemoFor } from './component-demos';
 import { componentPropReferences } from './component-props';
 import { resolveHeadingBodies } from './heading-bodies';
@@ -114,7 +115,11 @@ function UsageGuide({ page }: { page: DocsPageDefinition }) {
       <h2 id="how-to-use" class="anchored-heading">
         <a href="#how-to-use">Example</a>
       </h2>
-      {guide.intro && <p>{guide.intro}</p>}
+      {guide.intro && (
+        <p>
+          <InlineProse text={guide.intro} />
+        </p>
+      )}
       <CodeBlock code={guide.code} />
     </section>
   );
@@ -200,7 +205,9 @@ function HeadingContent({
       <h2 id={item.id} class="anchored-heading">
         <a href={`#${item.id}`}>{item.title}</a>
       </h2>
-      <p>{item.body}</p>
+      <p>
+        <InlineProse text={item.body} />
+      </p>
       {item.code && <CodeBlock code={item.code} />}
       {page.navGroup === 'UI & Components' &&
         item.title === 'Keyboard and accessibility' && (
@@ -279,14 +286,6 @@ export default function DocsPage() {
         <h1>{page.title}</h1>
         <p>{page.description}</p>
       </header>
-      <aside class="docs-callout" data-tone="authority">
-        <strong>Published packages are authoritative</strong>
-        <p>
-          Examples may lag behind a published contract. When guidance differs,
-          verify the exports and TypeScript declarations in your installed
-          package, then file an issue so the example can be corrected.
-        </p>
-      </aside>
       {page.status !== 'stable' && (
         <aside class="docs-callout" data-tone="warning">
           <strong>
@@ -307,6 +306,14 @@ export default function DocsPage() {
       <HeadingContentList headings={resolveHeadingBodies(page)} page={page} />
       {page.route === '/docs' && <DocsLandingDetails />}
       {page.route === '/docs/tooling/cli-overview' && <CliReferenceSection />}
+      <aside class="docs-callout" data-tone="authority">
+        <strong>Published packages are authoritative</strong>
+        <p>
+          Examples may lag behind a published contract. When guidance differs,
+          verify the exports and TypeScript declarations in your installed
+          package, then file an issue so the example can be corrected.
+        </p>
+      </aside>
       <PreviousNext page={page} />
     </article>
   );

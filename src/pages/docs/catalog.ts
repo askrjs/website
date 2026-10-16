@@ -5,6 +5,7 @@ import {
 } from './content-overrides';
 import { docsPrimarySections } from './primary-sections';
 import { buildUsageGuide, routeExampleFor } from './usage-guide';
+import { componentPropNames } from './prop-index';
 import type {
   DocsHeadingDefinition,
   DocsPageDefinition,
@@ -1574,6 +1575,34 @@ const authoredPages = [
   ...integrations,
   ...tooling,
   ...guides,
+  definePage('Guides', 'Application recipes', 'guides', {
+    title: 'Contributing',
+    description:
+      'Help improve Askr with a focused issue, example, documentation change, or fix.',
+    keywords: ['contribute', 'GitHub', 'community', 'maintainers'],
+    headings: [
+      {
+        id: 'choose-a-project',
+        title: 'Choose a project',
+        body: 'Askr is open source under Apache 2.0. Start with the repository that owns the behavior you want to improve: askr for the runtime and router, askr-ui for interactions, askr-themes for visual styling, askr-server for HTTP applications, or website for these docs. Find the repositories on [GitHub](https://github.com/askrjs).',
+      },
+      {
+        id: 'start-with-a-small-change',
+        title: 'Start with a small change',
+        body: 'A reproducible bug report, a clearer example, or a focused fix is a useful first contribution. Describe the current behavior and the result you expect in an issue before taking on a large change. Include a small reproduction and your package versions when reporting a bug.',
+      },
+      {
+        id: 'verify-the-result',
+        title: 'Verify the result',
+        body: 'Follow the repository contribution instructions and run the checks relevant to your change. For UI work, check keyboard interaction, focus, light and dark themes, and narrow screens. For rendering changes, verify browser behavior and generated or server-rendered HTML.',
+      },
+      {
+        id: 'get-in-touch',
+        title: 'Get in touch',
+        body: 'Open an issue in the relevant GitHub repository, or [email the maintainers](mailto:contribute@askrjs.com) if you need help finding the right place. Share the problem or example you care about; you do not need a complete proposal to begin a discussion.',
+      },
+    ],
+  }),
   ...reference,
 ];
 
@@ -1637,6 +1666,18 @@ export function resolveDocsRoute(location: {
   return normalizeDocsRoute(location.matches[0]?.path ?? location.path);
 }
 
+function hasComponentProps(page: DocsPageDefinition): boolean {
+  const names = page.packages.flatMap((item) =>
+    item.importPath &&
+    (page.propTypes?.length || item.importPath.split('/').length > 2)
+      ? (componentPropNames[item.importPath] ?? [])
+      : []
+  );
+  return page.propTypes?.length
+    ? page.propTypes.some((name) => names.includes(name))
+    : names.length > 0;
+}
+
 export function docsTableOfContents(
   page: DocsPageDefinition
 ): readonly Pick<DocsHeadingDefinition, 'id' | 'title'>[] {
@@ -1652,6 +1693,9 @@ export function docsTableOfContents(
   const headings: Pick<DocsHeadingDefinition, 'id' | 'title'>[] = [
     ...(buildUsageGuide(page, routeExampleFor(page.route))
       ? [{ id: 'how-to-use', title: 'Example' }]
+      : []),
+    ...(hasComponentProps(page)
+      ? [{ id: 'published-props', title: 'Published props' }]
       : []),
     ...page.headings,
   ];
