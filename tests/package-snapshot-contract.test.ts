@@ -6,6 +6,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { apiManifest } from '../src/pages/docs/api-manifest';
 import { apiSymbolSets } from '../src/pages/docs/api-snapshot';
 import { cliSnapshot } from '../src/pages/docs/cli-snapshot';
+import { componentPropNames } from '../src/pages/docs/prop-index';
 import { packagePeers } from '../src/pages/docs/package-peers';
 
 interface PackageLock {
@@ -422,9 +423,29 @@ function recordedContract(): MutableContract {
   ) as MutableContract;
 }
 
+function propIndex(contract: MutableContract): Record<string, string[]> {
+  return Object.fromEntries(
+    contract.apiManifest.flatMap((entrypoint) => {
+      const names = (contract.apiSymbolSets[entrypoint.symbolSet] ?? [])
+        .filter(
+          (symbol) => symbol.name.endsWith('Props') && symbol.members?.length
+        )
+        .map((symbol) => symbol.name);
+      return names.length ? [[entrypoint.importName, names]] : [];
+    })
+  );
+}
+
 function writeRecordedContract(contract: MutableContract): void {
   const root = process.cwd();
   const outputs = [
+    {
+      path: resolve(root, 'src/pages/docs/prop-index.ts'),
+      source:
+        '// Generated component prop names. Do not edit.\n' +
+        'export const componentPropNames: Readonly<Record<string, readonly string[]>> = ' +
+        `${JSON.stringify(propIndex(contract), null, 2)};\n`,
+    },
     {
       path: resolve(root, 'src/pages/docs/api-manifest.ts'),
       source:
@@ -553,6 +574,11 @@ describe('installed package snapshot contract', () => {
     installed = deriveInstalledContract();
     if (updatePackageSnapshot) writeRecordedContract(installed);
   }, 30_000);
+
+  it('should keep the lightweight prop index aligned with published declarations', () => {
+    if (updatePackageSnapshot) return;
+    expect(componentPropNames).toEqual(propIndex(installed));
+  });
 
   it('should match entrypoints, versions, exported signatures, peers, and CLI help', () => {
     if (updatePackageSnapshot) return;

@@ -1,6 +1,7 @@
 import { createRouteRegistry, group, lazy, route } from '@askrjs/askr/router';
 import {
   marketingRouteMetadata,
+  legacyRouteMetadata,
   registerMarketingRoutes,
   type RouteMetadata,
 } from './marketing/_routes';
@@ -12,6 +13,7 @@ export type { RouteMetadata } from './marketing/_routes';
 
 export const routeMetadata: Readonly<Record<string, RouteMetadata>> = {
   ...marketingRouteMetadata,
+  ...legacyRouteMetadata,
   ...Object.fromEntries(
     docsCatalog.map((page) => [
       page.route,

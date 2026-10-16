@@ -1,3 +1,4 @@
+import { InlineProse } from './prose';
 import { Link, currentRoute } from '@askrjs/askr/router';
 import { ArrowLeftIcon } from '@askrjs/lucide';
 import { apiManifest } from './api-manifest';
@@ -23,10 +24,14 @@ function ApiSymbolList({
             <code>{symbol.signature}</code>
           </pre>
           {symbol.summary && (
-            <p class="api-symbol__summary">{symbol.summary}</p>
+            <p class="api-symbol__summary">
+              <InlineProse text={symbol.summary} />
+            </p>
           )}
           {symbol.remarks && (
-            <p class="api-symbol__remarks">{symbol.remarks}</p>
+            <p class="api-symbol__remarks">
+              <InlineProse text={symbol.remarks} />
+            </p>
           )}
           {symbol.tags?.example?.map((example) => (
             <pre>

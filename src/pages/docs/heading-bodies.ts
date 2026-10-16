@@ -10,11 +10,11 @@ export const headingOverrides: Readonly<
 > = {
   '/docs': {
     'application-modes':
-      '@askrjs/askr supports more than one way to run an app: createSPA from @askrjs/askr/boot boots a client-rendered single-page app using routes registered through @askrjs/askr/router, while createIsland mounts a single component into an existing page for partial hydration. The same runtime also exposes ssr and ssg subpaths, so the same components can render on the server for request-time HTML or be pre-rendered into static output ahead of time. Which mode you pick changes where routing and data-fetching code runs, but the core primitives — state(), derive(), resource() — behave the same regardless of the mode you choose.',
+      'Use a single-page application for browser-rendered interfaces, server rendering for request-time HTML, or static generation for pages you can build ahead of time. Each mode has its own startup and build configuration. Start with [application modes](/docs/getting-started/application-modes) to choose a template for your project.',
     'choose-a-path':
-      "If you're starting a new project, head to Getting Started and follow the installation and quick-start pages in order — they walk through installing @askrjs/askr and wiring up createSPA or createIsland. If you already have an app running and want to look something up, use the search bar or jump straight to the section that matches what you're doing: Fundamentals for state and reactivity, Routing for the router package, Data for resource() and query helpers, or Components for the UI library. The API Reference section is generated directly from each package's shipped .d.ts files, so it's the fastest place to check an exact export or type signature.",
+      'New to Askr? Follow [Getting Started](/docs/getting-started) to create an application, then read [Core Concepts](/docs/core-concepts) to learn how components, state, and lifecycle work fit together. For an existing project, use the section navigation or search to find a guide, component, or API.',
     'published-package-set':
-      'Askr ships as a set of independently versioned packages under the @askrjs scope rather than one monolith — @askrjs/askr is the core runtime (state, derive, boot, router, resources, SSR/SSG), and adjacent packages like @askrjs/ui, @askrjs/auth, @askrjs/charts, @askrjs/server, @askrjs/schema, @askrjs/fetch, @askrjs/i18n, and @askrjs/cli cover UI components, authentication, charting, server integration, validation, HTTP, localization, and tooling respectively. Install only the packages your application uses and keep the set aligned through the lockfile.',
+      'The core package, `@askrjs/askr`, provides components, state, routing, and rendering. Add `@askrjs/ui` for headless controls, `@askrjs/themes` for styled components, and `@askrjs/server` for HTTP applications. Install the packages your application uses. The [API reference](/docs/reference/api) lists their published entrypoints and signatures.',
   },
   '/docs/authentication': {
     'browser-and-api-clients':
@@ -1434,13 +1434,13 @@ export const headingOverrides: Readonly<
   },
   '/docs/getting-started': {
     overview:
-      'Askr is an actor-backed UI runtime for TypeScript: components are plain functions, state is read and written through explicit getter/setter pairs, and rendering is deterministic enough to run identically on the server and in the browser. This page gets you from zero to a running route in a few minutes using the `askr` CLI. Everything here uses the published `@askrjs/askr` and `@askrjs/cli` packages, not a local checkout.',
+      'Askr is a TypeScript application framework. Write function components, keep state with the component that owns it, and declare routes in an explicit registry. The CLI creates a project with development and build scripts so you can start with a working application.',
     prerequisites:
-      'You need Node.js 24.15.0 or later and npm on your PATH; the CLI is published as a global binary, `askr`, from `@askrjs/cli`. No other tooling is required to get a project running — the generated project brings its own dev server and build scripts. If you plan to deploy with SSR or SSG, make sure your host can run a Node process or serve static files, respectively.',
+      'Install Node.js 24 or later and npm. You can run the CLI with `npx`; a global installation is optional. Static output needs a static file host, while request-time server rendering needs a server runtime.',
     'the-shortest-path':
-      'Run `npx @askrjs/cli@latest create startkit my-app` — no global install needed to get going. `cd my-app && npm run dev` gets a live app in the browser. If you expect to scaffold often, `npm install -g @askrjs/cli` puts `askr` on your PATH so you can drop the `npx` prefix. If you\'d rather describe what you\'re building, `askr create --prompt "..."` picks a template for you and writes `.askr/blueprint.json` plus a `builder-brief.md` explaining the choice.',
+      'Run `npx @askrjs/cli@latest create startkit my-app`, then `cd my-app` and `npm run dev`. Open the address printed by the development server. When the starter is running, try `npm run build` to check the production build.',
     'where-to-go-next':
-      "Read Core Concepts for the mental model — functions, explicit state, and deterministic rendering — before you start wiring up routes. If you're choosing between SPA, SSR, SSG, or the full-stack/startkit templates, see Choosing an Application Mode. Once you have a route rendering, First Application walks through adding state and a second route.",
+      'Continue to [First Application](/docs/getting-started/first-application) to add state and a route. Read [Core Concepts](/docs/core-concepts) for the runtime model, or [Choose a Starter](/docs/getting-started/choose-a-starter) to compare project templates.',
   },
   '/docs/getting-started/application-modes': {
     'full-stack-and-startkit':
@@ -1475,7 +1475,7 @@ export const headingOverrides: Readonly<
     'install-packages-directly':
       "If you're adding Askr to an existing project instead of scaffolding a new one, install `@askrjs/askr` directly with `npm install @askrjs/askr` and import from its subpaths as needed — `@askrjs/askr` for state and JSX, `@askrjs/askr/boot` for startup, `@askrjs/askr/router` for routing. The CLI itself is consumed mostly as the `askr` binary, not imported into application code — the one exception is `@askrjs/cli/ssg`, a types-only subpath for typing an `ssg.config.ts` module.",
     'runtime-requirements':
-      'You need Node.js 24.15.0 or later and npm to install and run current Askr projects; the CLI\'s `dist/cli.js` is a Node binary invoked as `askr`. Generated projects are ES modules (`"type": "module"`) and expect a modern bundler-driven dev workflow, which the CLI templates already wire up for you.',
+      'You need Node.js 24 or later and npm to install and run current Askr projects; the CLI\'s `dist/cli.js` is a Node binary invoked as `askr`. Generated projects are ES modules (`"type": "module"`) and expect a modern bundler-driven dev workflow, which the CLI templates already wire up for you.',
     'verify-the-install':
       'Run `npm run dev` from a scaffolded project and confirm the dev server starts and the starter route renders in the browser. For a manual install, a quick sanity check is importing `state` from `@askrjs/askr` and calling it inside a component — if the getter and setter behave as expected, the runtime is wired correctly.',
   },

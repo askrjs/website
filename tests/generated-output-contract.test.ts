@@ -7,7 +7,8 @@ import {
   renderDocsPageMarkdown,
   renderLlmsFull,
 } from '../src/pages/docs/markdown';
-import { marketingRouteMetadata } from '../src/pages/marketing/_routes';
+import { routeMetadata } from '../src/pages/_routes';
+import { legacyRedirects } from '../src/pages/marketing/redirects';
 
 interface StaticMetadata {
   readonly totalRoutes: number;
@@ -74,12 +75,34 @@ describe('generated output', () => {
     }
   });
 
+  it('should keep retired URLs as static forwarding pages and out of the sitemap', () => {
+    const sitemap = readFileSync(resolve(dist, 'sitemap.xml'), 'utf8');
+    for (const [path, destination] of Object.entries(legacyRedirects)) {
+      expect(
+        docsCatalog.some((page) => page.route === destination),
+        destination
+      ).toBe(true);
+      const html = readFileSync(
+        resolve(dist, path.slice(1), 'index.html'),
+        'utf8'
+      );
+      expect(html).toContain(
+        `<meta http-equiv="refresh" content="0;url=${destination}">`
+      );
+      expect(html).toContain(
+        `rel="canonical" href="https://askrjs.com${destination}"`
+      );
+      expect(html).toContain(`href="${destination}"`);
+      expect(sitemap).not.toContain(`<loc>https://askrjs.com${path}</loc>`);
+      expect(sitemap).not.toContain(`<loc>https://askrjs.com${path}/</loc>`);
+    }
+  });
+
   it('should contain every route and the manual GA4 page-view configuration', () => {
     const metadata = JSON.parse(
       readFileSync(resolve(dist, 'metadata.json'), 'utf8')
     ) as StaticMetadata;
-    const expectedRoutes =
-      docsCatalog.length + Object.keys(marketingRouteMetadata).length;
+    const expectedRoutes = Object.keys(routeMetadata).length;
 
     expect(metadata.totalRoutes).toBe(expectedRoutes);
     expect(metadata.successful).toBe(expectedRoutes);

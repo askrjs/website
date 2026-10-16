@@ -1431,10 +1431,12 @@ export function buildUsageGuide(
   const focusedGuide = topicGuide(page);
   if (focusedGuide) return focusedGuide;
 
+  if (page.route === '/docs/guides/contributing') return undefined;
+
   if (page.navGroup === 'Getting Started') {
     return {
       intro:
-        'Create a readable starter, run it unchanged, and make one small production build after the first route works.',
+        'Create a starter, start the development server, and verify the production build.',
       code: `npx ${cli} create startkit my-app
 cd my-app
 npm run dev

@@ -14,7 +14,10 @@ import { componentGuideRoute } from '../src/pages/docs/component-coverage';
 import { cliSnapshot } from '../src/pages/docs/cli-snapshot';
 import { lucideIcons } from '../src/pages/docs/lucide-icons';
 import { searchDocs } from '../src/pages/docs/search-index';
-import { buildUsageGuide } from '../src/pages/docs/usage-guide';
+import {
+  buildUsageGuide,
+  routeExampleFor,
+} from '../src/pages/docs/usage-guide';
 import { upgradeGuidance } from '../src/pages/docs/release-notes';
 import { headingOverrides } from '../src/pages/docs/heading-bodies';
 import { routeRegistry } from '../src/pages/_routes';
@@ -243,10 +246,19 @@ describe('documentation catalog', () => {
       } else if (page.route === '/docs/integrations/lucide-gallery') {
         expect(toc, page.route).toEqual(page.headings);
       } else {
-        expect(toc[0]?.id, page.route).toBe('how-to-use');
-        expect(toc.slice(1, 1 + page.headings.length), page.route).toEqual(
-          page.headings
-        );
+        const prefix = [
+          ...(buildUsageGuide(page, routeExampleFor(page.route))
+            ? [{ id: 'how-to-use', title: 'Example' }]
+            : []),
+          ...(componentPropReferences(page).length
+            ? [{ id: 'published-props', title: 'Published props' }]
+            : []),
+        ];
+        expect(toc.slice(0, prefix.length), page.route).toEqual(prefix);
+        expect(
+          toc.slice(prefix.length, prefix.length + page.headings.length),
+          page.route
+        ).toEqual(page.headings);
       }
     }
   });
@@ -321,7 +333,6 @@ describe('documentation catalog', () => {
       'docs/_layout.tsx',
       'docs/api-page.tsx',
       'docs/page.tsx',
-      'marketing/components.tsx',
       'marketing/home.tsx',
     ];
     for (const file of staticCollectionFiles) {
@@ -332,34 +343,6 @@ describe('documentation catalog', () => {
       expect(source, file).toContain('.map(');
       expect(source, file).not.toContain('<For');
     }
-  });
-
-  it('should keep audited marketing claims within shipped boundaries', () => {
-    const source = [
-      'home.tsx',
-      'platform.tsx',
-      'full-stack.tsx',
-      'themes.tsx',
-      'production.tsx',
-    ]
-      .map((file) =>
-        readFileSync(
-          new URL(`../src/pages/marketing/${file}`, import.meta.url),
-          'utf8'
-        )
-      )
-      .join('\n');
-
-    expect(source).not.toContain('Only <code>@askrjs/askr</code>');
-    expect(source).not.toContain('register on the same router');
-    expect(source).not.toContain('none of that has to be re-verified');
-    expect(source).not.toContain('Two outputs, one build');
-    expect(source).toContain('one explicit registry');
-    expect(source).toContain('own entry point and build setup.');
-    expect(source).toContain(
-      "This site is built with Askr's static-site generator"
-    );
-    expect(source).toContain('Askr does not include a user database');
   });
 
   it('should keep the live shared layout mobile-safe', () => {

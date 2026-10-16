@@ -32,21 +32,19 @@ Use the documentation links below as the primary source for Askr APIs and usage.
 - [Tooling](https://askrjs.com/docs/tooling/index.md): CLI workflows for creating, analyzing, generating, checking, and upgrading projects.
 - [API reference](https://askrjs.com/docs/reference/index.md): Package entry points, exported APIs, CLI reference, and release notes.
 
-## Deliver excellent developer experience
+## Shipping an application
 
-The docs treat "it works" and "it's ready to ship" as different bars — these pages are where the second bar is spelled out explicitly, not left implicit in example code.
+Use these guides to review failure handling, deployment, accessibility, and runtime constraints before shipping.
 
 - [Guides: production finish bar](https://askrjs.com/docs/guides/index.md): The checklist every task-oriented guide ends on — error boundaries around what can fail, mutations invalidating the right query keys, auth-gated routes marked runtime-only, `askr openapi --check` passing in CI.
 - [Production readiness](https://askrjs.com/docs/guides/production-readiness/index.md): Wiring `onError`, health probes, and OpenTelemetry so a broken deploy fails loudly instead of serving errors quietly.
 - [Accessibility](https://askrjs.com/docs/guides/accessibility/index.md): Using `@askrjs/ui`'s typed `*_A11Y_CONTRACT` exports to verify keyboard behavior, focus handling, and ARIA roles instead of trusting a component's look.
 - [Determinism and runtime rules](https://askrjs.com/docs/core-concepts/determinism/index.md): The render-purity, hook-order, and no-mutation-during-render rules the runtime enforces with a specific thrown error, not silent misbehavior.
 
-## Platform overview
+## Project
 
-- [Platform](https://askrjs.com/platform): How the runtime, router, UI, server, rendering, and tooling fit together.
-- [Application model](https://askrjs.com/application-model): Ownership and cleanup of state, routes, and asynchronous work.
-- [Full-stack applications](https://askrjs.com/full-stack): Forms, validated APIs, OpenAPI, and authorization policies in one route tree.
-- [Production](https://askrjs.com/production): Static and Node deployment paths, probes, middleware, localization, and telemetry.
+- [Askr](https://askrjs.com/): A short introduction and links into the documentation.
+- [Contributing](https://askrjs.com/docs/guides/contributing/index.md): Report an issue, improve an example, or contribute a focused fix.
 
 ## Optional
 

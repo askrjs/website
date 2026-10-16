@@ -25,8 +25,12 @@ CI therefore validate the same package boundary used by GitHub Pages.
   branding.
 - `src/pages/_routes.tsx` owns the complete browser and SSG route registry plus
   the persistent route-analytics layout, while
-  `src/pages/marketing/_routes.tsx` registers the marketing leaves.
-- `src/pages/marketing/home.tsx` renders the `/` page.
+  `src/pages/marketing/_routes.tsx` registers the landing page, fallback, and
+  compatibility routes. Retired marketing URLs forward to docs using browser
+  navigation and static refresh pages; GitHub Pages serves these with HTTP 200,
+  not a permanent redirect status.
+- `src/pages/marketing/home.tsx` renders the single `/` landing page.
+- `src/pages/marketing/redirects.ts` maps retired marketing URLs to docs.
 - `src/pages/docs/catalog.ts` is the typed source of truth for docs routes,
   metadata, grouped navigation, breadcrumbs, page ordering, search, and SSG.
 - `src/pages/docs/` also owns the shared content primitives, responsive shell,

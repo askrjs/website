@@ -123,7 +123,7 @@ file.
   development." Verified against `askr/src/renderer/error-boundary-dom.ts`:
   the default fallback renders in _every_ environment; only its `<details>`
   panel's `open` state is dev-specific (`details.open =
-isDevelopmentEnvironment()`). Fixed the README and the matching
+  isDevelopmentEnvironment()`). Fixed the README and the matching
   `/docs/core-concepts/error-boundaries` `reporting` heading, which had the
   identical error.
 
@@ -161,7 +161,7 @@ universal:
   - `lifecycle-work` (`events-and-streams`): claimed `stream()` returns "the
     same `{ value, pending, error }` shape as `resource`." Actual shape
     (`askr/src/runtime/stream-operation.ts:20-29`) is `{ value, status,
-pending, stale, error, restart(), close() }` — meaningfully richer.
+    pending, stale, error, restart(), close() }` — meaningfully richer.
     Fixed.
   - `scopes` description (`descriptionOverrides`): claimed "scopes own
     effects and resources, and dispose of them with their lexical owner."
@@ -341,11 +341,11 @@ finding above. Every other guide route was checked; findings and fixes:
   pass): claimed a nested `auth.check` field — no such field exists;
   the real per-route option is a sibling field simply named `auth`
   (`askr/src/common/router.ts:131-144`). Claimed `deny('forbidden' |
-'unauthorized' | ...)` takes a string reason — `deny()` takes a numeric
+  'unauthorized' | ...)` takes a string reason — `deny()` takes a numeric
   HTTP status (`401 | 403 | 404`, `askr/src/common/router.ts:82`). The
   `AuthContext` example omitted its `authenticated` field. All three fixed.
 - **`build-an-authenticated-full-stack-app`:** `route(path, Component,
-{ policy })` — the real field is plural, `policies: [...]`
+  { policy })` — the real field is plural, `policies: [...]`
   (`askr/src/common/router.ts:141-144`). Fixed.
 - **`add-ssr-to-an-spa`:** claimed `RouteRenderOptions` (the SSR-side type)
   carries an `auth` field the way the SSG side's `RouteConfig.auth` does —
@@ -429,13 +429,13 @@ rather than silently leaving them unflagged.
 - `/docs/components/advanced-layout` — **Inaccurate, needs Published
   limitation → fixed.** Claimed `SidebarScope` "coordinates open/closed and
   rail-expanded state." Verified `SidebarScope` is `sidebarPart(props,
-"sidebar-scope")` — a pure styling wrapper with zero state logic
+  "sidebar-scope")` — a pure styling wrapper with zero state logic
   (`askr-themes/src/components/sidebar/sidebar.tsx:74-77`). Set `status:
-'limited'` and rewrote `state-model` to say the app owns all collapse
+  'limited'` and rewrote `state-model` to say the app owns all collapse
   state itself.
 - `/docs/components/button-and-button-group` (`install-and-import`) —
   example implied `import { Button, ButtonGroup } from
-'@askrjs/themes/button'` works as one statement. `@askrjs/themes/button`
+  '@askrjs/themes/button'` works as one statement. `@askrjs/themes/button`
   only re-exports `Button`; `ButtonGroup` requires the separate
   `@askrjs/themes/button-group` entrypoint (`askr-themes/src/entries/button.ts`
   vs `button-group.ts`) — as written, the combined import fails. Fixed.
@@ -598,12 +598,12 @@ has since been verified against source and corrected:
 - `/docs/charts/interactions` (`zoom`) — confirmed in
   `askr-charts/src/controller.ts` that plain arrow keys move mark focus,
   and panning requires `Shift`+arrow specifically (`event.shiftKey &&
-zoom?.pan`) — the page claimed plain arrows pan. Fixed, and cross-checked
+  zoom?.pan`) — the page claimed plain arrows pan. Fixed, and cross-checked
   against the page's own `crosshair` heading, which was already correct
   about arrow keys driving inspection focus.
 - `/docs/charts/accessibility-and-ssr` (`ssr-output`) — confirmed in
   `controller.ts` (`requireCanvas(host, "plot-canvas-chrome" |
-"-marks" | "-overlay")`) that hydration mounts three canvases (chrome,
+  "-marks" | "-overlay")`) that hydration mounts three canvases (chrome,
   marks, overlay), not the two the page described. Fixed.
 
 None of these needed a `status` downgrade — they're wrong details on real,

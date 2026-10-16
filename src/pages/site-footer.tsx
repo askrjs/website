@@ -10,7 +10,6 @@ import {
 } from '@askrjs/themes/components';
 import { Link } from '@askrjs/askr/router';
 import { BookOpenIcon, CompassIcon } from '@askrjs/lucide';
-import { marketingPages } from './marketing/catalog';
 import { docsPrimarySections } from './docs/primary-sections';
 import { GitHubMark } from './site-header';
 
@@ -26,27 +25,17 @@ export function SiteFooter() {
                 Explore
               </span>
             </FooterTitle>
-            <FooterLinks aria-label="Marketing links">
+            <FooterLinks aria-label="Site links">
               <Link class="footer-link" data-slot="footer-link" href="/">
                 Home
               </Link>
               <Link
                 class="footer-link"
                 data-slot="footer-link"
-                href="/contribute"
+                href="/docs/guides/contributing"
               >
                 Contribute
               </Link>
-              {marketingPages.map((page) => (
-                <Link
-                  key={page.path}
-                  class="footer-link"
-                  data-slot="footer-link"
-                  href={page.path}
-                >
-                  {page.label}
-                </Link>
-              ))}
             </FooterLinks>
           </FooterSection>
 
