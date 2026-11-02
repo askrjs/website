@@ -22,6 +22,14 @@ export const apiSymbolSets: Readonly<
 > = {
   symbols0: [
     {
+      name: 'batch',
+      anchor: 'batch',
+      signature: 'batch: <T>(fn: () => T) => T',
+      typeOnly: true,
+      summary:
+        'Runs `fn` with scheduling deferred and flushes once, synchronously, when the\noutermost batch exits. Works anywhere: event handlers, timers, callbacks.\nReturns the value of `fn`; a throw still flushes queued work.',
+    },
+    {
       name: 'configureRenderDiagnostics',
       anchor: 'configure-render-diagnostics',
       signature:
@@ -79,7 +87,7 @@ export const apiSymbolSets: Readonly<
       name: 'derive',
       anchor: 'derive',
       signature:
-        'derive: { <TOut>(fn: () => TOut): Derived<TOut>; <TIn, TOut>(source: SnapshotSource<TIn> | TIn | (() => TIn), map: (value: TIn) => TOut): Derived<TOut | null>; }',
+        'derive: { <TOut>(fn: () => TOut, options?: ReactiveOptions<TOut>): Derived<TOut>; <TIn, TOut>(source: SnapshotSource<TIn> | TIn | (() => TIn), map: (value: TIn) => TOut, options?: ReactiveOptions<TOut | null>): Derived<TOut | null>; }',
       typeOnly: true,
       summary:
         'Creates a render-scoped derived value; must be called during component render.',
@@ -244,7 +252,7 @@ export const apiSymbolSets: Readonly<
       name: 'selector',
       anchor: 'selector-2',
       signature:
-        'selector: <T>(source: () => T, equals?: SelectorEquals<T>) => Selector<T>',
+        'selector: <T>(source: () => T, equals?: SelectorEquals<T> | SelectorOptions<T>) => Selector<T>',
       typeOnly: true,
       summary:
         'Creates a render-scoped predicate for keyed membership in reactive list rows.\n\nUse this when a `<For>` child needs to compare each stable item with a\nchanging selected value. Unlike a plain closure capture, the predicate\nsubscribes the affected rows and updates them without rebuilding the list.\nMust be called during component render.',
@@ -260,7 +268,8 @@ export const apiSymbolSets: Readonly<
     {
       name: 'state',
       anchor: 'state-2',
-      signature: 'state: <T>(initialValue: T) => StateTuple<T>',
+      signature:
+        'state: <T>(initialValue: T, options?: ReactiveOptions<T>) => StateTuple<T>',
       typeOnly: true,
       summary:
         'Creates a local state value for a component\nOptimized for:\n- O(1) read performance\n- Minimal allocation per state\n- Fast scheduler integration\n\nIMPORTANT: state() must be called during component render execution.\nIt captures the current component instance from context.\nCalling outside a component function will throw an error.',
@@ -303,6 +312,31 @@ export const apiSymbolSets: Readonly<
       signature: 'StateTuple: [get: State<T>, set: StateSetter<T>] & State<T>',
       typeOnly: true,
       summary: 'Tuple-first state handle returned by `state()`.',
+    },
+    {
+      name: 'store',
+      anchor: 'store',
+      signature:
+        'store: <T extends object>(initial: T, options?: StoreOptions) => T',
+      typeOnly: true,
+      summary:
+        'Creates a deep reactive proxy over a plain object or array. Must be called\nduring component render; like `state()` it claims a positional slot and the\ninitial value is used only on the first render.\n\nReading a property inside a render, `derive()` or binding subscribes to just\nthat property. Assignments, `delete` and array mutations notify the readers\nthey affect. Nested plain objects and arrays are wrapped lazily, with one\nproxy per target. Writes during render throw, like `state.set()`.',
+    },
+    {
+      name: 'untrack',
+      anchor: 'untrack',
+      signature: 'untrack: <T>(fn: () => T) => T',
+      typeOnly: true,
+      summary:
+        'Runs `fn` without subscribing the running computation (a render or\n`derive()`) to any source `fn` reads. Returns the value of `fn`.',
+    },
+    {
+      name: 'unwrap',
+      anchor: 'unwrap',
+      signature: 'unwrap: <T>(value: T) => T',
+      typeOnly: true,
+      summary:
+        'Returns the raw object behind a `store()` proxy; other values are returned as is.',
     },
   ],
   symbols1: [
@@ -356,7 +390,7 @@ export const apiSymbolSets: Readonly<
       name: 'HydrateSPAConfig',
       anchor: 'hydrate-spaconfig',
       signature:
-        "HydrateSPAConfig: BootRouteSource & {\n  root: Element | string;\n  cspNonce?: string;\n  dataRuntime?: DataRuntime;\n  /** Auth resolution and redirect options; defaults to the registry's `auth`. */\n  auth?: RouteAuthOptions;\n  scrollRestoration?: boolean | ScrollRestorationOptions;\n  cleanupStrict?: boolean;\n  hydrate?: {\n    verifyMarkup?: boolean;\n    deferUntilIdle?: boolean;\n    deferBelowFold?: boolean;\n    foldThreshold?: number;\n    skipSelectors?: string[];\n  };\n}",
+        "HydrateSPAConfig: BootRouteSource & {\n  root: Element | string;\n  cspNonce?: string;\n  dataRuntime?: DataRuntime;\n  /** Auth resolution and redirect options; defaults to the registry's `auth`. */\n  auth?: RouteAuthOptions;\n  scrollRestoration?: boolean | ScrollRestorationOptions;\n  /** Focus and announcement after a push navigation; see `SPAConfig.focus`. */\n  focus?:\n    | false\n    | {\n        target?: string | ((root: Element) => Element | null);\n        announce?:\n          | false\n          | ((route: {\n              readonly pathname: string;\n              readonly search: string;\n              readonly hash: string;\n              readonly title: string;\n            }) => string);\n      };\n  /** View transitions between pages; see \\`SPAConfig.viewTransitions\\`. */\n  viewTransitions?: boolean | ((from: string, to: string) => boolean);\n  cleanupStrict?: boolean;\n  hydrate?: {\n    verifyMarkup?: boolean;\n    /**\n     * Called with the DOM path and the expected and found nodes for each\n     * server/client difference. In verify mode, returning `'continue'` patches\n     * the markup and proceeds instead of failing hydration.\n     */\n    onMismatch?: (info: {\n      path: string;\n      expected: string;\n      actual: string;\n    }) => 'continue' | void;\n\n    deferUntilIdle?: boolean;\n    deferBelowFold?: boolean;\n    foldThreshold?: number;\n    skipSelectors?: string[];\n  };\n}",
       typeOnly: true,
       summary: 'Configuration for {@link hydrateSPA}.',
     },
@@ -364,7 +398,7 @@ export const apiSymbolSets: Readonly<
       name: 'IslandConfig',
       anchor: 'island-config',
       signature:
-        "IslandConfig: {\n  root: Element | string;\n  component: ComponentFunction;\n  cspNonce?: string;\n  /** Optional data runtime owned by this island's render and event lifecycle. */\n  dataRuntime?: DataRuntime;\n  cleanupStrict?: boolean;\n  routes?: never;\n}",
+        "IslandConfig: {\n  root: Element | string;\n  component: ComponentFunction;\n  cspNonce?: string;\n  /**\n   * Adopt the container's existing elements instead of replacing them. An\n   * object adopts and receives mismatch reports.\n   * Defaults to `true` when the container already has element children;\n   * `false` always replaces, `true` always adopts. A mismatch falls back to\n   * client-rendered nodes as hydration does.\n   */\n  hydrate?:\n    | boolean\n    | {\n        /**\n         * Called with the DOM path and the expected and found nodes for each\n         * server/client difference; the island patches the markup and proceeds.\n         */\n        onMismatch?: (info: {\n          path: string;\n          expected: string;\n          actual: string;\n        }) => void;\n      };\n  /** Optional data runtime owned by this island's render and event lifecycle. */\n  dataRuntime?: DataRuntime;\n  cleanupStrict?: boolean;\n  routes?: never;\n}",
       typeOnly: true,
       summary:
         'Configuration for {@link createIsland}: mounts one component onto existing DOM.',
@@ -391,7 +425,7 @@ export const apiSymbolSets: Readonly<
       name: 'SPAConfig',
       anchor: 'spaconfig',
       signature:
-        "SPAConfig: BootRouteSource & {\n  root: Element | string;\n  cspNonce?: string;\n  /** Optional data runtime, primarily for routed test fixtures. */\n  dataRuntime?: DataRuntime;\n  /** Auth resolution and redirect options; defaults to the registry's `auth`. */\n  auth?: RouteAuthOptions;\n  scrollRestoration?: boolean | ScrollRestorationOptions;\n  cleanupStrict?: boolean;\n  component?: never;\n}",
+        "SPAConfig: BootRouteSource & {\n  root: Element | string;\n  cspNonce?: string;\n  /** Optional data runtime, primarily for routed test fixtures. */\n  dataRuntime?: DataRuntime;\n  /** Auth resolution and redirect options; defaults to the registry's `auth`. */\n  auth?: RouteAuthOptions;\n  scrollRestoration?: boolean | ScrollRestorationOptions;\n  /**\n   * Focus and announcement after a push navigation. On by default: focus moves\n   * to the first `[data-askr-focus-target]`, else `<main>`, else the first\n   * `<h1>`, else the root, and a visually hidden polite live region announces\n   * the new document title (the pathname without one). `false` turns both off.\n   */\n  focus?:\n    | false\n    | {\n        target?: string | ((root: Element) => Element | null);\n        announce?:\n          | false\n          | ((route: {\n              readonly pathname: string;\n              readonly search: string;\n              readonly hash: string;\n              readonly title: string;\n            }) => string);\n      };\n  /**\n   * Animate page changes with \\`document.startViewTransition()\\`. \\`true\\`\n   * animates every navigation (including back/forward), a function decides per\n   * navigation from the departing and arriving hrefs, and the default \\`false\\`\n   * never does unless a navigation asks (\\`navigate(target, { viewTransition:\n   * true })\\`, \\`<Link viewTransition>\\`). Browsers without the API commit\n   * directly.\n   */\n  viewTransitions?: boolean | ((from: string, to: string) => boolean);\n  cleanupStrict?: boolean;\n  component?: never;\n}",
       typeOnly: true,
       summary: 'Configuration for {@link createSPA}.',
     },
@@ -808,10 +842,10 @@ export const apiSymbolSets: Readonly<
       name: 'composeRefs',
       anchor: 'compose-refs',
       signature:
-        'composeRefs: <T>(...refs: Array<Ref<T>>) => (value: T | null) => void',
+        'composeRefs: <T>(...refs: Array<Ref<T>>) => (value: T | null) => void | (() => void)',
       typeOnly: true,
       summary:
-        'Combine multiple refs into one callback ref that writes to all of them.',
+        'Combine multiple refs into one callback ref that writes to all of them.\nCleanups the callbacks return are forwarded: the composed ref returns one\ncleanup that runs them and gives `null` to the refs that returned none.',
     },
     {
       name: 'formatId',
@@ -862,9 +896,10 @@ export const apiSymbolSets: Readonly<
       name: 'Ref',
       anchor: 'ref',
       signature:
-        'Ref: | ((value: T | null) => void)\n  | {\n      current: T | null;\n    }\n  | null\n  | undefined',
+        'Ref: | ((value: T | null) => void | (() => void))\n  | {\n      current: T | null;\n    }\n  | null\n  | undefined',
       typeOnly: true,
-      summary: 'A callback ref, an object ref, or a nullish value (no-op).',
+      summary:
+        'A callback ref, an object ref, or a nullish value (no-op). A callback may\nreturn a cleanup that runs on detach instead of a call with `null`.',
     },
     {
       name: 'setRef',
@@ -3114,6 +3149,15 @@ export const apiSymbolSets: Readonly<
       summary: 'Policy decision: allow the route to render.',
     },
     {
+      name: 'blockNavigation',
+      anchor: 'block-navigation',
+      signature:
+        'blockNavigation: (shouldBlock: () => boolean | string) => () => void',
+      typeOnly: true,
+      summary:
+        'Ask before the router leaves the current page. \\`shouldBlock\\` is evaluated\nwhen an in-app navigation (\\`navigate()\\`, \\`<Link>\\`) or a back/forward\ntraversal is attempted, and when the document is about to unload. Return\n\\`true\\` to refuse, a string to ask the visitor to confirm with that message,\nor \\`false\\` to allow. Returns a function that removes the blocker.\n\n\\`updateRouteQuery()\\` and a policy or auth redirect met during an in-app\nnavigation consult blockers too; a refusal is dropped and reported through\n\\`navigationState().blocked\\`. Limitations: a traversal is undone after the\nbrowser has moved and flashes the destination URL, by \\`history.go()\\` when the\nhistory position is known and otherwise by pushing the current entry again\n(an extra entry; forward entries are lost); browsers show their own fixed\ntext on unload, not the string.',
+    },
+    {
       name: 'createRouteRegistry',
       anchor: 'create-route-registry',
       signature:
@@ -3143,7 +3187,7 @@ export const apiSymbolSets: Readonly<
       name: 'currentRoute',
       anchor: 'current-route',
       signature:
-        'currentRoute: <TParams extends RouteParams = RouteParams, TState = unknown, TAppMeta = unknown>() => RouteSnapshot<TParams, TState, TAppMeta>',
+        'currentRoute: <TParams extends RouteParams = RouteParams, TState = unknown, TAppMeta = unknown, TSearch = RouteSearch>() => RouteSnapshot<TParams, TState, TAppMeta, TSearch>',
       typeOnly: true,
       summary:
         "Read the currently active route's {@link RouteSnapshot}; reactive during component render.",
@@ -3247,6 +3291,29 @@ export const apiSymbolSets: Readonly<
           summary: '',
           signature: 'appMeta?: TAppMeta;',
         },
+        {
+          name: 'error',
+          summary: '',
+          signature: 'error?: (props: RouteErrorProps) => RenderableChild;',
+        },
+        {
+          name: 'forbidden',
+          summary: '',
+          signature:
+            'forbidden?: (props: RouteForbiddenProps) => RenderableChild;',
+        },
+        {
+          name: 'loader',
+          summary:
+            'Runs alongside the leaf loader; read the result with `layoutData(loader)`.',
+          signature:
+            'loader?: (\n    context: RouteContext & {\n      request?: Request;\n    }\n  ) => unknown;',
+        },
+        {
+          name: 'staleTimeMs',
+          summary: '',
+          signature: "staleTimeMs?: number | 'always';",
+        },
       ],
     },
     {
@@ -3273,6 +3340,15 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
       summary:
         'Check whether `value` is a {@link Deferred} produced by {@link defer}.',
+    },
+    {
+      name: 'layoutData',
+      anchor: 'layout-data',
+      signature:
+        'layoutData: <TData>(loader: (context: RouteContext & { request?: Request; }) => TData | PromiseLike<TData>) => TData',
+      typeOnly: true,
+      summary:
+        'Read the result of a `group()`/`page()` loader while rendering a route that\nruns it, typically from a layout or page host. The argument is the loader\nfunction declared on the scope, so the read is typed by that function and\nworks anywhere below the scope, including the leaf.',
     },
     {
       name: 'lazy',
@@ -3314,7 +3390,7 @@ export const apiSymbolSets: Readonly<
       name: 'Link',
       anchor: 'link',
       signature:
-        'Link: ({ href: suppliedHref, to, class: className, children, rel, target, "aria-current": ariaCurrent, "aria-label": ariaLabel, onPress, onClick, ...rest }: LinkProps) => JSXElement',
+        'Link: ({ href: suppliedHref, to, class: className, children, rel, target, "aria-current": ariaCurrent, "aria-label": ariaLabel, onPress, onClick, replace, state, scroll, prefetch, ...rest }: LinkProps) => JSXElement',
       typeOnly: true,
       summary:
         'Link component that prevents default navigation and uses navigate()\nProvides declarative way to navigate between routes\n\nAccessibility features:\n- Proper semantic <a> element (not a button)\n- Supports aria-current for indicating active page\n- Supports aria-label for descriptive labels\n- Keyboard accessible (Enter key handled by native <a> element)\n\nRespects native browser behaviors:\n- Middle-click (opens in new tab)\n- Ctrl/Cmd+click (opens in new tab)\n- Shift+click (opens in new window)\n- Alt+click (downloads link)\n- Right-click context menu\n\nBest practices:\n- Use target="_blank" with rel="noopener noreferrer" for external links\n- Use aria-current="page" for the current page in navigation\n- Provide descriptive link text or aria-label\n- For a styled link with automatic active-route state, install\n  `@askrjs/themes` and use `NavLink` from `@askrjs/themes/components`\n\nUses applyInteractionPolicy to enforce pit-of-success principles:\n- Interaction behavior centralized in foundations\n- Keyboard handling automatic\n- Composable via mergeProps',
@@ -3367,10 +3443,34 @@ export const apiSymbolSets: Readonly<
           signature: 'onPress?: ((event: Event) => void) | undefined;',
         },
         {
+          name: 'prefetch',
+          summary:
+            "Warm the destination before the visitor commits to it. `'intent'` does so\non pointer enter and keyboard focus, `'render'` when the link mounts, and\n`'none'` (the default) never. Prefetching starts the route's lazy chunk and\nresolves it like a navigation (auth, policies, loaders through the loader\ncache) without rendering it.",
+          signature: 'prefetch?: "none" | "intent" | "render" | undefined;',
+        },
+        {
           name: 'rel',
           summary:
             'Optional rel attribute for link relationships.\nCommon values: "noopener", "noreferrer", "nofollow"',
           signature: 'rel?: string | undefined;',
+        },
+        {
+          name: 'replace',
+          summary:
+            'Replace the current history entry instead of pushing a new one.',
+          signature: 'replace?: boolean | undefined;',
+        },
+        {
+          name: 'scroll',
+          summary:
+            'Scroll to the top (default) or keep the offset after the navigation.',
+          signature: 'scroll?: "top" | "preserve" | undefined;',
+        },
+        {
+          name: 'state',
+          summary:
+            'Entry-local history state for the destination, as `navigate(href, { state })`.',
+          signature: 'state?: unknown;',
         },
         {
           name: 'target',
@@ -3383,7 +3483,22 @@ export const apiSymbolSets: Readonly<
           summary: '',
           signature: 'to?: RouteDestination | undefined;',
         },
+        {
+          name: 'viewTransition',
+          summary:
+            'Animate the page change with \\`document.startViewTransition()\\` when the\nbrowser has it, as \\`navigate(href, { viewTransition: true })\\`.',
+          signature: 'viewTransition?: boolean | undefined;',
+        },
       ],
+    },
+    {
+      name: 'localTarget',
+      anchor: 'local-target',
+      signature:
+        'localTarget: (value: string | null, fallback?: string) => string',
+      typeOnly: true,
+      summary:
+        'Reduce an untrusted navigation target (a \\`?next=\\` query value, a form field)\nto a same-origin root-relative href, or \\`fallback\\` when it names anything\nelse. Relative values resolve against the origin root. The checks are those\nof \\`navigate()\\`: another origin, a path-like value the URL parser resolves\nto another host (\\`//evil.example\\`, \\`/\\\\evil.example\\`), a pathname that\ncollapses to a leading \\`//\\`, and non-http schemes all use the fallback.\nOn a server, where the origin is unknown, only root-relative values pass.',
     },
     {
       name: 'matchRoute',
@@ -3407,7 +3522,7 @@ export const apiSymbolSets: Readonly<
       name: 'NavigateOptions',
       anchor: 'navigate-options',
       signature:
-        "NavigateOptions: {\n  history?: 'push' | 'replace';\n  replace?: boolean;\n  scroll?: NavigationScrollBehavior;\n  /** Entry-local browser history state. It is not serialized into the URL or sent to the server. */\n  state?: unknown;\n}",
+        "NavigateOptions: {\n  history?: 'push' | 'replace';\n  replace?: boolean;\n  scroll?: NavigationScrollBehavior;\n  /** Entry-local browser history state. It is not serialized into the URL or sent to the server. */\n  state?: unknown;\n  /**\n   * Throw a `TypeError` for any target on another origin, including an\n   * explicit `http:`/`https:` URL, which `navigate()` otherwise hands to the\n   * browser. Use it when the target came from untrusted input.\n   */\n  sameOrigin?: boolean;\n  /**\n   * Animate the page change with \\`document.startViewTransition()\\` when the\n   * browser has it; otherwise the navigation commits directly. Overrides the\n   * \\`viewTransitions\\` app option for this navigation.\n   */\n  viewTransition?: boolean;\n}",
       typeOnly: true,
       summary: 'Options for {@link navigate}.',
     },
@@ -3417,6 +3532,47 @@ export const apiSymbolSets: Readonly<
       signature: "NavigationScrollBehavior: 'top' | 'preserve'",
       typeOnly: true,
       summary: 'Scroll behavior for programmatic navigations (`navigate()`).',
+    },
+    {
+      name: 'navigationState',
+      anchor: 'navigation-state-2',
+      signature: 'navigationState: () => NavigationState',
+      typeOnly: true,
+      summary:
+        'Read whether a navigation is pending and whether route data is being\nrevalidated. Reactive when called while rendering a client component; the\nreturned object is replaced, never mutated, when the state changes. On the\nserver it always reports idle.',
+    },
+    {
+      name: 'NavigationState',
+      anchor: 'navigation-state',
+      signature: 'NavigationState: any',
+      typeOnly: true,
+      summary:
+        'What the router is doing about navigation right now; see {@link navigationState}.',
+      members: [
+        {
+          name: 'pending',
+          summary:
+            'A navigation is waiting on route resolution (auth, policies, lazy chunk, loaders).',
+          signature: 'readonly pending: boolean;',
+        },
+        {
+          name: 'to',
+          summary:
+            'The public href being navigated to while \\`pending\\`; otherwise \\`null\\`.',
+          signature: 'readonly to: string | null;',
+        },
+        {
+          name: 'revalidating',
+          summary: 'Cached route data is being refreshed in the background.',
+          signature: 'readonly revalidating: boolean;',
+        },
+        {
+          name: 'blocked',
+          summary:
+            'The public href of the most recent navigation a {@link blockNavigation}\nblocker refused, until the next navigation begins; otherwise \\`null\\`.',
+          signature: 'readonly blocked: string | null;',
+        },
+      ],
     },
     {
       name: 'notFound',
@@ -3473,6 +3629,29 @@ export const apiSymbolSets: Readonly<
           name: 'appMeta',
           summary: '',
           signature: 'appMeta?: TAppMeta;',
+        },
+        {
+          name: 'error',
+          summary: '',
+          signature: 'error?: (props: RouteErrorProps) => RenderableChild;',
+        },
+        {
+          name: 'forbidden',
+          summary: '',
+          signature:
+            'forbidden?: (props: RouteForbiddenProps) => RenderableChild;',
+        },
+        {
+          name: 'loader',
+          summary:
+            'Runs alongside the leaf loader; read the result with `layoutData(loader)`.',
+          signature:
+            'loader?: (\n    context: RouteContext & {\n      request?: Request;\n    }\n  ) => unknown;',
+        },
+        {
+          name: 'staleTimeMs',
+          summary: '',
+          signature: "staleTimeMs?: number | 'always';",
         },
       ],
     },
@@ -3545,7 +3724,7 @@ export const apiSymbolSets: Readonly<
       name: 'resolveRouteMeta',
       anchor: 'resolve-route-meta',
       signature:
-        'resolveRouteMeta: (record: RouteRecord, context: RouteContext) => Promise<Readonly<RouteMeta>>',
+        'resolveRouteMeta: (record: RouteRecord, context: RouteContext & { data?: unknown; }) => Promise<Readonly<RouteMeta>>',
       typeOnly: true,
       summary:
         "Resolve a route's merged {@link RouteMeta} by running its metadata chain against `context`.",
@@ -3713,6 +3892,12 @@ export const apiSymbolSets: Readonly<
           summary: '',
           signature: 'signal: AbortSignal;',
         },
+        {
+          name: 'searchParams',
+          summary:
+            "The location's query string parsed with the matched route's \\`search\\`\nschema (empty when the route declares none). Invalid or missing values take\nthe schema defaults and invalid keys are dropped; resolution never fails\nover the query string. \\`search\\` stays the raw string.",
+          signature: 'searchParams?: Readonly<RouteSearch>;',
+        },
       ],
     },
     {
@@ -3779,6 +3964,41 @@ export const apiSymbolSets: Readonly<
       ],
     },
     {
+      name: 'RouteErrorProps',
+      anchor: 'route-error-props',
+      signature: 'RouteErrorProps: any',
+      typeOnly: true,
+      summary: 'Props of a route `error` component.',
+      members: [
+        {
+          name: 'error',
+          summary:
+            "What the route's lazy chunk, preload, loader or policy threw.",
+          signature: 'error: unknown;',
+        },
+        {
+          name: 'retry',
+          summary:
+            'Resolve the current location again, replacing its history entry.',
+          signature: 'retry: () => void;',
+        },
+      ],
+    },
+    {
+      name: 'RouteForbiddenProps',
+      anchor: 'route-forbidden-props',
+      signature: 'RouteForbiddenProps: any',
+      typeOnly: true,
+      summary: 'Props of a route `forbidden` component.',
+      members: [
+        {
+          name: 'status',
+          summary: 'The denial status a policy or auth requirement produced.',
+          signature: 'status: AccessDenyStatus;',
+        },
+      ],
+    },
+    {
       name: 'RouteHandler',
       anchor: 'route-handler',
       signature: 'RouteHandler: any',
@@ -3809,6 +4029,16 @@ export const apiSymbolSets: Readonly<
           summary:
             'Normalized public pathname prefix. Empty and root mounts omit it.',
           signature: 'basePath?: string;',
+        },
+        {
+          name: 'trailingSlash',
+          summary: "Registry `trailingSlash` policy; omitted for `'ignore'`.",
+          signature: "trailingSlash?: 'never' | 'always';",
+        },
+        {
+          name: 'caseSensitive',
+          summary: 'Registry `caseSensitive`; omitted unless `false`.',
+          signature: 'caseSensitive?: false;',
         },
       ],
     },
@@ -3901,10 +4131,10 @@ export const apiSymbolSets: Readonly<
       name: 'RouteMetaSource',
       anchor: 'route-meta-source',
       signature:
-        'RouteMetaSource: | RouteMeta\n  | ((context: RouteContext<TParams>) => RouteMeta | PromiseLike<RouteMeta>)',
+        'RouteMetaSource: | RouteMeta\n  | ((\n      context: RouteContext<TParams> & {\n        data?: TData;\n        searchParams: Readonly<TSearch>;\n      }\n    ) => RouteMeta | PromiseLike<RouteMeta>)',
       typeOnly: true,
       summary:
-        "A route's metadata, or a function computing it from the resolved context.",
+        "A route's metadata, or a function computing it from the resolved context.\nThe context carries `data`, the route's loader result, once its loader has\ncompleted; it is absent when the route has no loader.",
     },
     {
       name: 'RouteMode',
@@ -3925,7 +4155,7 @@ export const apiSymbolSets: Readonly<
           name: 'loader',
           summary: '',
           signature:
-            'loader?: (\n    context: RouteContext<TParams> & {\n      request?: Request;\n    }\n  ) => TLoaderData | PromiseLike<TLoaderData>;',
+            'loader?: (\n    context: RouteContext<TParams> & {\n      request?: Request;\n      searchParams: Readonly<RouteRefSearch<TSearchSchema>>;\n    }\n  ) => TLoaderData | PromiseLike<TLoaderData>;',
         },
         {
           name: 'dehydrate',
@@ -3938,7 +4168,7 @@ export const apiSymbolSets: Readonly<
           name: 'preload',
           summary: '',
           signature:
-            'preload?: (\n    context: RouteContext<TParams> & {\n      request?: Request;\n      data: QueryPrefetchContext;\n    }\n  ) => unknown;',
+            'preload?: (\n    context: RouteContext<TParams> & {\n      request?: Request;\n      data: QueryPrefetchContext;\n      searchParams: Readonly<RouteRefSearch<TSearchSchema>>;\n    }\n  ) => unknown;',
         },
         {
           name: 'entries',
@@ -3970,7 +4200,8 @@ export const apiSymbolSets: Readonly<
         {
           name: 'meta',
           summary: '',
-          signature: 'meta?: RouteMetaSource<TParams>;',
+          signature:
+            'meta?: RouteMetaSource<TParams, TLoaderData, RouteRefSearch<TSearchSchema>>;',
         },
         {
           name: 'appMeta',
@@ -3982,6 +4213,25 @@ export const apiSymbolSets: Readonly<
           name: 'actions',
           summary: '',
           signature: 'actions?: readonly ActionDescriptor[];',
+        },
+        {
+          name: 'error',
+          summary:
+            'Rendered in place of the route content when its lazy chunk, preload or\nloader fails. The nearest declaring `route()`, `page()` or `group()` wins.',
+          signature: 'error?: (props: RouteErrorProps) => RenderableChild;',
+        },
+        {
+          name: 'forbidden',
+          summary:
+            'Rendered instead of the bare status placeholder when a policy or auth\nrequirement denies the route. The nearest declaring scope wins.',
+          signature:
+            'forbidden?: (props: RouteForbiddenProps) => RenderableChild;',
+        },
+        {
+          name: 'staleTimeMs',
+          summary:
+            "Browser loader results are cached in the app's data runtime. A cached\nresult renders at once and is revalidated in the background when it is at\nleast this old. `0` (the default) and `'always'` revalidate on every visit.",
+          signature: "staleTimeMs?: number | 'always';",
         },
       ],
     },
@@ -4223,6 +4473,18 @@ export const apiSymbolSets: Readonly<
             'Public pathname prefix for applications mounted below the origin root.',
           signature: 'basePath?: string;',
         },
+        {
+          name: 'trailingSlash',
+          summary:
+            "How a trailing slash is treated. `'ignore'` (default) matches both forms.\n`'never'` and `'always'` redirect (308) a\nrequest for the other form of a matched route to the canonical one; the\nroot `/` and file-like paths (`/files/report.pdf`) are left alone.",
+          signature: "trailingSlash?: 'ignore' | 'never' | 'always';",
+        },
+        {
+          name: 'caseSensitive',
+          summary:
+            "Whether static segments match case-sensitively. `true` (default) keeps\ntoday's behavior. With `false`, a request whose static segments differ\nonly in case from a declared route is redirected (308) to the declared\ncase; parameter values keep their case.",
+          signature: 'caseSensitive?: boolean;',
+        },
       ],
     },
     {
@@ -4357,6 +4619,12 @@ export const apiSymbolSets: Readonly<
           name: 'query',
           summary: '',
           signature: 'query: Readonly<RouteQuery>;',
+        },
+        {
+          name: 'search',
+          summary:
+            "The query string parsed with the active route's \\`search\\` schema: typed by\nthe \\`TSearch\\` read generic, defaults applied, invalid values replaced or\ndropped. Empty when the route declares no schema.",
+          signature: 'search: Readonly<TSearch>;',
         },
         {
           name: 'hash',
@@ -4531,10 +4799,10 @@ export const apiSymbolSets: Readonly<
       name: 'action',
       anchor: 'action',
       signature:
-        'action: <TInput extends Record<string, unknown>, TResult = unknown>(descriptor: ActionDescriptor<TInput>, options?: { readonly csrfToken: (signal: AbortSignal) => Promise<string | undefined>; }) => { state: StateTuple<ActionStatus<TResult>>; submit(input: TInput): Promise<TResult>; }',
+        'action: <TInput extends Record<string, unknown>, TResult = unknown>(descriptor: ActionDescriptor<TInput>, options?: { readonly csrfToken?: (signal: AbortSignal) => Promise<string | undefined>; readonly csrfCookie?: string; }) => { state: StateTuple<ActionStatus<TResult>>; submit(input: TInput): Promise<TResult>; }',
       typeOnly: true,
       summary:
-        'Bind an action descriptor to the calling component and return its\n`{ state, submit }` handle. `action()` allocates its status with `state()`,\nso it follows the same rule: call it during component render, at the top\nlevel and in the same order on every render. `submit()` itself may be\ncalled from event handlers or other async work. An explicit csrfToken\nresolver runs fresh for every submission under the component/data lifetime.\nIts undefined result omits the token instead of falling back to SSR data.',
+        'Bind an action descriptor to the calling component and return its\n`{ state, submit }` handle. `action()` allocates its status with `state()`,\nso it follows the same rule: call it during component render, at the top\nlevel and in the same order on every render. `submit()` itself may be\ncalled from event handlers or other async work. An explicit csrfToken\nresolver runs fresh for every submission under the component/data lifetime.\nIts undefined result omits the token instead of falling back to SSR data.\nWithout a resolver the token is read at every submission: the hydration\ntoken (until the session identity changes), else the \\`csrf-token\\` meta\nelement, else the cookie named by \\`csrfCookie\\`.',
     },
     {
       name: 'ActionDescriptor',
@@ -4853,7 +5121,7 @@ export const apiSymbolSets: Readonly<
       name: 'RenderRouteRequestResult',
       anchor: 'render-route-request-result',
       signature:
-        "RenderRouteRequestResult: | {\n      kind: 'render';\n      html: string;\n      stream?: ReadableStream<Uint8Array>;\n      styles: readonly SSRStyleRegistration[];\n      params: Record<string, string>;\n      record?: RouteRecord;\n    }\n  | AccessRedirectDecision\n  | AccessDenyDecision\n  | {\n      kind: 'no-match';\n    }",
+        "RenderRouteRequestResult: | {\n      kind: 'render';\n      html: string;\n      stream?: ReadableStream<Uint8Array>;\n      styles: readonly SSRStyleRegistration[];\n      params: Record<string, string>;\n      /**\n       * `404` when a `fallback()` rendered the miss, `500` when a route's\n       * `error` component rendered a failure, the denial status (`401`,\n       * `403` or `404`) when its `forbidden` component rendered a denial;\n       * absent for a route.\n       */\n      status?: 401 | 403 | 404 | 500;\n      /** The failure an `error` component rendered (only with status `500`). */\n      error?: unknown;\n      /** `true` when a `forbidden` component rendered a denial; `status` is the denial status. */\n      denied?: true;\n      record?: RouteRecord;\n    }\n  | AccessRedirectDecision\n  | AccessDenyDecision\n  | {\n      kind: 'no-match';\n    }",
       typeOnly: true,
       summary:
         'Outcome of rendering a route request for SSR: a render, redirect, deny, or no-match.',
@@ -10661,6 +10929,20 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'ArchiveArrowDownIcon',
+      anchor: 'archive-arrow-down-icon',
+      signature:
+        'ArchiveArrowDownIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ArchiveArrowUpIcon',
+      anchor: 'archive-arrow-up-icon',
+      signature:
+        'ArchiveArrowUpIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'ArchiveIcon',
       anchor: 'archive-icon',
       signature:
@@ -10693,6 +10975,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'armchair-icon',
       signature:
         'ArmchairIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ArmenianDramIcon',
+      anchor: 'armenian-dram-icon',
+      signature:
+        'ArmenianDramIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -11228,6 +11517,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'AvocadoIcon',
+      anchor: 'avocado-icon',
+      signature:
+        'AvocadoIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'AwardIcon',
       anchor: 'award-icon',
       signature:
@@ -11256,6 +11552,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'AzerbaijaniManatIcon',
+      anchor: 'azerbaijani-manat-icon',
+      signature:
+        'AzerbaijaniManatIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'BabyIcon',
       anchor: 'baby-icon',
       signature:
@@ -11267,6 +11570,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'backpack-icon',
       signature:
         'BackpackIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'BaconIcon',
+      anchor: 'bacon-icon',
+      signature:
+        'BaconIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -11417,6 +11727,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'BallWaveIcon',
+      anchor: 'ball-wave-icon',
+      signature:
+        'BallWaveIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'BananaIcon',
       anchor: 'banana-icon',
       signature:
@@ -11428,6 +11745,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'bandage-icon',
       signature:
         'BandageIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'BangladeshiTakaIcon',
+      anchor: 'bangladeshi-taka-icon',
+      signature:
+        'BangladeshiTakaIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -11666,6 +11990,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'beer-off-icon',
       signature:
         'BeerOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'BelarusianRubleIcon',
+      anchor: 'belarusian-ruble-icon',
+      signature:
+        'BelarusianRubleIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -11935,6 +12266,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'BookBookmarkIcon',
+      anchor: 'book-bookmark-icon',
+      signature:
+        'BookBookmarkIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'BookCheckIcon',
       anchor: 'book-check-icon',
       signature:
@@ -12194,6 +12532,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'BoxesLinkedIcon',
+      anchor: 'boxes-linked-icon',
+      signature:
+        'BoxesLinkedIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'BoxIcon',
       anchor: 'box-icon',
       signature:
@@ -12243,6 +12588,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'BrainOffIcon',
+      anchor: 'brain-off-icon',
+      signature:
+        'BrainOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'BrickWallFireIcon',
       anchor: 'brick-wall-fire-icon',
       signature:
@@ -12261,6 +12613,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'brick-wall-shield-icon',
       signature:
         'BrickWallShieldIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'BridgeIcon',
+      anchor: 'bridge-icon',
+      signature:
+        'BridgeIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -12289,6 +12648,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'briefcase-medical-icon',
       signature:
         'BriefcaseMedicalIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'BriefcasePlusIcon',
+      anchor: 'briefcase-plus-icon',
+      signature:
+        'BriefcasePlusIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -12369,6 +12735,20 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'BuildingComplexIcon',
+      anchor: 'building-complex-icon',
+      signature:
+        'BuildingComplexIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'BuildingComplexPlusIcon',
+      anchor: 'building-complex-plus-icon',
+      signature:
+        'BuildingComplexPlusIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'BuildingIcon',
       anchor: 'building-icon',
       signature:
@@ -12439,6 +12819,20 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'CalendarArrowLeftIcon',
+      anchor: 'calendar-arrow-left-icon',
+      signature:
+        'CalendarArrowLeftIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CalendarArrowRightIcon',
+      anchor: 'calendar-arrow-right-icon',
+      signature:
+        'CalendarArrowRightIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'CalendarArrowUpIcon',
       anchor: 'calendar-arrow-up-icon',
       signature:
@@ -12457,6 +12851,20 @@ export const apiSymbolSets: Readonly<
       anchor: 'calendar-check-icon',
       signature:
         'CalendarCheckIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CalendarChevronsLeftIcon',
+      anchor: 'calendar-chevrons-left-icon',
+      signature:
+        'CalendarChevronsLeftIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CalendarChevronsRightIcon',
+      anchor: 'calendar-chevrons-right-icon',
+      signature:
+        'CalendarChevronsRightIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -12621,6 +13029,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'CanIcon',
+      anchor: 'can-icon',
+      signature:
+        'CanIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'CannabisIcon',
       anchor: 'cannabis-icon',
       signature:
@@ -12632,6 +13047,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'cannabis-off-icon',
       signature:
         'CannabisOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CanSodaIcon',
+      anchor: 'can-soda-icon',
+      signature:
+        'CanSodaIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -12698,6 +13120,20 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'CartonIcon',
+      anchor: 'carton-icon',
+      signature:
+        'CartonIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CartonOffIcon',
+      anchor: 'carton-off-icon',
+      signature:
+        'CartonOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'CaseLowerIcon',
       anchor: 'case-lower-icon',
       signature:
@@ -12761,6 +13197,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'CertificateIcon',
+      anchor: 'certificate-icon',
+      signature:
+        'CertificateIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'ChartAreaIcon',
       anchor: 'chart-area-icon',
       signature:
@@ -12800,6 +13243,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'chart-bar-stacked-icon',
       signature:
         'ChartBarStackedIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ChartBellCurveIcon',
+      anchor: 'chart-bell-curve-icon',
+      signature:
+        'ChartBellCurveIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -12905,6 +13355,20 @@ export const apiSymbolSets: Readonly<
       anchor: 'chart-pie-icon',
       signature:
         'ChartPieIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ChartQuadrantIcon',
+      anchor: 'chart-quadrant-icon',
+      signature:
+        'ChartQuadrantIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ChartRadarIcon',
+      anchor: 'chart-radar-icon',
+      signature:
+        'ChartRadarIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -13307,10 +13771,45 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'CircleChevronsDownIcon',
+      anchor: 'circle-chevrons-down-icon',
+      signature:
+        'CircleChevronsDownIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleChevronsLeftIcon',
+      anchor: 'circle-chevrons-left-icon',
+      signature:
+        'CircleChevronsLeftIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleChevronsRightIcon',
+      anchor: 'circle-chevrons-right-icon',
+      signature:
+        'CircleChevronsRightIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleChevronsUpIcon',
+      anchor: 'circle-chevrons-up-icon',
+      signature:
+        'CircleChevronsUpIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'CircleChevronUpIcon',
       anchor: 'circle-chevron-up-icon',
       signature:
         'CircleChevronUpIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleDashedCheckIcon',
+      anchor: 'circle-dashed-check-icon',
+      signature:
+        'CircleDashedCheckIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -13377,6 +13876,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'CircleFadingPlayIcon',
+      anchor: 'circle-fading-play-icon',
+      signature:
+        'CircleFadingPlayIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'CircleFadingPlusIcon',
       anchor: 'circle-fading-plus-icon',
       signature:
@@ -13402,6 +13908,195 @@ export const apiSymbolSets: Readonly<
       anchor: 'circle-icon',
       signature:
         'CircleIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterAIcon',
+      anchor: 'circle-letter-aicon',
+      signature:
+        'CircleLetterAIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterBIcon',
+      anchor: 'circle-letter-bicon',
+      signature:
+        'CircleLetterBIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterCIcon',
+      anchor: 'circle-letter-cicon',
+      signature:
+        'CircleLetterCIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterDIcon',
+      anchor: 'circle-letter-dicon',
+      signature:
+        'CircleLetterDIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterEIcon',
+      anchor: 'circle-letter-eicon',
+      signature:
+        'CircleLetterEIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterFIcon',
+      anchor: 'circle-letter-ficon',
+      signature:
+        'CircleLetterFIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterGIcon',
+      anchor: 'circle-letter-gicon',
+      signature:
+        'CircleLetterGIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterHIcon',
+      anchor: 'circle-letter-hicon',
+      signature:
+        'CircleLetterHIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterIIcon',
+      anchor: 'circle-letter-iicon',
+      signature:
+        'CircleLetterIIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterJIcon',
+      anchor: 'circle-letter-jicon',
+      signature:
+        'CircleLetterJIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterKIcon',
+      anchor: 'circle-letter-kicon',
+      signature:
+        'CircleLetterKIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterLIcon',
+      anchor: 'circle-letter-licon',
+      signature:
+        'CircleLetterLIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterMIcon',
+      anchor: 'circle-letter-micon',
+      signature:
+        'CircleLetterMIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterNIcon',
+      anchor: 'circle-letter-nicon',
+      signature:
+        'CircleLetterNIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterOIcon',
+      anchor: 'circle-letter-oicon',
+      signature:
+        'CircleLetterOIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterPIcon',
+      anchor: 'circle-letter-picon',
+      signature:
+        'CircleLetterPIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterPOffIcon',
+      anchor: 'circle-letter-poff-icon',
+      signature:
+        'CircleLetterPOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterQIcon',
+      anchor: 'circle-letter-qicon',
+      signature:
+        'CircleLetterQIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterRIcon',
+      anchor: 'circle-letter-ricon',
+      signature:
+        'CircleLetterRIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterSIcon',
+      anchor: 'circle-letter-sicon',
+      signature:
+        'CircleLetterSIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterTIcon',
+      anchor: 'circle-letter-ticon',
+      signature:
+        'CircleLetterTIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterUIcon',
+      anchor: 'circle-letter-uicon',
+      signature:
+        'CircleLetterUIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterVIcon',
+      anchor: 'circle-letter-vicon',
+      signature:
+        'CircleLetterVIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterWIcon',
+      anchor: 'circle-letter-wicon',
+      signature:
+        'CircleLetterWIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterXIcon',
+      anchor: 'circle-letter-xicon',
+      signature:
+        'CircleLetterXIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterYIcon',
+      anchor: 'circle-letter-yicon',
+      signature:
+        'CircleLetterYIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CircleLetterZIcon',
+      anchor: 'circle-letter-zicon',
+      signature:
+        'CircleLetterZIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -13570,6 +14265,27 @@ export const apiSymbolSets: Readonly<
       anchor: 'clapperboard-icon',
       signature:
         'ClapperboardIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ClefAltoIcon',
+      anchor: 'clef-alto-icon',
+      signature:
+        'ClefAltoIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ClefBassIcon',
+      anchor: 'clef-bass-icon',
+      signature:
+        'ClefBassIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ClefTrebleIcon',
+      anchor: 'clef-treble-icon',
+      signature:
+        'ClefTrebleIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -14294,6 +15010,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'CpuAiIcon',
+      anchor: 'cpu-ai-icon',
+      signature:
+        'CpuAiIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'CpuIcon',
       anchor: 'cpu-icon',
       signature:
@@ -14308,10 +15031,45 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'CreditCardCheckIcon',
+      anchor: 'credit-card-check-icon',
+      signature:
+        'CreditCardCheckIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'CreditCardIcon',
       anchor: 'credit-card-icon',
       signature:
         'CreditCardIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CreditCardMinusIcon',
+      anchor: 'credit-card-minus-icon',
+      signature:
+        'CreditCardMinusIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CreditCardPlusIcon',
+      anchor: 'credit-card-plus-icon',
+      signature:
+        'CreditCardPlusIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CreditCardReaderIcon',
+      anchor: 'credit-card-reader-icon',
+      signature:
+        'CreditCardReaderIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CreditCardXIcon',
+      anchor: 'credit-card-xicon',
+      signature:
+        'CreditCardXIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -14354,6 +15112,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'cuboid-icon',
       signature:
         'CuboidIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'CupcakeIcon',
+      anchor: 'cupcake-icon',
+      signature:
+        'CupcakeIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -14417,6 +15182,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'database-check-icon',
       signature:
         'DatabaseCheckIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'DatabaseCogIcon',
+      anchor: 'database-cog-icon',
+      signature:
+        'DatabaseCogIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -14665,10 +15437,24 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'DomeIcon',
+      anchor: 'dome-icon',
+      signature:
+        'DomeIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'DonutIcon',
       anchor: 'donut-icon',
       signature:
         'DonutIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'DoorClosedCogIcon',
+      anchor: 'door-closed-cog-icon',
+      signature:
+        'DoorClosedCogIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -14686,10 +15472,24 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'DoorClosedPackageIcon',
+      anchor: 'door-closed-package-icon',
+      signature:
+        'DoorClosedPackageIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'DoorOpenIcon',
       anchor: 'door-open-icon',
       signature:
         'DoorOpenIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'DoorStairwellIcon',
+      anchor: 'door-stairwell-icon',
+      signature:
+        'DoorStairwellIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -14791,6 +15591,20 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'EarbudsIcon',
+      anchor: 'earbuds-icon',
+      signature:
+        'EarbudsIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'EarbudsOffIcon',
+      anchor: 'earbuds-off-icon',
+      signature:
+        'EarbudsOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'EarIcon',
       anchor: 'ear-icon',
       signature:
@@ -14868,6 +15682,20 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'EighthNoteIcon',
+      anchor: 'eighth-note-icon',
+      signature:
+        'EighthNoteIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'EighthNotesIcon',
+      anchor: 'eighth-notes-icon',
+      signature:
+        'EighthNotesIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'EjectIcon',
       anchor: 'eject-icon',
       signature:
@@ -14896,10 +15724,31 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'EmiratiDirhamIcon',
+      anchor: 'emirati-dirham-icon',
+      signature:
+        'EmiratiDirhamIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'EngineIcon',
+      anchor: 'engine-icon',
+      signature:
+        'EngineIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'EqualApproximatelyIcon',
       anchor: 'equal-approximately-icon',
       signature:
         'EqualApproximatelyIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'EqualApproximatelyNotIcon',
+      anchor: 'equal-approximately-not-icon',
+      signature:
+        'EqualApproximatelyNotIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -15061,6 +15910,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'fast-forward-icon',
       signature:
         'FastForwardIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'FaucetIcon',
+      anchor: 'faucet-icon',
+      signature:
+        'FaucetIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -15257,6 +16113,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'file-cog-icon',
       signature:
         'FileCogIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'FileDatabaseIcon',
+      anchor: 'file-database-icon',
+      signature:
+        'FileDatabaseIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -16100,6 +16963,20 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'FolderUserIcon',
+      anchor: 'folder-user-icon',
+      signature:
+        'FolderUserIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'FolderUsersIcon',
+      anchor: 'folder-users-icon',
+      signature:
+        'FolderUsersIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'FolderXIcon',
       anchor: 'folder-xicon',
       signature:
@@ -16226,6 +17103,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'GalaxyIcon',
+      anchor: 'galaxy-icon',
+      signature:
+        'GalaxyIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'GalleryHorizontalEndIcon',
       anchor: 'gallery-horizontal-end-icon',
       signature:
@@ -16296,6 +17180,20 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'GapHorizontalIcon',
+      anchor: 'gap-horizontal-icon',
+      signature:
+        'GapHorizontalIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'GapVerticalIcon',
+      anchor: 'gap-vertical-icon',
+      signature:
+        'GapVerticalIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'GaugeCircleIcon',
       anchor: 'gauge-circle-icon',
       signature:
@@ -16328,6 +17226,20 @@ export const apiSymbolSets: Readonly<
       anchor: 'georgian-lari-icon',
       signature:
         'GeorgianLariIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'GermIcon',
+      anchor: 'germ-icon',
+      signature:
+        'GermIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'GermOffIcon',
+      anchor: 'germ-off-icon',
+      signature:
+        'GermOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -16499,6 +17411,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'GlobeCodeIcon',
+      anchor: 'globe-code-icon',
+      signature:
+        'GlobeCodeIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'GlobeIcon',
       anchor: 'globe-icon',
       signature:
@@ -16559,6 +17478,20 @@ export const apiSymbolSets: Readonly<
       anchor: 'grape-icon',
       signature:
         'GrapeIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'GraphHubIcon',
+      anchor: 'graph-hub-icon',
+      signature:
+        'GraphHubIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'GraphStarIcon',
+      anchor: 'graph-star-icon',
+      signature:
+        'GraphStarIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -16667,6 +17600,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'GroceriesIcon',
+      anchor: 'groceries-icon',
+      signature:
+        'GroceriesIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'GroupIcon',
       anchor: 'group-icon',
       signature:
@@ -16674,10 +17614,24 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'GuitarElectricIcon',
+      anchor: 'guitar-electric-icon',
+      signature:
+        'GuitarElectricIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'GuitarIcon',
       anchor: 'guitar-icon',
       signature:
         'GuitarIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'HalfNoteIcon',
+      anchor: 'half-note-icon',
+      signature:
+        'HalfNoteIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -16748,6 +17702,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'hand-icon',
       signature:
         'HandIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'HandleBottomRightIcon',
+      anchor: 'handle-bottom-right-icon',
+      signature:
+        'HandleBottomRightIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -17003,10 +17964,24 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'HikingStickIcon',
+      anchor: 'hiking-stick-icon',
+      signature:
+        'HikingStickIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'HistoryIcon',
       anchor: 'history-icon',
       signature:
         'HistoryIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'HockeyStickIcon',
+      anchor: 'hockey-stick-icon',
+      signature:
+        'HockeyStickIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -17038,6 +18013,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'HotAirBalloonIcon',
+      anchor: 'hot-air-balloon-icon',
+      signature:
+        'HotAirBalloonIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'HotelIcon',
       anchor: 'hotel-icon',
       signature:
@@ -17045,10 +18027,24 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'HourglassCogIcon',
+      anchor: 'hourglass-cog-icon',
+      signature:
+        'HourglassCogIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'HourglassIcon',
       anchor: 'hourglass-icon',
       signature:
         'HourglassIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'HouseCogIcon',
+      anchor: 'house-cog-icon',
+      signature:
+        'HouseCogIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -17077,6 +18073,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'house-plus-icon',
       signature:
         'HousePlusIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'HousesIcon',
+      anchor: 'houses-icon',
+      signature:
+        'HousesIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -17283,6 +18286,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'IvBagIcon',
+      anchor: 'iv-bag-icon',
+      signature:
+        'IvBagIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'JapaneseYenIcon',
       anchor: 'japanese-yen-icon',
       signature:
@@ -17325,6 +18335,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'KazakhTengeIcon',
+      anchor: 'kazakh-tenge-icon',
+      signature:
+        'KazakhTengeIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'KeyboardIcon',
       anchor: 'keyboard-icon',
       signature:
@@ -17364,6 +18381,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'key-square-icon',
       signature:
         'KeySquareIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LambdaIcon',
+      anchor: 'lambda-icon',
+      signature:
+        'LambdaIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -17458,6 +18482,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'LaserIcon',
+      anchor: 'laser-icon',
+      signature:
+        'LaserIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'LassoIcon',
       anchor: 'lasso-icon',
       signature:
@@ -17542,6 +18573,20 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'LayoutArrowDownIcon',
+      anchor: 'layout-arrow-down-icon',
+      signature:
+        'LayoutArrowDownIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LayoutArrowRightIcon',
+      anchor: 'layout-arrow-right-icon',
+      signature:
+        'LayoutArrowRightIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'LayoutDashboardIcon',
       anchor: 'layout-dashboard-icon',
       signature:
@@ -17553,6 +18598,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'layout-freeform-icon',
       signature:
         'LayoutFreeformIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LayoutGridCirclesIcon',
+      anchor: 'layout-grid-circles-icon',
+      signature:
+        'LayoutGridCirclesIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -17633,10 +18685,213 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'LensIcon',
+      anchor: 'lens-icon',
+      signature:
+        'LensIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterAIcon',
+      anchor: 'letter-aicon',
+      signature:
+        'LetterAIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterBIcon',
+      anchor: 'letter-bicon',
+      signature:
+        'LetterBIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterCIcon',
+      anchor: 'letter-cicon',
+      signature:
+        'LetterCIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterDIcon',
+      anchor: 'letter-dicon',
+      signature:
+        'LetterDIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterEIcon',
+      anchor: 'letter-eicon',
+      signature:
+        'LetterEIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterFIcon',
+      anchor: 'letter-ficon',
+      signature:
+        'LetterFIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterGIcon',
+      anchor: 'letter-gicon',
+      signature:
+        'LetterGIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterHIcon',
+      anchor: 'letter-hicon',
+      signature:
+        'LetterHIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterIIcon',
+      anchor: 'letter-iicon',
+      signature:
+        'LetterIIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterJIcon',
+      anchor: 'letter-jicon',
+      signature:
+        'LetterJIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterKIcon',
+      anchor: 'letter-kicon',
+      signature:
+        'LetterKIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterLIcon',
+      anchor: 'letter-licon',
+      signature:
+        'LetterLIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterMIcon',
+      anchor: 'letter-micon',
+      signature:
+        'LetterMIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterNIcon',
+      anchor: 'letter-nicon',
+      signature:
+        'LetterNIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterOIcon',
+      anchor: 'letter-oicon',
+      signature:
+        'LetterOIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterPIcon',
+      anchor: 'letter-picon',
+      signature:
+        'LetterPIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterQIcon',
+      anchor: 'letter-qicon',
+      signature:
+        'LetterQIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterRIcon',
+      anchor: 'letter-ricon',
+      signature:
+        'LetterRIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LettersIcon',
+      anchor: 'letters-icon',
+      signature:
+        'LettersIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterSIcon',
+      anchor: 'letter-sicon',
+      signature:
+        'LetterSIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterSpacingIcon',
+      anchor: 'letter-spacing-icon',
+      signature:
+        'LetterSpacingIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'LetterTextIcon',
       anchor: 'letter-text-icon',
       signature:
         'LetterTextIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterTIcon',
+      anchor: 'letter-ticon',
+      signature:
+        'LetterTIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterUIcon',
+      anchor: 'letter-uicon',
+      signature:
+        'LetterUIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterVIcon',
+      anchor: 'letter-vicon',
+      signature:
+        'LetterVIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterWIcon',
+      anchor: 'letter-wicon',
+      signature:
+        'LetterWIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterXIcon',
+      anchor: 'letter-xicon',
+      signature:
+        'LetterXIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterYIcon',
+      anchor: 'letter-yicon',
+      signature:
+        'LetterYIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LetterZIcon',
+      anchor: 'letter-zicon',
+      signature:
+        'LetterZIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -17689,6 +18944,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'LighthouseIcon',
+      anchor: 'lighthouse-icon',
+      signature:
+        'LighthouseIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'LineChartIcon',
       anchor: 'line-chart-icon',
       signature:
@@ -17696,10 +18958,38 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'LineDotBottomVerticalIcon',
+      anchor: 'line-dot-bottom-vertical-icon',
+      signature:
+        'LineDotBottomVerticalIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LineDotLeftHorizontalIcon',
+      anchor: 'line-dot-left-horizontal-icon',
+      signature:
+        'LineDotLeftHorizontalIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'LineDotRightHorizontalIcon',
       anchor: 'line-dot-right-horizontal-icon',
       signature:
         'LineDotRightHorizontalIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LineDotTopVerticalIcon',
+      anchor: 'line-dot-top-vertical-icon',
+      signature:
+        'LineDotTopVerticalIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'LineHeightIcon',
+      anchor: 'line-height-icon',
+      signature:
+        'LineHeightIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -18060,6 +19350,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'MailDotIcon',
+      anchor: 'mail-dot-icon',
+      signature:
+        'MailDotIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'MailIcon',
       anchor: 'mail-icon',
       signature:
@@ -18078,6 +19375,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'mail-open-icon',
       signature:
         'MailOpenIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'MailPenIcon',
+      anchor: 'mail-pen-icon',
+      signature:
+        'MailPenIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -18249,6 +19553,55 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'MarginBottomIcon',
+      anchor: 'margin-bottom-icon',
+      signature:
+        'MarginBottomIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'MarginHorizontalIcon',
+      anchor: 'margin-horizontal-icon',
+      signature:
+        'MarginHorizontalIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'MarginIcon',
+      anchor: 'margin-icon',
+      signature:
+        'MarginIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'MarginLeftIcon',
+      anchor: 'margin-left-icon',
+      signature:
+        'MarginLeftIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'MarginRightIcon',
+      anchor: 'margin-right-icon',
+      signature:
+        'MarginRightIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'MarginTopIcon',
+      anchor: 'margin-top-icon',
+      signature:
+        'MarginTopIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'MarginVerticalIcon',
+      anchor: 'margin-vertical-icon',
+      signature:
+        'MarginVerticalIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'MarsIcon',
       anchor: 'mars-icon',
       signature:
@@ -18354,6 +19707,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'MessageCircleDashedCheckIcon',
+      anchor: 'message-circle-dashed-check-icon',
+      signature:
+        'MessageCircleDashedCheckIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'MessageCircleDashedIcon',
       anchor: 'message-circle-dashed-icon',
       signature:
@@ -18417,6 +19777,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'MessageCircleTextIcon',
+      anchor: 'message-circle-text-icon',
+      signature:
+        'MessageCircleTextIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'MessageCircleWarningIcon',
       anchor: 'message-circle-warning-icon',
       signature:
@@ -18428,6 +19795,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'message-circle-xicon',
       signature:
         'MessageCircleXIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'MessagesCircleIcon',
+      anchor: 'messages-circle-icon',
+      signature:
+        'MessagesCircleIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -18704,6 +20078,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'MonitorActivityIcon',
+      anchor: 'monitor-activity-icon',
+      signature:
+        'MonitorActivityIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'MonitorCheckIcon',
       anchor: 'monitor-check-icon',
       signature:
@@ -18757,6 +20138,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'monitor-pause-icon',
       signature:
         'MonitorPauseIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'MonitorPcIcon',
+      anchor: 'monitor-pc-icon',
+      signature:
+        'MonitorPcIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -18942,6 +20330,20 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'MouthIcon',
+      anchor: 'mouth-icon',
+      signature:
+        'MouthIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'MouthOffIcon',
+      anchor: 'mouth-off-icon',
+      signature:
+        'MouthOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'Move3dIcon',
       anchor: 'move3d-icon',
       signature:
@@ -19110,6 +20512,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'NepaliRupeeIcon',
+      anchor: 'nepali-rupee-icon',
+      signature:
+        'NepaliRupeeIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'NetworkIcon',
       anchor: 'network-icon',
       signature:
@@ -19135,6 +20544,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'non-binary-icon',
       signature:
         'NonBinaryIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'NotebookDotIcon',
+      anchor: 'notebook-dot-icon',
+      signature:
+        'NotebookDotIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -19177,6 +20593,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'notepad-text-icon',
       signature:
         'NotepadTextIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'NumbersIcon',
+      anchor: 'numbers-icon',
+      signature:
+        'NumbersIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -19593,6 +21016,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'ParkIcon',
+      anchor: 'park-icon',
+      signature:
+        'ParkIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'ParkingCircleIcon',
       anchor: 'parking-circle-icon',
       signature:
@@ -19782,6 +21212,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'PerfumeBottleIcon',
+      anchor: 'perfume-bottle-icon',
+      signature:
+        'PerfumeBottleIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'PersonStandingIcon',
       anchor: 'person-standing-icon',
       signature:
@@ -19828,6 +21265,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'phone-incoming-icon',
       signature:
         'PhoneIncomingIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'PhoneLogIcon',
+      anchor: 'phone-log-icon',
+      signature:
+        'PhoneLogIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -19999,6 +21443,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'PlantPotIcon',
+      anchor: 'plant-pot-icon',
+      signature:
+        'PlantPotIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'PlayCircleIcon',
       anchor: 'play-circle-icon',
       signature:
@@ -20010,6 +21461,27 @@ export const apiSymbolSets: Readonly<
       anchor: 'play-icon',
       signature:
         'PlayIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'PlayingCardIcon',
+      anchor: 'playing-card-icon',
+      signature:
+        'PlayingCardIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'PlayingCardsFanIcon',
+      anchor: 'playing-cards-fan-icon',
+      signature:
+        'PlayingCardsFanIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'PlayingCardsIcon',
+      anchor: 'playing-cards-icon',
+      signature:
+        'PlayingCardsIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -20164,6 +21636,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'presentation-icon',
       signature:
         'PresentationIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'Printer3dIcon',
+      anchor: 'printer3d-icon',
+      signature:
+        'Printer3dIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -20573,6 +22052,20 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'RobotArmIcon',
+      anchor: 'robot-arm-icon',
+      signature:
+        'RobotArmIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'RobotVacuumIcon',
+      anchor: 'robot-vacuum-icon',
+      signature:
+        'RobotVacuumIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'RocketIcon',
       anchor: 'rocket-icon',
       signature:
@@ -20640,6 +22133,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'rotate-ccw-square-icon',
       signature:
         'RotateCcwSquareIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'RotateCwClockIcon',
+      anchor: 'rotate-cw-clock-icon',
+      signature:
+        'RotateCwClockIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -20717,6 +22217,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'rss-icon',
       signature:
         'RssIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'RugbyBallIcon',
+      anchor: 'rugby-ball-icon',
+      signature:
+        'RugbyBallIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -20986,6 +22493,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'ScratchBlocksIcon',
+      anchor: 'scratch-blocks-icon',
+      signature:
+        'ScratchBlocksIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'ScreenShareIcon',
       anchor: 'screen-share-icon',
       signature:
@@ -20997,6 +22511,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'screen-share-off-icon',
       signature:
         'ScreenShareOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ScrewIcon',
+      anchor: 'screw-icon',
+      signature:
+        'ScrewIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -21126,6 +22647,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'ServerNasIcon',
+      anchor: 'server-nas-icon',
+      signature:
+        'ServerNasIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'ServerOffIcon',
       anchor: 'server-off-icon',
       signature:
@@ -21252,6 +22780,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'ShieldHouseIcon',
+      anchor: 'shield-house-icon',
+      signature:
+        'ShieldHouseIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'ShieldIcon',
       anchor: 'shield-icon',
       signature:
@@ -21322,6 +22857,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'ShipCargoIcon',
+      anchor: 'ship-cargo-icon',
+      signature:
+        'ShipCargoIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'ShipIcon',
       anchor: 'ship-icon',
       signature:
@@ -21364,6 +22906,20 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'ShoppingCartMinusIcon',
+      anchor: 'shopping-cart-minus-icon',
+      signature:
+        'ShoppingCartMinusIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ShoppingCartPlusIcon',
+      anchor: 'shopping-cart-plus-icon',
+      signature:
+        'ShoppingCartPlusIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'ShovelIcon',
       anchor: 'shovel-icon',
       signature:
@@ -21389,6 +22945,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'shrimp-icon',
       signature:
         'ShrimpIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ShrimpOffIcon',
+      anchor: 'shrimp-off-icon',
+      signature:
+        'ShrimpOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -21511,6 +23074,20 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'SirenOffIcon',
+      anchor: 'siren-off-icon',
+      signature:
+        'SirenOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SixteenthNotesIcon',
+      anchor: 'sixteenth-notes-icon',
+      signature:
+        'SixteenthNotesIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'SkipBackIcon',
       anchor: 'skip-back-icon',
       signature:
@@ -21592,6 +23169,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'smartphone-nfc-icon',
       signature:
         'SmartphoneNfcIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SmartphoneUserRoundIcon',
+      anchor: 'smartphone-user-round-icon',
+      signature:
+        'SmartphoneUserRoundIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -21903,6 +23487,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'SquareBookmarkIcon',
+      anchor: 'square-bookmark-icon',
+      signature:
+        'SquareBookmarkIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'SquareBottomDashedScissorsIcon',
       anchor: 'square-bottom-dashed-scissors-icon',
       signature:
@@ -21966,6 +23557,34 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'SquareChevronsDownIcon',
+      anchor: 'square-chevrons-down-icon',
+      signature:
+        'SquareChevronsDownIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareChevronsLeftIcon',
+      anchor: 'square-chevrons-left-icon',
+      signature:
+        'SquareChevronsLeftIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareChevronsRightIcon',
+      anchor: 'square-chevrons-right-icon',
+      signature:
+        'SquareChevronsRightIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareChevronsUpIcon',
+      anchor: 'square-chevrons-up-icon',
+      signature:
+        'SquareChevronsUpIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'SquareChevronUpIcon',
       anchor: 'square-chevron-up-icon',
       signature:
@@ -22015,6 +23634,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'SquareDashedPlusIcon',
+      anchor: 'square-dashed-plus-icon',
+      signature:
+        'SquareDashedPlusIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'SquareDashedTextIcon',
       anchor: 'square-dashed-text-icon',
       signature:
@@ -22026,6 +23652,20 @@ export const apiSymbolSets: Readonly<
       anchor: 'square-dashed-top-solid-icon',
       signature:
         'SquareDashedTopSolidIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareDashedXCornerIcon',
+      anchor: 'square-dashed-xcorner-icon',
+      signature:
+        'SquareDashedXCornerIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareDashedXIcon',
+      anchor: 'square-dashed-xicon',
+      signature:
+        'SquareDashedXIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -22057,6 +23697,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'SquareExclamationPointIcon',
+      anchor: 'square-exclamation-point-icon',
+      signature:
+        'SquareExclamationPointIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'SquareFunctionIcon',
       anchor: 'square-function-icon',
       signature:
@@ -22082,6 +23729,202 @@ export const apiSymbolSets: Readonly<
       anchor: 'square-kanban-icon',
       signature:
         'SquareKanbanIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareKanbanPlusIcon',
+      anchor: 'square-kanban-plus-icon',
+      signature:
+        'SquareKanbanPlusIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterAIcon',
+      anchor: 'square-letter-aicon',
+      signature:
+        'SquareLetterAIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterBIcon',
+      anchor: 'square-letter-bicon',
+      signature:
+        'SquareLetterBIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterCIcon',
+      anchor: 'square-letter-cicon',
+      signature:
+        'SquareLetterCIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterDIcon',
+      anchor: 'square-letter-dicon',
+      signature:
+        'SquareLetterDIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterEIcon',
+      anchor: 'square-letter-eicon',
+      signature:
+        'SquareLetterEIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterFIcon',
+      anchor: 'square-letter-ficon',
+      signature:
+        'SquareLetterFIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterGIcon',
+      anchor: 'square-letter-gicon',
+      signature:
+        'SquareLetterGIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterHIcon',
+      anchor: 'square-letter-hicon',
+      signature:
+        'SquareLetterHIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterIIcon',
+      anchor: 'square-letter-iicon',
+      signature:
+        'SquareLetterIIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterJIcon',
+      anchor: 'square-letter-jicon',
+      signature:
+        'SquareLetterJIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterKIcon',
+      anchor: 'square-letter-kicon',
+      signature:
+        'SquareLetterKIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterLIcon',
+      anchor: 'square-letter-licon',
+      signature:
+        'SquareLetterLIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterMIcon',
+      anchor: 'square-letter-micon',
+      signature:
+        'SquareLetterMIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterNIcon',
+      anchor: 'square-letter-nicon',
+      signature:
+        'SquareLetterNIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterOIcon',
+      anchor: 'square-letter-oicon',
+      signature:
+        'SquareLetterOIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterPIcon',
+      anchor: 'square-letter-picon',
+      signature:
+        'SquareLetterPIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterPOffIcon',
+      anchor: 'square-letter-poff-icon',
+      signature:
+        'SquareLetterPOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterQIcon',
+      anchor: 'square-letter-qicon',
+      signature:
+        'SquareLetterQIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterRIcon',
+      anchor: 'square-letter-ricon',
+      signature:
+        'SquareLetterRIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterSIcon',
+      anchor: 'square-letter-sicon',
+      signature:
+        'SquareLetterSIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterTIcon',
+      anchor: 'square-letter-ticon',
+      signature:
+        'SquareLetterTIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterUIcon',
+      anchor: 'square-letter-uicon',
+      signature:
+        'SquareLetterUIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterVIcon',
+      anchor: 'square-letter-vicon',
+      signature:
+        'SquareLetterVIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterWIcon',
+      anchor: 'square-letter-wicon',
+      signature:
+        'SquareLetterWIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterXIcon',
+      anchor: 'square-letter-xicon',
+      signature:
+        'SquareLetterXIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterYIcon',
+      anchor: 'square-letter-yicon',
+      signature:
+        'SquareLetterYIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareLetterZIcon',
+      anchor: 'square-letter-zicon',
+      signature:
+        'SquareLetterZIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -22124,6 +23967,55 @@ export const apiSymbolSets: Readonly<
       anchor: 'square-off-icon',
       signature:
         'SquareOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquarePaddingBottomIcon',
+      anchor: 'square-padding-bottom-icon',
+      signature:
+        'SquarePaddingBottomIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquarePaddingHorizontalIcon',
+      anchor: 'square-padding-horizontal-icon',
+      signature:
+        'SquarePaddingHorizontalIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquarePaddingIcon',
+      anchor: 'square-padding-icon',
+      signature:
+        'SquarePaddingIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquarePaddingLeftIcon',
+      anchor: 'square-padding-left-icon',
+      signature:
+        'SquarePaddingLeftIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquarePaddingRightIcon',
+      anchor: 'square-padding-right-icon',
+      signature:
+        'SquarePaddingRightIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquarePaddingTopIcon',
+      anchor: 'square-padding-top-icon',
+      signature:
+        'SquarePaddingTopIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquarePaddingVerticalIcon',
+      anchor: 'square-padding-vertical-icon',
+      signature:
+        'SquarePaddingVerticalIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -22243,6 +24135,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'square-slash-icon',
       signature:
         'SquareSlashIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'SquareSparklesIcon',
+      anchor: 'square-sparkles-icon',
+      signature:
+        'SquareSparklesIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -22897,10 +24796,31 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'TextAlignJustifyCenterIcon',
+      anchor: 'text-align-justify-center-icon',
+      signature:
+        'TextAlignJustifyCenterIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'TextAlignJustifyEndIcon',
+      anchor: 'text-align-justify-end-icon',
+      signature:
+        'TextAlignJustifyEndIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'TextAlignJustifyIcon',
       anchor: 'text-align-justify-icon',
       signature:
         'TextAlignJustifyIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'TextAlignJustifyStartIcon',
+      anchor: 'text-align-justify-start-icon',
+      signature:
+        'TextAlignJustifyStartIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -23079,6 +24999,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'TicTacToeIcon',
+      anchor: 'tic-tac-toe-icon',
+      signature:
+        'TicTacToeIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'TimelineIcon',
       anchor: 'timeline-icon',
       signature:
@@ -23128,6 +25055,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'TombstoneIcon',
+      anchor: 'tombstone-icon',
+      signature:
+        'TombstoneIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'ToolboxIcon',
       anchor: 'toolbox-icon',
       signature:
@@ -23139,6 +25073,20 @@ export const apiSymbolSets: Readonly<
       anchor: 'tool-case-icon',
       signature:
         'ToolCaseIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ToothbrushIcon',
+      anchor: 'toothbrush-icon',
+      signature:
+        'ToothbrushIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'ToothbrushSparklesIcon',
+      anchor: 'toothbrush-sparkles-icon',
+      signature:
+        'ToothbrushSparklesIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -23205,6 +25153,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'TrailerIcon',
+      anchor: 'trailer-icon',
+      signature:
+        'TrailerIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'TrainFrontIcon',
       anchor: 'train-front-icon',
       signature:
@@ -23258,6 +25213,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'trash-icon',
       signature:
         'TrashIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'TrashOffIcon',
+      anchor: 'trash-off-icon',
+      signature:
+        'TrashOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -23338,6 +25300,20 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'TrianglesCenterlineDashedHorizontalIcon',
+      anchor: 'triangles-centerline-dashed-horizontal-icon',
+      signature:
+        'TrianglesCenterlineDashedHorizontalIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'TrianglesCenterlineDashedVerticalIcon',
+      anchor: 'triangles-centerline-dashed-vertical-icon',
+      signature:
+        'TrianglesCenterlineDashedVerticalIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'TrophyIcon',
       anchor: 'trophy-icon',
       signature:
@@ -23356,6 +25332,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'truck-icon',
       signature:
         'TruckIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'TubeLotionIcon',
+      anchor: 'tube-lotion-icon',
+      signature:
+        'TubeLotionIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -23604,6 +25587,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'UserGroupIcon',
+      anchor: 'user-group-icon',
+      signature:
+        'UserGroupIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'UserIcon',
       anchor: 'user-icon',
       signature:
@@ -23681,6 +25671,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'UserRoundGroupIcon',
+      anchor: 'user-round-group-icon',
+      signature:
+        'UserRoundGroupIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'UserRoundIcon',
       anchor: 'user-round-icon',
       signature:
@@ -23723,6 +25720,20 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'UserRoundShieldIcon',
+      anchor: 'user-round-shield-icon',
+      signature:
+        'UserRoundShieldIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'UserRoundStarIcon',
+      anchor: 'user-round-star-icon',
+      signature:
+        'UserRoundStarIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'UserRoundXIcon',
       anchor: 'user-round-xicon',
       signature:
@@ -23734,6 +25745,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'users2-icon',
       signature:
         'Users2Icon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'UsersCollaborationIcon',
+      anchor: 'users-collaboration-icon',
+      signature:
+        'UsersCollaborationIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -23769,6 +25787,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'user-square-icon',
       signature:
         'UserSquareIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'UsersRoundCollaborationIcon',
+      anchor: 'users-round-collaboration-icon',
+      signature:
+        'UsersRoundCollaborationIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -23839,6 +25864,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'vault-icon',
       signature:
         'VaultIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'VectorPolygonIcon',
+      anchor: 'vector-polygon-icon',
+      signature:
+        'VectorPolygonIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -23923,6 +25955,20 @@ export const apiSymbolSets: Readonly<
       anchor: 'view-icon',
       signature:
         'ViewIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'VirusIcon',
+      anchor: 'virus-icon',
+      signature:
+        'VirusIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'VirusOffIcon',
+      anchor: 'virus-off-icon',
+      signature:
+        'VirusOffIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -24164,6 +26210,13 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
     },
     {
+      name: 'WhistleIcon',
+      anchor: 'whistle-icon',
+      signature:
+        'WhistleIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
       name: 'WholeWordIcon',
       anchor: 'whole-word-icon',
       signature:
@@ -24189,6 +26242,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'wifi-icon',
       signature:
         'WifiIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'WifiLockIcon',
+      anchor: 'wifi-lock-icon',
+      signature:
+        'WifiLockIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -24231,6 +26291,13 @@ export const apiSymbolSets: Readonly<
       anchor: 'wind-arrow-down-icon',
       signature:
         'WindArrowDownIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
+      typeOnly: true,
+    },
+    {
+      name: 'WindArrowUpIcon',
+      anchor: 'wind-arrow-up-icon',
+      signature:
+        'WindArrowUpIcon: { ({ ...rest }: import("@askrjs/askr/foundations/icon").IconProps): import("@askrjs/askr/jsx-runtime").JSXElement; displayName: string; }',
       typeOnly: true,
     },
     {
@@ -28813,6 +30880,11 @@ export const apiSymbolSets: Readonly<
           signature: 'children?: unknown;',
         },
         {
+          name: 'className',
+          summary: '',
+          signature: 'className?: string | undefined;',
+        },
+        {
           name: 'direction',
           summary: '',
           signature: 'direction?: ResponsiveValue<BlockDirection> | undefined;',
@@ -29021,7 +31093,7 @@ export const apiSymbolSets: Readonly<
           name: 'className',
           summary: '',
           signature:
-            'className?: string | ((() => IntrinsicClassValue) & string) | undefined;',
+            'className?: string | (readonly IntrinsicClassName[] & string) | ({ readonly [name: string]: unknown; } & string) | ((() => IntrinsicClassName) & string) | undefined;',
         },
         {
           name: 'direction',
@@ -29399,7 +31471,7 @@ export const apiSymbolSets: Readonly<
           name: 'className',
           summary: '',
           signature:
-            'className?: string | ((() => IntrinsicClassValue) & string) | undefined;',
+            'className?: string | (readonly IntrinsicClassName[] & string) | ({ readonly [name: string]: unknown; } & string) | ((() => IntrinsicClassName) & string) | undefined;',
         },
         {
           name: 'direction',
@@ -30074,7 +32146,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void) | { current: HTMLButtonElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void | (() => void)) | { current: HTMLButtonElement | null; } | null | undefined;',
         },
         {
           name: 'size',
@@ -34096,7 +36168,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: unknown) => void) | { current: unknown; } | ((value: HTMLDivElement | null) => void) | { current: HTMLDivElement | null; } | null | undefined;',
+            'ref?: ((value: unknown) => void | (() => void)) | { current: unknown; } | ((value: HTMLDivElement | null) => void | (() => void)) | { current: HTMLDivElement | null; } | null | undefined;',
         },
       ],
     },
@@ -38621,6 +40693,11 @@ export const apiSymbolSets: Readonly<
           signature: 'children?: unknown;',
         },
         {
+          name: 'className',
+          summary: '',
+          signature: 'className?: string | undefined;',
+        },
+        {
           name: 'direction',
           summary: '',
           signature: 'direction?: ResponsiveValue<BlockDirection> | undefined;',
@@ -38829,7 +40906,7 @@ export const apiSymbolSets: Readonly<
           name: 'className',
           summary: '',
           signature:
-            'className?: string | ((() => IntrinsicClassValue) & string) | undefined;',
+            'className?: string | (readonly IntrinsicClassName[] & string) | ({ readonly [name: string]: unknown; } & string) | ((() => IntrinsicClassName) & string) | undefined;',
         },
         {
           name: 'direction',
@@ -39207,7 +41284,7 @@ export const apiSymbolSets: Readonly<
           name: 'className',
           summary: '',
           signature:
-            'className?: string | ((() => IntrinsicClassValue) & string) | undefined;',
+            'className?: string | (readonly IntrinsicClassName[] & string) | ({ readonly [name: string]: unknown; } & string) | ((() => IntrinsicClassName) & string) | undefined;',
         },
         {
           name: 'direction',
@@ -39905,7 +41982,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void) | { current: HTMLButtonElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void | (() => void)) | { current: HTMLButtonElement | null; } | null | undefined;',
         },
         {
           name: 'size',
@@ -40779,7 +42856,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLInputElement | null) => void) | { current: HTMLInputElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLInputElement | null) => void | (() => void)) | { current: HTMLInputElement | null; } | null | undefined;',
         },
         {
           name: 'required',
@@ -43398,7 +45475,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLInputElement | null) => void) | { current: HTMLInputElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLInputElement | null) => void | (() => void)) | { current: HTMLInputElement | null; } | null | undefined;',
         },
       ],
     },
@@ -43590,7 +45667,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLLabelElement | null) => void) | { current: HTMLLabelElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLLabelElement | null) => void | (() => void)) | { current: HTMLLabelElement | null; } | null | undefined;',
         },
       ],
     },
@@ -46739,7 +48816,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: unknown) => void) | { current: unknown; } | ((value: HTMLDivElement | null) => void) | { current: HTMLDivElement | null; } | null | undefined;',
+            'ref?: ((value: unknown) => void | (() => void)) | { current: unknown; } | ((value: HTMLDivElement | null) => void | (() => void)) | { current: HTMLDivElement | null; } | null | undefined;',
         },
       ],
     },
@@ -48033,7 +50110,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void) | { current: HTMLButtonElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void | (() => void)) | { current: HTMLButtonElement | null; } | null | undefined;',
         },
         {
           name: 'required',
@@ -48137,7 +50214,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void) | { current: HTMLTableSectionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void | (() => void)) | { current: HTMLTableSectionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -48197,7 +50274,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableCaptionElement | null) => void) | { current: HTMLTableCaptionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableCaptionElement | null) => void | (() => void)) | { current: HTMLTableCaptionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -48256,7 +50333,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void) | { current: HTMLTableCellElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void | (() => void)) | { current: HTMLTableCellElement | null; } | null | undefined;',
         },
       ],
     },
@@ -48315,7 +50392,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void) | { current: HTMLTableSectionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void | (() => void)) | { current: HTMLTableSectionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -48408,7 +50485,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void) | { current: HTMLTableCellElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void | (() => void)) | { current: HTMLTableCellElement | null; } | null | undefined;',
         },
       ],
     },
@@ -48434,7 +50511,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void) | { current: HTMLTableSectionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void | (() => void)) | { current: HTMLTableSectionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -48460,7 +50537,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableElement | null) => void) | { current: HTMLTableElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableElement | null) => void | (() => void)) | { current: HTMLTableElement | null; } | null | undefined;',
         },
       ],
     },
@@ -48519,7 +50596,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableRowElement | null) => void) | { current: HTMLTableRowElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableRowElement | null) => void | (() => void)) | { current: HTMLTableRowElement | null; } | null | undefined;',
         },
       ],
     },
@@ -48824,7 +50901,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTextAreaElement | null) => void) | { current: HTMLTextAreaElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTextAreaElement | null) => void | (() => void)) | { current: HTMLTextAreaElement | null; } | null | undefined;',
         },
       ],
     },
@@ -49877,7 +51954,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void) | { current: HTMLButtonElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void | (() => void)) | { current: HTMLButtonElement | null; } | null | undefined;',
         },
         {
           name: 'type',
@@ -52019,7 +54096,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void) | { current: HTMLButtonElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void | (() => void)) | { current: HTMLButtonElement | null; } | null | undefined;',
         },
         {
           name: 'size',
@@ -52333,7 +54410,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLInputElement | null) => void) | { current: HTMLInputElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLInputElement | null) => void | (() => void)) | { current: HTMLInputElement | null; } | null | undefined;',
         },
         {
           name: 'required',
@@ -54886,7 +56963,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLInputElement | null) => void) | { current: HTMLInputElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLInputElement | null) => void | (() => void)) | { current: HTMLInputElement | null; } | null | undefined;',
         },
       ],
     },
@@ -54990,7 +57067,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLLabelElement | null) => void) | { current: HTMLLabelElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLLabelElement | null) => void | (() => void)) | { current: HTMLLabelElement | null; } | null | undefined;',
         },
       ],
     },
@@ -58961,7 +61038,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void) | { current: HTMLButtonElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void | (() => void)) | { current: HTMLButtonElement | null; } | null | undefined;',
         },
         {
           name: 'required',
@@ -59063,7 +61140,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void) | { current: HTMLTableSectionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void | (() => void)) | { current: HTMLTableSectionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -59123,7 +61200,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableCaptionElement | null) => void) | { current: HTMLTableCaptionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableCaptionElement | null) => void | (() => void)) | { current: HTMLTableCaptionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -59182,7 +61259,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void) | { current: HTMLTableCellElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void | (() => void)) | { current: HTMLTableCellElement | null; } | null | undefined;',
         },
       ],
     },
@@ -59241,7 +61318,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void) | { current: HTMLTableSectionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void | (() => void)) | { current: HTMLTableSectionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -59334,7 +61411,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void) | { current: HTMLTableCellElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void | (() => void)) | { current: HTMLTableCellElement | null; } | null | undefined;',
         },
       ],
     },
@@ -59360,7 +61437,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void) | { current: HTMLTableSectionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void | (() => void)) | { current: HTMLTableSectionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -59386,7 +61463,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableElement | null) => void) | { current: HTMLTableElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableElement | null) => void | (() => void)) | { current: HTMLTableElement | null; } | null | undefined;',
         },
       ],
     },
@@ -59445,7 +61522,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableRowElement | null) => void) | { current: HTMLTableRowElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableRowElement | null) => void | (() => void)) | { current: HTMLTableRowElement | null; } | null | undefined;',
         },
       ],
     },
@@ -59565,7 +61642,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTextAreaElement | null) => void) | { current: HTMLTextAreaElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTextAreaElement | null) => void | (() => void)) | { current: HTMLTextAreaElement | null; } | null | undefined;',
         },
       ],
     },
@@ -60603,7 +62680,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void) | { current: HTMLButtonElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void | (() => void)) | { current: HTMLButtonElement | null; } | null | undefined;',
         },
         {
           name: 'type',
@@ -61520,7 +63597,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: HTMLSpanElement | null) => void) | { current: HTMLSpanElement | null; } | ((value: Element | null) => void) | { current: Element | null; } | null | undefined;',
+            'ref?: ((value: HTMLSpanElement | null) => void | (() => void)) | { current: HTMLSpanElement | null; } | ((value: Element | null) => void | (() => void)) | { current: Element | null; } | null | undefined;',
         },
       ],
     },
@@ -61992,7 +64069,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void) | { current: HTMLButtonElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void | (() => void)) | { current: HTMLButtonElement | null; } | null | undefined;',
         },
         {
           name: 'size',
@@ -62308,7 +64385,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLInputElement | null) => void) | { current: HTMLInputElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLInputElement | null) => void | (() => void)) | { current: HTMLInputElement | null; } | null | undefined;',
         },
         {
           name: 'required',
@@ -62502,7 +64579,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLInputElement | null) => void) | { current: HTMLInputElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLInputElement | null) => void | (() => void)) | { current: HTMLInputElement | null; } | null | undefined;',
         },
       ],
     },
@@ -62669,7 +64746,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLLabelElement | null) => void) | { current: HTMLLabelElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLLabelElement | null) => void | (() => void)) | { current: HTMLLabelElement | null; } | null | undefined;',
         },
       ],
     },
@@ -64602,7 +66679,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void) | { current: HTMLButtonElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void | (() => void)) | { current: HTMLButtonElement | null; } | null | undefined;',
         },
         {
           name: 'required',
@@ -64706,7 +66783,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void) | { current: HTMLTableSectionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void | (() => void)) | { current: HTMLTableSectionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -64766,7 +66843,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableCaptionElement | null) => void) | { current: HTMLTableCaptionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableCaptionElement | null) => void | (() => void)) | { current: HTMLTableCaptionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -64825,7 +66902,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void) | { current: HTMLTableCellElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void | (() => void)) | { current: HTMLTableCellElement | null; } | null | undefined;',
         },
       ],
     },
@@ -64884,7 +66961,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void) | { current: HTMLTableSectionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void | (() => void)) | { current: HTMLTableSectionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -64977,7 +67054,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void) | { current: HTMLTableCellElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void | (() => void)) | { current: HTMLTableCellElement | null; } | null | undefined;',
         },
       ],
     },
@@ -65003,7 +67080,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void) | { current: HTMLTableSectionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void | (() => void)) | { current: HTMLTableSectionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -65029,7 +67106,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableElement | null) => void) | { current: HTMLTableElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableElement | null) => void | (() => void)) | { current: HTMLTableElement | null; } | null | undefined;',
         },
       ],
     },
@@ -65088,7 +67165,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableRowElement | null) => void) | { current: HTMLTableRowElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableRowElement | null) => void | (() => void)) | { current: HTMLTableRowElement | null; } | null | undefined;',
         },
       ],
     },
@@ -65730,7 +67807,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTextAreaElement | null) => void) | { current: HTMLTextAreaElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTextAreaElement | null) => void | (() => void)) | { current: HTMLTextAreaElement | null; } | null | undefined;',
         },
       ],
     },
@@ -65916,7 +67993,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void) | { current: HTMLButtonElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void | (() => void)) | { current: HTMLButtonElement | null; } | null | undefined;',
         },
         {
           name: 'type',
@@ -66336,7 +68413,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: HTMLSpanElement | null) => void) | { current: HTMLSpanElement | null; } | ((value: Element | null) => void) | { current: Element | null; } | null | undefined;',
+            'ref?: ((value: HTMLSpanElement | null) => void | (() => void)) | { current: HTMLSpanElement | null; } | ((value: Element | null) => void | (() => void)) | { current: Element | null; } | null | undefined;',
         },
       ],
     },

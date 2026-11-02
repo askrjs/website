@@ -2089,7 +2089,7 @@ export const headingOverrides: Readonly<
   },
   '/docs/rendering/static-site-generation': {
     '404-and-hosting':
-      "There's no dedicated 404 API in `@askrjs/askr/ssg` — register a not-found page with `route('/404', NotFoundPage)` inside the registry passed to `createStaticGen`, and your static host is responsible for serving it as the fallback for unmatched paths (most static hosts look for `404.html` or a configured error-document setting). Routes with `auth` requirements or runtime-only `policies` are excluded from prerendering by default, since SSG can't evaluate a per-request auth check at build time.",
+      'Register the not-found page with a root-level `fallback(NotFoundPage)` in the route registry. SSG renders it to `404.html`, which static hosts such as GitHub Pages serve for unmatched paths. Routes with `auth` requirements or runtime-only `policies` are excluded from prerendering by default, since SSG cannot evaluate a per-request auth check at build time.',
     'assets-and-output':
       "`outputDir` is where generated HTML and `metadata.json` land; `assets: readonly SSGAssetSource[]` lets you copy additional files or directories in alongside them, each with a `from` source and an optional `to` destination relative to `outputDir`. The CLI wraps this as `askr ssg --config <path> --output <dir> [--incremental]` so a build script doesn't need to call `createStaticGen` directly.",
     'document-rendering':

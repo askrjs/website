@@ -55,7 +55,6 @@ function ForwardToDocs({ destination }: { destination: string }) {
 export function registerMarketingRoutes() {
   group({ layout: MarketingLayout }, () => {
     route('/', HomePage, { meta: marketingRouteMetadata['/'] });
-    route('/404', NotFoundPage, { meta: marketingRouteMetadata['/404'] });
     fallback(NotFoundPage);
   });
   for (const [path, destination] of Object.entries(legacyRedirects)) {

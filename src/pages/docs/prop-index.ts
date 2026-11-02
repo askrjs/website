@@ -16,7 +16,12 @@ export const componentPropNames: Readonly<Record<string, readonly string[]>> = {
     'SlotProps',
   ],
   '@askrjs/askr/foundations/icon': ['IconOwnProps', 'IconProps'],
-  '@askrjs/askr/router': ['LinkProps', 'ResolveProps'],
+  '@askrjs/askr/router': [
+    'LinkProps',
+    'ResolveProps',
+    'RouteErrorProps',
+    'RouteForbiddenProps',
+  ],
   '@askrjs/charts': [
     'ArcProps',
     'AreaProps',

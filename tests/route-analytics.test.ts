@@ -32,8 +32,9 @@ function route(
       has: (key) => key in query,
       toJSON: () => query,
     },
+    // askr 0.5.1 exposes parsed route search separately from raw query access.
+    search: {},
     hash,
-    // askr 0.3.0 adds explicit history-entry state to RouteSnapshot.
     hasState: false,
     state: undefined,
     matches: [],
