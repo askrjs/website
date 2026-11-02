@@ -11,7 +11,7 @@
     "postbuild": "npm run test:static",
     "build:client": "vp build --outDir .askr/client",
     "build:llms": "tsx ./scripts/generate-llm-docs.ts",
-    "build:ssg": "askr ssg --config ./ssg.config.ts --output ./dist && cp ./dist/404/index.html ./dist/404.html",
+    "build:ssg": "askr ssg --config ./ssg.config.ts --output ./dist",
     "analyze": "askr analyze --check",
     "docs:snapshot": "UPDATE_PACKAGE_SNAPSHOT=1 vp test run tests/package-snapshot-contract.test.ts",
     "lint": "vp lint src tests scripts ssg.config.ts vite.config.ts playwright.config.ts",
@@ -56,7 +56,7 @@
     "vite-plus": "^1.2.0"
   },
   "overrides": {
-    "dompurify": "3.4.16"
+    "dompurify": "3.4.17"
   },
   "engines": {
     "node": ">=24.0.0"

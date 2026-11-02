@@ -1620,7 +1620,7 @@ npx ${cli} ssg --config ./ssg.config.ts --output ./dist`,
   group({ layout: AppLayout }, () => {
     route('/', DashboardPage);
     route('/projects/{projectId}', ProjectPage);
-    route('/404', NotFoundPage);
+    fallback(NotFoundPage);
   });
 });`,
     };
