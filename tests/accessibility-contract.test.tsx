@@ -1,5 +1,5 @@
 import { renderToStringSync } from '@askrjs/askr/ssr';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 import { DocsSearch } from '../src/pages/docs/search';
 import { SiteFooter } from '../src/pages/site-footer';
 

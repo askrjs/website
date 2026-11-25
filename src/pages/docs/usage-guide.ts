@@ -1331,7 +1331,7 @@ git diff -- skills`,
       /Vite Integration and Document Ownership/,
       'Install the Askr Vite plugin once and keep the HTML document owned by the selected SPA, SSR, or SSG entry instead of generating competing shells.',
       `import { askr } from '@askrjs/vite';
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vite-plus';
 
 export default defineConfig({
   plugins: [askr()],

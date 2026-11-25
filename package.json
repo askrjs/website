@@ -36,8 +36,7 @@
     "@askrjs/otel": ">=0.5.0 <0.6.0",
     "@askrjs/themes": ">=0.5.0 <0.6.0",
     "@askrjs/ui": ">=0.5.0 <0.6.0",
-    "@fontsource-variable/domine": "^5.3.0",
-    "@opentelemetry/api": "^1.9.1"
+    "@fontsource-variable/domine": "^5.3.0"
   },
   "devDependencies": {
     "@askrjs/auth": ">=0.5.0 <0.6.0",
@@ -47,8 +46,8 @@
     "@askrjs/server": ">=0.5.0 <0.6.0",
     "@askrjs/testing": ">=0.5.0 <0.6.0",
     "@askrjs/vite": ">=0.5.0 <0.6.0",
-    "@playwright/test": "^1.64.1",
-    "@types/node": "^26.6.5",
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.6.4",
     "@typescript/native": "npm:typescript@^7.0.2",
     "monaco-editor": "^0.56.0",
     "tsx": "4.23.15",
