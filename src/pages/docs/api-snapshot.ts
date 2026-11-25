@@ -845,7 +845,7 @@ export const apiSymbolSets: Readonly<
         'composeRefs: <T>(...refs: Array<Ref<T>>) => (value: T | null) => void | (() => void)',
       typeOnly: true,
       summary:
-        'Combine multiple refs into one callback ref that writes to all of them.',
+        'Combine multiple refs into one callback ref that writes to all of them.\nCleanups the callbacks return are forwarded: the composed ref returns one\ncleanup that runs them and gives `null` to the refs that returned none.',
     },
     {
       name: 'formatId',
@@ -3149,6 +3149,15 @@ export const apiSymbolSets: Readonly<
       summary: 'Policy decision: allow the route to render.',
     },
     {
+      name: 'blockNavigation',
+      anchor: 'block-navigation',
+      signature:
+        'blockNavigation: (shouldBlock: () => boolean | string) => () => void',
+      typeOnly: true,
+      summary:
+        'Ask before the router leaves the current page. \\`shouldBlock\\` is evaluated\nwhen an in-app navigation (\\`navigate()\\`, \\`<Link>\\`) or a back/forward\ntraversal is attempted, and when the document is about to unload. Return\n\\`true\\` to refuse, a string to ask the visitor to confirm with that message,\nor \\`false\\` to allow. Returns a function that removes the blocker.\n\n\\`updateRouteQuery()\\` and a policy or auth redirect met during an in-app\nnavigation consult blockers too; a refusal is dropped and reported through\n\\`navigationState().blocked\\`. Limitations: a traversal is undone after the\nbrowser has moved and flashes the destination URL, by \\`history.go()\\` when the\nhistory position is known and otherwise by pushing the current entry again\n(an extra entry; forward entries are lost); browsers show their own fixed\ntext on unload, not the string.',
+    },
+    {
       name: 'createRouteRegistry',
       anchor: 'create-route-registry',
       signature:
@@ -3178,7 +3187,7 @@ export const apiSymbolSets: Readonly<
       name: 'currentRoute',
       anchor: 'current-route',
       signature:
-        'currentRoute: <TParams extends RouteParams = RouteParams, TState = unknown, TAppMeta = unknown>() => RouteSnapshot<TParams, TState, TAppMeta>',
+        'currentRoute: <TParams extends RouteParams = RouteParams, TState = unknown, TAppMeta = unknown, TSearch = RouteSearch>() => RouteSnapshot<TParams, TState, TAppMeta, TSearch>',
       typeOnly: true,
       summary:
         "Read the currently active route's {@link RouteSnapshot}; reactive during component render.",
@@ -3282,6 +3291,29 @@ export const apiSymbolSets: Readonly<
           summary: '',
           signature: 'appMeta?: TAppMeta;',
         },
+        {
+          name: 'error',
+          summary: '',
+          signature: 'error?: (props: RouteErrorProps) => RenderableChild;',
+        },
+        {
+          name: 'forbidden',
+          summary: '',
+          signature:
+            'forbidden?: (props: RouteForbiddenProps) => RenderableChild;',
+        },
+        {
+          name: 'loader',
+          summary:
+            'Runs alongside the leaf loader; read the result with `layoutData(loader)`.',
+          signature:
+            'loader?: (\n    context: RouteContext & {\n      request?: Request;\n    }\n  ) => unknown;',
+        },
+        {
+          name: 'staleTimeMs',
+          summary: '',
+          signature: "staleTimeMs?: number | 'always';",
+        },
       ],
     },
     {
@@ -3308,6 +3340,15 @@ export const apiSymbolSets: Readonly<
       typeOnly: true,
       summary:
         'Check whether `value` is a {@link Deferred} produced by {@link defer}.',
+    },
+    {
+      name: 'layoutData',
+      anchor: 'layout-data',
+      signature:
+        'layoutData: <TData>(loader: (context: RouteContext & { request?: Request; }) => TData | PromiseLike<TData>) => TData',
+      typeOnly: true,
+      summary:
+        'Read the result of a `group()`/`page()` loader while rendering a route that\nruns it, typically from a layout or page host. The argument is the loader\nfunction declared on the scope, so the read is typed by that function and\nworks anywhere below the scope, including the leaf.',
     },
     {
       name: 'lazy',
@@ -3588,6 +3629,29 @@ export const apiSymbolSets: Readonly<
           name: 'appMeta',
           summary: '',
           signature: 'appMeta?: TAppMeta;',
+        },
+        {
+          name: 'error',
+          summary: '',
+          signature: 'error?: (props: RouteErrorProps) => RenderableChild;',
+        },
+        {
+          name: 'forbidden',
+          summary: '',
+          signature:
+            'forbidden?: (props: RouteForbiddenProps) => RenderableChild;',
+        },
+        {
+          name: 'loader',
+          summary:
+            'Runs alongside the leaf loader; read the result with `layoutData(loader)`.',
+          signature:
+            'loader?: (\n    context: RouteContext & {\n      request?: Request;\n    }\n  ) => unknown;',
+        },
+        {
+          name: 'staleTimeMs',
+          summary: '',
+          signature: "staleTimeMs?: number | 'always';",
         },
       ],
     },
@@ -4138,12 +4202,6 @@ export const apiSymbolSets: Readonly<
           summary: '',
           signature:
             'meta?: RouteMetaSource<TParams, TLoaderData, RouteRefSearch<TSearchSchema>>;',
-        },
-        {
-          name: 'appMeta',
-          summary:
-            'Immutable application declaration data; never automatically serialized for hydration.',
-          signature: 'appMeta?: TAppMeta;',
         },
         {
           name: 'appMeta',
@@ -4741,10 +4799,10 @@ export const apiSymbolSets: Readonly<
       name: 'action',
       anchor: 'action',
       signature:
-        'action: <TInput extends Record<string, unknown>, TResult = unknown>(descriptor: ActionDescriptor<TInput>, options?: { readonly csrfToken: (signal: AbortSignal) => Promise<string | undefined>; }) => { state: StateTuple<ActionStatus<TResult>>; submit(input: TInput): Promise<TResult>; }',
+        'action: <TInput extends Record<string, unknown>, TResult = unknown>(descriptor: ActionDescriptor<TInput>, options?: { readonly csrfToken?: (signal: AbortSignal) => Promise<string | undefined>; readonly csrfCookie?: string; }) => { state: StateTuple<ActionStatus<TResult>>; submit(input: TInput): Promise<TResult>; }',
       typeOnly: true,
       summary:
-        'Bind an action descriptor to the calling component and return its\n`{ state, submit }` handle. `action()` allocates its status with `state()`,\nso it follows the same rule: call it during component render, at the top\nlevel and in the same order on every render. `submit()` itself may be\ncalled from event handlers or other async work. An explicit csrfToken\nresolver runs fresh for every submission under the component/data lifetime.\nIts undefined result omits the token instead of falling back to SSR data.',
+        'Bind an action descriptor to the calling component and return its\n`{ state, submit }` handle. `action()` allocates its status with `state()`,\nso it follows the same rule: call it during component render, at the top\nlevel and in the same order on every render. `submit()` itself may be\ncalled from event handlers or other async work. An explicit csrfToken\nresolver runs fresh for every submission under the component/data lifetime.\nIts undefined result omits the token instead of falling back to SSR data.\nWithout a resolver the token is read at every submission: the hydration\ntoken (until the session identity changes), else the \\`csrf-token\\` meta\nelement, else the cookie named by \\`csrfCookie\\`.',
     },
     {
       name: 'ActionDescriptor',
@@ -40635,6 +40693,11 @@ export const apiSymbolSets: Readonly<
           signature: 'children?: unknown;',
         },
         {
+          name: 'className',
+          summary: '',
+          signature: 'className?: string | undefined;',
+        },
+        {
           name: 'direction',
           summary: '',
           signature: 'direction?: ResponsiveValue<BlockDirection> | undefined;',
@@ -40843,7 +40906,7 @@ export const apiSymbolSets: Readonly<
           name: 'className',
           summary: '',
           signature:
-            'className?: string | ((() => IntrinsicClassValue) & string) | undefined;',
+            'className?: string | (readonly IntrinsicClassName[] & string) | ({ readonly [name: string]: unknown; } & string) | ((() => IntrinsicClassName) & string) | undefined;',
         },
         {
           name: 'direction',
@@ -41221,7 +41284,7 @@ export const apiSymbolSets: Readonly<
           name: 'className',
           summary: '',
           signature:
-            'className?: string | ((() => IntrinsicClassValue) & string) | undefined;',
+            'className?: string | (readonly IntrinsicClassName[] & string) | ({ readonly [name: string]: unknown; } & string) | ((() => IntrinsicClassName) & string) | undefined;',
         },
         {
           name: 'direction',
@@ -41920,11 +41983,6 @@ export const apiSymbolSets: Readonly<
           summary: '',
           signature:
             'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void | (() => void)) | { current: HTMLButtonElement | null; } | null | undefined;',
-        },
-        {
-          name: 'size',
-          summary: '',
-          signature: 'size?: ButtonSize | undefined;',
         },
         {
           name: 'size',
@@ -42798,7 +42856,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLInputElement | null) => void) | { current: HTMLInputElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLInputElement | null) => void | (() => void)) | { current: HTMLInputElement | null; } | null | undefined;',
         },
         {
           name: 'required',
@@ -45417,7 +45475,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLInputElement | null) => void) | { current: HTMLInputElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLInputElement | null) => void | (() => void)) | { current: HTMLInputElement | null; } | null | undefined;',
         },
       ],
     },
@@ -45609,7 +45667,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLLabelElement | null) => void) | { current: HTMLLabelElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLLabelElement | null) => void | (() => void)) | { current: HTMLLabelElement | null; } | null | undefined;',
         },
       ],
     },
@@ -48758,7 +48816,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: unknown) => void) | { current: unknown; } | ((value: HTMLDivElement | null) => void) | { current: HTMLDivElement | null; } | null | undefined;',
+            'ref?: ((value: unknown) => void | (() => void)) | { current: unknown; } | ((value: HTMLDivElement | null) => void | (() => void)) | { current: HTMLDivElement | null; } | null | undefined;',
         },
       ],
     },
@@ -50052,7 +50110,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void) | { current: HTMLButtonElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void | (() => void)) | { current: HTMLButtonElement | null; } | null | undefined;',
         },
         {
           name: 'required',
@@ -50156,7 +50214,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void) | { current: HTMLTableSectionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void | (() => void)) | { current: HTMLTableSectionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -50216,7 +50274,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableCaptionElement | null) => void) | { current: HTMLTableCaptionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableCaptionElement | null) => void | (() => void)) | { current: HTMLTableCaptionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -50275,7 +50333,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void) | { current: HTMLTableCellElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void | (() => void)) | { current: HTMLTableCellElement | null; } | null | undefined;',
         },
       ],
     },
@@ -50334,7 +50392,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void) | { current: HTMLTableSectionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void | (() => void)) | { current: HTMLTableSectionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -50427,7 +50485,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void) | { current: HTMLTableCellElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void | (() => void)) | { current: HTMLTableCellElement | null; } | null | undefined;',
         },
       ],
     },
@@ -50453,7 +50511,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void) | { current: HTMLTableSectionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void | (() => void)) | { current: HTMLTableSectionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -50479,7 +50537,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableElement | null) => void) | { current: HTMLTableElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableElement | null) => void | (() => void)) | { current: HTMLTableElement | null; } | null | undefined;',
         },
       ],
     },
@@ -50538,7 +50596,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableRowElement | null) => void) | { current: HTMLTableRowElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableRowElement | null) => void | (() => void)) | { current: HTMLTableRowElement | null; } | null | undefined;',
         },
       ],
     },
@@ -50843,7 +50901,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTextAreaElement | null) => void) | { current: HTMLTextAreaElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTextAreaElement | null) => void | (() => void)) | { current: HTMLTextAreaElement | null; } | null | undefined;',
         },
       ],
     },
@@ -51896,7 +51954,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void) | { current: HTMLButtonElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void | (() => void)) | { current: HTMLButtonElement | null; } | null | undefined;',
         },
         {
           name: 'type',
@@ -54038,7 +54096,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void) | { current: HTMLButtonElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void | (() => void)) | { current: HTMLButtonElement | null; } | null | undefined;',
         },
         {
           name: 'size',
@@ -54352,7 +54410,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLInputElement | null) => void) | { current: HTMLInputElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLInputElement | null) => void | (() => void)) | { current: HTMLInputElement | null; } | null | undefined;',
         },
         {
           name: 'required',
@@ -56905,7 +56963,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLInputElement | null) => void) | { current: HTMLInputElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLInputElement | null) => void | (() => void)) | { current: HTMLInputElement | null; } | null | undefined;',
         },
       ],
     },
@@ -57009,7 +57067,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLLabelElement | null) => void) | { current: HTMLLabelElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLLabelElement | null) => void | (() => void)) | { current: HTMLLabelElement | null; } | null | undefined;',
         },
       ],
     },
@@ -60980,7 +61038,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void) | { current: HTMLButtonElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void | (() => void)) | { current: HTMLButtonElement | null; } | null | undefined;',
         },
         {
           name: 'required',
@@ -61082,7 +61140,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void) | { current: HTMLTableSectionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void | (() => void)) | { current: HTMLTableSectionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -61142,7 +61200,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableCaptionElement | null) => void) | { current: HTMLTableCaptionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableCaptionElement | null) => void | (() => void)) | { current: HTMLTableCaptionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -61201,7 +61259,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void) | { current: HTMLTableCellElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void | (() => void)) | { current: HTMLTableCellElement | null; } | null | undefined;',
         },
       ],
     },
@@ -61260,7 +61318,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void) | { current: HTMLTableSectionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void | (() => void)) | { current: HTMLTableSectionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -61353,7 +61411,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void) | { current: HTMLTableCellElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void | (() => void)) | { current: HTMLTableCellElement | null; } | null | undefined;',
         },
       ],
     },
@@ -61379,7 +61437,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void) | { current: HTMLTableSectionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void | (() => void)) | { current: HTMLTableSectionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -61405,7 +61463,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableElement | null) => void) | { current: HTMLTableElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableElement | null) => void | (() => void)) | { current: HTMLTableElement | null; } | null | undefined;',
         },
       ],
     },
@@ -61464,7 +61522,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableRowElement | null) => void) | { current: HTMLTableRowElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableRowElement | null) => void | (() => void)) | { current: HTMLTableRowElement | null; } | null | undefined;',
         },
       ],
     },
@@ -61584,7 +61642,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTextAreaElement | null) => void) | { current: HTMLTextAreaElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTextAreaElement | null) => void | (() => void)) | { current: HTMLTextAreaElement | null; } | null | undefined;',
         },
       ],
     },
@@ -62622,7 +62680,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void) | { current: HTMLButtonElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void | (() => void)) | { current: HTMLButtonElement | null; } | null | undefined;',
         },
         {
           name: 'type',
@@ -63539,7 +63597,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: HTMLSpanElement | null) => void) | { current: HTMLSpanElement | null; } | ((value: Element | null) => void) | { current: Element | null; } | null | undefined;',
+            'ref?: ((value: HTMLSpanElement | null) => void | (() => void)) | { current: HTMLSpanElement | null; } | ((value: Element | null) => void | (() => void)) | { current: Element | null; } | null | undefined;',
         },
       ],
     },
@@ -64011,7 +64069,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void) | { current: HTMLButtonElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void | (() => void)) | { current: HTMLButtonElement | null; } | null | undefined;',
         },
         {
           name: 'size',
@@ -64327,7 +64385,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLInputElement | null) => void) | { current: HTMLInputElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLInputElement | null) => void | (() => void)) | { current: HTMLInputElement | null; } | null | undefined;',
         },
         {
           name: 'required',
@@ -64521,7 +64579,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLInputElement | null) => void) | { current: HTMLInputElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLInputElement | null) => void | (() => void)) | { current: HTMLInputElement | null; } | null | undefined;',
         },
       ],
     },
@@ -64688,7 +64746,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLLabelElement | null) => void) | { current: HTMLLabelElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLLabelElement | null) => void | (() => void)) | { current: HTMLLabelElement | null; } | null | undefined;',
         },
       ],
     },
@@ -66621,7 +66679,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void) | { current: HTMLButtonElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void | (() => void)) | { current: HTMLButtonElement | null; } | null | undefined;',
         },
         {
           name: 'required',
@@ -66725,7 +66783,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void) | { current: HTMLTableSectionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void | (() => void)) | { current: HTMLTableSectionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -66785,7 +66843,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableCaptionElement | null) => void) | { current: HTMLTableCaptionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableCaptionElement | null) => void | (() => void)) | { current: HTMLTableCaptionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -66844,7 +66902,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void) | { current: HTMLTableCellElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void | (() => void)) | { current: HTMLTableCellElement | null; } | null | undefined;',
         },
       ],
     },
@@ -66903,7 +66961,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void) | { current: HTMLTableSectionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void | (() => void)) | { current: HTMLTableSectionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -66996,7 +67054,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void) | { current: HTMLTableCellElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableCellElement | null) => void | (() => void)) | { current: HTMLTableCellElement | null; } | null | undefined;',
         },
       ],
     },
@@ -67022,7 +67080,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void) | { current: HTMLTableSectionElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableSectionElement | null) => void | (() => void)) | { current: HTMLTableSectionElement | null; } | null | undefined;',
         },
       ],
     },
@@ -67048,7 +67106,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableElement | null) => void) | { current: HTMLTableElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableElement | null) => void | (() => void)) | { current: HTMLTableElement | null; } | null | undefined;',
         },
       ],
     },
@@ -67107,7 +67165,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTableRowElement | null) => void) | { current: HTMLTableRowElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTableRowElement | null) => void | (() => void)) | { current: HTMLTableRowElement | null; } | null | undefined;',
         },
       ],
     },
@@ -67749,7 +67807,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLTextAreaElement | null) => void) | { current: HTMLTextAreaElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLTextAreaElement | null) => void | (() => void)) | { current: HTMLTextAreaElement | null; } | null | undefined;',
         },
       ],
     },
@@ -67935,7 +67993,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: Element | null) => void) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void) | { current: HTMLButtonElement | null; } | null | undefined;',
+            'ref?: ((value: Element | null) => void | (() => void)) | { current: Element | null; } | ((value: HTMLButtonElement | null) => void | (() => void)) | { current: HTMLButtonElement | null; } | null | undefined;',
         },
         {
           name: 'type',
@@ -68355,7 +68413,7 @@ export const apiSymbolSets: Readonly<
           name: 'ref',
           summary: '',
           signature:
-            'ref?: ((value: HTMLSpanElement | null) => void) | { current: HTMLSpanElement | null; } | ((value: Element | null) => void) | { current: Element | null; } | null | undefined;',
+            'ref?: ((value: HTMLSpanElement | null) => void | (() => void)) | { current: HTMLSpanElement | null; } | ((value: Element | null) => void | (() => void)) | { current: Element | null; } | null | undefined;',
         },
       ],
     },
